@@ -1,0 +1,15 @@
+!!! 5
+%html
+  %head
+    %title greenwich Royal Observatory
+    /= stylesheets
+    %link{:rel=>"stylesheet", :href=>"stylesheets/application.css", :media=>"screen", :type=>"text/css"}
+    %link{:rel=>"stylesheet", :href=>"stylesheets/layout.css", :media=>"screen", :type=>"text/css"}
+    %link{:rel=>"stylesheet", :href=>"stylesheets/content.css", :media=>"screen", :type=>"text/css"}
+    %link{:rel=>"stylesheet", :href=>"stylesheets/style.css", :media=>"screen", :type=>"text/css"}
+    // %link{:rel=>"stylesheet", :href=>"stylesheets/type.css", :media=>"screen", :type=>"text/css"}
+    
+    %script{:type=>"text/JavaScript", :src=>"javascripts/curvycorners.js"}
+    
+  %body
+    = yield

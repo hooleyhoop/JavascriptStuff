@@ -1,0 +1,15 @@
+!!! 5
+%html
+	%head
+		%title hmmm
+		/= stylesheets
+		%link{ :rel=>"stylesheet", :href=>"/stylesheets/qunit/qunit.css", :media=>"screen", :type=>"text/css"}
+		%script{ :type=>"text/javascript", :src=>"/javascripts/jquery-1.4.2.min.js"}
+		%script{ :type=>"text/javascript", :src=>"/javascripts/qunit/qunit.js"}
+
+		-# Include each js file that we have passed in via 'jsFiles'
+		- jsFiles.each do |file|
+			%script{ :type=>"text/javascript", :src=>"#{file}"}
+
+	%body
+		= yield
