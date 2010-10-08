@@ -16,6 +16,10 @@ class PagesController < ApplicationController
 	end
 
 	def widgets
+		#@view_context_class = Class.new(Presenters::WidgetsPagePresenter);
+		#render :nothing => true;
+		pagePresenter = Presenters::WidgetsPagePresenter.new( self );
+		pagePresenter.drawPage();
 	end
 
 end
