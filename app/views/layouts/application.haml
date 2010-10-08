@@ -2,13 +2,8 @@
 %html
   %head
     %title hmmm
-    /= stylesheets
-    %link{:rel=>"stylesheet", :href=>"stylesheets/application.css", :media=>"screen", :type=>"text/css"}
-    %link{:rel=>"stylesheet", :href=>"stylesheets/layout.css", :media=>"screen", :type=>"text/css"}
-    %link{:rel=>"stylesheet", :href=>"stylesheets/content.css", :media=>"screen", :type=>"text/css"}
-    %link{:rel=>"stylesheet", :href=>"stylesheets/style.css", :media=>"screen", :type=>"text/css"}
-    // %link{:rel=>"stylesheet", :href=>"stylesheets/type.css", :media=>"screen", :type=>"text/css"}
-
+    = csrf_meta_tag
+    = javascript_include_tag :defaults
 
   %body
     = yield

@@ -1,0 +1,70 @@
+:javascript
+
+	// assert size
+	$.fn.assertSize = function(size) {
+		// console.assert( this.size()== size, "Expected "+size+" elements, but got " + this.size()+".");
+		return this;
+	};
+
+	function renderTables( tableName ) {
+
+		// collect data
+		var $potentialTableObject = $( "#"+tableName ).assertSize(1);
+		var $potentialTableObjectCells = $potentialTableObject.children();
+
+		// Options are added to item
+		var tableOptions = {
+			action: wooooooooooaaaaaaaaaaaahhhhhhhhhhh = function( arg ){
+				var itemsAsArray = $.makeArray(arg)
+				return itemsAsArray;
+			},
+			stash : function( arg ){
+				this.stashedArg = arg;
+				return ''},
+		};
+
+		// if data is an array the template is rendered once for each item
+		var $renderedTableTemplate = $("#tableTemplate").tmpl( $potentialTableObjectCells, tableOptions );
+
+		// var renderedTableCellTemplate = $("#tableCellTemplate").tmpl( $.makeArray($potentialTableObjectCells) );
+		var $renderDetination = $potentialTableObject.empty();
+		$renderedTableTemplate.appendTo( $renderDetination );
+
+	}
+
+	// jquery stuff
+	$(document).ready(function(){
+
+		renderTables( "tableDataSource" );
+	});
+
+/
+	*
+	* Most basic table template
+	*
+%script{:id=>"tableTemplate", :type=>"text/html"}
+	%div{:style=>"background-color:#00ff00; margin:10px; padding:10px;"}
+		${$item.stash( $item.action( $data ) )}
+		{{tmpl($item.stashedArg) "#tableCellTemplate"}}
+
+/
+	*
+	* Most basic table cell template
+	*
+%script{:id=>"tableCellTemplate", :type=>"text/html"}
+	%div{:style=>"color:#fff; background-color:#ff0000; margin:10px; padding:10px;"}
+		${$data.textContent}
+
+/
+	*
+	* Render basic template 1
+	*
+#tableDataSource
+	%div
+		My Name is Steven Hooley and i speak french
+
+	%div
+		oo la la ooooo la la ooooh laaa laaaaa
+
+	%div
+		i am also some very great content to have. You are lucky.

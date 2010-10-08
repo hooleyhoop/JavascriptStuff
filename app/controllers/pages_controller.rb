@@ -15,4 +15,7 @@ class PagesController < ApplicationController
 
 	end
 
+	def widgets
+	end
+
 end
