@@ -1,0 +1,61 @@
+:javascript
+	$(document).ready(function(){
+
+		// Bottom Right Handle Mouse Down
+		$('#left_handle').mousedown( function($event){return horizontalDrag($event, $('#resizable'), 'left');} );
+		$('#right_handle').mousedown( function($event){return horizontalDrag($event, $('#resizable'), 'right');} );
+
+		function horizontalDrag( $event, $puppet, cssProp ) {
+
+			var $jqueryClickedObject = $($event.target); // notice how we wrap HTMLDivElement
+			var $clickedObjectPos = $jqueryClickedObject.offset();			
+			var mouseDownPt = { x:$event.pageX, y:$event.pageY };
+			var offsetFromCentrePt = { x:(mouseDownPt.x-$clickedObjectPos.left-$jqueryClickedObject.width()/2), y:(mouseDownPt.y-$clickedObjectPos.top-$jqueryClickedObject.height()/2) };
+			// console.warn( "offset from centre = "+offsetFromCentrePt.x + ", "+offsetFromCentrePt.y );
+			
+			$('body').bind('mouseup', mouseup);
+			mouseMoveData = {clickedOb:$jqueryClickedObject, offset:offsetFromCentrePt, puppet:$puppet, tcssProp:cssProp };
+			
+			$('body').bind('mousemove', mouseMoveData, mousemove);
+		}
+		
+		function mouseup( $event ) {
+
+			$('body').unbind('mousemove');
+			$('body').unbind('mouseup');
+		}
+
+		function mousemove( $event ) {
+			
+			var $jqueryClickedObject = $event.data.clickedOb;
+			var clickedPos = { x:$event.pageX, y:$event.pageY };
+			var newPos = { x:(clickedPos.x-$jqueryClickedObject.width()/2), y:(clickedPos.y-$jqueryClickedObject.height()/2) };
+			var $objectToManipulate = $event.data.puppet;
+			var cssProp = $event.data.tcssProp;
+
+			$jqueryClickedObject.css( 'left', newPos.x-$event.data.offset.x );
+			// $jqueryClickedObject.css( 'top', newPos.y-$event.data.offset.y );
+			
+			var puppetXPos = $objectToManipulate.position().left;			
+			var puppetWidth = $objectToManipulate.width();
+	
+			if(cssProp=='left') {
+				var newXPos = $jqueryClickedObject.offset().left+$jqueryClickedObject.width();
+				var newWidth = puppetWidth+(puppetXPos-newXPos);
+				$objectToManipulate.css( 'left', newXPos );
+				$objectToManipulate.css( 'width', newWidth );
+				
+			} else {
+			
+				var newWidth = newPos.x-$event.data.offset.x - puppetXPos;
+				$objectToManipulate.css( 'width', newWidth );
+				
+			}
+			
+		}
+
+	});
+
+%div#resizable{ :style=>"background-color:#ff0000; width:400px;height:400px; position:absolute; left:50px; top:50px;"}
+%div#left_handle{ :style=>"background-color:#00ff00; position:absolute; width:33px; height:33px; top:100px; left:100px;"}
+%div#right_handle{ :style=>"background-color:#00ff00; position:absolute; width:33px; height:33px; top:100px; left:600px;"}

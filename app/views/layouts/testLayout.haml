@@ -2,10 +2,8 @@
 %html
 	%head
 		%title hmmm
-		/= stylesheets
-		%link{ :rel=>"stylesheet", :href=>"/stylesheets/qunit/qunit.css", :media=>"screen", :type=>"text/css"}
-		%script{ :type=>"text/javascript", :src=>"/javascripts/jquery-1.4.2.min.js"}
-		%script{ :type=>"text/javascript", :src=>"/javascripts/qunit/qunit.js"}
+		= stylesheet_link_tag 'qunit/qunit.css'
+		= javascript_include_tag 'qunit/qunit.js', 'jquery-1.4.2.min.js'
 
 		-# Include each js file that we have passed in via 'jsFiles'
 		- jsFiles.each do |file|

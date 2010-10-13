@@ -22,4 +22,8 @@ class PagesController < ApplicationController
 		pagePresenter.drawPage();
 	end
 
+	def single_widget
+	  # just render single_widget view
+	end
+
 end
