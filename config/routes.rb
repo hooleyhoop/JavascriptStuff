@@ -1,9 +1,12 @@
 JavascriptStuff::Application.routes.draw do
 
-  get "pages/controlcenter"
+  get "pages/control_center"
   get "pages/javascript_unit_tests"
   get "pages/widgets"
   get "pages/single_widget"
+
+  #ajax test - not sure if this is right?
+  get "pages/_ajaxHTML"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

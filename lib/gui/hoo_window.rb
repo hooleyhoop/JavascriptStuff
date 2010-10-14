@@ -15,7 +15,7 @@ module GUI
 
 			def drawNow( controller )
 				controller.instance_variable_set(:@window, self);
-				controller.render :action =>"contentview", :layout=>'hoowindow'
+				controller.render :action =>"content_view", :layout=>'window'
 			end
 
 	end

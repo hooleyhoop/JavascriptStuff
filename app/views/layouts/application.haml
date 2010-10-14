@@ -1,9 +1,10 @@
 !!! 5
 %html
-  %head
-    %title hmmm
-    = csrf_meta_tag
-    = javascript_include_tag :defaults
+	%head
+		%title app layout
+		= csrf_meta_tag
+		= javascript_include_tag :defaults
+		= stylesheet_link_tag 'simple_reset'
 
-  %body
-    = yield
+	%body
+		= yield
