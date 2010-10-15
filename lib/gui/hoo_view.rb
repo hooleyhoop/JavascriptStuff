@@ -13,6 +13,14 @@ module GUI
 			@views << aView;
 		end
 
+		#woah! model.model_name.partial_path
+		def self.model_name
+			return self;
+		end
 
+		def self.partial_path
+			#NB if we didnt want the GUI/ prefix we could do  name.split('::').last || ''
+			return self.name.underscore;
+		end
 	end
 end

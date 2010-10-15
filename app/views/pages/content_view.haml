@@ -1,3 +1,6 @@
 /
 	render blueView partial 3 times with each view
-= render :partial=>"blueView", :object=>@window.views
+	because 'views' is a pluralised collection the partial will be rendered views.length times
+	and each have a variable 'blueView' (name of the partial) which is the item from the the collection
+
+= render @window.views

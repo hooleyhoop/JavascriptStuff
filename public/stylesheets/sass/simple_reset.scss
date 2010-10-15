@@ -2,6 +2,9 @@
 html, body, ul, ol, li, form, fieldset, legend {
 	margin: 0;
 	padding: 0;
+	font-size: 13px;
+	font-family: "helvetica neue", arial, sans-serif;
+	min-width: 800px;
 }
 h1, h2, h3, h4, h5, h6, p { margin-top: 0; }
 fieldset,img { border: 0; }
@@ -34,43 +37,56 @@ abbr, acronym
 	cursor: help;
 }
 
+h1 {margin: 32px 0 11px; font-size: 3em;}
+h2 {padding: 0 0 8px; font-size: 2.5em;}
+h1, h2 {letter-spacing: -0.0125em; font-weight: bold;}
+p {margin: 0 0 .8em; line-height: 1.35em;}
+a {font-weight: bold; color: #1389e5; text-decoration: underline; outline: none;}
+a:hover {color: #fff; text-decoration: none; background-color: #1389e5;}
+a:active {color: #fff; background-color: #211922;}
+a:hover img {opacity: .92; filter: alpha(opacity=92);}
+#noHover a:hover {color: #fff; background-color: none;}
+#noHover a:active {color: #fff; background-color: none;}
+input, textarea {color: #777;}
+input:focus, textarea:focus {color: #211922 !important;}
+textarea, input[type="text"], input[type="password"] {padding: 5px 8px; line-height: 1em; background-color: #fff; border: 1px solid; border-color: #ccc #bbb #aaa; -moz-box-shadow: 0 1px #e7e7e7; -webkit-box-shadow: 0 1px #e7e7e7;}
 
-/* Drop down menu put in here as a bodge */
-
-* 									{ margin: 0; padding: 0; }
-body								{ font: 14px Helvetica, Sans-Serif; }
-#page-wrap							{ width: 800px; margin: 25px auto; }
-a									{ text-decoration: none; }
-ul									{ list-style: none; }
-p                                   { margin: 15px 0; }
-
-/*
-	LEVEL ONE
-*/
-ul.dropdown                         { position: relative; }
-ul.dropdown li                      { font-weight: bold; float: left; zoom: 1; background: #ccc; }
-ul.dropdown a:hover		            { color: #000; }
-ul.dropdown a:active                { color: #ffa500; }
-ul.dropdown li a                    { display: block; padding: 4px 8px; border-right: 1px solid #333;
-	 								  color: #222; }
-ul.dropdown li:last-child a         { border-right: none; } /* Doesn't work in IE */
-ul.dropdown li.hover,
-ul.dropdown li:hover                { background: #F3D673; color: black; position: relative; }
-ul.dropdown li.hover a              { color: black; }
-
-
-/*
-	LEVEL TWO
-*/
-ul.dropdown ul 						{ width: 220px; visibility: hidden; position: absolute; top: 100%; left: 0; }
-ul.dropdown ul li 					{ font-weight: normal; background: #f6f6f6; color: #000;
-									  border-bottom: 1px solid #ccc; float: none; }
-
-                                    /* IE 6 & 7 Needs Inline Block */
-ul.dropdown ul li a					{ border-right: none; width: 100%; display: inline-block; }
-
-/*
-	LEVEL THREE
-*/
-ul.dropdown ul ul 					{ left: 100%; top: 0; }
-ul.dropdown li:hover > ul 			{ visibility: visible; }
+/* REUSABLE STYLES
+---------------------------------------------- */
+.hidden {display: none !important;}
+.highlighted {color: #211922; background-color: #ff0 !important;}
+.error {font-size: 1.3em; color: #f00;}
+.clear {clear: both !important;}
+.floatRight {float: right !important;}
+.floatLeft {float: left !important;}
+.halfRight {float: right; width: 49%; overflow: hidden;}
+.halfLeft {float: left; width: 49%; overflow: hidden;}
+.third {float: left; width: 31%; margin-right: 2.83%;}
+.thirdRight {float: right; width: 32%;}
+.twoThirdsLeft {width: 65%; margin-right: 2%;}
+.twoThirdsRight {float: right; width: 65%;}
+.oneFifthLeft {float: left; width: 188px;}
+.oneFifth {float: right; width: 185px; padding-left: 6px;}
+.twoFifths {float: right; width: 372px;}
+.twoFifthsLeft {float: left; width: 372px;}
+.threeFifths {float: left; width: 564px;}
+.threeFifthsRight {float: right; width: 564px;}
+.threeFifthsCenter {float: left; width: 559px; margin-left: 9px;}
+.fourFifths {float: left; width: 754px;}
+.quarterLeft {float: left; width: 24%; margin-right: 1%;}
+.quarterRight {float: right; width: 24%;}
+.threeQuartersLeft {float: left; width: 74%;}
+.threeQuartersRight {float: right; width: 74%;}
+.noBorder {border-width: 0 !important;}
+.noBorderTop {border-top-width: 0 !important;}
+.noBorderRight {border-right-width: 0 !important;}
+.noBorderBottom {border-bottom-width: 0 !important;}
+.noBorderLeft {border-left-width: 0 !important;}
+.noMarginTop {margin-top: 0 !important;}
+.noMarginRight {margin-right: 0 !important;}
+.noMarginBottom {margin-bottom: 0 !important;}
+.noMarginLeft {margin-left: 0 !important;}
+.fixed {position: fixed !important;}
+.invisible {visibility: hidden !important;}
+.rule  { border-bottom-color:#DDDDDD; border-bottom-style:solid; border-bottom-width:1px; clear:both; height:0;
+margin:15px 0px; overflow: hidden;}

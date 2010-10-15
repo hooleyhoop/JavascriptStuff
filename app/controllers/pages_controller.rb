@@ -1,3 +1,4 @@
+
 class PagesController < ApplicationController
 
 	def control_center
@@ -34,7 +35,17 @@ class PagesController < ApplicationController
 		#end
 		#render :text => "FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
 		#render :js => " "
-		render :action =>"test_view", :layout=>false;
+		#render :action =>"test_view", :layout=>false;
+
+		#partialAsString = render_to_string :partial =>"test_partial"
+		#render :text => partialAsString
+
+		objectToRender = HooBlueView.new();
+
+		haml_string = "%p Haml-tastic!"
+		engine = Haml::Engine.new(haml_string)
+		hamlResult = engine.render
+		render :text => hamlResult
 	end
 
 end
