@@ -4,6 +4,7 @@ JavascriptStuff::Application.routes.draw do
   get "pages/javascript_unit_tests"
   get "pages/widgets"
   get "pages/single_widget"
+  get "pages/sample_page"
 
   #ajax test - not sure if this is right?
   get "pages/_ajaxHTML"

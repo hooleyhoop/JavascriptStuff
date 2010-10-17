@@ -3,11 +3,7 @@ html, body, ul, ol, li, form, fieldset, legend {
   margin: 0;
   padding: 0;
   font-size: 13px;
-  font-family: "helvetica neue", arial, sans-serif;
-  min-width: 800px;
-  letter-spacing: -0.013em;
-
- }
+  font-family: "helvetica neue", arial, sans-serif; }
 
 h1, h2, h3, h4, h5, h6, p {
   margin-top: 0; }
@@ -44,6 +40,9 @@ abbr, acronym {
   border-bottom: .1em dotted;
   cursor: help; }
 
+body {
+  width: 100%; }
+
 h1 {
   margin: 32px 0 11px;
   font-size: 3em; }
@@ -53,7 +52,7 @@ h2 {
   font-size: 2.5em; }
 
 h1, h2 {
-  letter-spacing: -0.043em;
+  letter-spacing: -0.013em;
   font-weight: bold; }
 
 p {
@@ -243,3 +242,32 @@ textarea, input[type="text"], input[type="password"] {
   height: 0;
   margin: 15px 0px;
   overflow: hidden; }
+
+.colmask {
+  position: relative;
+  /* This fixes the IE7 overflow hidden bug and stops the layout jumping out of place */
+  clear: both;
+  float: left;
+  width: 100%;
+  /* width of whole page */
+  overflow: hidden;
+  /* This chops off any overhanging divs */ }
+
+.rightmenu .colleft {
+  float: left;
+  width: 200%;
+  position: relative;
+  right: 100%; }
+
+.rightmenu .col1wrap {
+  float: left;
+  width: 50%;
+  position: relative;
+  left: 50%; }
+
+.rightmenu .col1 {
+  overflow: hidden; }
+
+.rightmenu .col2 {
+  float: right;
+  position: relative; }

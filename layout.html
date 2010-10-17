@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" > 
+<head> 
+	<title>The Right Menu 2 column Liquid Layout. Em widths. Cross-Browser. Equal Height Columns.</title> 
+    <style media="screen" type="text/css"> 
+    /* <!-- */
+    /* General styles */
+    body {
+        width:100%;
+        margin:0;
+        padding:0;
+        font-size:14px;
+        font-family:"Helvetica";
+    }
+
+	/* Header styles */
+    #header {
+        clear:both;
+        float:left;
+        width:100%;
+    }
+
+	/* column container */
+	.colmask {
+		position:relative;		/* This fixes the IE7 overflow hidden bug and stops the layout jumping out of place */
+	    clear:both;
+	    float:left;
+        width:100%;			/* width of whole page */
+		overflow:hidden;	/* This chops off any overhanging divs */
+		min-width:600px;
+	}
+	/* 2 column right menu settings */
+
+	.rightmenu .colleft {
+        float:left;
+        width:200%;
+        margin-left:-12em;
+        position:relative;
+        right:100%;
+    }
+
+    .rightmenu .col1wrap {
+	    float:left;
+	    width:50%;
+	    position:relative;
+	    left:50%;
+	}
+	.rightmenu .col1 {
+        margin:0 0em 0 12em;
+        overflow:hidden;
+	}
+    .rightmenu .col2 {
+        float:right;
+        width:12em;
+        position:relative;
+        left:12em;
+
+    }
+	/* Footer styles */
+	#footer {
+        clear:both;
+        float:left;
+        width:100%;
+    }
+
+    /* --> */
+    </style> 
+
+</head> 
+<body> 
+ 
+<div id="header" style="background-color:#aaa;"> 
+    i am the header
+</div>
+
+<div style="background-color:#333333; max-width:960px; margin:auto;">
+<div class="colmask rightmenu" style="background-color:#ff0000;"> 
+    <div class="colleft" style="background-color:#0000ff;">
+        <div class="col1wrap"> 
+            <div class="col1"> 
+                <!-- Column 1 start --> 
+              This is col 1 blah blah wanht reppresents This is col 1 blah blah wanht reppresents This is col 1 blah blah wanht reppresents This is col 1 blah blah wanht reppresents
+				<!-- Column 1 end --> 
+            </div> 
+        </div>
+        
+        <div class="col2"> 
+            <!-- Column 2 start --> 
+            This is col 2 wanht reppresents This is col 1 blah blah wanht wanht reppresents This is col 1 blah blah wanht wanht reppresents This is col 1 blah blah wanht
+          	<!-- Column 2 end --> 
+        </div>
+        
+    </div> 
+</div>
+</div>
+<div id="footer" style="background-color:#aaa;"> 
+  i am the footer
+</div> 
+ 
+
+ 
+</body> 
+</html> 

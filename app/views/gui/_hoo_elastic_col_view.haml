@@ -1,0 +1,14 @@
+#hoo_elastic_col_view_header{:style =>"clear:both;float:left;width:100%;background-color:#aaa;"}
+	= hoo_elastic_col_view.header!=nil ? (render hoo_elastic_col_view.header) : "no header"
+
+#_hoo_elastic_col_view_centred_page_wrapper{:style =>"background-color:#333; margin:auto;"}
+	.colmask.rightmenu{:style =>"background-color:#ff0000;"}
+		.colleft{:style=>"background-color:#0000ff;margin-left:-12em;"}
+			.col1wrap
+				.col1{:style =>"margin:0 0 0 12em;"}
+					= hoo_elastic_col_view.mainColumn!=nil ? (render hoo_elastic_col_view.mainColumn) : "no mainColumn"
+			.col2{:style=>"left:12em;width:12em;"}
+				= hoo_elastic_col_view.sidebar!=nil ? (render hoo_elastic_col_view.sidebar) : "no sidebar"
+				
+#_hoo_elastic_col_view_footer{:style =>"clear:both;float:left;width:100%;background-color:#aaa;"}
+	= hoo_elastic_col_view.footer!=nil ? (render hoo_elastic_col_view.footer) : "no footer"

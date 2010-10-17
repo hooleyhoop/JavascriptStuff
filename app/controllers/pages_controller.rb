@@ -22,10 +22,14 @@ class PagesController < ApplicationController
 		pagePresenter.drawPage();
 	end
 
+	def sample_page
+		pagePresenter = Presenters::SamplePagePresenter.new(self);
+		pagePresenter.drawPage();		
+	end
+	
 	def single_widget
 	  # just render single_widget view
   	  logger.info("just render single view");
-
 	end
 
 	# ajax test. This can't be right? No?
