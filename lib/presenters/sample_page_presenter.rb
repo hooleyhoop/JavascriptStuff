@@ -5,7 +5,7 @@ module Presenters
 		
 			super( controller )
 			
-			@colView = GUI::HooElasticColView.new();
+			@colView = GUI::HooElasticColView.new( {:sideBarEmWidth=>15} );
 
 			@colView.header = GUI::HooLoremIpsum.new();
 			@colView.footer = GUI::HooLoremIpsum.new();
@@ -19,8 +19,6 @@ module Presenters
 			@window.drawNow( @controller );
 		end
 
-		#def render(options = {}, locals = {}, &block)
-		#	Rails.logger.info @controller==nil
-		#end
+	
 	end
 end

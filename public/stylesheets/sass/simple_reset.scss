@@ -64,7 +64,9 @@ textarea, input[type="text"], input[type="password"] {padding: 5px 8px; line-hei
 .error {font-size: 1.3em; color: #f00;}
 .clear {clear: both !important;}
 .floatRight {float: right !important;}
+.floatRight_relative { float:right; position:relative; }
 .floatLeft {float: left !important;}
+.floatLeft_relative { float:left; position:relative; }
 .halfRight {float: right; width: 49%; overflow: hidden;}
 .halfLeft {float: left; width: 49%; overflow: hidden;}
 .third {float: left; width: 31%; margin-right: 2.83%;}
@@ -99,31 +101,6 @@ margin:15px 0px; overflow: hidden;}
 
 
 
-	.colmask {
-		position:relative;		/* This fixes the IE7 overflow hidden bug and stops the layout jumping out of place */
-	    clear:both;
-	    float:left;
-        width:100%;			/* width of whole page */
-		overflow:hidden;	/* This chops off any overhanging divs */
-	}
 
-	.rightmenu .colleft {
-        float:left;
-        width:200%;
-        position:relative;
-        right:100%;
-    }
-    .rightmenu .col1wrap {
-	    float:left;
-	    width:50%;
-	    position:relative;
-	    left:50%;
-	}
-	.rightmenu .col1 {
-        overflow:hidden;
-	}
-    .rightmenu .col2 {
-        float:right;
-        position:relative;
-    }
+
 
