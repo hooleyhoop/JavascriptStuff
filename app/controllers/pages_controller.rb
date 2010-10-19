@@ -27,7 +27,8 @@ class PagesController < ApplicationController
 	end
 
 	def sample_page
-		pagePresenter = Presenters::SampleElasticPagePresenter.new(self);
+		optionalId = params[:id] ? Integer(params[:id]) : 0;
+		pagePresenter = Presenters::SampleElasticPagePresenter.new( self, optionalId );
 		pagePresenter.drawPage();		
 	end
 	
