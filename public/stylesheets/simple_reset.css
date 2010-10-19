@@ -3,6 +3,7 @@ html, body, ul, ol, li, form, fieldset, legend {
   margin: 0;
   padding: 0;
   font-size: 13px;
+  line-height: 15px;
   font-family: "helvetica neue", arial, sans-serif; }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -43,22 +44,12 @@ abbr, acronym {
 body {
   width: 100%; }
 
-h1 {
-  margin: 32px 0 11px;
-  font-size: 3em; }
-
-h2 {
-  padding: 0 0 8px;
-  font-size: 2.5em; }
-
-h1, h2 {
-  letter-spacing: -0.013em;
-  font-weight: bold; }
-
-p {
-  margin: 0 0 .8em;
-  line-height: 1.35em; }
-
+/*
+h1 {margin: 32px 0 11px; font-size: 3em;}
+h2 {padding: 0 0 8px; font-size: 2.5em;}
+h1, h2 {letter-spacing: -0.0125em; font-weight: bold;}
+p {margin: 0 0 .8em; line-height: 3.35em;}
+*/
 a {
   font-weight: bold;
   color: #1389e5;
@@ -250,3 +241,6 @@ textarea, input[type="text"], input[type="password"] {
   height: 0;
   margin: 15px 0px;
   overflow: hidden; }
+
+.showgrid {
+  background: url(images/grid.png); }

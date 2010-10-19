@@ -1,4 +1,6 @@
-%div{:style=>"width:#{hoo_blue_view.width}px; height:#{hoo_blue_view.height}px; background-color:#0000ff;"}
-	= render hoo_blue_view.views
+- push( hoo_blue_view )
+
+%div{ :style=>"width:#{@_.width}px; height:#{@_.height}px; background-color:#0000ff;" }
+	= insert( _.views )
 	/ Ideally i would like this path = render '../../lib/gui/views/partial'
 

@@ -1,5 +1,5 @@
 module GUI
-	class HooElasticColView < HooView
+	class HooElasticColRightView < HooView
 
 		attr_accessor :header, :footer, :mainColumn, :sidebar;
 		attr_accessor :sideBarWidth;
@@ -7,7 +7,7 @@ module GUI
 		
 		def initialize( hashArg )
 			super();
-			@sideBarWidth = hashArg[:sideBarEmWidth];
+			@sideBarWidth = hashArg[:sideBarPxWidth];
 			
 			if(false)
 				@debugBorder = "border:1px solid black;";

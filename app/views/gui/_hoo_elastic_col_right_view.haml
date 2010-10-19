@@ -1,0 +1,23 @@
+- push( hoo_elastic_col_right_view )
+
+/ Header
+%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+	= insert( _.header, "No header" )
+
+/ Content
+%div{ :style =>"width:800px; margin:auto" }
+	%div.floatRight_relative{ :style =>"#{_.debugCol2}; width:100%; overflow:hidden; clear:both;" }
+		%div.floatLeft_relative{ :style=>"#{_.debugCol3}; margin-left:-#{_.sideBarWidth}px; right:100%; width:200%;" }
+			%div.floatLeft_relative{ :style=>"left:50%; width:50%;" }
+
+				/ Main Column
+				%div{ :style =>"margin-left:#{_.sideBarWidth}px; overflow:hidden; #{_.debugBorder}" }
+					= insert( _.mainColumn, "No mainColumn" )
+
+			/ Right Hand Sidebar
+			%div.floatRight_relative{ :style=>"left:#{_.sideBarWidth}px; width:#{_.sideBarWidth}px; #{_.debugBorder}" }
+				= insert( _.sidebar, "No sidebar" )
+
+/ Footer
+%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+	= insert( _.footer, "No footer" )

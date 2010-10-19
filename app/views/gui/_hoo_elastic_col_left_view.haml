@@ -1,0 +1,23 @@
+- push( hoo_elastic_col_left_view )
+
+/ Header
+%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+	= insert( _.header, "No header" )
+
+/ Content
+%div{ :style =>"width:800px; margin:auto" }
+	%div.floatLeft_relative{ :style =>"#{_.debugCol2}; width:100%; overflow:hidden; clear:both;" }
+		%div.floatLeft_relative{ :style=>"#{_.debugCol3}; left:#{_.sideBarWidth}px; width:200%;" }
+			%div.floatRight_relative{ :style=>"right:#{_.sideBarWidth}px; width:50%;" }
+
+				/ Main Content
+				%div{ :style =>"position:relative; margin-left:#{_.sideBarWidth}px; right:100%; overflow:hidden; max-width:800px; #{_.debugBorder}" }
+					= insert( _.mainColumn, "No mainColumn" )
+
+			/ Sidebar
+			%div.floatLeft_relative{ :style=>"right:#{_.sideBarWidth}px; width:#{_.sideBarWidth}px; #{_.debugBorder}" }
+				= insert( _.sidebar, "No sidebar" )
+
+/ Footer
+%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+	= insert( _.footer, "No footer" )

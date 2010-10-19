@@ -1,5 +1,5 @@
 module GUI
-	class HooLoremIpsum < HooView
+	class HooLoremIpsumView < HooView
 
 		def initialize
 			super();

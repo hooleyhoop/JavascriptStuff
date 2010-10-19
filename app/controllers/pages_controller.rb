@@ -17,13 +17,17 @@ class PagesController < ApplicationController
 
 	end
 
+	def index
+		render "control_center"
+	end
+	
 	def widgets
 		pagePresenter = Presenters::WidgetsPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
 
 	def sample_page
-		pagePresenter = Presenters::SamplePagePresenter.new(self);
+		pagePresenter = Presenters::SampleElasticPagePresenter.new(self);
 		pagePresenter.drawPage();		
 	end
 	

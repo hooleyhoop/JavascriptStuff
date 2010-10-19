@@ -1,4 +1,6 @@
-%div{:style=>"width:#{hoo_red_view.width}px; height:#{hoo_red_view.height}px; background-color:#ff0000;"}
-	=  render hoo_red_view.views
+- push( hoo_red_view )
+
+%div{ :style=>"width:#{@_.width}px; height:#{@_.height}px; background-color:#ff0000;" }
+	=  insert( _.views )
 	Steven Hooley
 	%h1 hey now now now

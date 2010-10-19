@@ -1,5 +1,7 @@
 JavascriptStuff::Application.routes.draw do
 
+  root :to => "pages#index"
+
   get "pages/control_center"
   get "pages/javascript_unit_tests"
   get "pages/widgets"
@@ -8,6 +10,7 @@ JavascriptStuff::Application.routes.draw do
 
   #ajax test - not sure if this is right?
   get "pages/_ajaxHTML"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
