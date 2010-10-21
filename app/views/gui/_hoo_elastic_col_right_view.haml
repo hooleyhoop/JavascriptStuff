@@ -1,12 +1,20 @@
 - push( hoo_elastic_col_right_view )
 
-/ Header
-%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
-	= insert( _.header, "No header" )
+- if _.fullWidthHeader!=nil
+	/ Header
+	%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+		= insert( _.fullWidthHeader, "No header" )
+
+/ Check out http://css-tricks.com/fluid-width-equal-height-columns/
 
 / Content
-%div{ :style =>"width:800px; margin:auto" }
+%div{ :style =>"max-width:800px; margin:auto" }
 	%div.floatRight_relative{ :style =>"#{_.debugCol2}; width:100%; overflow:hidden; clear:both;" }
+
+		- if _.elasticHeader!=nil
+			%div{ :style =>"overflow:hidden; width:100%;" }
+				= insert( _.elasticHeader, "No header" )
+
 		%div.floatLeft_relative{ :style=>"#{_.debugCol3}; margin-left:-#{_.sideBarWidth}px; right:100%; width:200%;" }
 			%div.floatLeft_relative{ :style=>"left:50%; width:50%;" }
 
@@ -18,6 +26,7 @@
 			%div.floatRight_relative{ :style=>"left:#{_.sideBarWidth}px; width:#{_.sideBarWidth}px; #{_.debugBorder}" }
 				= insert( _.sidebar, "No sidebar" )
 
-/ Footer
-%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
-	= insert( _.footer, "No footer" )
+- if _.footer!=nil
+	/ Footer
+	%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+		= insert( _.footer, "No footer" )

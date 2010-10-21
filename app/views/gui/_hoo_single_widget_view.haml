@@ -1,3 +1,28 @@
+%div#menuBar{ :style=>"background-color:#666; width:100%;height:33px;"}
+	%ul.dropdown
+		%li.smallType
+			Widgets
+			%ul.sub_menu.smallType
+				%li lorem ipsum view
+				%li lorem ipsum title view
+				%li info view one
+
+/ The main content div
+%div#resizable{ :style=>"background-color:#eee; width:400px;height:400px; position:absolute; left:50px; top:150px;"}
+	%p{ :style=>"background-color:#ff0000; margin:10px;"} !!! Render The Widget Here !!!
+
+/ The left handle div
+%div#left_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:200px; left:60px;"}
+
+/ The right handle div
+%div#right_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:200px; left:600px;"}
+
+/ The top handle div
+%div#top_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:125px; left:200px;"}
+
+/ The Bottom handle div
+%div#bottom_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:450px; left:200px;"}
+
 :javascript
 
 	// Helpers
@@ -230,29 +255,3 @@
 		$("ul.dropdown li ul li:has(ul)").find("a:first").append(" &raquo; ");
 
 	});
-
-%div#menuBar{ :style=>"background-color:#666; width:100%;height:33px;"}
-	%ul.dropdown
-		%li
-			Widgets
-			%ul.sub_menu
-				%li red
-				%li green
-				%li blue
-
-/ The main content div
-%div#resizable{ :style=>"background-color:#eee; width:400px;height:400px; position:absolute; left:50px; top:50px;"}
-	%p{ :style=>"background-color:#ff0000; margin:10px;"} !!! Render The Widget Here !!!
-
-/ The left handle div
-%div#left_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:200px; left:60px;"}
-
-/ The right handle div
-%div#right_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:200px; left:600px;"}
-
-/ The top handle div
-%div#top_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:55px; left:200px;"}
-
-/ The Bottom handle div
-%div#bottom_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:450px; left:200px;"}
-

@@ -15,12 +15,7 @@ module Presenters
 	    	#@window.addSubView( @bluView );
 		end
 
-		def drawPage()
-			@window.drawNow( @controller );
-		end
 
-			#def render(options = {}, locals = {}, &block)
-			#	Rails.logger.info @controller==nil
-			#end
+
 	end
 end

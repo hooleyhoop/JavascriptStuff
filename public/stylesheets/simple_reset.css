@@ -2,7 +2,7 @@
 html, body, ul, ol, li, form, fieldset, legend {
   margin: 0;
   padding: 0;
-  font-size: 13px;
+  font-size: 6px;
   line-height: 15px;
   font-family: "helvetica neue", arial, sans-serif; }
 
@@ -34,8 +34,8 @@ caption, th, td {
   font-weight: normal; }
 
 input, textarea, select {
-  font-size: 110%;
-  line-height: 1.1; }
+  font-size: 0%;
+  line-height: 15px; }
 
 abbr, acronym {
   border-bottom: .1em dotted;
@@ -44,12 +44,15 @@ abbr, acronym {
 body {
   width: 100%; }
 
-/*
-h1 {margin: 32px 0 11px; font-size: 3em;}
-h2 {padding: 0 0 8px; font-size: 2.5em;}
-h1, h2 {letter-spacing: -0.0125em; font-weight: bold;}
-p {margin: 0 0 .8em; line-height: 3.35em;}
-*/
+h1 {
+  margin: 0; }
+
+h2 {
+  padding: 0; }
+
+img {
+  display: block; }
+
 a {
   font-weight: bold;
   color: #1389e5;
@@ -84,8 +87,6 @@ input:focus, textarea:focus {
   color: #211922 !important; }
 
 textarea, input[type="text"], input[type="password"] {
-  padding: 5px 8px;
-  line-height: 1em;
   background-color: #fff;
   border: 1px solid;
   border-color: #ccc #bbb #aaa;
@@ -242,5 +243,28 @@ textarea, input[type="text"], input[type="password"] {
   margin: 15px 0px;
   overflow: hidden; }
 
+/* Dubugging only*/
 .showgrid {
   background: url(images/grid.png); }
+
+/* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
+.smallType {
+  font-size: 11px;
+  padding-top: 4px;
+  padding-bottom: 11px;
+  padding-left: 15px; }
+
+.mediumType {
+  font-size: 13px;
+  padding-top: 2px;
+  padding-bottom: 13px;
+  padding-left: 15px; }
+
+.bigType {
+  font-family: Georgia;
+  font-size: 25px;
+  padding-top: 5px;
+  padding-bottom: 25px;
+  word-spacing: -0.1em;
+  line-height: 30px;
+  padding-left: 15px; }

@@ -1,6 +1,7 @@
 JavascriptStuff::Application.routes.draw do
 
   root :to => "pages#index"
+  match 'pages' => 'pages#control_center'
 
   get "pages/control_center"
   get "pages/javascript_unit_tests"

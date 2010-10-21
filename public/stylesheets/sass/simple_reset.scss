@@ -8,7 +8,7 @@
 html, body, ul, ol, li, form, fieldset, legend {
 	margin: 0;
 	padding: 0;
-	font-size: 13px;
+	font-size: 6px;
 	line-height: 15px;
 	font-family: "helvetica neue", arial, sans-serif;
 }
@@ -33,8 +33,8 @@ caption, th, td
 
 input, textarea, select
 {
-	font-size: 110%;
-	line-height: 1.1;
+	font-size: 0%;
+	line-height: 15px;
 }
 
 abbr, acronym
@@ -44,12 +44,13 @@ abbr, acronym
 }
 
 body {width:100%;}
-/*
-h1 {margin: 32px 0 11px; font-size: 3em;}
-h2 {padding: 0 0 8px; font-size: 2.5em;}
-h1, h2 {letter-spacing: -0.0125em; font-weight: bold;}
-p {margin: 0 0 .8em; line-height: 3.35em;}
-*/
+h1 {margin:0;}
+h2 {padding:0;}
+h1, h2 {}
+p {}
+img {
+	display:block;
+}
 a {font-weight: bold; color: #1389e5; text-decoration: underline; outline: none;}
 a:hover {color: #fff; text-decoration: none; background-color: #1389e5;}
 a:active {color: #fff; background-color: #211922;}
@@ -58,7 +59,7 @@ a:hover img {opacity: .92; filter: alpha(opacity=92);}
 #noHover a:active {color: #fff; background-color: none;}
 input, textarea {color: #777;}
 input:focus, textarea:focus {color: #211922 !important;}
-textarea, input[type="text"], input[type="password"] {padding: 5px 8px; line-height: 1em; background-color: #fff; border: 1px solid; border-color: #ccc #bbb #aaa; -moz-box-shadow: 0 1px #e7e7e7; -webkit-box-shadow: 0 1px #e7e7e7;}
+textarea, input[type="text"], input[type="password"] {background-color: #fff; border: 1px solid; border-color: #ccc #bbb #aaa; -moz-box-shadow: 0 1px #e7e7e7; -webkit-box-shadow: 0 1px #e7e7e7;}
 
 /* REUSABLE STYLES
 ---------------------------------------------- */
@@ -102,9 +103,12 @@ textarea, input[type="text"], input[type="password"] {padding: 5px 8px; line-hei
 .rule  { border-bottom-color:#DDDDDD; border-bottom-style:solid; border-bottom-width:1px; clear:both; height:0;
 margin:15px 0px; overflow: hidden;}
 
+/* Dubugging only*/
 .showgrid {background:url(images/grid.png);}
 
-
-
+/* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
+.smallType {font-size:11px; padding-top:4px; padding-bottom:11px; padding-left:15px; }
+.mediumType {font-size:13px; padding-top:2px; padding-bottom:13px; padding-left:15px; }
+.bigType {font-family:Georgia; font-size:25px; padding-top:5px; padding-bottom:25px; word-spacing:-0.1em; line-height:30px; padding-left:15px; }
 
 

@@ -11,5 +11,5 @@
 		- jsFiles.each do |file|
 			%script{ :type=>"text/javascript", :src=>"#{file}"}
 
-	%body
+	%body.showgrid
 		= yield

@@ -1,8 +1,7 @@
 module GUI
-	class HooElasticColLeftView < HooView
+	class HooFixedSingleColView < HooView
 
-		attr_accessor :fullWidthHeader, :elasticHeader, :footer, :mainColumn, :sidebar;
-	
+		attr_accessor :header, :footer, :mainColumn, :sidebar;
 		attr_accessor :sideBarWidth;
 		attr_accessor :debugBorder, :debugCol1, :debugCol2, :debugCol3, :debugCol4;
 		

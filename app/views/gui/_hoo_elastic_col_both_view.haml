@@ -1,27 +1,35 @@
 - push( hoo_elastic_col_both_view )
 
-/ Header
-%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
-	= insert( _.header, "No header" )
+- if _.fullWidthHeader!=nil
+	/ Header
+	%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+		= insert( _.fullWidthHeader, "No header" )
 
 / Content
-%div.floatLeft_relative{ :style =>"#{_.debugCol2}; width:100%; overflow:hidden; clear:both;" }
-	%div.floatLeft_relative{ :style=>"#{_.debugCol3}; width:200%; right:100%; margin-left:-#{_.rightColWidth}px;" }
-		%div.floatLeft_relative{ :style=>"width:100%; margin-left:-50%; left:#{_.leftColWidth+_.rightColWidth}px;" }
+%div{ :style=>"max-width:1000px; margin:auto;" }
+	%div.floatLeft_relative{ :style =>"#{_.debugCol2}; width:100%; overflow:hidden; clear:both; min-width:600px; max-width:1000px;" }
 
-			/ Main Content
-			%div.floatLeft_relative{ :style =>"width:50%; right:#{_.leftColWidth}px; #{_.debugBorder}" }
-				%div{ :style =>"position:relative; margin:0 #{_.rightColWidth}px 0 #{_.leftColWidth}px; left:200%; overflow:hidden; background-color:#666" }
-					= insert( _.mainColumn, "No mainColumn" )
+		- if _.elasticHeader!=nil
+			%div{ :style =>"overflow:hidden; width:100%; background-color:#ff0000" }
+				= insert( _.elasticHeader, "No header" )
 
-			/ Left Sidebar
-			%div.floatRight_relative{ :style=>"width:#{_.leftColWidth}px; #{_.debugBorder}" }
-				= insert( _.leftSidebar, "No left sidebar" )
-		
-			/ Right Sidebar
-			%div.floatRight_relative{ :style=>"left:50%; width:#{_.rightColWidth}px; #{_.debugBorder}" }
-				= insert( _.rightSidebar, "No right sidebar" )
-				
-/ Footer
-%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
-	= insert( _.footer, "No footer" )
+		%div.floatLeft_relative{ :style=>"#{_.debugCol3}; width:200%; right:100%; margin-left:-#{_.rightColWidth}px;" }
+			%div.floatLeft_relative{ :style=>"width:100%; margin-left:-50%; left:#{_.leftColWidth+_.rightColWidth}px;" }
+
+				/ Main Content
+				%div.floatLeft_relative{ :style =>"width:50%; right:#{_.leftColWidth}px; #{_.debugBorder};" }
+					%div{ :style =>"position:relative; margin:0 #{_.rightColWidth}px 0 #{_.leftColWidth}px; left:200%; overflow:hidden;" }
+						= insert( _.mainColumn, "No mainColumn" )
+
+				/ Left Sidebar
+				%div.floatRight_relative{ :style=>"width:#{_.leftColWidth}px; #{_.debugBorder}" }
+					= insert( _.leftSidebar, "No left sidebar" )
+
+				/ Right Sidebar
+				%div.floatRight_relative{ :style=>"left:50%; width:#{_.rightColWidth}px; #{_.debugBorder}" }
+					= insert( _.rightSidebar, "No right sidebar" )
+
+- if _.footer!=nil
+	/ Footer
+	%div{ :style =>"clear:both; float:left; width:100%; #{_.debugCol1}#{_.debugBorder}" }
+		= insert( _.footer, "No footer" )

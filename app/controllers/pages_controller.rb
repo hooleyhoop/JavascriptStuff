@@ -28,13 +28,14 @@ class PagesController < ApplicationController
 
 	def sample_page
 		optionalId = params[:id] ? Integer(params[:id]) : 0;
-		pagePresenter = Presenters::SampleElasticPagePresenter.new( self, optionalId );
+		#pagePresenter = Presenters::SampleElasticPagePresenter.new( self, optionalId );
+		pagePresenter = Presenters::SampleFixedPagePresenter.new( self, optionalId );
 		pagePresenter.drawPage();		
 	end
 	
 	def single_widget
-	  # just render single_widget view
-  	  logger.info("just render single view");
+		pagePresenter = Presenters::SingleWidgetPagePresenter.new( self );
+		pagePresenter.drawPage();		
 	end
 
 	# ajax test. This can't be right? No?

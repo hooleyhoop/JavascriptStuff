@@ -1,0 +1,18 @@
+- push( hoo_fixed_single_col_view )
+
+%div{ :style =>"width:970px; margin:auto;" }
+
+	- if _.header!=nil
+		/ Header
+		%div{ :style =>"width:970px; #{_.debugCol1}#{_.debugBorder}" }
+			= insert( _.header, "No header" )
+
+	- if _.mainColumn!=nil
+		/ Main Column
+		%div{ :style =>"width:970px; overflow:hidden; #{_.debugBorder}" }
+			= insert( _.mainColumn, "No mainColumn" )
+
+	- if _.footer!=nil
+		/ Footer
+		%div{ :style =>"width:970px; #{_.debugCol1}#{_.debugBorder}" }
+			= insert( _.footer, "No footer" )
