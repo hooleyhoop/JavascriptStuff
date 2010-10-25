@@ -8,7 +8,7 @@ JavascriptStuff::Application.routes.draw do
   get "pages/widgets"
   get "pages/single_widget"
   get "pages/sample_page"
-  
+
   # woo! a more complicated route. Lets try sending a variable
   match 'pages/sample_page/:id' => 'pages#sample_page'
 

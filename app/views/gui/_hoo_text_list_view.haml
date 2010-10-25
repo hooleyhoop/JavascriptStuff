@@ -1,0 +1,40 @@
+- push( hoo_text_list_view )
+
+%ul#widgetSelect
+	- _.menuItems.each do |item|
+		%li.mediumType= link_to( item['name'], item['url'] )
+.clear
+
+#target.bigType
+	shit - how do i get it in the other widget?
+
+:javascript
+
+	// Lets kick it all off
+	$(document).ready(function(){
+
+		var $list = $( "#widgetSelect > li" );
+		$.each( $list, function(index, value) {
+			$each = $(value);
+			// alert($each.text());
+
+			// select a in $value - obvious!
+			$anchor = $('a', $each);
+			//alert( $anchor.attr( "href" ) );
+			$anchor.attr( "href", "#" );
+			$anchor.mousedown( function( ) {
+				$.ajax({
+					url: '/pages/_ajaxHTML',
+					data:{"urlpath":"hello steven"},
+					success: function(data,textStatus,xmlhttprequestobject) {
+						$(data).appendTo($('#target'));
+					},
+					dataType:"html"
+				});
+			});
+		});
+
+	});
+
+
+

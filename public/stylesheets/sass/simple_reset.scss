@@ -2,15 +2,14 @@
 
 // http://www.alistapart.com/articles/settingtypeontheweb
 
-
-
 /* simple reset */
 html, body, ul, ol, li, form, fieldset, legend {
 	margin: 0;
 	padding: 0;
 	font-size: 6px;
 	line-height: 15px;
-	font-family: "helvetica neue", arial, sans-serif;
+	// Helvetica-Neue does very, very, very strange things
+	font-family: helvetica, arial, sans-serif;
 }
 h1, h2, h3, h4, h5, h6, p { margin-top: 0; }
 fieldset,img { border: 0; }
@@ -18,27 +17,23 @@ legend { color: #000; }
 li { list-style: none; }
 sup { vertical-align: text-top; }
 sub { vertical-align: text-bottom; }
-table
-{
+table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
 
-caption, th, td
-{
+caption, th, td {
 	text-align: left;
 	vertical-align: top;
 	font-weight: normal;
 }
 
-input, textarea, select
-{
+input, textarea, select {
 	font-size: 0%;
 	line-height: 15px;
 }
 
-abbr, acronym
-{
+abbr, acronym {
 	border-bottom: .1em dotted;
 	cursor: help;
 }
@@ -48,10 +43,8 @@ h1 {margin:0;}
 h2 {padding:0;}
 h1, h2 {}
 p {}
-img {
-	display:block;
-}
-a {font-weight: bold; color: #1389e5; text-decoration: underline; outline: none;}
+
+a { color: #1389e5; text-decoration: none; outline: none; font-weight: bold;}
 a:hover {color: #fff; text-decoration: none; background-color: #1389e5;}
 a:active {color: #fff; background-color: #211922;}
 a:hover img {opacity: .92; filter: alpha(opacity=92);}
@@ -64,6 +57,7 @@ textarea, input[type="text"], input[type="password"] {background-color: #fff; bo
 /* REUSABLE STYLES
 ---------------------------------------------- */
 .hidden {display: none !important;}
+.hidden2 { position:absolute; top:0; left:-9999px; width:1px; height:1px; overflow:hidden; }
 .highlighted {color: #211922; background-color: #ff0 !important;}
 .error {font-size: 1.3em; color: #f00;}
 .clear {clear: both !important;}
@@ -111,4 +105,11 @@ margin:15px 0px; overflow: hidden;}
 .mediumType {font-size:13px; padding-top:2px; padding-bottom:13px; padding-left:15px; }
 .bigType {font-family:Georgia; font-size:25px; padding-top:5px; padding-bottom:25px; word-spacing:-0.1em; line-height:30px; padding-left:15px; }
 
+ul {
+  list-style-position: inside;
+  list-style-type: none;
+ }
 
+/* Some elements add extra space whatever you do */
+//img { display:block; }
+//li { display: block; }

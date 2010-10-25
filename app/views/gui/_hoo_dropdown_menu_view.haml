@@ -1,0 +1,55 @@
+- push( hoo_dropdown_menu_view )
+
+
+%a#hierarchy.fg-button.fg-button-icon-right.ui-widget.ui-state-default.ui-corner-all.mediumType{ :href=>"#news-items", :style=>"background-color:#999; width:100%; height:15px;" }
+	%span.ui-icon.ui-icon-triangle-1-s
+	Select a widget
+#widget-items.hidden2
+	%ul
+		- _.menuItems.each do |item|
+			%li.mediumType= link_to( item['name'], item['url'] )
+	.clear
+
+:javascript
+
+	// Lets kick it all off
+	$(document).ready(function(){
+
+		var $list = $( "#widget-items > ul > li" );
+		$.each( $list, function(index, value) {
+			$each = $(value);
+			// alert($each.text());
+
+			// select a in $value - obvious!
+			$anchor = $('a', $each);
+			//alert( $anchor.attr( "href" ) );
+			$anchor.attr( "href", "#" );
+			$anchor.mousedown( function() {
+				$.ajax({
+					url: '/pages/_ajaxHTML',
+					data:{"urlpath":"hello steven"},
+					success: function(data,textStatus,xmlhttprequestobject) {
+							//$(data).appendTo($('#resizable'));
+							alert(data);
+						},
+					dataType:"html"
+				});
+			});
+		});
+
+		$('.fg-button').hover(
+			function(){ $(this).removeClass('ui-state-default').addClass('ui-state-focus'); },
+			function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
+		);
+
+		$('#hierarchy').menu({
+			content: $('#hierarchy').next().html(),
+		});
+
+
+
+
+	});
+
+
+
