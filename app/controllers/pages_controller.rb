@@ -38,6 +38,17 @@ class PagesController < ApplicationController
 		pagePresenter.drawPage();
 	end
 
+  # for ajax
+  # pass a GUI:partial class name, it will be instantiated and rendered and returned as a string
+  def _singlePartialViaAjaxFromParam
+    
+    classNameParam = params['urlpath'];
+    classParam = classNameParam.constantize;
+		partialAsString = render_to_string :partial => classParam.partial_path();
+		render :text => partialAsString;
+  end
+  
+  
 	# ajax test. This can't be right? No?
 	def _ajaxHTML
 		#respond_to do |format|
@@ -47,15 +58,18 @@ class PagesController < ApplicationController
 		#render :js => " "
 		#render :action =>"test_view", :layout=>false;
 
-		#partialAsString = render_to_string :partial =>"test_partial"
+    classNameParam = params['urlpath'];
+    classParam = classNameParam.constantize;
+    
+		partialAsString = render_to_string :partial => classParam.partial_path()
 		#render :text => partialAsString
 
 		#objectToRender = HooBlueView.new();
-
-		haml_string = "%p Haml-tastic!"
-		engine = Haml::Engine.new(haml_string)
-		hamlResult = engine.render
-		render :text => hamlResult
+    
+		#haml_string = "%p Haml-tastic!"
+		#engine = Haml::Engine.new(haml_string)
+		#hamlResult = engine.render
+		render :text => partialAsString
 	end
 
 end

@@ -218,12 +218,13 @@
 		};
 	})();
 
-	function testLoadSomeHTMLByAjax() {
+	function loadSomeHTMLByAjax2( arg ) {
+
 		$.ajax({
-			url: '/pages/_ajaxHTML',
-			data:{"urlpath":"hello steven"},
+			url: '/pages/_singlePartialViaAjaxFromParam',
+			data:{"urlpath": arg},
 			success: function(data,textStatus,xmlhttprequestobject) {
-					$(data).appendTo($('#resizable'));
+					$(data).appendTo($('#resizable').empty());
 				},
 			dataType:"html"
 		});
@@ -232,7 +233,10 @@
 	// Lets kick it all off
 	$(document).ready(function(){
 
-		// testLoadSomeHTMLByAjax();
-
+		// build the javascript model
 		_page = new HooPage();
+
+		// load default content by ajax
+		loadSomeHTMLByAjax2( '#{_.dataSrc.defaultItem}' );
+
 	});

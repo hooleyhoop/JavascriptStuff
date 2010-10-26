@@ -14,7 +14,7 @@ JavascriptStuff::Application.routes.draw do
 
   #ajax test - not sure if this is right?
   get "pages/_ajaxHTML"
-
+  get "pages/_singlePartialViaAjaxFromParam"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
