@@ -11,3 +11,11 @@
 	%body.showgrid
 		/ layout yields to the view
 		= yield
+
+
+		:javascript
+
+			// Lets kick it all off
+			$(document).ready(function(){
+				#{runStartupScripts}
+			});

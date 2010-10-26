@@ -1,9 +1,11 @@
 module GUI
 	class HooView
 
+    attr_accessor :parentView
+    attr_accessor :views
+		
 		attr_accessor :width
 		attr_accessor :height
-		attr_accessor :views
 
 		def initialize
 			@views = Array.new;
@@ -11,6 +13,11 @@ module GUI
 
 		def addSubView( aView )
 			@views << aView;
+			if( aView.parentView!=nil )
+			  raise "View allready has parentView"
+			end
+			aView.parentView = self;
+			aView.wasAddedToParentView();
 		end
 
 		#woah! model.model_name.partial_path
@@ -23,9 +30,23 @@ module GUI
 			return self.name.underscore;
 		end
 					
-    def debugFixture
-
+    def setupDebugFixture
 		end
-			
+		
+		def id
+		  self.object_id
+		end
+		
+		def window
+		  window = self
+		  while window.parentView !=nil
+		    window = window.parentView
+	    end
+	    return window;
+	  end
+	  
+	  def wasAddedToParentView
+    end
+    
 	end
 end

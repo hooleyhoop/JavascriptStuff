@@ -3,7 +3,7 @@ module Presenters
 
 		def initialize( controller )
 			super( controller );
-			@window.addSubView( GUI::HooSingleWidgetView.new() );
+			@window.contentView.addSubView( GUI::HooSingleWidgetView.new() );
 		end
 
 		

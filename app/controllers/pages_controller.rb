@@ -1,8 +1,6 @@
 
 class PagesController < ApplicationController
 
-	def control_center
-	end
 
 	# try to get the content of javascript/tests dir and pass it to template so they can be linked
 	def javascript_unit_tests()
@@ -18,26 +16,41 @@ class PagesController < ApplicationController
 	end
 
 	def index
-		render "control_center"
+		self.control_center()
 	end
 
+	def control_center
+		pagePresenter = Presenters::ControlCenterPagePresenter.new( self );
+		pagePresenter.drawPage();  
+  end
+  
 	def widgets
 		pagePresenter = Presenters::WidgetsPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
 
-	def sample_page
+	def sample_fixed_page
 		optionalId = params[:id] ? Integer(params[:id]) : 0;
-		#pagePresenter = Presenters::SampleElasticPagePresenter.new( self, optionalId );
 		pagePresenter = Presenters::SampleFixedPagePresenter.new( self, optionalId );
 		pagePresenter.drawPage();
 	end
 
+	def sample_elastic_page
+		optionalId = params[:id] ? Integer(params[:id]) : 0;
+		pagePresenter = Presenters::SampleElasticPagePresenter.new( self, optionalId );
+		pagePresenter.drawPage();
+	end
+	
 	def single_widget
 		pagePresenter = Presenters::SingleWidgetPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
 
+	def column_view
+		pagePresenter = Presenters::ColumnViewPagePresenter.new( self );
+		pagePresenter.drawPage();
+	end
+	
   # for ajax
   # pass a GUI:partial class name, it will be instantiated and rendered and returned as a string
   def _singlePartialViaAjaxFromParam
@@ -45,7 +58,7 @@ class PagesController < ApplicationController
     classNameParam = params['urlpath'];
     classParam = classNameParam.constantize;
     anInstance = classParam.new();
-    anInstance.debugFixture();
+    anInstance.setupDebugFixture();
     
     localVarName = classNameParam.split('::').last;
     propName = localVarName.underscore.to_sym

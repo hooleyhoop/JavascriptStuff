@@ -1,14 +1,17 @@
 JavascriptStuff::Application.routes.draw do
-
-  root :to => "pages#index"
+  
   match 'pages' => 'pages#control_center'
-
-  get "pages/control_center"
+  
+  root :to => "pages#index"
+  #get "pages/control_center"
+  
   get "pages/javascript_unit_tests"
   get "pages/widgets"
   get "pages/single_widget"
-  get "pages/sample_page"
-
+  get "pages/sample_fixed_page"
+  get "pages/sample_elastic_page"
+  get "pages/column_view"
+  
   # woo! a more complicated route. Lets try sending a variable
   match 'pages/sample_page/:id' => 'pages#sample_page'
 

@@ -62,4 +62,13 @@ module PagesHelper
 		return returnOb;
  	end
 	
+	# not part of the view hack
+	def runStartupScripts
+	  result = ""
+	  @window.startupScripts.each do |script|
+	    result = result + script[:function]+"(\'"+script[:arg1]+"\');"
+    end
+	  return result;
+	end
+	
 end

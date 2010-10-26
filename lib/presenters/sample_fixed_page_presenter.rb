@@ -5,37 +5,9 @@ module Presenters
 		
 			super( controller )
 			
-			@colView = nil;
 			
-			# Sidebar on the right
-			if configuration == 0
-				@colView = GUI::HooFixedSingleColView.new( {:sideBarPxWidth=>200} );
+			@colView = GUI::HooFixedSingleColView.new( {:sideBarPxWidth=>200} );
 				
-			# Sidebar on the left
-			elsif configuration == 1
-				#@colView = GUI::HooElasticColLeftView.new( {:sideBarPxWidth=>200} );
-											
-				#construct the sidebar
-				#sideBarSpacer = GUI::HooSpacerView.new( 0, 0, 0, 10 );
-				#sideBarSpacer.addSubView( GUI::HooLoremIpsumView.new() );
-				#@colView.sidebar = sideBarSpacer;
-			
-			# Sidebar on both sides
-			else
-				#@colView = GUI::HooElasticColBothView.new( {:leftSideBarPxWidth=>200, :rightSideBarPxWidth=>200} );
-				
-				#construct the left sidebar
-				#leftSideBarSpacer = GUI::HooSpacerView.new( 0, 0, 0, 10 );
-				#leftSideBarSpacer.addSubView( GUI::HooLoremIpsumView.new() );
-				#@colView.leftSidebar = leftSideBarSpacer;
-				
-				#construct the right sidebar
-				#rightSideBarSpacer = GUI::HooSpacerView.new( 0, 10, 0, 0 );
-				#rightSideBarSpacer.addSubView( GUI::HooLoremIpsumView.new() );
-				#@colView.rightSidebar = rightSideBarSpacer;
-			
-			end
-						
 			#
 			# All text areas top padding should be line-height - textHeight
 			#
@@ -67,8 +39,19 @@ module Presenters
 			mainColSpacer.addSubView( subSpacer1 );
 			mainColSpacer.addSubView( subSpacer2 );
 			mainColSpacer.addSubView( subSpacer3 );
-			mainColSpacer.addSubView( GUI::HooInfoOne.new() );
-			mainColSpacer.addSubView( GUI::HooInfoOne.new() );
+			
+			info1 = GUI::HooInfoOneView.new()
+			info1.setupDebugFixture
+			mainColSpacer.addSubView( info1 );
+			
+			pullQuote = GUI::HooPullQuoteOneView.new();
+			pullQuote.text = "Hello!"
+			pullQuote.setupDebugFixture
+			mainColSpacer.addSubView( pullQuote );
+			
+			info2 = GUI::HooInfoOneView.new()
+			info2.setupDebugFixture			
+			mainColSpacer.addSubView( info2 );
 		
 			@colView.mainColumn = mainColSpacer;
 			
@@ -79,7 +62,7 @@ module Presenters
 
 			#GUI::HooRoundedPanelPanel.new()
 
-			@window.addSubView( @colView );
+			@window.contentView.addSubView( @colView );
 		end
 
 

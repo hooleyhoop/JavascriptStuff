@@ -62,7 +62,7 @@ module Presenters
 
 			#GUI::HooRoundedPanelPanel.new()
 
-			@window.addSubView( @colView );
+			@window.contentView.addSubView( @colView );
 		end
 
 	end

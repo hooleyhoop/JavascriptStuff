@@ -3,8 +3,8 @@ module GUI
 
 		def initialize
 			super();
-			@width = 200;
-			@height = 200;
+			@width = 80;
+			@height = 80;
 		end
 
 	end
