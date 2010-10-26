@@ -9,7 +9,7 @@ module GUI
 			@menuItems = [
 				{ 'name'=>"loremIpsum", 'url'=>GUI::HooLoremIpsumView.name},
 				{ 'name'=>"loremIpsumTitle", 'url'=>GUI::HooLoremIpsumTitleView.name},
-				{ 'name'=>"HooInfoOne", 'url'=>GUI::HooInfoOne.name},
+				{ 'name'=>"HooInfoOne", 'url'=>GUI::HooInfoOneView.name},
 			];
 
 			@textList = GUI::HooTextListView.new();

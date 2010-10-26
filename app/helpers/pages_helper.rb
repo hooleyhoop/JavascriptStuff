@@ -12,6 +12,10 @@ module PagesHelper
 	# add object to the viewstack
 	def push( obj )
 		
+		if( obj==nil ) 
+		  raise "cant push nil onto the view stack"
+    end
+    
 		viewStack = self.instance_variable_get("@hooViews");
 		if(viewStack==nil)
 			viewStack = Array.new();

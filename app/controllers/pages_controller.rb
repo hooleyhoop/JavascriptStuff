@@ -44,10 +44,17 @@ class PagesController < ApplicationController
     
     classNameParam = params['urlpath'];
     classParam = classNameParam.constantize;
-		partialAsString = render_to_string :partial => classParam.partial_path();
-		render :text => partialAsString;
-  end
+    anInstance = classParam.new();
+    anInstance.debugFixture();
+    
+    localVarName = classNameParam.split('::').last;
+    propName = localVarName.underscore.to_sym
   
+    partialAsString = render_to_string( :partial=>anInstance.class.partial_path(), :locals=>{propName=>anInstance} );
+	  return render :text => partialAsString;
+
+  end
+
   
 	# ajax test. This can't be right? No?
 	def _ajaxHTML

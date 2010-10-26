@@ -22,5 +22,10 @@ module GUI
 			#NB if we didnt want the GUI/ prefix we could do  name.split('::').last || ''
 			return self.name.underscore;
 		end
+					
+    def debugFixture
+
+		end
+			
 	end
 end
