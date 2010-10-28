@@ -11,7 +11,8 @@ module Presenters
 			    "GUI::HooInfoOneView",
 			    "GUI::HooLoremIpsumView",
 			    "GUI::HooLoremIpsumTitleView",
-			    "GUI::HooPullQuoteOneView"
+			    "GUI::HooPullQuoteOneView",
+			    "GUI::HooListOneView",
 		    ];
 		    
 			  # lets lay out all widgets

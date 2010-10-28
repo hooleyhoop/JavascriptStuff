@@ -9,6 +9,7 @@ module PagesHelper
 		#@locals[1];
 	end
 
+
 	# add object to the viewstack
 	def push( obj )
 		
@@ -24,6 +25,7 @@ module PagesHelper
 		viewStack << obj;
 	end
 
+
 	# remove object from the viewstack
 	def pop()
 
@@ -34,11 +36,13 @@ module PagesHelper
 		viewStack.pop();
 	end
 	
+	
 	# Shortcut for top object on the viewstack
 	def _
 		viewStack = self.instance_variable_get("@hooViews");
 		return viewStack.last;
 	end
+	
 	
 	# Conditionally render the object
 	# If we do render it, make sure we pop it off the view stack afterwards
@@ -46,14 +50,19 @@ module PagesHelper
 		
 		returnOb = nil;
 		if(obj!=nil)
-			collectionSize = 1;
-			if(obj.respond_to?('size'))
-				collectionSize = obj.size();
-			end
+			#collectionSize = 1;
+			#if(obj.respond_to?('size'))
+			#	collectionSize = obj.size();
+			#	puts "SIZE IS " + (collectionSize.to_s) +" "+(obj.class.to_s)+" "+(obj.respond_to?(:to_ary).to_s)
+			#end
+		
 			returnOb = subRender(obj)
-			
+			#obj.each do |view|
+      #	returnOb = returnOb + subRender(view)
+    	#end
+    	
 			# repeat for each object
-			collectionSize.times{ pop() };
+			#collectionSize.times{ pop() };
 			
 		else
 			 returnOb = "ERROR: "+placeHolderString
@@ -90,13 +99,30 @@ module PagesHelper
 	end
 	
 	
-	def subRender( view )
-	
+	#
+	def _renderSingleView( view )
 	  output = view.stringOutput
-	  if(output==nil)
-	    return render view;
+    if(output==nil)
+	    output = render view;
+	    pop()
     end
-    return output;
+    output
+  end
+  
+  # will render a view or array of views
+	def subRender( views )
+	
+	  segments = ""
+	  	  
+	  if( views.is_a? Array ) # views.method_defined? :each
+      views.each do |view|
+        segments << _renderSingleView(view);
+	    end
+    else
+      segments = _renderSingleView( views );
+	  end
+	      
+    return segments.html_safe;
   end
   
 end

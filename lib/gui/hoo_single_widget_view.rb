@@ -11,6 +11,8 @@ module GUI
 				{ 'name'=>"loremIpsumTitle", 'url'=>GUI::HooLoremIpsumTitleView.name},
 				{ 'name'=>"Info One", 'url'=>GUI::HooInfoOneView.name},
 				{ 'name'=>"Pull Quote", 'url'=>GUI::HooPullQuoteOneView.name},
+				{ 'name'=>"List View", 'url'=>GUI::HooListOneView.name}
+				
 			];
 
 			@textList = GUI::HooTextListView.new();

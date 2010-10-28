@@ -12,6 +12,7 @@ module Presenters
 				{ 'name'=>"sample fixed page",    'url'=> controller.pages_sample_fixed_page_path },				
 				{ 'name'=>"sample elastic page",  'url'=> controller.pages_sample_elastic_page_path },
 				{ 'name'=>"grid view",            'url'=> controller.pages_grid_view_path },
+				{ 'name'=>"list view",            'url'=> controller.pages_list_view_path },
 				{ 'name'=>"elephant view",        'url'=> controller.elephants_path }
 				
 			];

@@ -1,0 +1,5 @@
+- push( hoo_list_one_view )
+
+%div{ :style=>"background-color:#aa0055;" }
+	= insert( _.headerView, "" )
+= render :partial=>_.cell.partial, :object=>_.content, :locals=>{ :_ => _.cell }

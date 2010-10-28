@@ -1,5 +1,5 @@
 module GUI
-	class HooView
+	class HooView < Object
 
     attr_accessor :parentView
     attr_accessor :views
