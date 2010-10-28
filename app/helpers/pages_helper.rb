@@ -50,7 +50,7 @@ module PagesHelper
 			if(obj.respond_to?('size'))
 				collectionSize = obj.size();
 			end
-			returnOb = render(obj)
+			returnOb = subRender(obj)
 			
 			# repeat for each object
 			collectionSize.times{ pop() };
