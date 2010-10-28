@@ -11,7 +11,9 @@ module Presenters
 				{ 'name'=>"single widget",        'url'=> controller.pages_single_widget_path },
 				{ 'name'=>"sample fixed page",    'url'=> controller.pages_sample_fixed_page_path },				
 				{ 'name'=>"sample elastic page",  'url'=> controller.pages_sample_elastic_page_path },
-				{ 'name'=>"column view",          'url'=> controller.pages_column_view_path }
+				{ 'name'=>"grid view",            'url'=> controller.pages_grid_view_path },
+				{ 'name'=>"elephant view",        'url'=> controller.elephants_path }
+				
 			];
 
 			@textList = GUI::HooTextListView.new();

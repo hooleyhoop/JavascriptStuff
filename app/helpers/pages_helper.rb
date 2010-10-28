@@ -62,13 +62,41 @@ module PagesHelper
 		return returnOb;
  	end
 	
+	
+	
+	#
+	#
+	#
+	#
+  #
 	# not part of the view hack
 	def runStartupScripts
+
 	  result = ""
 	  @window.startupScripts.each do |script|
-	    result = result + script[:function]+"(\'"+script[:arg1]+"\');"
+	    # arguments must be strings t the moment
+	    # for each script rebuild the function call "function('arg1','arg2');function('arg1');function('arg1','arg2','arg3')"
+	    result = result + script[:function]+"("
+	    1.upto(script.length-1) { |i|
+	      argName = ("arg"+i.to_s).to_sym
+        result = result + "\'" + script[argName].to_s + "\'"
+        if(i<script.length-1)
+          result = result + ","
+        end
+      }	    
+	    result = result + ");"
     end
 	  return result;
 	end
 	
+	
+	def subRender( view )
+	
+	  output = view.stringOutput
+	  if(output==nil)
+	    return render view;
+    end
+    return output;
+  end
+  
 end

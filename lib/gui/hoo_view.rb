@@ -37,6 +37,13 @@ module GUI
 		  self.object_id
 		end
 		
+		# gui_hoo_text_list_view_2168956940
+		def uniqueSelector
+	  	className = self.class.to_s
+  		className = className.gsub('::','_')
+  		textListSelector = '#' + className.underscore + '_'+ self.object_id.to_s
+	  end
+	  
 		def window
 		  window = self
 		  while window.parentView !=nil
@@ -46,6 +53,9 @@ module GUI
 	  end
 	  
 	  def wasAddedToParentView
+    end
+    
+    def stringOutput
     end
     
 	end

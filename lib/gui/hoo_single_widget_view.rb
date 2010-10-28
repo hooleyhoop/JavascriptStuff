@@ -18,30 +18,27 @@ module GUI
 
 			@widgetResizer = GUI::HooWidgetResizerView.new();
 			@widgetResizer.dataSrc = self;
-      
-      #TODO:
-      # i thought this was going to go?
-      # Instead, when we click on a menu item change the currentItem in the controller
-      # and send a notification that something changed to the widget view
-      @textList.target = @widgetResizer
 
 			addSubView( @textList );
 			addSubView( @widgetResizer );
-			
+
 		end
 
     def wasAddedToParentView
       super();
-  		RAILS_DEFAULT_LOGGER.info self.window
-			self.window.installStartupJavascript( :function=>"crippleListView", :arg1=>"fuck right off" );
-			
-			finish this! why doesnt it work?
-		  then injecting javascrip
-		  then bindings
-		  then column view
-		  
+
+      # Hack on some javascript to modify the behavoir of the list view
+      # This script removes the links from the listView items and replaces them with calls
+      # to widgetResizer's actionName with the previous url value as an argument (for ajax purposes)
+      
+      #TODO: In the future!
+      #These GUI objects should exist in the javascript
+      #When the list item is clicked, instead of hooking it up to call widgetResizer.actionName it should just change
+      #the value in the model (the javascript representation of this object). widgetResizer would be observing
+      #this value
+			self.window.installStartupJavascript( :function=>"crippleListView", :arg1=>@textList.uniqueSelector(), :arg2=>@widgetResizer.actionName );
     end
-    
+
 		def allItems
 			return @menuItems;
 		end

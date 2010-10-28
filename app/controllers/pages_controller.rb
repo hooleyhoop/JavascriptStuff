@@ -46,8 +46,8 @@ class PagesController < ApplicationController
 		pagePresenter.drawPage();
 	end
 
-	def column_view
-		pagePresenter = Presenters::ColumnViewPagePresenter.new( self );
+	def grid_view
+		pagePresenter = Presenters::GridViewPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
 	

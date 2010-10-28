@@ -10,13 +10,11 @@ module GUI
 				@startupScripts = Array.new();
 				@contentView = HooView.new();
 				@contentView.parentView = self;
-				
-				self.installStartupJavascript( :function=>"fuckYeah", :arg1=>"chicken" );
 			end
 
 			def drawNow( controller )
 				controller.instance_variable_set(:@window, self);
-				controller.render :action =>"content_view", :layout=>'window'
+				controller.render :template =>"/pages/content_view", :layout=>'window'
 			end
 
       def installStartupJavascript( args )
