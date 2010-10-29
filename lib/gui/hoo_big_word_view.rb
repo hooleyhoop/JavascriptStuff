@@ -3,11 +3,12 @@ module GUI
 
 		def initialize( inputString )
 			super();
+			@text = inputString
 		end
 
     def stringOutput
 
-      return "<div>trumpety trump</div>".html_safe
+      return "<div class='bigType'>"+@text+"</div>".html_safe
       
       haml_string = 
       "%div 

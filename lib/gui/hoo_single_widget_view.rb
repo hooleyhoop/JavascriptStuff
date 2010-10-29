@@ -1,19 +1,11 @@
 module GUI
 	class HooSingleWidgetView < HooView
 
+    attr_accessor :menuItems
 		attr_accessor :textList, :widgetResizer;
 
 		def initialize()
 			super();
-
-			@menuItems = [
-				{ 'name'=>"loremIpsum", 'url'=>GUI::HooLoremIpsumView.name},
-				{ 'name'=>"loremIpsumTitle", 'url'=>GUI::HooLoremIpsumTitleView.name},
-				{ 'name'=>"Info One", 'url'=>GUI::HooInfoOneView.name},
-				{ 'name'=>"Pull Quote", 'url'=>GUI::HooPullQuoteOneView.name},
-				{ 'name'=>"List View", 'url'=>GUI::HooListOneView.name}
-				
-			];
 
 			@textList = GUI::HooTextListView.new();
 			@textList.dataSrc = self;
@@ -26,6 +18,18 @@ module GUI
 
 		end
 
+    def setupDebugFixture
+      super();
+   		@menuItems = [
+				{ 'name'=>"loremIpsum", 'url'=>GUI::HooLoremIpsumView.name},
+				{ 'name'=>"loremIpsumTitle", 'url'=>GUI::HooLoremIpsumTitleView.name},
+				{ 'name'=>"Info One", 'url'=>GUI::HooInfoOneView.name},
+				{ 'name'=>"Pull Quote", 'url'=>GUI::HooPullQuoteOneView.name},
+				{ 'name'=>"List View", 'url'=>GUI::HooListOneView.name}
+				
+			];
+			end
+    
     def wasAddedToParentView
       super();
 

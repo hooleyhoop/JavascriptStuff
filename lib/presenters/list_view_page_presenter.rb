@@ -5,9 +5,11 @@ module Presenters
 			super( controller );
 			
 			listView = GUI::HooListOneView.new()
-			listView.headerView = GUI::HooLoremIpsumView.new()
+			listView.headerView = GUI::HooPullQuoteOneView.new(  )
+			listView.headerView.text ="What a lovely table"
+
 			
-			weWantToUseAHash = false
+			weWantToUseAHash = true
 			if( weWantToUseAHash )
   			listView.content = [
   				{ 'BooTitle'=> "A lovely day",          'BooLocation'=> "Glengarry Glenross, Perthshire" },
@@ -21,19 +23,24 @@ module Presenters
   				Elephant.new({:name=>"steve", :email=>"a@yahoo.com"}) ,
   				Elephant.new({:name=>"M knight shamalam", :email=>"a@yahoo.com"}) ,
   				Elephant.new({:name=>"country jo", :email=>"a@yahoo.com"}) ,
+  				Elephant.new({:name=>"doc beat", :email=>"a@yahoo.com"}),
+  				Elephant.new({:name=>"doc beat", :email=>"a@yahoo.com"}),
   				Elephant.new({:name=>"doc beat", :email=>"a@yahoo.com"})
+  				
   			];
       end
 			
 			# configure the cell			
 			standardCell = GUI::HooListOneCell.new();
 			standardCell.mapping = {
-			  "@heading"=>"name",
-			  "@subHeading"=>"email"
+			  "@heading"=>"BooTitle",
+			  "@subHeading"=>"BooLocation"
 		  }
 			listView.cell = standardCell
 
 			@window.contentView.addSubView( listView );
+			
+
 		end
 
 		
