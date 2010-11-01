@@ -7,6 +7,16 @@ module GUI
 		attr_accessor :width
 		attr_accessor :height
 
+		def self.partial_path
+			#NB if we didnt want the GUI/ prefix we could do  name.split('::').last || ''
+			return self.name.underscore;
+		end
+	
+		#woah! model.model_name.partial_path
+		def self.model_name
+			return self;
+		end
+	
 		def initialize
 			@views = Array.new;
 		end
@@ -20,16 +30,6 @@ module GUI
 			aView.wasAddedToParentView();
 		end
 
-		#woah! model.model_name.partial_path
-		def self.model_name
-			return self;
-		end
-
-		def self.partial_path
-			#NB if we didnt want the GUI/ prefix we could do  name.split('::').last || ''
-			return self.name.underscore;
-		end
-					
     def setupDebugFixture
 		end
 		

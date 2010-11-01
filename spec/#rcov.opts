@@ -1,0 +1,6 @@
+--text-report
+--exclude "spec/*,gems/*,features/*"
+--rails
+--html
+--include "lib/gui/*"
+--include "lib/presenters/*"

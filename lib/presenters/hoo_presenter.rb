@@ -1,7 +1,7 @@
 require "action_view"
 
 module Presenters
-	class HooPresenter < ActionView::Base
+	class HooPresenter
 
 		attr_accessor :window, :controller;
 
