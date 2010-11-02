@@ -5,20 +5,18 @@
 		%title #{@window.name}
 		= csrf_meta_tag
 
-		= javascript_include_tag "HooSC_min"
-		= javascript_include_tag :defaults
-		= javascript_include_tag "fg.menu"
+		= javascript_include_tag :defaults, :cache=>'base'
+		= stylesheet_link_tag :app, :cache=>'base'
 
-		= stylesheet_link_tag 'simple_reset'
+		= insertHeaderAdditions()
 
 	%body.showgrid
 		/ layout yields to the view
 		= yield
 
-
 		:javascript
 
 			// Lets kick it all off
 			$(document).ready(function(){
-				#{runStartupScripts}
+				#{runStartupScripts()}
 			});

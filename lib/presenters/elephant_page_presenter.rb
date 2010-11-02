@@ -4,6 +4,8 @@ module Presenters
 		def initialize( controller )
 			super( controller );
 			
+			@window.addheaderComponent("shit");
+			
 			@window.contentView.addSubView( GUI::HooBigWordView.new( "Trumpety trump!" ) );
 			@window.contentView.addSubView( GUI::HooLoremIpsumView.new() );
 			

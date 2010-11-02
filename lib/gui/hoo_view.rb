@@ -4,8 +4,7 @@ module GUI
     attr_accessor :parentView
     attr_accessor :views
 		
-		attr_accessor :width
-		attr_accessor :height
+		attr_accessor :width, :height
 
 		def self.partial_path
 			#NB if we didnt want the GUI/ prefix we could do  name.split('::').last || ''
