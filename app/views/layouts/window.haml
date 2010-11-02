@@ -1,7 +1,8 @@
 !!! #
 %html
-	%head
-		%title Untitled Window
+	%head{:lang=>"en", :class => 'no-js'}
+		%meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=UTF-8"}
+		%title #{@window.name}
 		= csrf_meta_tag
 
 		= javascript_include_tag "HooSC_min"
