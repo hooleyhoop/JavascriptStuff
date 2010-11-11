@@ -1,0 +1,5 @@
+-# NB the overflow:auto is needed to stop the margins collapsing
+-# This tells you everything you need to know about CSS separating form and content
+%div{ :style=>"" }
+	%div.bigType{ :style=>"overflow:auto;" } #{hoo_list_one_cell[_.heading]}
+	%div.mediumType{ :style=>"overflow:auto;" } #{hoo_list_one_cell[_.subHeading]}

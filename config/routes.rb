@@ -14,6 +14,7 @@ JavascriptStuff::Application.routes.draw do
   get "pages/sample_elastic_page"
   get "pages/grid_view"
   get "pages/list_view"
+  get "pages/horizontal_list_view"
   
   # woo! a more complicated route. Lets try sending a variable
   match 'pages/sample_elastic_page/:id' => 'pages#sample_elastic_page'

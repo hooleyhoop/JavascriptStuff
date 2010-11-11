@@ -13,7 +13,7 @@ html, body, ul, ol, li, form, fieldset, legend {
 }
 h1, h2, h3, h4, h5, h6, p { margin-top: 0; }
 fieldset,img { border: 0; }
-legend { color: #000; }
+legend { color: #111; } /* never use black */
 li { list-style: none; }
 sup { vertical-align: text-top; }
 sub { vertical-align: text-bottom; }
@@ -101,9 +101,9 @@ margin:15px 0px; overflow: hidden;}
 .showgrid {background:url(images/grid.png);}
 
 /* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
-.smallType {font-size:11px; padding-top:4px; padding-bottom:11px; padding-left:15px; }
-.mediumType {font-size:13px; padding-top:2px; padding-bottom:13px; padding-left:15px; }
-.bigType {font-family:Georgia; font-size:25px; padding-top:5px; padding-bottom:25px; word-spacing:-0.1em; line-height:30px; padding-left:15px; }
+.smallType {font-size:11px; padding-top:4px; padding-bottom:11px; padding-left:15px; color:#111; }
+.mediumType {font-size:13px; padding-top:2px; padding-bottom:13px; padding-left:15px; color:#111; }
+.bigType {font-family:Georgia; font-size:25px; padding-top:5px; padding-bottom:25px; word-spacing:-0.1em; line-height:30px; padding-left:15px; color:#111; }
 
 ul {
   list-style-position: inside;

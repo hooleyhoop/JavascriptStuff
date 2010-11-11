@@ -3,9 +3,9 @@ module Presenters
 
 		def initialize( controller )
 			super( controller );
-			@window.contentView.addSubView( GUI::HooGridOneView.new() );
+			@window.contentView.addSubView( widgetClass('gridView').new() );
 		end
 
-		
+
 	end
 end

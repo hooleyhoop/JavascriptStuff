@@ -13,8 +13,9 @@ fieldset, img {
   border: 0; }
 
 legend {
-  color: #000; }
+  color: #111; }
 
+/* never use black */
 li {
   list-style: none; }
 
@@ -257,13 +258,15 @@ textarea, input[type="text"], input[type="password"] {
   font-size: 11px;
   padding-top: 4px;
   padding-bottom: 11px;
-  padding-left: 15px; }
+  padding-left: 15px;
+  color: #111; }
 
 .mediumType {
   font-size: 13px;
   padding-top: 2px;
   padding-bottom: 13px;
-  padding-left: 15px; }
+  padding-left: 15px;
+  color: #111; }
 
 .bigType {
   font-family: Georgia;
@@ -272,7 +275,8 @@ textarea, input[type="text"], input[type="password"] {
   padding-bottom: 25px;
   word-spacing: -0.1em;
   line-height: 30px;
-  padding-left: 15px; }
+  padding-left: 15px;
+  color: #111; }
 
 ul {
   list-style-position: inside;
