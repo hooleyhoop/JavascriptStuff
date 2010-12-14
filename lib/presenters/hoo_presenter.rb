@@ -6,11 +6,20 @@ module Presenters
 		attr_accessor :window, :controller;
 
 		def initialize( controller )
+
 			super();
 			@controller = controller;
-	    @window = GUI::Core::HooWindow.new();
-		end
+	    	@window = GUI::Core::HooWindow.new();
 
+	    	#-- assert rails 2 only
+	    	if( Rails::VERSION::MAJOR == 2 )
+	    	    raise "upgrade you shitcock"
+	    	    controller.extend ActionControllerBaseExtensions
+	    	    @controller.window = @window;
+	    	    @controller.class.helper( HooGuiHelper )
+            end
+
+		end
 
 		def drawPage()
 			@window.drawNow( @controller );
@@ -33,4 +42,19 @@ module Presenters
 		end
 
 	end
+end
+
+
+module ActionControllerBaseExtensions
+
+	attr_accessor :window;
+
+	def display( settings )
+	    if( Rails::VERSION::MAJOR == 2 )
+	        raise "you have made an awful, awful, awful mistake. You shouldn't even be here in Rails 3 and above"
+        end
+
+		self.render( settings );
+	end
+
 end

@@ -54,6 +54,7 @@ module GUI::Core
 		def wasAddedToParentView
 		end
 
+		# this can be used instead of a haml file
 		def stringOutput
 		end
 

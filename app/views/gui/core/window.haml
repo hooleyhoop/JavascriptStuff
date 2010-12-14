@@ -3,6 +3,8 @@
 	%head{:lang=>"en", :class => 'no-js'}
 		%meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=UTF-8"}
 		%title #{@window.name}
+
+		-# Rails 3 only
 		= csrf_meta_tag
 
 		= javascript_include_tag :defaults, :cache=>'base'
@@ -11,7 +13,7 @@
 		= insertHeaderAdditions()
 
 	%body.showgrid
-		/ layout yields to the view
+		-# layout yields to the view
 		= yield
 
 		:javascript

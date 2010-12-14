@@ -25,7 +25,13 @@ module GUI::Core
 		end
 
 		def drawNow( controller )
-			controller.instance_variable_set(:@window, self);
+
+			#-- assert if rails 3
+			#-- NB, if rails 2 we handled this in HooPresenter. Sort this shit out
+	    	if( Rails::VERSION::MAJOR > 2 )
+    			controller.instance_variable_set(:@window, self);
+            end
+
 			controller.render( @displaySettings )
 		end
 
