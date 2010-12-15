@@ -61,6 +61,11 @@ class PagesController < ApplicationController
 		pagePresenter.drawPage();
 	end
 
+    def test_audioboo_stuff
+		pagePresenter = Presenters::AudiobooScratchPadPresenter.new( self );
+		pagePresenter.drawPage();
+	end
+
   # for ajax
   # pass a GUI:partial class name, it will be instantiated and rendered and returned as a string
   def _singlePartialViaAjaxFromParam

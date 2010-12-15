@@ -34,6 +34,7 @@ module GUI
 			'gridView'			=>	GUI::Views::HooGridOneView.name,
 			'bigWord'			=>	GUI::Views::HooBigWordView.name,
 			'singleWidget'		=>	GUI::Views::HooSingleWidgetView.name,
+			'slidingDoorsPanel1'=>	GUI::Views::HooSlidingDoorsPanel.name,
 		}
 
 		def self.widgets

@@ -15,6 +15,7 @@ module Presenters
 				{ 'name'=>"list view",            'url'=> controller.pages_list_view_path },
 				{ 'name'=>"horizontal list view", 'url'=> controller.pages_horizontal_list_view_path },
 				{ 'name'=>"elephant view",        'url'=> controller.elephants_path },
+				{ 'name'=>"audiobooScratchPad",   'url'=> controller.pages_test_audioboo_stuff_path },
 			];
 
 			@textList = GUI::HooWidgetList.widgetClass('textList1').new()

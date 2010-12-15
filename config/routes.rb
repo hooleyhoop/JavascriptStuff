@@ -1,12 +1,12 @@
 JavascriptStuff::Application.routes.draw do
-  
+
   resources :elephants
 
   match 'pages' => 'pages#control_center'
-  
+
   root :to => "pages#index"
   #get "pages/control_center"
-  
+
   get "pages/javascript_unit_tests"
   get "pages/widgets"
   get "pages/single_widget"
@@ -15,7 +15,8 @@ JavascriptStuff::Application.routes.draw do
   get "pages/grid_view"
   get "pages/list_view"
   get "pages/horizontal_list_view"
-  
+  get 'pages/test_audioboo_stuff'
+
   # woo! a more complicated route. Lets try sending a variable
   match 'pages/sample_elastic_page/:id' => 'pages#sample_elastic_page'
 
