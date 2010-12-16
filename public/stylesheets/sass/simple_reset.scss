@@ -97,8 +97,11 @@ textarea, input[type="text"], input[type="password"] {background-color: #fff; bo
 .rule  { border-bottom-color:#DDDDDD; border-bottom-style:solid; border-bottom-width:1px; clear:both; height:0;
 margin:15px 0px; overflow: hidden;}
 
-/* Dubugging only*/
-.showgrid {background:url(images/grid.png);}
+/* The One True Background */
+.grad_background {background:#A3A9B5 url(/images/backgrounds/gmail.jpeg) repeat-x 0 0;}
+
+/* Dubugging only */
+.showgrid {background:url(/images/backgrounds/grid.png);}
 
 /* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
 .smallType {font-size:11px; padding-top:4px; padding-bottom:11px; padding-left:15px; color:#111; }

@@ -1,4 +1,7 @@
 module GUI::Views
+
+    # Welcomen! There are 2 types at the moment. Outer and Inner
+
 	class HooSlidingDoorsPanel < GUI::Core::HooView
 
     	attr_accessor :cornerDim;
@@ -7,7 +10,7 @@ module GUI::Views
 		def initialize
 			super();
 			self.cornerDim = 15;
-			@imgPath =  '../images/mainpanel/main_panel';
+			@speechPosition = '';
 		end
 
         def top
@@ -33,5 +36,27 @@ module GUI::Views
         def fill
             @imgPath + '_fill.png'
         end
+
+        def style=( styleName )
+            if( styleName=='inner' )
+                @imgPath = '../images/innerpanel/inner_panel';
+            else
+    			@imgPath =  '../images/mainpanel/main_panel';
+    		end
+        end
+
+		# Mock data
+		def setupDebugFixture
+			super();
+
+   			self.style = 'main'
+
+            # Add some content so it's easier to see what is going on
+            loremIpsumView = GUI::HooWidgetList.widgetClass('loremIpsum');
+            loremIpsumView1 = loremIpsumView.new();
+    	    addSubView( loremIpsumView1 );
+
+		end
+
 	end
 end

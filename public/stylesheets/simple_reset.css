@@ -249,9 +249,13 @@ textarea, input[type="text"], input[type="password"] {
   margin: 15px 0px;
   overflow: hidden; }
 
-/* Dubugging only*/
+/* The One True Background */
+.grad_background {
+  background: #a3a9b5 url(/images/backgrounds/gmail.jpeg) repeat-x 0 0; }
+
+/* Dubugging only */
 .showgrid {
-  background: url(images/grid.png); }
+  background: url(/images/backgrounds/grid.png); }
 
 /* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
 .smallType {

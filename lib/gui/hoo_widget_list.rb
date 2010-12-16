@@ -20,21 +20,36 @@ module GUI
 
 
 		@@widgets = {
-			'labeledButton'		=>	GUI::Views::HooLabeledButton1.name,
-			'blueView'			=>	GUI::Views::HooBlueView.name,
-			'redView'			=>	GUI::Views::HooRedView.name,
-			'info1'				=>	GUI::Views::HooInfoOneView.name,
-			'loremIpsum'		=>	GUI::Views::HooLoremIpsumView.name,
-			'loremIpsumTitle'	=>	GUI::Views::HooLoremIpsumTitleView.name,
-			'pullQuote1'		=>	GUI::Views::HooPullQuoteOneView.name,
-			'list1'				=>	GUI::Views::HooListOneView.name,
-			'horizontalList1'	=>	GUI::Views::HooHorizontalListOneView.name,
-			'textList1'			=>	GUI::Views::HooTextListView.name,
-			'spacerView'		=>	GUI::Views::HooSpacerView.name,
-			'gridView'			=>	GUI::Views::HooGridOneView.name,
-			'bigWord'			=>	GUI::Views::HooBigWordView.name,
-			'singleWidget'		=>	GUI::Views::HooSingleWidgetView.name,
-			'slidingDoorsPanel1'=>	GUI::Views::HooSlidingDoorsPanel.name,
+
+		    # for positioning
+            'verticalSplitView'     =>	GUI::Views::HooVerticalSplitView.name,
+            'horizontalSplitView'   =>	GUI::Views::HooHorizontalSplitView.name,
+			'spacerView'		    =>	GUI::Views::HooSpacerView.name,
+            'relativeOffsetView'    =>	GUI::Views::HooRelativeOffsetView.name,
+
+		    # for drawing
+            'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
+			'slidingDoorsPanel1'    =>	GUI::Views::HooSlidingDoorsPanel.name,
+			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
+
+		    # for debugging
+			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,
+
+			'labeledButton'		    =>	GUI::Views::HooLabeledButton1.name,
+			'blueView'			    =>	GUI::Views::HooBlueView.name,
+			'redView'			    =>	GUI::Views::HooRedView.name,
+			'info1'				    =>	GUI::Views::HooInfoOneView.name,
+			'loremIpsum'		    =>	GUI::Views::HooLoremIpsumView.name,
+			'loremIpsumTitle'	    =>	GUI::Views::HooLoremIpsumTitleView.name,
+			'pullQuote1'		    =>	GUI::Views::HooPullQuoteOneView.name,
+			'list1'				    =>	GUI::Views::HooListOneView.name,
+			'horizontalList1'	    =>	GUI::Views::HooHorizontalListOneView.name,
+			'textList1'			    =>	GUI::Views::HooTextListView.name,
+			'gridView'			    =>	GUI::Views::HooGridOneView.name,
+			'bigWord'			    =>	GUI::Views::HooBigWordView.name,
+
+
+
 		}
 
 		def self.widgets

@@ -20,7 +20,12 @@ module GUI::Core
 			@views = Array.new;
 		end
 
+        # er, this is sometimes overidden
 		def addSubView( aView )
+		    _addSubView( aView );
+        end
+
+		def _addSubView( aView )
 			@views << aView;
 			if( aView.parentView!=nil )
 			  raise "View allready has parentView"

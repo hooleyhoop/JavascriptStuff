@@ -12,7 +12,7 @@
 
 		= insertHeaderAdditions()
 
-	%body.showgrid2{ :style=>"background: #aaa;" }
+	%body(class="#{@window.style}")
 		-# layout yields to the view
 		= yield
 

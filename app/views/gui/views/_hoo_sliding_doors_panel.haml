@@ -1,0 +1,28 @@
+- push( hoo_sliding_doors_panel )
+
+%div.hoo_sliding_doors_panel{ :style=>"" }
+
+    %div{ :style=>"position: relative;" }
+
+        %div.hoo_sliding_doors_panel_top_middle{ :style=>"position: absolute; width: auto; background: url( #{_.top} ) repeat-x center top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+        %div.hoo_sliding_doors_panel_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) top left no-repeat;" }
+        %div.hoo_sliding_doors_panel_top_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) top right no-repeat;" }
+
+        %div.hoo_sliding_doors_panel_top{ :style=>"padding-top: #{_.cornerDim}px;" }
+
+            %div.hoo_sliding_doors_panel_bottom{ :style=>"padding-bottom: #{_.cornerDim}px;" }
+
+                %div.hoo_sliding_doors_panel_left_middle{ :style=>"position: absolute; height:auto; background: url( #{_.left} ) repeat-y right center; width: #{_.cornerDim}px; top:#{_.cornerDim}px; bottom: #{_.cornerDim}px;" }
+
+                %div.hoo_sliding_doors_panel_left{ :style=>"padding-left: #{_.cornerDim}px; " }
+
+                    %div.hoo_sliding_doors_panel_right{ :style=>"padding-right: #{_.cornerDim}px; background: url( #{_.right} ) repeat-y right center;" }
+
+                        %div.hoo_sliding_doors_panel_inner{ :style=>"background: url( #{_.fill} ) repeat 0;" }
+                            =  insert( _.views, "" )
+                            %div.hoo_sliding_doors_panel_clearfix{ :style=>"clear: both;" }
+
+
+                %div.hoo_sliding_doors_panel_bottom_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) bottom left no-repeat;" }
+                %div.hoo_sliding_doors_panel_bottom_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) bottom right no-repeat;" }
+                %div.hoo_sliding_doors_panel_bottom_middle{ :style=>"position: absolute; width: auto; background: url( #{_.bottom} ) repeat-x center bottom; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }

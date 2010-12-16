@@ -5,9 +5,11 @@ module GUI::Core
 		attr_accessor :headerComponents;
 		attr_accessor :startupScripts;
 		attr_accessor :contentView;
+		attr_accessor :style;
 
 		def initialize
-			@name = "thierry";
+			@name = 'thierry';
+			@style = 'grad_background'
 			@startupScripts = nil;
 			@headerComponents = nil
 
@@ -43,6 +45,10 @@ module GUI::Core
 		def parentView
 			return nil;
 		end
+
+        def showGrid
+            @style = 'showgrid'
+        end
 
 	end
 end
