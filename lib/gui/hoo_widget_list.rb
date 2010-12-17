@@ -31,6 +31,11 @@ module GUI
             'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
 			'slidingDoorsPanel1'    =>	GUI::Views::HooSlidingDoorsPanel.name,
 			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
+            'singlebuttonForm'      =>	GUI::Views::HooSingleButtonForm.name,
+
+            # Audioboo specific
+            'followButtonSection'    =>	GUI::Views::Audioboo::FollowButtonSection.name,
+            'userDetailsBanner'         => GUI::Views::Audioboo::UserDetailsBanner.name,
 
 		    # for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,

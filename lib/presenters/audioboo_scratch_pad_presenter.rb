@@ -13,6 +13,9 @@ module Presenters
 			speechBubblePane    = widgetClass('speechBubblePane')
 			verticalSplitView   = widgetClass('verticalSplitView')
 			horizontalSplitView = widgetClass('horizontalSplitView')
+            singlebuttonForm    = widgetClass('singlebuttonForm')
+            followButtonSection = widgetClass('followButtonSection')
+            userDetailsBanner   = widgetClass('userDetailsBanner')
 
             @singleItem = false;
 
@@ -26,16 +29,31 @@ module Presenters
 
                 outerPanel = slidingDoorsPanel.new();
                 outerPanel.style = 'main'
-                @window.contentView.addSubView( outerPanel );
+             #   @window.contentView.addSubView( outerPanel );
 
                 bubble = speechBubblePane.new();
                 bubble.speechPosition = 'right'
                 bubble.constructSubViews();
                 outerPanel.addSubView( bubble );
 
-                loremIpsumView2 = loremIpsumView.new();
-                bubble.addSubView( loremIpsumView2 );
+           #     loremIpsumView2 = loremIpsumView.new();
+           #     bubble.addSubView( loremIpsumView2 );
 
+                # float this left
+           #     pressyThing1 = singlebuttonForm.new();
+           #     pressyThing1.img = '../images/buttons/follow.png';
+		#	    pressyThing1.width = 90;
+    	#		pressyThing1.height = 90;
+
+         #       bubble.addSubView( pressyThing1 );
+
+                # float this one right, make sure it stays aligned to the top
+                userDetailsBanner = userDetailsBanner.new();
+                userDetailsBanner.img = '../images/buttons/follow-button.png';
+			    userDetailsBanner.width = 90;
+    			userDetailsBanner.height = 90;
+
+                @window.contentView.addSubView( userDetailsBanner );
 
 #                innerPanel1 = speechBubblePane.new();
 #                innerPanel1.imgPath = '../images/innerpanel/inner_panel';
@@ -70,8 +88,16 @@ module Presenters
                 userBubble.constructSubViews();
                 outerPanel.addSubView( userBubble );
 
-                loremIpsumView1 = loremIpsumView.new();
-                userBubble.addSubView( loremIpsumView1 );
+                # float this one right, make sure it stays aligned to the top
+                followSection = followButtonSection.new();
+                followSection.img = '../images/buttons/follow-button.png';
+			    followSection.width = 90;
+    			followSection.height = 90;
+                userBubble.addSubView( followSection );
+
+                # The user name and pic, etc.
+                userDetailsBanner = userDetailsBanner.new();
+                userBubble.addSubView( userDetailsBanner );
 
                 #Main Boo Panel
                 mainBooPanel = slidingDoorsPanel.new();

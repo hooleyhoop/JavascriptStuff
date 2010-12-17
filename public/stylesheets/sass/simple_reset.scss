@@ -111,7 +111,15 @@ margin:15px 0px; overflow: hidden;}
 ul {
   list-style-position: inside;
   list-style-type: none;
- }
+}
+
+button:active {
+  padding:0!important;
+}
+
+:focus{outline:none;}
+::-moz-focus-inner{border:0;}
+
 
 /* Some elements add extra space whatever you do */
 //img { display:block; }

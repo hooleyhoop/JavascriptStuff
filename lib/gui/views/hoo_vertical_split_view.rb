@@ -20,9 +20,15 @@ module GUI::Views
 		def wasAddedToParentView
 		    super();
 		    if( @fixedColSide=='' )
-		        raise "Bullshit! you need to wet which side the column goes on"
+		        raise "Bullshit! you need to set which side the column goes on"
 		    end
         end
+
+        # Mock Data
+		def setupDebugFixture
+			super();
+            setFixedColumn('right', 45 )
+		end
 
 	end
 end

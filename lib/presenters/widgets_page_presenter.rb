@@ -5,6 +5,8 @@ module Presenters
 
 			super( controller );
 
+            @window.showGrid;
+
 			# lets lay out all widgets
 			allWidgets = GUI::HooWidgetList.widgetPaths
 

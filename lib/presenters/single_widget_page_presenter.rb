@@ -5,6 +5,8 @@ module Presenters
 		def initialize( controller )
 			super( controller );
 
+            @window.showGrid;
+
 			widgetView = widgetClass('singleWidget').new()
 
 			allItems = GUI::HooWidgetList.widgets.keys

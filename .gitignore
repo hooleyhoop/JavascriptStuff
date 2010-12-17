@@ -5,3 +5,4 @@ tmp/**/*
 public/javascripts/jquery-tmpl/*
 public/javascripts/qunit/*
 .DS_Store
+/coverage/*

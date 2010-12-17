@@ -43,6 +43,7 @@ module GUI::Views
                 dividerView = splitView2.new();
                 dividerView.setFixedColumn( 'bottom', 15 );
                 self._addSubView( dividerView );
+
                 @innerPanel1 = slidingDoorsPanel.new();
                 @innerPanel1.style = 'inner'
                 dividerView.addSubView( @innerPanel1 );
@@ -70,6 +71,7 @@ module GUI::Views
 		# Mock data
 		def setupDebugFixture
 			super();
+			self.constructSubViews()
 
             # Add some content so it's easier to see what is going on
             loremIpsumView = GUI::HooWidgetList.widgetClass('loremIpsum');
