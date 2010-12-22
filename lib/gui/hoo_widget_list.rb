@@ -36,12 +36,15 @@ module GUI
 			'slidingDoorsPanel1'    =>	GUI::Views::HooSlidingDoorsPanel.name,
 			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
             'singlebuttonForm'      =>	GUI::Views::HooSingleButtonForm.name,
+            'croppedImg'            =>	GUI::Views::HooCroppedImg.name,
+            'croppedImgWithHeader'  =>	GUI::Views::CroppedImgWithHeader.name,
 
             # Audioboo specific
-            'followButtonSection'    =>	GUI::Views::Audioboo::FollowButtonSection.name,
-            'userDetailsBanner'      => GUI::Views::Audioboo::UserDetailsBanner.name,
-            'booMainDetails'         => GUI::Views::Audioboo::BooMainDetails.name,
+            'followButtonSection'   =>	GUI::Views::Audioboo::FollowButtonSection.name,
+            'userDetailsBanner'     => GUI::Views::Audioboo::UserDetailsBanner.name,
+            'booMainDetails'        => GUI::Views::Audioboo::BooMainDetails.name,
             'detailPlayer'          => GUI::Views::Audioboo::DetailPlayer.name,
+            'tableHeader'           => GUI::Views::Audioboo::TableHeader.name,
 
 		    # for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,

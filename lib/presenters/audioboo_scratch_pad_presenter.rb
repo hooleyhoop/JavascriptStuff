@@ -22,21 +22,47 @@ module Presenters
             detailPlayer        = widgetClass('detailPlayer')
             spacedVerticalList  = widgetClass('spacedVerticalList')
             twoElasticColsFixedGutter  = widgetClass('twoElasticColsFixedGutter')
+            tableHeader         = widgetClass('tableHeader')
+            croppedImg         = widgetClass('croppedImg')
 
-            @singleItem = false;
+            @singleItem = true;
 
             if( @singleItem )
 
                 @window.showGrid;
 
-                list = twoElasticColsFixedGutter.new();
-                @window.contentView.addSubView( list );
+                split = twoElasticColsFixedGutter.new();
+                @window.contentView.addSubView( split );
 
-                promotionPlaceHolder1 = loremIpsumView.new();
-    			list.addSubView( promotionPlaceHolder1 );
+                spacedVerticalList1 = spacedVerticalList.new();
+    			split.addSubView( spacedVerticalList1 );
 
-                promotionPlaceHolder2 = loremIpsumView.new();
-    			list.addSubView( promotionPlaceHolder2 );
+                header1 = tableHeader.new();
+                header1.label = 'May i recomend?'
+                header1.color = 'blue';
+    			spacedVerticalList1.addSubView( header1 );
+
+                header2 = tableHeader.new();
+                header2.label = 'Image from the gods'
+                header2.color = 'lime';
+    			spacedVerticalList1.addSubView( header2 );
+
+                header3 = tableHeader.new();
+                header3.label = 'great map view'
+                header3.color = 'orange';
+    			spacedVerticalList1.addSubView( header3 );
+
+                header4 = tableHeader.new();
+                header4.label = 'smelly wagstaff'
+                header4.color = 'pink';
+    			spacedVerticalList1.addSubView( header4 );
+
+                # right hand side
+                img = croppedImgWithHeader.new();
+                img.path = '../images/boo/sampleImage5.jpg';
+    			split.addSubView( img );
+
+                #promotionPlaceHolder2 = loremIpsumView.new();
 
             else
                 #@window.showGrid;
@@ -97,17 +123,17 @@ module Presenters
                 listView1.addSubView( thePlayer );
 
                 # RIGHT SIDE
-                divider2 = verticalSplitView.new();
-                divider2.setFixedColumn( 'right', 15*7 );
-
+                #divider2 = verticalSplitView.new();
+                #divider2.setFixedColumn( 'right', 15*7 );
+                divider2 = twoElasticColsFixedGutter.new();
                 divider.addSubView( divider2 );
 
-				imageSpacer = spacerView.new( 0, 15, 0, 0 );
-                divider2.addSubView( imageSpacer );
+				#imageSpacer = spacerView.new( 0, 15, 0, 0 );
+                #divider2.addSubView( imageSpacer );
 
                 booImage = hoo100PercentImg.new();
                 booImage.img = '../images/boo/sampleImage2.jpg';
-                imageSpacer.addSubView( booImage );
+                divider2.addSubView( booImage );
 
                 mapImg = fixedSizeImage.new();
                 mapImg.img = '../images/map/map-icon.png';
