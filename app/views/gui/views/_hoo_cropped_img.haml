@@ -8,21 +8,22 @@
 -# err, this doesn't really do what i think it does, it works one off - one time only on load, and doesn't mean that the layout is 'fluid'
 :javascript
 
-    var container = $( '#{_.uniqueSelector}' );
-    var img = $( '#{_.uniqueSelector}>img' );
 
     $(document).ready(function(){
 
         // square off the container
+        var container = $( '#{_.uniqueSelector}' );
         var containerDim = container.width();
         container.height( containerDim );
     });
 
-    img.load(function(){
+    $( '#{_.uniqueSelector}>img' ).load(function(){
 
+        var container = $( '#{_.uniqueSelector}' );
         var containerDim = container.width();
 
         // size the img to fill
+        var img = $( '#{_.uniqueSelector}>img' );
         var imgWidth = img.width();
         var imgHeight = img.height();
         var ratio = imgWidth/imgHeight;

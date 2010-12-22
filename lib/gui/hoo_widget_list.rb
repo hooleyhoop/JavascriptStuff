@@ -37,7 +37,6 @@ module GUI
 			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
             'singlebuttonForm'      =>	GUI::Views::HooSingleButtonForm.name,
             'croppedImg'            =>	GUI::Views::HooCroppedImg.name,
-            'croppedImgWithHeader'  =>	GUI::Views::CroppedImgWithHeader.name,
 
             # Audioboo specific
             'followButtonSection'   =>	GUI::Views::Audioboo::FollowButtonSection.name,
@@ -45,6 +44,7 @@ module GUI
             'booMainDetails'        => GUI::Views::Audioboo::BooMainDetails.name,
             'detailPlayer'          => GUI::Views::Audioboo::DetailPlayer.name,
             'tableHeader'           => GUI::Views::Audioboo::TableHeader.name,
+            'croppedImgWithHeader'  =>	GUI::Views::Audioboo::CroppedImgWithHeader.name,
 
 		    # for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,

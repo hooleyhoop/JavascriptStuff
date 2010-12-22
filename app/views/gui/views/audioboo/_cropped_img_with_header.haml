@@ -1,0 +1,10 @@
+- push( cropped_img_with_header )
+
+%div( style="position: relative;" )
+    -# Image
+    %div( style="border: 1px solid lightgray;" )
+        =  insert( _.views[0], "" )
+
+    -# Header
+    %div( style="position: absolute; top:0; width:100%; " )
+        =  insert( _.views[1], "" )

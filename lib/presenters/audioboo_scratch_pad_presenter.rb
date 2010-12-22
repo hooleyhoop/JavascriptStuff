@@ -24,8 +24,9 @@ module Presenters
             twoElasticColsFixedGutter  = widgetClass('twoElasticColsFixedGutter')
             tableHeader         = widgetClass('tableHeader')
             croppedImg         = widgetClass('croppedImg')
+            croppedImgWithHeader= widgetClass('croppedImgWithHeader')
 
-            @singleItem = true;
+            @singleItem = false;
 
             if( @singleItem )
 
@@ -59,6 +60,8 @@ module Presenters
 
                 # right hand side
                 img = croppedImgWithHeader.new();
+                img.label = 'skanky fank fank'
+                img.color = 'lime';
                 img.path = '../images/boo/sampleImage5.jpg';
     			split.addSubView( img );
 
@@ -122,26 +125,37 @@ module Presenters
                 thePlayer = detailPlayer.new();
                 listView1.addSubView( thePlayer );
 
-                # RIGHT SIDE
-                #divider2 = verticalSplitView.new();
-                #divider2.setFixedColumn( 'right', 15*7 );
+                # RIGHT SIDE - here's where we can really feel the power & speed of presenters
+                # TODO: Different layouts depending which elements are present
+                rightSideList = spacedVerticalList.new();
+                divider.addSubView( rightSideList );
+
+                # RIGHT SIDE - Images
                 divider2 = twoElasticColsFixedGutter.new();
-                divider.addSubView( divider2 );
+                rightSideList.addSubView( divider2 );
 
-				#imageSpacer = spacerView.new( 0, 15, 0, 0 );
-                #divider2.addSubView( imageSpacer );
+                booImage = croppedImgWithHeader.new();
+                booImage.label = 'Image'
+                booImage.color = 'lime';
+                booImage.path = '/images/boo/sampleImage5.jpg';
+                #mapImg.labelLink = 'www.apple.com'
+    			divider2.addSubView( booImage );
 
-                booImage = hoo100PercentImg.new();
-                booImage.img = '../images/boo/sampleImage2.jpg';
-                divider2.addSubView( booImage );
+                mapImg = croppedImgWithHeader.new();
+                mapImg.label = 'Location'
+                mapImg.color = 'orange';
+                mapImg.path = '../images/map/map_image.jpg';
+                #mapImg.labelLink = 'www.apple.com'
+    			divider2.addSubView( mapImg );
 
-                mapImg = fixedSizeImage.new();
-                mapImg.img = '../images/map/map-icon.png';
-                mapImg.width = 15*7;
-    			mapImg.height = 15*7;
-                mapImg.label = 'map'
-                mapImg.labelLink = 'www.apple.com'
-                divider2.addSubView( mapImg );
+                # RIGHT SIDE - Tags
+                divider3 = twoElasticColsFixedGutter.new();
+                rightSideList.addSubView( divider3 );
+
+                tagsTable = TableList.new();
+                infoTable = TableList.new();
+    			divider3.addSubView( tagsTable );
+    			divider3.addSubView( infoTable );
 
                 # Bottom section
                 bottomSpacer = spacerView.new( 15, 15, 15, 15 );
