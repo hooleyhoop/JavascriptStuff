@@ -14,27 +14,27 @@ module GUI::Views
 		end
 
         def top
-            @imgPath + '_top.png'
+            @imgPath + '_top2.png'
         end
 
         def right
-            @imgPath + '_right.png'
+            @imgPath + '_right2.png'
         end
 
         def bottom
-            @imgPath + '_bottom.png'
+            @imgPath + '_bottom2.png'
         end
 
         def left
-            @imgPath + '_left.png'
+            @imgPath + '_left2.png'
         end
 
         def corners
-            @imgPath + '_corners.png'
+            @imgPath + '_corners2.png'
         end
 
         def fill
-            @imgPath + '_fill.png'
+            @imgPath + '_fill2.png'
         end
 
         def style=( styleName )

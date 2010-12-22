@@ -1,14 +1,18 @@
 - push( user_details_banner )
 
 -# Please fill me in
-%div( style="" )
+%div[_]( style="" )
 
-    %img( width='75' height='75' src='/images/my_pic.png' alt='fuck a horse' style="margin-right: 15px; float: left;" )
+    %a( href="www.apple.com" )
+        %img( width='#{_.width-1}' height='#{_.height-1}' src='#{_.img}' alt='fuck a horse' style="margin-right: 15px; float: left; border:1px solid lightgray" )
 
     %div
         %div.bigType( style="" )
-            steve hooley
+            %a( style="font: normal normal 30px/30px Georgia; color: #be178b;") #{_.userName}
         %div.mediumType( style="margin-top: -15px;" )
-            190 boos / 0 favourites / 347 followers
-
+            %a( style="font: normal normal 17px/30px" ) 190 boos
+            %span /
+            %a( style="font: normal normal 17px/30px" ) 0 favourites
+            %span /
+            %a( style="font: normal normal 17px/30px" ) 347 followers
     %div( style="clear:both;" )

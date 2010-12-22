@@ -26,16 +26,22 @@ module GUI
             'horizontalSplitView'   =>	GUI::Views::HooHorizontalSplitView.name,
 			'spacerView'		    =>	GUI::Views::HooSpacerView.name,
             'relativeOffsetView'    =>	GUI::Views::HooRelativeOffsetView.name,
+            'spacedVerticalList'    =>	GUI::Views::HooSpacedVerticalList.name,
+            'twoElasticColsFixedGutter' =>	GUI::Views::HooTwoElasticColsFixedGutter.name,
 
 		    # for drawing
             'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
+            'fixedSizeImage'        =>	GUI::Views::HooFixedSizeImg.name,
+            'hoo100PercentImg'      =>	GUI::Views::HooOneHundredPercentImg.name,
 			'slidingDoorsPanel1'    =>	GUI::Views::HooSlidingDoorsPanel.name,
 			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
             'singlebuttonForm'      =>	GUI::Views::HooSingleButtonForm.name,
 
             # Audioboo specific
             'followButtonSection'    =>	GUI::Views::Audioboo::FollowButtonSection.name,
-            'userDetailsBanner'         => GUI::Views::Audioboo::UserDetailsBanner.name,
+            'userDetailsBanner'      => GUI::Views::Audioboo::UserDetailsBanner.name,
+            'booMainDetails'         => GUI::Views::Audioboo::BooMainDetails.name,
+            'detailPlayer'          => GUI::Views::Audioboo::DetailPlayer.name,
 
 		    # for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,

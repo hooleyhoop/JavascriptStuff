@@ -3,19 +3,31 @@ module GUI::Views
     # First of all lets split left right
 	class HooVerticalSplitView < GUI::Core::HooView
 
-        attr_accessor :fixedColWidth;
         attr_accessor :fixedColSide;
+
+        # specify one or the other
+        attr_accessor :fixedColWidth;
+        attr_accessor :fixedColPercent;
 
 		def initialize
 			super();
 			@fixedColSide = ''
+			@fixedColPercent=0;
 		end
 
+# --------------------------- use one or the other ---------------------------------
         # left / right
         def setFixedColumn( fixedColName, fixedColWidth );
             @fixedColWidth = fixedColWidth;
             @fixedColSide = fixedColName;
         end
+
+        # left / right, 33
+        def setPercentage( col, percent )
+            @fixedColSide = col;
+            @fixedColPercent = percent;
+        end
+# ---------------------------------------------------------------------------------
 
 		def wasAddedToParentView
 		    super();

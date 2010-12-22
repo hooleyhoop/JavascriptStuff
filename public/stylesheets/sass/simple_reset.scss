@@ -98,15 +98,15 @@ textarea, input[type="text"], input[type="password"] {background-color: #fff; bo
 margin:15px 0px; overflow: hidden;}
 
 /* The One True Background */
-.grad_background {background:#A3A9B5 url(/images/backgrounds/gmail.jpeg) repeat-x 0 0;}
+.grad_background {background:#e6e4e9 url(/images/backgrounds/audioboo.jpg) repeat-x 0 0;}
 
 /* Dubugging only */
 .showgrid {background:url(/images/backgrounds/grid.png);}
 
 /* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
-.smallType {font-size:11px; padding-top:4px; padding-bottom:11px; padding-left:15px; color:#111; }
-.mediumType {font-size:13px; padding-top:2px; padding-bottom:13px; padding-left:15px; color:#111; }
-.bigType {font-family:Georgia; font-size:25px; padding-top:5px; padding-bottom:25px; word-spacing:-0.1em; line-height:30px; padding-left:15px; color:#111; }
+.smallType {font-size:11px; padding-top:4px; padding-bottom:11px; padding-left:0; color:#111; }
+.mediumType {font-size:13px; padding-top:2px; padding-bottom:13px; padding-left:0; color:#111; }
+.bigType {font-family:Georgia; font-size:25px; padding-top:5px; padding-bottom:25px; word-spacing:-0.1em; line-height:30px; padding-left:0; color:#111; }
 
 ul {
   list-style-position: inside;
@@ -120,6 +120,17 @@ button:active {
 :focus{outline:none;}
 ::-moz-focus-inner{border:0;}
 
+
+/* just messing */
+.shadow {
+-moz-box-shadow: 3px 3px 4px #000;
+-webkit-box-shadow: 3px 3px 4px #000;
+box-shadow: 3px 3px 4px #000;
+/* For IE 8 */
+-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+/* For IE 5.5 - 7 */
+filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
 
 /* Some elements add extra space whatever you do */
 //img { display:block; }

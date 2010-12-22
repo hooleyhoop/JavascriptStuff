@@ -1,9 +1,11 @@
 module GUI::Views::Audioboo
 
+    # Button img must have 2 states. :Height is just the height of one state
 	class FollowButtonSection < GUI::Core::HooView
 
         attr_accessor :img;
         attr_accessor :width, :height;
+        attr_accessor :label
 
 		def initialize
 			super();
@@ -12,9 +14,10 @@ module GUI::Views::Audioboo
         # Mock Data
 		def setupDebugFixture
 			super();
-			@img = '../images/innerpanel/inner_panel_speech_right.png';
-			@width = 90;
-			@height = 90;
+			@img = '../images/buttons/follow-button.png';
+			@width = 105;
+			@height = 45;
+			@label = 'Follow'
 		end
 
 	end

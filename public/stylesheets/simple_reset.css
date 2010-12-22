@@ -251,7 +251,7 @@ textarea, input[type="text"], input[type="password"] {
 
 /* The One True Background */
 .grad_background {
-  background: #a3a9b5 url(/images/backgrounds/gmail.jpeg) repeat-x 0 0; }
+  background: #e6e4e9 url(/images/backgrounds/audioboo.jpg) repeat-x 0 0; }
 
 /* Dubugging only */
 .showgrid {
@@ -262,14 +262,14 @@ textarea, input[type="text"], input[type="password"] {
   font-size: 11px;
   padding-top: 4px;
   padding-bottom: 11px;
-  padding-left: 15px;
+  padding-left: 0;
   color: #111; }
 
 .mediumType {
   font-size: 13px;
   padding-top: 2px;
   padding-bottom: 13px;
-  padding-left: 15px;
+  padding-left: 0;
   color: #111; }
 
 .bigType {
@@ -279,7 +279,7 @@ textarea, input[type="text"], input[type="password"] {
   padding-bottom: 25px;
   word-spacing: -0.1em;
   line-height: 30px;
-  padding-left: 15px;
+  padding-left: 0;
   color: #111; }
 
 ul {
@@ -294,5 +294,15 @@ button:active {
 
 ::-moz-focus-inner {
   border: 0; }
+
+/* just messing */
+.shadow {
+  -moz-box-shadow: 3px 3px 4px #000;
+  -webkit-box-shadow: 3px 3px 4px #000;
+  box-shadow: 3px 3px 4px #000;
+  /* For IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+  /* For IE 5.5 - 7 */
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000'); }
 
 /* Some elements add extra space whatever you do */

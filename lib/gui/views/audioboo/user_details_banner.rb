@@ -4,6 +4,7 @@ module GUI::Views::Audioboo
 
         attr_accessor :img;
         attr_accessor :width, :height;
+        attr_accessor :userName;
 
 		def initialize
 			super();
@@ -12,9 +13,10 @@ module GUI::Views::Audioboo
         # Mock Data
 		def setupDebugFixture
 			super();
-			@img = '../images/innerpanel/inner_panel_speech_right.png';
-			@width = 90;
-			@height = 90;
+			@img = '../images/user/my_pic.png';
+			@width = 75;
+			@height = 75;
+			@userName = 'stevehooley';
 		end
 
 	end
