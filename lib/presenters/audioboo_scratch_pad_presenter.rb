@@ -131,38 +131,47 @@ module Presenters
                 tagsTable1 = tableList.new( :style=>'continuousText' );
                 tagsTable1.label = 'Tags'
                 tagsTable1.color = 'blue'
-                tagsTable1.menuItems = [
+                tagsTable1.content = [
 
-                    { 'name'=>"motiongraphics",     'url'=> "#" },
-                    { 'name'=>"aftereffects",      	'url'=> "#" },
-                    { 'name'=>"cinema 4D",      'url'=> "#" },
-                    { 'name'=>"C4D",      'url'=> "#" },
-                    { 'name'=>"mograph",      'url'=> "#" },
-                    { 'name'=>"cube",      'url'=> "#" },
-                    { 'name'=>"sphere",      'url'=> "#" },
-                    { 'name'=>"hsgn",      'url'=> "#" },
-                    { 'name'=>"hosogane",      'url'=> "#" },
-                    { 'name'=>"bonsajo",      'url'=> "#" },
-                    { 'name'=>"cubesato",      'url'=> "#" },
-                    { 'name'=>"sweez",      'url'=> "#" },
+                    { 'name'=>'motiongraphics',     'url'=> '#' },
+                    { 'name'=>'aftereffects',      	'url'=> '#' },
+                    { 'name'=>'cinema 4D',      'url'=> '#' },
+                    { 'name'=>'C4D',      'url'=> '#' },
+                    { 'name'=>'mograph',      'url'=> '#' },
+                    { 'name'=>'cube',      'url'=> '#' },
+                    { 'name'=>'sphere',      'url'=> '#' },
+                    { 'name'=>'hsgn',      'url'=> '#' },
+                    { 'name'=>'hosogane',      'url'=> '#' },
+                    { 'name'=>'bonsajo',      'url'=> '#' },
+                    { 'name'=>'cubesato',      'url'=> '#' },
+                    { 'name'=>'sweez',      'url'=> '#' },
                 ];
                 divider3.addSubView( tagsTable1 );
 
-                tagsTable2 = tableList.new( :style=>'textList' );
-                tagsTable2.label = 'Info'
-                tagsTable2.color = 'pink'
-                tagsTable2.menuItems = [
-                    { 'name'=>"number of plays: 0",     'url'=> "#" },
-                    { 'name'=>"report this boo",      	'url'=> "#" },
-                    { 'name'=>"download this boo",      'url'=> "#" },
+                # RightSide - Info
+                infoTable = tableList.new( :style=>'textList' );
+                infoTable.label = 'Info'
+                infoTable.color = 'pink'
+                infoTable.content = [
+                    { 'name'=>'number of plays: 0',     'url'=> '#' },
+                    { 'name'=>'report this boo',      	'url'=> '#' },
+                    { 'name'=>'download this boo',      'url'=> '#' },
                 ];
 
+                divider3.addSubView( infoTable );
 
+                # RightSide - Related Boos
+                relatedBoosTable = tableList.new( :style=>'cell' );
+                relatedBoosTable.label = 'Related Boos'
+                relatedBoosTable.color = 'orange'
+                relatedBoosTable.content = [
+                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/my_pic.png' },
+                    { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/my_pic.png'  },
+                    { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/my_pic.png'  },
+                ];
 
+                rightSideList.addSubView( relatedBoosTable );
 
-
-
-                divider3.addSubView( tagsTable2 );
 
                 # Bottom section
                 bottomSpacer = spacerView.new( 15, 15, 15, 15 );

@@ -1,0 +1,11 @@
+- push( hoo_spaced_cell_list )
+
+-# partials can render the collection in one go, and i did do it like that previously
+-# but wrapping each instance in the list item proved trickier (and dirtier). So now manually iterate. No biggie.
+-# = render :partial=>_.cell.partial, :object=>_.content, :locals=>{ :_ => _.cell }, :layout => "/gui/cells/default_cell_wrapper", :spacer_template=>"/gui/cells/listspacer"
+
+%ul[_]
+	- _.dataSrc.allItems.each do |item|
+		%li{ :style=>"" }
+			= render :partial=>_.cell.partial, :object=>item, :locals=>{ :_ => _.cell }
+

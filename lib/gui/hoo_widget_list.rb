@@ -28,6 +28,7 @@ module GUI
             'relativeOffsetView'    =>	GUI::Views::HooRelativeOffsetView.name,
             'spacedVerticalList'    =>	GUI::Views::HooSpacedVerticalList.name,
             'twoElasticColsFixedGutter' =>	GUI::Views::HooTwoElasticColsFixedGutter.name,
+            'spacedCellList'         =>	GUI::Views::HooSpacedCellList.name,
 
 		    # for drawing
             'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
@@ -93,6 +94,7 @@ module GUI
 		@@cells = {
 			'list1'				=>	GUI::Cells::HooListOneCell.name,
 			'horizontalList1'	=>	GUI::Cells::HooHorizontalListOneCell.name,
+			'sparseBooCell'	    =>	GUI::Cells::HooSparseBooCell.name,
 		}
 
 		def self.cellClass( name )

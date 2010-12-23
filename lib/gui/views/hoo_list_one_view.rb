@@ -9,7 +9,6 @@ module GUI::Views
 			super();
 		end
 
-
 		# Mock data
 		def setupDebugFixture
 			super();

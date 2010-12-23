@@ -2,7 +2,7 @@ module GUI::Views::Audioboo
 
 	class TableList < GUI::Core::HooView
 
-        attr_accessor :menuItems;
+        attr_accessor :content;
 
         # You must build your elements in initialize, even if conditional.
         # Therefor you must pass the conditional data to initialize
@@ -19,18 +19,31 @@ module GUI::Views::Audioboo
             self.addSubView( @header );
 
             if @style=='continuousText'
-                textListClass = GUI::HooWidgetList.widgetClass('inlineTextList');
-                @textList = textListClass.new();
-                @textList.dataSrc = self;
-                @textList.size = 'small';
-                self.addSubView( @textList );
+                inlineTextListClass = GUI::HooWidgetList.widgetClass('inlineTextList');
+                @listView = inlineTextListClass.new();
+                @listView.dataSrc = self;
+                @listView.size = 'small';
+                self.addSubView( @listView );
 
             elsif @style=='textList'
                 textListClass = GUI::HooWidgetList.widgetClass('textList1');
-                @textList = textListClass.new();
-                @textList.dataSrc = self;
-                @textList.size = 'small';
-                self.addSubView( @textList );
+                @listView = textListClass.new();
+                @listView.dataSrc = self;
+                @listView.size = 'small';
+                self.addSubView( @listView );
+
+            elsif @style=='cell'
+                listClass = GUI::HooWidgetList.widgetClass('spacedCellList');
+                @listView = listClass.new();
+                @listView.cell = GUI::HooWidgetList.cellClass('sparseBooCell').new()
+                @listView.dataSrc = self;
+                @listView.mapping = {
+				    '@heading'=>'username',
+				    '@subHeading'=>'title',
+				    '@imgPath'=>'booPicPath',
+			    }
+                self.addSubView( @listView );
+
             end
 		end
 
@@ -40,11 +53,11 @@ module GUI::Views::Audioboo
             self.label = 'smelly wagstaff'
             self.color = 'pink';
             @style = 'textList';
-            self.menuItems = [
-				{ 'name'=>"shanty town",     		'url'=> "shabba" },
-				{ 'name'=>"just a fool for",      	'url'=> "shabba" },
-				{ 'name'=>"rocket",        			'url'=> "shabba" },
-				{ 'name'=>"fur pine coat dog",    	'url'=> "shabba" },
+            self.content = [
+				{ 'name'=>'shanty town',     		'url'=> 'shabba' },
+				{ 'name'=>'just a fool for',      	'url'=> 'shabba' },
+				{ 'name'=>'rocket',        			'url'=> 'shabba' },
+				{ 'name'=>'fur pine coat dog',    	'url'=> 'shabba' },
 			];
 		end
 
@@ -61,7 +74,7 @@ module GUI::Views::Audioboo
         end
 
 		def allItems
-			@menuItems
+			self.content
 		end
 
 	end

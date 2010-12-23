@@ -1,11 +1,9 @@
 module GUI::Views
 	class HooSpacedVerticalList < GUI::Core::HooView
 
-
 		def initialize()
 			super();
 		end
-
 
 		# Mock data
 		def setupDebugFixture
