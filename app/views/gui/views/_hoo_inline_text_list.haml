@@ -1,0 +1,8 @@
+- push( hoo_inline_text_list )
+
+
+%ul[_]
+    - _.dataSrc.allItems.each do |item|
+        -# Woah, whitespace is important! = must be butted to bracket. joy!
+        %li( class="smallListType" style="display: inline; margin-right:10px; background-color:white;" )= link_to( item['name'], item['url'] )
+.clear

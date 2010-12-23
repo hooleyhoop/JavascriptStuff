@@ -282,6 +282,12 @@ textarea, input[type="text"], input[type="password"] {
   padding-left: 0;
   color: #111; }
 
+.smallListType {
+  font: bold 11px/15px Georgia;
+  padding-top: 4px;
+  padding-bottom: 11px;
+  margin-bottom: -15px; }
+
 ul {
   list-style-position: inside;
   list-style-type: none; }

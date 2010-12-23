@@ -25,6 +25,7 @@ module Presenters
             tableHeader         = widgetClass('tableHeader')
             croppedImg         = widgetClass('croppedImg')
             croppedImgWithHeader= widgetClass('croppedImgWithHeader')
+            tableList           = widgetClass('tableList')
 
             @singleItem = false;
 
@@ -32,38 +33,13 @@ module Presenters
 
                 @window.showGrid;
 
-                split = twoElasticColsFixedGutter.new();
-                @window.contentView.addSubView( split );
-
                 spacedVerticalList1 = spacedVerticalList.new();
-    			split.addSubView( spacedVerticalList1 );
+    			@window.contentView.addSubView( spacedVerticalList1 );
 
-                header1 = tableHeader.new();
-                header1.label = 'May i recomend?'
-                header1.color = 'blue';
-    			spacedVerticalList1.addSubView( header1 );
-
-                header2 = tableHeader.new();
-                header2.label = 'Image from the gods'
-                header2.color = 'lime';
-    			spacedVerticalList1.addSubView( header2 );
-
-                header3 = tableHeader.new();
-                header3.label = 'great map view'
-                header3.color = 'orange';
-    			spacedVerticalList1.addSubView( header3 );
-
-                header4 = tableHeader.new();
-                header4.label = 'smelly wagstaff'
-                header4.color = 'pink';
-    			spacedVerticalList1.addSubView( header4 );
-
-                # right hand side
-                img = croppedImgWithHeader.new();
-                img.label = 'skanky fank fank'
-                img.color = 'lime';
-                img.path = '../images/boo/sampleImage5.jpg';
-    			split.addSubView( img );
+                tagsTable = tableList.new();
+                tagsTable.label = 'Info'
+                tagsTable.color = 'pink'
+                spacedVerticalList1.addSubView( tagsTable );
 
                 #promotionPlaceHolder2 = loremIpsumView.new();
 
@@ -152,10 +128,41 @@ module Presenters
                 divider3 = twoElasticColsFixedGutter.new();
                 rightSideList.addSubView( divider3 );
 
-                tagsTable = TableList.new();
-                infoTable = TableList.new();
-    			divider3.addSubView( tagsTable );
-    			divider3.addSubView( infoTable );
+                tagsTable1 = tableList.new( :style=>'continuousText' );
+                tagsTable1.label = 'Tags'
+                tagsTable1.color = 'blue'
+                tagsTable1.menuItems = [
+
+                    { 'name'=>"motiongraphics",     'url'=> "#" },
+                    { 'name'=>"aftereffects",      	'url'=> "#" },
+                    { 'name'=>"cinema 4D",      'url'=> "#" },
+                    { 'name'=>"C4D",      'url'=> "#" },
+                    { 'name'=>"mograph",      'url'=> "#" },
+                    { 'name'=>"cube",      'url'=> "#" },
+                    { 'name'=>"sphere",      'url'=> "#" },
+                    { 'name'=>"hsgn",      'url'=> "#" },
+                    { 'name'=>"hosogane",      'url'=> "#" },
+                    { 'name'=>"bonsajo",      'url'=> "#" },
+                    { 'name'=>"cubesato",      'url'=> "#" },
+                    { 'name'=>"sweez",      'url'=> "#" },
+                ];
+                divider3.addSubView( tagsTable1 );
+
+                tagsTable2 = tableList.new( :style=>'textList' );
+                tagsTable2.label = 'Info'
+                tagsTable2.color = 'pink'
+                tagsTable2.menuItems = [
+                    { 'name'=>"number of plays: 0",     'url'=> "#" },
+                    { 'name'=>"report this boo",      	'url'=> "#" },
+                    { 'name'=>"download this boo",      'url'=> "#" },
+                ];
+
+
+
+
+
+
+                divider3.addSubView( tagsTable2 );
 
                 # Bottom section
                 bottomSpacer = spacerView.new( 15, 15, 15, 15 );

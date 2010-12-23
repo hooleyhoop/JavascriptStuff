@@ -1,6 +1,8 @@
 - push( hoo_text_list_view )
 
+
 %ul[_]
-	- _.dataSrc.allItems.each do |item|
-		%li.mediumType= link_to( item['name'], item['url'] )
+    - _.dataSrc.allItems.each do |item|
+        -# Woah, whitespace is important! = must be butted to bracket. joy!
+        %li( class="smallListType" )= link_to( item['name'], item['url'] )
 .clear

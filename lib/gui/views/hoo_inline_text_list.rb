@@ -1,5 +1,5 @@
 module GUI::Views
-	class HooTextListView < GUI::Core::HooView
+	class HooInlineTextList < GUI::Core::HooView
 
     	attr_accessor :dataSrc;
         attr_accessor :size;
