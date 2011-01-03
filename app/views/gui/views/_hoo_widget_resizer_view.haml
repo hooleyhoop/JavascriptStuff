@@ -1,7 +1,10 @@
 - push( hoo_widget_resizer_view )
 
 %div[_]{ :style=>"; width:400px;height:400px; position:absolute; left:50px; top:150px;"}
-	%p{ :style=>"background-color:#ff0000; margin:10px;"} !!! Render The Widget Here !!!
+	- if _.views.count > 0
+		=  insert( _.views, "" )
+	- else
+		%p{ :style=>"background-color:#ff0000; margin:10px;"} !!! Render The Widget Here !!!
 
 / The left handle div
 %div#left_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:200px; left:60px;"}
@@ -242,7 +245,7 @@
 		_page = new HooPage();
 
 		// load default content by ajax
-		loadSomeHTMLByAjax2( '#{_.dataSrc.defaultItem}' );
+		//loadSomeHTMLByAjax2( '#{_.dataSrc.defaultItem}' );
 	});
 
 	// make coloured objects transparent
