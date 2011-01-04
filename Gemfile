@@ -2,8 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
 gem 'mongrel', '1.2.0.pre2'
-gem 'jquery-rails'
-gem 'haml'
+gem 'jquery-rails', '0.2.6'
+gem 'haml', '3.0.25'
 #gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'mysql'
 
@@ -27,12 +27,12 @@ gem 'linecache19'
 
 
 # plugin test
-gem "gui"
+#gem "gui"
 
 group :development do
 	gem 'annotate-models', '1.0.4'
-	gem 'faker'
-	gem "rspec-rails", ">= 2.2.0"
+	gem 'faker', '0.9.4'
+	gem "rspec-rails", ">= 2.3.1"
 end
 
 group :test do
@@ -40,7 +40,7 @@ group :test do
 	gem 'spork', '0.8.4'
 	gem 'factory_girl_rails'
 	gem 'webrat', '0.7.2'
-	gem 'rspec', '>= 2.2.0'
+	gem 'rspec', '>= 2.3.0'
 end
 
 group :development, :test do

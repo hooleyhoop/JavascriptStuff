@@ -4,7 +4,7 @@ module GUI::Views
     attr_accessor :menuItems
 		attr_accessor :textList, :widgetResizer;
 
-		def initialize()
+		def initialize( defaultWidget='' )
 			super();
 
 			@setTransparencyButton = HooLabeledButton1.new();
@@ -19,6 +19,13 @@ module GUI::Views
 			addSubView( @textList );
 			addSubView( @widgetResizer );
 
+			#only temp resizable content
+			if( defaultWidget!='' )
+				theDefaultClass = Object.const_get(defaultWidget)
+				tempRsizerContent = theDefaultClass.new();
+				@widgetResizer.addSubView( tempRsizerContent );
+			end
+			
 		end
 
     def setupDebugFixture
