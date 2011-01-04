@@ -23,5 +23,17 @@ module GUI::Views
 		    end
         end
 
+        # Mock Data
+		def setupDebugFixture
+			super();
+            setFixedColumn('top', 100 )
+
+			placeholderView1 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			self.addSubView( placeholderView1 );
+
+			placeholderView2 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			self.addSubView( placeholderView2 );
+		end
+
 	end
 end

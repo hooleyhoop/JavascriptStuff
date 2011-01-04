@@ -5,8 +5,8 @@ JavascriptStuff::Application.routes.draw do
   resources :elephants
 
   match 'pages' => 'pages#control_center'
-  match "/widgets/:name" => "widgets#show"
-  
+  match "/widgets/:name(/:optionalArg1)" => "widgets#show"
+
   root :to => "pages#index"
   #get "pages/control_center"
 

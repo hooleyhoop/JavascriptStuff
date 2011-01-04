@@ -2,8 +2,12 @@ class WidgetsController < ApplicationController
 
   def show()
   	#render :text => params[:name]
-		pagePresenter = Presenters::SingleWidgetPagePresenter.new( self, params[:name] );
-		pagePresenter.drawPage();
+
+  	widgetToRender = params[:name]
+  	optionalArgs = params.reject{ |key, val| key=='name' };
+
+	pagePresenter = Presenters::SingleWidgetPagePresenter.new( self, widgetToRender, optionalArgs );
+	pagePresenter.drawPage();
   end
 
 end

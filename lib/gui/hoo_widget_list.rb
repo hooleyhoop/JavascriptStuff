@@ -55,6 +55,7 @@ module GUI
 			'labeledButton'		    =>	GUI::Views::HooLabeledButton1.name,
 			'blueView'			    =>	GUI::Views::HooBlueView.name,
 			'redView'			    =>	GUI::Views::HooRedView.name,
+			'colorFill'			    =>	GUI::Views::HooColorFill.name,
 			'info1'				    =>	GUI::Views::HooInfoOneView.name,
 			'loremIpsum'		    =>	GUI::Views::HooLoremIpsumView.name,
 			'loremIpsumTitle'	    =>	GUI::Views::HooLoremIpsumTitleView.name,

@@ -39,6 +39,12 @@ module GUI::Views
 		def setupDebugFixture
 			super();
             setFixedColumn('right', 45 )
+
+			placeholderView1 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			self.addSubView( placeholderView1 );
+
+			placeholderView2 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			self.addSubView( placeholderView2 );
 		end
 
 	end

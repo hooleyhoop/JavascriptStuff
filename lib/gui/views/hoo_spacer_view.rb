@@ -11,5 +11,15 @@ module GUI::Views
 			@left = left
 		end
 
+        # Mock Data
+		def setupDebugFixture
+			super();
+
+			placeHolderView = GUI::HooWidgetList.widgetClass('colorFill').new()
+            self.addSubView( placeHolderView );
+
+			@top = @right = @bottom = @left = 15
+		end
+
 	end
 end

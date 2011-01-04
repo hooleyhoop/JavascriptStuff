@@ -2,14 +2,14 @@
 module Presenters
 	class SingleWidgetPagePresenter < HooPresenter
 
-		def initialize( controller, defaultWidget='' )
-		
+		def initialize( controller, defaultWidget='', optionalArgs={} )
+
 			super( controller );
 
             @window.showGrid;
 
 			# Conflicting ways to set default widget
-			widgetView = widgetClass('singleWidget').new( defaultWidget )
+			widgetView = widgetClass('singleWidget').new( defaultWidget, optionalArgs )
 
 			allItems = GUI::HooWidgetList.widgets.keys
 			allValues = GUI::HooWidgetList.widgets.values

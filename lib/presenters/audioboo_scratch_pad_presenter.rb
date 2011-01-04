@@ -165,7 +165,7 @@ module Presenters
                 relatedBoosTable.label = 'Related Boos'
                 relatedBoosTable.color = 'orange'
                 relatedBoosTable.content = [
-                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/my_pic.png' },
+                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/my_pic.png' },
                     { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/my_pic.png'  },
                     { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/my_pic.png'  },
                 ];

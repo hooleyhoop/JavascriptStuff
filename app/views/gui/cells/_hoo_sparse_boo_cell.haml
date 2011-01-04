@@ -1,7 +1,8 @@
 -# NB the overflow:auto is needed to stop the margins collapsing
 -# This tells you everything you need to know about CSS separating form and content
-%div{ :style=>"" }
-    %img( src='#{hoo_sparse_boo_cell[_.imgPath]}' width='43' height='43' style='float: left; border:1px solid lightgray' )
-    %div( style="float: left" )
-        %div.bigType{ :style=>"overflow:auto;" } #{hoo_sparse_boo_cell[_.heading]}
-        %div.mediumType{ :style=>"overflow:auto;" } #{hoo_sparse_boo_cell[_.subHeading]}
+%div{ :style=>"border: 0px solid red; overflow: auto" }
+    %img( src='#{hoo_sparse_boo_cell[_.imgPath]}' width='43' height='43' style='float: left; margin:0 5px 15px 0; border:1px solid lightgray' )
+    %div( style="" )
+        %div.smallType{ :style=>"position: relative; top: -3px; font: normal bold 11px/15px Helvetica; color: #3574d7; margin:0 0 -15px 0; overflow:auto;" } #{hoo_sparse_boo_cell[_.heading]}
+        %div.mediumType{ :style=>"float: none; width: auto; font: normal 13px/15px Helvetica; color: #2d3747; margin-top: 0px; overflow:hidden;" } #{hoo_sparse_boo_cell[_.subHeading]}
+

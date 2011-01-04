@@ -9,24 +9,17 @@ module GUI::Views
 		def setupDebugFixture
 			super();
 
-      # add the header
-			@headerView = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView1 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			self.addSubView( placeholderView1 );
 
-      # content
-			@content = [
-				{ 'name'=>"jimmy hands",          'email'=> "sss@gmail.com" },
-				{ 'name'=>"Taylor Woodrow",       'email'=> "asd@hotmail.com" },
-				{ 'name'=>"Shanti",               'email'=> "ggh@yahoo.com" },
-				{ 'name'=>"The Shadow",           'email'=> "wegbdfbf@tennis.com" },
-				{ 'name'=>"Janet Jackson",        'email'=> "7hghe4fsads@bbc.com" }
-			];
+			placeholderView2 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			self.addSubView( placeholderView2 );
 
-      # cell
-			@cell = GUI::HooWidgetList.cellClass('list1').new()
-			@cell.mapping = {
-				"@heading"=>"name",
-				"@subHeading"=>"email"
-			}
+			placeholderView3 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			self.addSubView( placeholderView3 );
+
+			placeholderView4 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			self.addSubView( placeholderView4 );
     	end
 
 

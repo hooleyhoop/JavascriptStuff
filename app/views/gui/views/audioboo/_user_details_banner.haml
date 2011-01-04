@@ -6,7 +6,8 @@
     %a( href="www.apple.com" )
         %img( width='#{_.width-2}' height='#{_.height-2}' src='#{_.img}' alt='fuck a horse' style="margin-right: 15px; float: left; border:1px solid lightgray" )
 
-    %div
+    -# Overflow hidden makes sure the text doesn't wrap - is this reliable?
+    %div( style='overflow: hidden;' )
         %div.bigType( style="" )
             %a( style="font: normal normal 30px/30px Georgia; color: #be178b;") #{_.userName}
         %div.mediumType( style="margin-top: -15px;" )

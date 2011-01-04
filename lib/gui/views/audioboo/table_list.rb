@@ -48,18 +48,28 @@ module GUI::Views::Audioboo
 		end
 
         # Mock Data
-		def setupDebugFixture
-			super();
+        def setupDebugFixture
+            super();
+
             self.label = 'smelly wagstaff'
             self.color = 'pink';
-            @style = 'textList';
-            self.content = [
-				{ 'name'=>'shanty town',     		'url'=> 'shabba' },
-				{ 'name'=>'just a fool for',      	'url'=> 'shabba' },
-				{ 'name'=>'rocket',        			'url'=> 'shabba' },
-				{ 'name'=>'fur pine coat dog',    	'url'=> 'shabba' },
-			];
-		end
+
+            if( @style == 'textList' )
+                self.content = [
+                    { 'name'=>'shanty town',     		'url'=> 'shabba' },
+                    { 'name'=>'just a fool for',      	'url'=> 'shabba' },
+                    { 'name'=>'rocket',        			'url'=> 'shabba' },
+                    { 'name'=>'fur pine coat dog',    	'url'=> 'shabba' },
+                    ];
+
+            elsif( @style == 'cell' )
+                self.content = [
+                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/my_pic.png' },
+                    { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/my_pic.png'  },
+                    { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/my_pic.png'  },
+                ];
+            end
+        end
 
 		def wasAddedToParentView
 		    super();

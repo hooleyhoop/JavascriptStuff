@@ -2,57 +2,64 @@ module GUI::Views
 	class HooSingleWidgetView < GUI::Core::HooView
 
     attr_accessor :menuItems
-		attr_accessor :textList, :widgetResizer;
+    attr_accessor :textList, :widgetResizer;
 
-		def initialize( defaultWidget='' )
-			super();
+    def initialize( defaultWidget='', optionalArgs={} )
+        super();
 
-			@setTransparencyButton = HooLabeledButton1.new();
+        @hasDefaultWidget = (defaultWidget=='') ? false : true;
 
-			@textList = HooTextListView.new();
-			@textList.dataSrc = self;
+        @widgetResizer = HooWidgetResizerView.new();
+        @widgetResizer.dataSrc = self;
 
-			@widgetResizer = HooWidgetResizerView.new();
-			@widgetResizer.dataSrc = self;
+        @setTransparencyButton = HooLabeledButton1.new();
+        addSubView( @setTransparencyButton );
 
-			addSubView( @setTransparencyButton );
-			addSubView( @textList );
-			addSubView( @widgetResizer );
+        # dont show textlist if we have a default widget
+        if( @hasDefaultWidget==false )
+            @textList = HooTextListView.new();
+            @textList.dataSrc = self;
+            addSubView( @textList );
+        end
 
-			#only temp resizable content
-			if( defaultWidget!='' )
-				theDefaultClass = Object.const_get(defaultWidget)
-				tempRsizerContent = theDefaultClass.new();
-				@widgetResizer.addSubView( tempRsizerContent );
-			end
-			
-		end
+        addSubView( @widgetResizer );
+
+        #only temp resizable content
+        if( @hasDefaultWidget )
+            defaultWidgetClass = GUI::HooWidgetList.widgetClass( defaultWidget );
+            tempRsizerContent = defaultWidgetClass.new( optionalArgs );
+            tempRsizerContent.setupDebugFixture();
+            @widgetResizer.addSubView( tempRsizerContent );
+       end
+
+    end
 
     def setupDebugFixture
-      super();
-   		@menuItems = [
-				{ 'name'=>"loremIpsum", 'url'=>HooLoremIpsumView.name},
-				{ 'name'=>"loremIpsumTitle", 'url'=>HooLoremIpsumTitleView.name},
-				{ 'name'=>"Info One", 'url'=>HooInfoOneView.name},
-				{ 'name'=>"Pull Quote", 'url'=>HooPullQuoteOneView.name},
-				{ 'name'=>"List View", 'url'=>HooListOneView.name}
-
-			];
-			end
+        super();
+        @menuItems = [
+            { 'name'=>"loremIpsum", 'url'=>HooLoremIpsumView.name},
+            { 'name'=>"loremIpsumTitle", 'url'=>HooLoremIpsumTitleView.name},
+            { 'name'=>"Info One", 'url'=>HooInfoOneView.name},
+            { 'name'=>"Pull Quote", 'url'=>HooPullQuoteOneView.name},
+            { 'name'=>"List View", 'url'=>HooListOneView.name}
+        ];
+    end
 
     def wasAddedToParentView
-      super();
+        super();
 
-      # Hack on some javascript to modify the behavoir of the list view
-      # This script removes the links from the listView items and replaces them with calls
-      # to widgetResizer's actionName with the previous url value as an argument (for ajax purposes)
+        # Hack on some javascript to modify the behavoir of the list view
+        # This script removes the links from the listView items and replaces them with calls
+        # to widgetResizer's actionName with the previous url value as an argument (for ajax purposes)
 
-      #TODO: In the future!
-      #These GUI objects should exist in the javascript
-      #When the list item is clicked, instead of hooking it up to call widgetResizer.actionName it should just change
-      #the value in the model (the javascript representation of this object). widgetResizer would be observing
-      #this value
-			self.window.installStartupJavascript( :function=>"crippleListView", :arg1=>@textList.uniqueSelector(), :arg2=>@widgetResizer.actionName );
+        #TODO: In the future!
+        #These GUI objects should exist in the javascript
+        #When the list item is clicked, instead of hooking it up to call widgetResizer.actionName it should just change
+        #the value in the model (the javascript representation of this object). widgetResizer would be observing
+        #this value
+        if( @hasDefaultWidgets )
+            self.window.installStartupJavascript( :function=>"crippleListView", :arg1=>@textList.uniqueSelector(), :arg2=>@widgetResizer.actionName );
+        end
     end
 
 		def allItems
