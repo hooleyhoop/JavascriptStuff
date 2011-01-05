@@ -32,7 +32,7 @@ module JavascriptStuff
     # config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
-    config.action_view.javascript_expansions[:defaults] = ['jquery-1.4.4.min.js', 'jquery-tmpl/jquery.tmpl.js', 'jquery-tmpl/jquery.tmplPlus.js', 'jquery-ujs/src/rails', 'HooSC_min']
+    config.action_view.javascript_expansions[:defaults] = ['jquery-1.4.4.min.js', 'jquery-tmpl/jquery.tmpl.js', 'jquery-tmpl/jquery.tmplPlus.js', 'jquery-ujs/src/rails', 'HooSC_min', 'modernizr-1.6.min.js']
     config.action_view.stylesheet_expansions = { :app => ['simple_reset'] }
 
     # Configure the default encoding used in templates for Ruby 1.9.

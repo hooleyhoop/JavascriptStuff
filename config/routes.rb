@@ -5,6 +5,9 @@ JavascriptStuff::Application.routes.draw do
   resources :elephants
 
   match 'pages' => 'pages#control_center'
+
+    # http://0.0.0.0:3000/widgets/cellRenderer?cellName=horizontalList1     -- gives us params[:cellName]       = horizontalList1
+    # http://0.0.0.0:3000/widgets/cellRenderer/horizontalList1              -- gives us params[:optionalArg1]   = horizontalList1
   match "/widgets/:name(/:optionalArg1)" => "widgets#show"
 
   root :to => "pages#index"

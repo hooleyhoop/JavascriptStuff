@@ -13,7 +13,7 @@ module GUI::Views::Audioboo
         # Mock Data
 		def setupDebugFixture
 			super();
-			@img = '../images/user/my_pic.png';
+			@img = '../images/user/sample_user2.png';
 			@width = 75;
 			@height = 75;
 			@userName = 'stevehooley';

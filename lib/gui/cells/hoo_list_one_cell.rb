@@ -1,20 +1,20 @@
 module GUI::Cells
-	class HooListOneCell < Object
+	class HooListOneCell < GUI::Core::HooCell
 
-		attr_accessor :mapping, :heading, :subHeading;
+		attr_accessor :heading, :subHeading;
 
-		def initialize()
-			super();
-		end
+        # Mock Data Provider (for one instance of the cell)
+        def allItems
 
-		def partial
-			"gui/cells/hoo_list_one_cell"
-		end
+            self.mapping = {
+				"@heading"=>"name",
+				"@subHeading"=>"email"
+			}
 
-		def mapping=( arg )
-			@mapping = arg
-			@mapping.each_pair{|key, value| instance_variable_set(key,value)}
-		end
+            return [
+                { 'name'=>"jimmy hands", 'email'=> "sss@gmail.com" },
+            ];
+        end
 
 	end
 end

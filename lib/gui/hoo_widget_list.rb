@@ -41,16 +41,18 @@ module GUI
             'inlineTextList'        =>  GUI::Views::HooInlineTextList.name,
 
             # Audioboo specific
-            'followButtonSection'   =>	GUI::Views::Audioboo::FollowButtonSection.name,
+            'followButtonSection'   => GUI::Views::Audioboo::FollowButtonSection.name,
             'userDetailsBanner'     => GUI::Views::Audioboo::UserDetailsBanner.name,
             'booMainDetails'        => GUI::Views::Audioboo::BooMainDetails.name,
             'detailPlayer'          => GUI::Views::Audioboo::DetailPlayer.name,
             'tableHeader'           => GUI::Views::Audioboo::TableHeader.name,
-            'croppedImgWithHeader'  =>	GUI::Views::Audioboo::CroppedImgWithHeader.name,
-            'tableList'             =>	GUI::Views::Audioboo::TableList.name,
+            'croppedImgWithHeader'  => GUI::Views::Audioboo::CroppedImgWithHeader.name,
+            'tableList'             => GUI::Views::Audioboo::TableList.name,
+            'addComment'            => GUI::Views::Audioboo::AddComment.name,
 
 		    # for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,
+            'cellRenderer'          =>  GUI::Views::HooCellRenderer.name,
 
 			'labeledButton'		    =>	GUI::Views::HooLabeledButton1.name,
 			'blueView'			    =>	GUI::Views::HooBlueView.name,
@@ -96,6 +98,7 @@ module GUI
 			'list1'				=>	GUI::Cells::HooListOneCell.name,
 			'horizontalList1'	=>	GUI::Cells::HooHorizontalListOneCell.name,
 			'sparseBooCell'	    =>	GUI::Cells::HooSparseBooCell.name,
+			'hoo_user_comment_cell' => GUI::Cells::HooUserCommentCell.name,
 		}
 
 		def self.cellClass( name )

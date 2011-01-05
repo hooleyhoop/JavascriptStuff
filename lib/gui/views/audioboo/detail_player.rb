@@ -5,7 +5,7 @@ module GUI::Views::Audioboo
         attr_accessor :playerLeft, :playerRight, :playerMid, :playButton, :carat;
         attr_accessor :playerLeft2, :playerRight2, :playerMid2
 
-		def initialize
+		def initialize( args={} )
 			super();
 
     		@playerLeft = '../images/player/player-left-cap.png';

@@ -1,5 +1,5 @@
 module GUI::Cells
-	class HooSparseBooCell < GUI::Core::HooCell
+	class HooUserCommentCell < GUI::Core::HooCell
 
 		attr_accessor :heading, :subHeading, :imgPath;
 

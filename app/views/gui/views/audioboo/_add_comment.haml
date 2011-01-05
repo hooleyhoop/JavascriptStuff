@@ -1,0 +1,39 @@
+- push( add_comment )
+
+-# Please fill me in
+%div[_]( style="" )
+
+    %a( href="www.apple.com" )
+        %img( width='#{_.width-2}' height='#{_.height-2}' src='#{_.img}' alt='fuck a horse' style="margin-right: 15px; float: left; border:1px solid lightgray" )
+
+    -# Overflow hidden makes sure the text doesn't wrap - is this reliable?
+    %div( style='overflow: hidden;' )
+        %div.mediumType( style="" )
+            %a( style="font: normal normal 17px/30px; color: #be178b;") Add a Comment
+        %div( style="" )
+            %textarea.smallType( id="comment_body" name="comment[body]" cols="70" rows="6" style="width:95%; font-size:13px; line-height: 15px; font-family: georgia; color:#555; padding:5px" )
+                So, this old geezer walks into the pub and sits down at the bar. Outside a motorcycle courier is arguing with traffic warden
+        %input( id="comment_should_post_notifications" name="comment[should_post_notification]" type="hidden" value="true" )
+        %div
+            -# %input( id="comment_submit" name="commit" type="submit" value="Post" )
+
+            %button( style="float: right; margin: 0 0 0 0; border: none; background-color:transparent; background-image: url( #{_.postButtonImg} ); width: 105px; height: 30px;" name="commit" title="comment_submit" type="submit" value="Post" )
+                -# Note, the position of the span is different in ie, firefox and safari (didnt even bother to check chrome)
+                -# If you center it in safari it will be to low in firefox, whichever way you tweak it it will be incorrect somewhere
+                -# We really should use links and javascript
+                %span( style="font-size: 13px; color: #3372d7; line-height: 15px; padding: 0 0 0 3px; position: relative; top:0px; margin:0!important" )
+                    Post
+
+    %div( style="clear:both;" )
+
+-# Oh
+%style(type="text/css")
+    :sass
+        #{_.uniqueSelector} button
+            background:
+                position: 0 0px
+                color: transparent
+            span:active
+                color: #aaa !important
+            &:active
+                background-position: 0 -30px

@@ -5,7 +5,15 @@
 -# = render :partial=>_.cell.partial, :object=>_.content, :locals=>{ :_ => _.cell }, :layout => "/gui/cells/default_cell_wrapper", :spacer_template=>"/gui/cells/listspacer"
 
 %ul[_]
-	- _.dataSrc.allItems.each do |item|
-		%li{ :style=>"" }
-			= render :partial=>_.cell.partial, :object=>item, :locals=>{ :_ => _.cell }
+    - _.dataSrc.allItems.each do |item|
+        %li( class='#{cycle('rowA', 'rowB')}' style="" )
+            = render :partial=>_.cell.partial, :object=>item, :locals=>{ :_ => _.cell }
 
+-# Oh
+%style(type="text/css")
+    :sass
+        #{_.uniqueSelector} li
+            &.rowA
+                background-color: white
+            &.rowB
+                background-color: transparent
