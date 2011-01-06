@@ -6,6 +6,7 @@ module GUI::Core
 		attr_accessor :startupScripts;
 		attr_accessor :contentView;
 		attr_accessor :style;
+		attr_accessor :controller;
 
 		def initialize
 			@name = 'thierry';
@@ -27,6 +28,8 @@ module GUI::Core
 		end
 
 		def drawNow( controller )
+
+            @controller = controller
 
 			#-- assert if rails 3
 			#-- NB, if rails 2 we handled this in HooPresenter. Sort this shit out

@@ -1,5 +1,13 @@
+- _.dataSrc = hoo_list_one_cell
+
+-# HELP
+-# _ object is the shared cell instance
+-# hoo_list_one_cell is dataSrc item
+-# _.heading is the key in the dataSrc that corresponds to the value we would like to use as the heading
+-# hoo_list_one_cell[_.heading] is the value we would like to use for the heading
+
 -# NB the overflow:auto is needed to stop the margins collapsing
 -# This tells you everything you need to know about CSS separating form and content
 %div{ :style=>"" }
-	%div.bigType{ :style=>"overflow:auto;" } #{hoo_list_one_cell[_.heading]}
-	%div.mediumType{ :style=>"overflow:auto;" } #{hoo_list_one_cell[_.subHeading]}
+	%div.bigType{ :style=>"overflow:auto;" } #{ _['heading'] }
+	%div.mediumType{ :style=>"overflow:auto;" } #{ _['subHeading'] }

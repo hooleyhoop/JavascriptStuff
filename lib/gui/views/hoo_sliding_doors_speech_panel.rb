@@ -1,10 +1,16 @@
 module GUI::Views
 
+    # http://0.0.0.0:3000/widgets/speechBubblePane
+
     # The speech panel is actual an hoo_sliding_doors_panel inner panel with a little speech tag appended.
     # The speech tag can be on the bottom or on the right or on the left
 	class HooSlidingDoorsSpeechPanel < GUI::Core::HooView
 
         attr_accessor :speechPosition;
+
+		def initialize( args={} )
+			super();
+		end
 
         def constructSubViews
 
@@ -28,7 +34,7 @@ module GUI::Views
                 dividerView.addSubView( @innerPanel1 );
 
                 # manually tweak the position
-                offsetView = relativeOffsetView.new( 30,0,0,-1 );
+                offsetView = relativeOffsetView.new( 30,0,0,-2 );
 
                 placeholder = backgroundImage.new();
                 placeholder.img = '../images/innerpanel/inner_panel_speech_right.png';
@@ -38,7 +44,30 @@ module GUI::Views
                 offsetView.addSubView( placeholder );
                 dividerView.addSubView( offsetView );
 
-            else
+            elsif( @speechPosition=='left' )
+                splitView1 = GUI::HooWidgetList.widgetClass('verticalSplitView');
+                dividerView = splitView1.new();
+                dividerView.setFixedColumn( 'left', 15 );
+                # careful here, we overide addSubview so call the secret method
+                self._addSubView( dividerView );
+
+                # manually tweak the position of the triangle
+                offsetView = relativeOffsetView.new( 15,0,0,1 );
+
+                placeholder = backgroundImage.new();
+                placeholder.img = '../images/inner_white_panel/inner_panel_speech_left.png';
+                placeholder.width = 15;
+                placeholder.height = 30;
+
+                offsetView.addSubView( placeholder );
+                dividerView.addSubView( offsetView );
+
+                 # TODO: This is for the speech thing on the right, lets also do the speech thingy on the bottom
+                @innerPanel1 = slidingDoorsPanel.new();
+                @innerPanel1.style = 'inner_white'
+                dividerView.addSubView( @innerPanel1 );
+
+            elsif( @speechPosition=='bottom' )
 			    splitView2 = GUI::HooWidgetList.widgetClass('horizontalSplitView');
                 dividerView = splitView2.new();
                 dividerView.setFixedColumn( 'bottom', 15 );
@@ -70,7 +99,10 @@ module GUI::Views
 
 		# Mock data
 		def setupDebugFixture
+
 			super();
+
+			@speechPosition = 'right';
 			self.constructSubViews()
 
             # Add some content so it's easier to see what is going on

@@ -49,6 +49,7 @@ module GUI
             'croppedImgWithHeader'  => GUI::Views::Audioboo::CroppedImgWithHeader.name,
             'tableList'             => GUI::Views::Audioboo::TableList.name,
             'addComment'            => GUI::Views::Audioboo::AddComment.name,
+            'all_user_comments'     => GUI::Views::Audioboo::AllUserComments.name,
 
 		    # for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,
@@ -67,9 +68,6 @@ module GUI
 			'textList1'			    =>	GUI::Views::HooTextListView.name,
 			'gridView'			    =>	GUI::Views::HooGridOneView.name,
 			'bigWord'			    =>	GUI::Views::HooBigWordView.name,
-
-
-
 		}
 
 		def self.widgets

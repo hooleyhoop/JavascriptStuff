@@ -1,4 +1,4 @@
 - push( hoo_cell_renderer )
 
 - _.dataSrc.allItems.each do |item|
-    = render :partial=>_.cell.partial, :object=>item, :locals=>{ :_ => _.cell }
+    = _.cell.insert( self, item )

@@ -34,6 +34,10 @@ module GUI::Core
 			aView.wasAddedToParentView();
 		end
 
+        def setSubviewAtIndex( ind, subview )
+            @views[ind] = subview
+        end
+
 		def setupDebugFixture
 		end
 

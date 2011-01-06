@@ -1,9 +1,17 @@
--# NB the overflow:auto is needed to stop the margins collapsing
--# This tells you everything you need to know about CSS separating form and content
-yaeaah boooy
-%div{ :style=>"border: 0px solid red; overflow: auto" }
-    %img( src='#{hoo_user_comment_cell[_.imgPath]}' width='43' height='43' style='float: left; margin:0 5px 10px 0; border:1px solid lightgray' )
-    %div( style="" )
-        %div.smallType{ :style=>"position: relative; top: -3px; font: normal bold 11px/15px Helvetica; color: #3574d7; margin:0 0 -15px 0; overflow:auto;" } #{hoo_user_comment_cell[_.heading]}
-        %div.mediumType{ :style=>"float: none; width: auto; font: normal 13px/15px Helvetica; color: #2d3747; margin-top: 0px; overflow:hidden;" } #{hoo_user_comment_cell[_.subHeading]}
+- _.dataSrc = hoo_user_comment_cell
 
+- content_for :"#{'cell_proxy'+_.currentIndex.to_s}" do
+    %div{ :style=>"border: 0px solid red; overflow: visible" }
+        %div.mediumType{ :style=>"font: normal 13px/15px Helvetica; color: #666; margin-top: 0px; overflow: auto;" } #{ _['commentTxt'] }
+        %div.smallType{ :style=>"font: normal bold 11px/15px Helvetica; color: #3574d7; margin:-15px 0 -15px 0; overflow: auto;" }  #{ _['commentAuthor'] } #{ _['commentDate'] }
+
+%div( style="position: relative; overflow: hidden;" )
+
+    -# sooooo, how do we get the above content into the fucking view?
+    %div( style="float: right; border: 0px solid green; overflow: hidden; margin-left: 45px;" )
+        =  insert( _.userBubble, "need list view" )
+
+    -#%div( style="float: left; width:30px; height:30px; background-color: red; position: absolute; top: 15px" )
+    %img( src='#{ _['commentAuthorPic'] }' width='28' height='28' style='float: left; position: absolute; top: 15px; border:1px solid lightgray' )
+
+%div{ :style=>"border: 0px solid red; width:15px; height:15px; clear: both;" }

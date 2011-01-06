@@ -5,7 +5,7 @@ module HooGuiHelper
 
 		if( obj==nil )
 		  raise "cant push nil onto the view stack"
-    end
+		end
 
 		viewStack = self.instance_variable_get("@hooViews");
 		if(viewStack==nil)
@@ -125,4 +125,6 @@ module HooGuiHelper
 	  return result;
   end
 
+
 end
+

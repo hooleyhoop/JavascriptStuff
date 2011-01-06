@@ -14,32 +14,34 @@ module GUI::Views
 		end
 
         def top
-            @imgPath + '_top2.png'
+            @imgPath + '_top.png'
         end
 
         def right
-            @imgPath + '_right2.png'
+            @imgPath + '_right.png'
         end
 
         def bottom
-            @imgPath + '_bottom2.png'
+            @imgPath + '_bottom.png'
         end
 
         def left
-            @imgPath + '_left2.png'
+            @imgPath + '_left.png'
         end
 
         def corners
-            @imgPath + '_corners2.png'
+            @imgPath + '_corners.png'
         end
 
         def fill
-            @imgPath + '_fill2.png'
+            @imgPath + '_fill.png'
         end
 
         def style=( styleName )
             if( styleName=='inner' )
                 @imgPath = '../images/innerpanel/inner_panel';
+            elsif( styleName=='inner_white' )
+                @imgPath = '../images/inner_white_panel/inner_panel';
             else
     			@imgPath =  '../images/mainpanel/main_panel';
     		end

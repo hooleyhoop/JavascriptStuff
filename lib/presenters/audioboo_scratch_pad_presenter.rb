@@ -28,7 +28,7 @@ module Presenters
             tableList           = widgetClass('tableList')
             colorFill           = widgetClass('colorFill')
             addComment          = widgetClass('addComment')
-            allCommentsTable    = widgetClass('spacedCellList')
+            allCommentsTable    = widgetClass('all_user_comments')
 
             @singleItem = false;
 
@@ -116,8 +116,8 @@ module Presenters
                 addAComment.height = 75;
                 listView1.addSubView( addAComment );
 
-                #allComments = allCommentsTable.new();
-                #listView1.addSubView( allComments );
+                allComments = allCommentsTable.new();
+                listView1.addSubView( allComments );
 
                 # RIGHT SIDE - here's where we can really feel the power & speed of presenters
                 # TODO: Different layouts depending which elements are present
