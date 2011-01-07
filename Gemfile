@@ -32,15 +32,15 @@ gem 'linecache19'
 group :development do
 	gem 'annotate-models', '1.0.4'
 	gem 'faker', '0.9.4'
-	gem "rspec-rails", ">= 2.3.1"
+	gem "rspec-rails", ">= 2.4"
 end
 
 group :test do
 	gem 'rcov'
 	gem 'spork', '0.8.4'
 	gem 'factory_girl_rails'
-	gem 'webrat', '0.7.2'
-	gem 'rspec', '>= 2.3.0'
+	gem 'webrat', '0.7.3'
+	gem 'rspec', '>= 2.4.0'
 end
 
 group :development, :test do

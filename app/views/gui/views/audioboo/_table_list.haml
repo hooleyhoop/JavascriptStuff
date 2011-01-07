@@ -1,12 +1,11 @@
 - push( table_list )
 
-%div( style="position: relative; background-color: #{_.backgroundColor}; border: 0px solid #ccc; padding: 2px" )
+%div[_]( style="position: relative; background-color: #{_.backgroundColor}; border: 0px solid #ccc; padding: 2px" )
 
     -# Header
     %div( style="" )
         =  insert( _.views[0], "need header view" )
 
     -# Table
-    %div( style="margin: -15px 5px 0 1px;" )
+    %div( style="margin: -15px 5px 0 1px; position:relative; z-index: 1;" )
         =  insert( _.views[1], "need list view" )
-

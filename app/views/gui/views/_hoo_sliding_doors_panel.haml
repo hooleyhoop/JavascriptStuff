@@ -1,28 +1,91 @@
 - push( hoo_sliding_doors_panel )
 
-%div.hoo_sliding_doors_panel{ :style=>"" }
+%div[_]( class="hoo_sliding_doors_panel panel_style_#{_.style}" style="position: relative;" )
 
-    %div{ :style=>"position: relative;" }
+    %div.hoo_sliding_doors_panel_top_middle{ :style=>"position: absolute; overflow: auto; background: url( #{_.top} ) repeat-x left top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+    %div.hoo_sliding_doors_panel_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left top no-repeat;" }
+    %div.hoo_sliding_doors_panel_top_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right top no-repeat;" }
 
-        %div.hoo_sliding_doors_panel_top_middle{ :style=>"position: absolute; overflow: auto; background: url( #{_.top} ) repeat-x left top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
-        %div.hoo_sliding_doors_panel_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left top no-repeat;" }
-        %div.hoo_sliding_doors_panel_top_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right top no-repeat;" }
+    %div.hoo_sliding_doors_panel_top{ :style=>"padding-top: #{_.cornerDim}px;" }
 
-        %div.hoo_sliding_doors_panel_top{ :style=>"padding-top: #{_.cornerDim}px;" }
+        %div.hoo_sliding_doors_panel_bottom{ :style=>"padding-bottom: #{_.cornerDim}px;" }
 
-            %div.hoo_sliding_doors_panel_bottom{ :style=>"padding-bottom: #{_.cornerDim}px;" }
+            %div.hoo_sliding_doors_panel_left_middle{ :style=>"position: absolute; height:auto; background: url( #{_.left} ) repeat-y left top; width: #{_.cornerDim}px; top:#{_.cornerDim}px; bottom: #{_.cornerDim}px; overflow: auto;" }
 
-                %div.hoo_sliding_doors_panel_left_middle{ :style=>"position: absolute; height:auto; background: url( #{_.left} ) repeat-y left top; width: #{_.cornerDim}px; top:#{_.cornerDim}px; bottom: #{_.cornerDim}px; overflow: auto;" }
+            %div.hoo_sliding_doors_panel_left{ :style=>"padding-left: #{_.cornerDim}px;" }
 
-                %div.hoo_sliding_doors_panel_left{ :style=>"padding-left: #{_.cornerDim}px;" }
+                %div.hoo_sliding_doors_panel_right{ :style=>"padding-right: #{_.cornerDim}px; background: url( #{_.right} ) repeat-y right top;" }
 
-                    %div.hoo_sliding_doors_panel_right{ :style=>"padding-right: #{_.cornerDim}px; background: url( #{_.right} ) repeat-y right top;" }
+                    %div.hoo_sliding_doors_panel_inner{ :style=>"background: url( #{_.fill} ) repeat left top; background-origin: border-box; padding:0 0 0 0;" }
+                        =  insert( _.views, "" )
+                        %div( style="clear:both;")
 
-                        %div.hoo_sliding_doors_panel_inner{ :style=>"background: url( #{_.fill} ) repeat left top; background-origin: border-box; padding:0 0 0 0;" }
-                            =  insert( _.views, "" )
-                            %div( style="clear:both;")
+            %div.hoo_sliding_doors_panel_bottom_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left bottom no-repeat;" }
+            %div.hoo_sliding_doors_panel_bottom_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right bottom no-repeat;" }
+            %div.hoo_sliding_doors_panel_bottom_middle{ :style=>"position: absolute; width: auto; background: url( #{_.bottom} ) repeat-x left bottom; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
 
-                %div.hoo_sliding_doors_panel_bottom_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left bottom no-repeat;" }
-                %div.hoo_sliding_doors_panel_bottom_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right bottom no-repeat;" }
-                %div.hoo_sliding_doors_panel_bottom_middle{ :style=>"position: absolute; width: auto; background: url( #{_.bottom} ) repeat-x left bottom; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+
+-# Obviously we cannot leave this here as it is crazy to include it more than once
+- if( _.includeOnce? )
+    :javascript
+        // Lets kick it all off
+        $(document).ready( function(){
+
+            if (Modernizr.websockets) {
+                $("#result").html('Your browser has support for Web Sockets');
+            } else {
+                $("#result").html('Your browser does not support Web Sockets');
+            }
+
+        });
+
+
+    %style(type="text/css")
+        :sass
+
+            // Lovely modernizr stuff. if .borderradius and rgba are supported rip out the background images and use css rounded corners instead
+
+            // remove each background image
+            .borderradius.rgba
+                .hoo_sliding_doors_panel_top_middle, .hoo_sliding_doors_panel_top_left, .hoo_sliding_doors_panel_top_right, .hoo_sliding_doors_panel_left_middle, .hoo_sliding_doors_panel_right, .hoo_sliding_doors_panel_inner, .hoo_sliding_doors_panel_bottom_left, .hoo_sliding_doors_panel_bottom_right, .hoo_sliding_doors_panel_bottom_middle
+                    background: none no-repeat !important
+
+            // style the main panel
+            .borderradius.rgba .hoo_sliding_doors_panel.panel_style_main
+                background-color: rgba(245,234,233,0.75)
+                background: -webkit-gradient(linear, left top, left bottom, from(rgba(245,234,233,0.75)), to(rgba(230,220,220,0.55)))
+                background: -moz-linear-gradient(top, rgba(245,234,233,0.75), rgba(230,220,220,0.55))
+
+                border: 0px solid #141414
+                -webkit-border-radius: 15px
+                -moz-border-radius: 15px
+                border-radius: 15px
+
+            // style the inner panel
+            .borderradius.rgba .hoo_sliding_doors_panel.panel_style_inner
+                background-color: rgba(255,250,250,0.85)
+                background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,250,250,0.85)), to(rgba(250,245,245,0.55)))
+                background: -moz-linear-gradient(top, rgba(255,250,250,0.85), rgba(250,245,245,0.55))
+
+                border: 0px solid #141414
+                -webkit-border-radius: 6px
+                -moz-border-radius: 6px
+                border-radius: 6px
+
+            // style the inner white panel
+            .borderradius.rgba .hoo_sliding_doors_panel.panel_style_inner_white
+                background-color: #fff
+                border: 1px solid #ccc
+                -webkit-border-radius: 8px
+                -moz-border-radius: 8px
+                border-radius: 8px
+
+            .boxshadow .hoo_sliding_doors_panel.panel_style_main, .boxshadow .hoo_sliding_doors_panel.panel_style_inner
+                border: none
+                -webkit-box-shadow: rgba(0,0,0, .1) 0px 2px 3px
+                -moz-box-shadow: rgba(0,0,0, .1) 0px 2px 3px
+                box-shadow: rgba(0,0,0, .2) 0px 2px 3px
+
+
+
 

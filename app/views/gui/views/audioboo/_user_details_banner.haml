@@ -1,14 +1,13 @@
 - push( user_details_banner )
 
 -# Please fill me in
-%div[_]( style="" )
-
+%div[_]
     %a( href="www.apple.com" )
         %img( width='#{_.width-2}' height='#{_.height-2}' src='#{_.img}' alt='fuck a horse' style="margin-right: 15px; float: left; border:1px solid lightgray" )
 
     -# Overflow hidden makes sure the text doesn't wrap - is this reliable?
     %div( style='overflow: hidden;' )
-        %div.bigType( style="" )
+        %div.bigType
             %a( style="font: normal normal 30px/30px Georgia; color: #be178b;") #{_.userName}
         %div.mediumType( style="margin-top: -15px;" )
             %a( style="font: normal normal 17px/30px" ) 190 boos

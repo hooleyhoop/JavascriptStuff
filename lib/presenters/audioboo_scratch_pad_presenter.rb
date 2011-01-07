@@ -171,7 +171,7 @@ module Presenters
                 infoTable.label = 'Info'
                 infoTable.color = 'pink'
                 infoTable.content = [
-                    { 'name'=>'number of plays: 0',     'url'=> '#' },
+                    { 'name'=>'number of plays: 0',     'url'=> '' },
                     { 'name'=>'report this boo',      	'url'=> '#' },
                     { 'name'=>'download this boo',      'url'=> '#' },
                 ];

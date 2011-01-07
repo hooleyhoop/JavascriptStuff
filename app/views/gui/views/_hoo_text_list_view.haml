@@ -4,5 +4,8 @@
 %ul[_]
     - _.dataSrc.allItems.each do |item|
         -# Woah, whitespace is important! = must be butted to bracket. joy!
-        %li( class="smallListType" )= link_to( item['name'], item['url'] )
+        - if( item['url']=='' )
+            %li( class="smallListType" )= item['name']
+        - else
+            %li( class="smallListType" )= link_to( item['name'], item['url'] )
 .clear

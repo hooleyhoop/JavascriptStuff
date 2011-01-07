@@ -3,8 +3,9 @@ module GUI::Core
 
 		attr_accessor :parentView
 		attr_accessor :views
-
 		attr_accessor :width, :height
+
+        @@_doOnceStuff = Array.new;
 
 		def self.partial_path
 			#NB if we didnt want the GUI/ prefix we could do  name.split('::').last || ''
@@ -67,5 +68,15 @@ module GUI::Core
 		def stringOutput
 		end
 
+        def includeOnce?
+            className = self.class
+            #puts className.to_s
+            if( @@_doOnceStuff.index( className )!=nil )
+                return false;
+            elsif
+                @@_doOnceStuff << className
+                return true;
+            end
+        end
 	end
 end

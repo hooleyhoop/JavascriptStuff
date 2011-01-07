@@ -1,17 +1,18 @@
 - push( add_comment )
 
 -# Please fill me in
-%div[_]( style="" )
+%div[_]
 
     %a( href="www.apple.com" )
         %img( width='#{_.width-2}' height='#{_.height-2}' src='#{_.img}' alt='fuck a horse' style="margin-right: 15px; float: left; border:1px solid lightgray" )
 
     -# Overflow hidden makes sure the text doesn't wrap - is this reliable?
     %div( style='overflow: hidden;' )
-        %div.mediumType( style="" )
-            %a( style="font: normal normal 17px/30px; color: #be178b;") Add a Comment
-        %div( style="" )
-            %textarea.smallType( id="comment_body" name="comment[body]" cols="70" rows="6" style="width:95%; font-size:13px; line-height: 15px; font-family: georgia; color:#555; padding:5px" )
+        %div.mediumType( style="font: normal normal 17px/30px; color: #be178b;" )
+            Add a Comment
+        %div
+            -# jeeez, textareas are difficult to size
+            %textarea.smallType( id="comment_body" name="comment[body]" cols="70" rows="6" style="width:97%; font-size:13px; line-height: 15px; font-family: georgia; color:#555; padding:5px" )
                 So, this old geezer walks into the pub and sits down at the bar. Outside a motorcycle courier is arguing with traffic warden
         %input( id="comment_should_post_notifications" name="comment[should_post_notification]" type="hidden" value="true" )
         %div
@@ -26,14 +27,14 @@
 
     %div( style="clear:both;" )
 
--# Oh
-%style(type="text/css")
-    :sass
-        #{_.uniqueSelector} button
-            background:
-                position: 0 0px
-                color: transparent
-            span:active
-                color: #aaa !important
-            &:active
-                background-position: 0 -30px
+- if( _.includeOnce? )
+    %style(type="text/css")
+        :sass
+            #{_.uniqueSelector} button
+                background:
+                    position: 0 0px
+                    color: transparent
+                span:active
+                    color: #aaa !important
+                &:active
+                    background-position: 0 -30px

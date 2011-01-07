@@ -29,51 +29,53 @@
                 %a
                     %img( src="/images/buttons/rss.gif" style="display:block; float: right; padding-left:5px" )
 
--# Oh
-%style(type="text/css")
-    :sass
-        #{_.uniqueSelector}
-            background:
-                position: 0 0px
-                color: transparent
-            span:active
-                color: #aaa !important
-            &:active
-                background-position: 0 -#{_.height}px
+
+- if( _.includeOnce? )
+
+    %style(type="text/css")
+        :sass
+            #{_.uniqueSelector}
+                background:
+                    position: 0 0px
+                    color: transparent
+                span:active
+                    color: #aaa !important
+                &:active
+                    background-position: 0 -#{_.height}px
 
 
--# Not using this any more
--# Obviously we cannot leave this here as it is crazy to include it more than once
+    -# Not using this any more
+    -# Obviously we cannot leave this here as it is crazy to include it more than once
 
--# Handle swapping in the mouse down image
-:javascript
+    -# Handle swapping in the mouse down image
+    :javascript
 
-    // images/foo.png >> images/foo-active.png
-    function appendBitToUrl( originalURL, bitToAppend ) {
-        var parts = originalURL.split('.');
-        var fileExtension = parts[parts.length-1];
-        var pathWithoutExtension = originalURL.substr(0, originalURL.lastIndexOf('.')) || originalURL;
-        var modifiedPath = pathWithoutExtension + bitToAppend + fileExtension;
-        return modifiedPath;
-    }
+        // images/foo.png >> images/foo-active.png
+        function appendBitToUrl( originalURL, bitToAppend ) {
+            var parts = originalURL.split('.');
+            var fileExtension = parts[parts.length-1];
+            var pathWithoutExtension = originalURL.substr(0, originalURL.lastIndexOf('.')) || originalURL;
+            var modifiedPath = pathWithoutExtension + bitToAppend + fileExtension;
+            return modifiedPath;
+        }
 
 
-    var activePic = new Image();
-    activePic.src = appendBitToUrl("#{_.img}", "-active.");
-    var item = $( '#{_.uniqueSelector}' );
+        var activePic = new Image();
+        activePic.src = appendBitToUrl("#{_.img}", "-active.");
+        var item = $( '#{_.uniqueSelector}' );
 
-    item.mousedown(function() {
-     //   var pathToBackgroundImage = item.css("background-image");
-     //   var modifiedPath = appendBitToUrl( pathToBackgroundImage, "-active." );
-     //   item.css("background-image", modifiedPath );
-     //   //store a refernce to the original url
-     //   jQuery.data( item[0], 'originalUrl', pathToBackgroundImage );
-    });
-    item.mouseup(function() {
-        var storedURL = jQuery.data( item[0], 'originalUrl' );
-        item.css("background-image", storedURL );
-    });
-    item.bind("mouseleave",function() {
-        var storedURL = jQuery.data( item[0], 'originalUrl' );
-        item.css("background-image", storedURL );
-    });
+        item.mousedown(function() {
+         //   var pathToBackgroundImage = item.css("background-image");
+         //   var modifiedPath = appendBitToUrl( pathToBackgroundImage, "-active." );
+         //   item.css("background-image", modifiedPath );
+         //   //store a refernce to the original url
+         //   jQuery.data( item[0], 'originalUrl', pathToBackgroundImage );
+        });
+        item.mouseup(function() {
+            var storedURL = jQuery.data( item[0], 'originalUrl' );
+            item.css("background-image", storedURL );
+        });
+        item.bind("mouseleave",function() {
+            var storedURL = jQuery.data( item[0], 'originalUrl' );
+            item.css("background-image", storedURL );
+        });

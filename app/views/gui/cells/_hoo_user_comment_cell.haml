@@ -3,7 +3,9 @@
 - content_for :"#{'cell_proxy'+_.currentIndex.to_s}" do
     %div{ :style=>"border: 0px solid red; overflow: visible" }
         %div.mediumType{ :style=>"font: normal 13px/15px Helvetica; color: #666; margin-top: 0px; overflow: auto;" } #{ _['commentTxt'] }
-        %div.smallType{ :style=>"font: normal bold 11px/15px Helvetica; color: #3574d7; margin:-15px 0 -15px 0; overflow: auto;" }  #{ _['commentAuthor'] } #{ _['commentDate'] }
+        %div.smallType{ :style=>"font: normal bold 11px/15px Helvetica; color: #3574d7; margin:-15px 0 -15px 0; overflow: auto;" }
+            %a( href="http://www.apple.com" ) #{ _['commentAuthor'] }
+            %span( style="color: #555; font-weight: normal;" ) #{ _['commentDate'] }
 
 %div( style="position: relative; overflow: hidden;" )
 
@@ -13,5 +15,5 @@
     -# sooooo, how do we get the above content into the fucking view?
     %div( style="border: 0px solid green; overflow: hidden; padding-left: 15px;" )
         =  insert( _.userBubble, "need list view" )
-        
+
 %div{ :style=>"border: 0px solid red; width:15px; height:15px; clear: both;" }

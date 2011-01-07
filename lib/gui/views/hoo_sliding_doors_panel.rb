@@ -6,8 +6,9 @@ module GUI::Views
 
     	attr_accessor :cornerDim;
     	attr_accessor :imgPath;
+        attr_accessor :style;
 
-		def initialize
+		def initialize( args={} )
 			super();
 			self.cornerDim = 15;
 			@speechPosition = '';
@@ -38,6 +39,7 @@ module GUI::Views
         end
 
         def style=( styleName )
+            @style = styleName
             if( styleName=='inner' )
                 @imgPath = '../images/innerpanel/inner_panel';
             elsif( styleName=='inner_white' )
