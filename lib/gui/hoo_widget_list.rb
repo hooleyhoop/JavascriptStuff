@@ -28,7 +28,12 @@ module GUI
             'relativeOffsetView'    =>	GUI::Views::HooRelativeOffsetView.name,
             'spacedVerticalList'    =>	GUI::Views::HooSpacedVerticalList.name,
             'twoElasticColsFixedGutter' =>	GUI::Views::HooTwoElasticColsFixedGutter.name,
-            'spacedCellList'         =>	GUI::Views::HooSpacedCellList.name,
+            'spacedCellList'		=>	GUI::Views::HooSpacedCellList.name,
+
+			'2col'					=>	GUI::Views::Positioning::Hoo2ColView.name,
+			'3col'					=>	GUI::Views::Positioning::Hoo3ColView.name,
+			'4col'					=>	GUI::Views::Positioning::Hoo4ColView.name,
+			'5col'					=>	GUI::Views::Positioning::Hoo5ColView.name,
 
 		    # for drawing
             'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
@@ -50,6 +55,7 @@ module GUI
             'tableList'             => GUI::Views::Audioboo::TableList.name,
             'addComment'            => GUI::Views::Audioboo::AddComment.name,
             'all_user_comments'     => GUI::Views::Audioboo::AllUserComments.name,
+            'footer'                => GUI::Views::Audioboo::Footer.name,
 
 		    # for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,

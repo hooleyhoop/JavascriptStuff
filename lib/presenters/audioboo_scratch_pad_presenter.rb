@@ -29,6 +29,7 @@ module Presenters
             colorFill           = widgetClass('colorFill')
             addComment          = widgetClass('addComment')
             allCommentsTable    = widgetClass('all_user_comments')
+            footer              = widgetClass('footer')
 
             @singleItem = false;
 
@@ -213,11 +214,34 @@ module Presenters
                 bottomSpacer = spacerView.new( 15, 15, 15, 15 );
                 outerPanel.addSubView( bottomSpacer );
 
-                promotionPlaceHolder = loremIpsumView.new();
-    			bottomSpacer.addSubView( promotionPlaceHolder );
+                footerView = footer.new();
+                footerView.allItems = [
 
+                [   { 'text' =>'About Us',     'link'=> '#' },
+                    { 'text' =>'Audioboo Pro',     'link'=> '#' },
+                    { 'text' =>'Developers',     'link'=> '#' },
+                    { 'text' =>'Widgets',     'link'=> '#' }, ],
+
+                [   { 'text' =>'Support/Discussion',     'link'=> '#' },
+                    { 'text' =>'Community Guidelines',     'link'=> '#' },
+                    { 'text' =>'Terms & Conditions',     'link'=> '#' },
+                    { 'text' =>'Privacy Policy',     'link'=> '#' }, ],
+
+                [   { 'text' =>'Quick Tour',     'link'=> '#' },
+                    { 'text' =>'Watch a video intro',     'link'=> '#' },
+                    { 'text' =>'Follow us on Twitter',     'link'=> '#' },
+                    { 'text' =>'Join our Facebook Group',     'link'=> '#' }, ],
+
+                [   { 'text' =>'Latest from the blog',     'link'=> '#' },
+                    { 'text' =>'iPhone App 2.0',     'link'=> '#' },
+                    { 'text' =>'RIP 4IP',     'link'=> '#' },
+                    { 'text' =>'audioMo',     'link'=> '#' }, ],
+                ];
+
+    			bottomSpacer.addSubView( footerView );
                 promotionPlaceHolder2 = loremIpsumView.new();
     			bottomSpacer.addSubView( promotionPlaceHolder2 );
+
             end
 
         end

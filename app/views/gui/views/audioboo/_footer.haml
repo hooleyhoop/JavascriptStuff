@@ -1,0 +1,8 @@
+- push( footer )
+
+- colSize = #{ (100 / _allItems.count) }
+
+%div[_]( style="" )
+    - _.views.each_with_index do |view, index|
+        %div( style="width: %" )
+            = insert( view, "" )
