@@ -1,5 +1,5 @@
-module GUI::Views
-	class HooHorizontalListOneView < GUI::Core::HooView
+module GUI::Views::Positioning
+	class HooPaddedHorizontalList2View < GUI::Core::HooView
 
 		attr_accessor :content;
 		attr_accessor :cell;

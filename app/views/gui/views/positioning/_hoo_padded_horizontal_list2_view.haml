@@ -1,0 +1,9 @@
+- push( hoo_padded_horizontal_list2_view )
+
+%div[_]
+	- _.content.each_with_index do |item, i|
+		-# NB) the inline block problem here, whitespace is added between the elements. You need to use the haml alligators
+		%div( style="overflow: auto; display: inline-block; vertical-align: top; zoom: 1; *display: inline;" )>
+			= render :partial=>_.cell.partial, :object=>item, :locals=>{ :_ => _.cell }
+		-if( i!=_.content.count-1 )
+			%div( style="width: 15px; height: 15px; background-color: transparent; display:inline-block;" )>

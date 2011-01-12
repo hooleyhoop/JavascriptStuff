@@ -1,9 +1,8 @@
 module GUI::Views::Positioning
 
     # PLEASE FILL ME IN
-    # http://0.0.0.0:3000/widgets/5col
-
-	class Hoo5ColView < GUI::Core::HooView
+    # http://0.0.0.0:3000/widgets/3col
+	class Hoo3ColPercentPaddedView < GUI::Core::HooView
 
 		def initialize( args={} )
 			super();
@@ -25,12 +24,6 @@ module GUI::Views::Positioning
 
 			placeholderView3 = GUI::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView3 );
-
-			placeholderView4 = GUI::HooWidgetList.widgetClass('colorFill').new()
-			self.addSubView( placeholderView4 );
-
-			placeholderView5 = GUI::HooWidgetList.widgetClass('colorFill').new()
-			self.addSubView( placeholderView5 );
 		end
 
 	end

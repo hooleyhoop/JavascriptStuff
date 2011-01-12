@@ -21,45 +21,56 @@ module GUI
 
 		@@widgets = {
 
-		    # for positioning
-            'verticalSplitView'     =>	GUI::Views::HooVerticalSplitView.name,
-            'horizontalSplitView'   =>	GUI::Views::HooHorizontalSplitView.name,
+			# for positioning
+			'verticalSplitView'     =>	GUI::Views::HooVerticalSplitView.name,
+			'horizontalSplitView'   =>	GUI::Views::HooHorizontalSplitView.name,
 			'spacerView'		    =>	GUI::Views::HooSpacerView.name,
-            'relativeOffsetView'    =>	GUI::Views::HooRelativeOffsetView.name,
-            'spacedVerticalList'    =>	GUI::Views::HooSpacedVerticalList.name,
-            'twoElasticColsFixedGutter' =>	GUI::Views::HooTwoElasticColsFixedGutter.name,
-            'spacedCellList'		=>	GUI::Views::HooSpacedCellList.name,
+			'relativeOffsetView'    =>	GUI::Views::HooRelativeOffsetView.name,
+			'spacedVerticalList'    =>	GUI::Views::HooSpacedVerticalList.name,
+			'twoElasticColsFixedGutter' =>	GUI::Views::HooTwoElasticColsFixedGutter.name,
+			'spacedCellList'		=>	GUI::Views::HooSpacedCellList.name,
 
+			# These have a percentage spacing, not what i want!
+			'2col_percent_padded'					=>	GUI::Views::Positioning::Hoo2ColPercentPaddedView.name,
+			'3col_percent_padded'					=>	GUI::Views::Positioning::Hoo3ColPercentPaddedView.name,
+			'4col_percent_padded'					=>	GUI::Views::Positioning::Hoo4ColPercentPaddedView.name,
+			'5col_percent_padded'					=>	GUI::Views::Positioning::Hoo5ColPercentPaddedView.name,
+
+			# What i want is fixed space
 			'2col'					=>	GUI::Views::Positioning::Hoo2ColView.name,
 			'3col'					=>	GUI::Views::Positioning::Hoo3ColView.name,
 			'4col'					=>	GUI::Views::Positioning::Hoo4ColView.name,
 			'5col'					=>	GUI::Views::Positioning::Hoo5ColView.name,
 
+			'paddedHorizontal'		=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
+
 		    # for drawing
-            'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
-            'fixedSizeImage'        =>	GUI::Views::HooFixedSizeImg.name,
-            'hoo100PercentImg'      =>	GUI::Views::HooOneHundredPercentImg.name,
+			'largeSinglebuttonForm' =>	GUI::Views::Drawing::HooLargeSingleButtonForm.name,
+
+			'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
+			'fixedSizeImage'        =>	GUI::Views::HooFixedSizeImg.name,
+			'hoo100PercentImg'      =>	GUI::Views::HooOneHundredPercentImg.name,
 			'slidingDoorsPanel1'    =>	GUI::Views::HooSlidingDoorsPanel.name,
 			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
-            'singlebuttonForm'      =>	GUI::Views::HooSingleButtonForm.name,
-            'croppedImg'            =>	GUI::Views::HooCroppedImg.name,
-            'inlineTextList'        =>  GUI::Views::HooInlineTextList.name,
+			'croppedImg'            =>	GUI::Views::HooCroppedImg.name,
+			'inlineTextList'        =>  GUI::Views::HooInlineTextList.name,
 
-            # Audioboo specific
-            'followButtonSection'   => GUI::Views::Audioboo::FollowButtonSection.name,
-            'userDetailsBanner'     => GUI::Views::Audioboo::UserDetailsBanner.name,
-            'booMainDetails'        => GUI::Views::Audioboo::BooMainDetails.name,
-            'detailPlayer'          => GUI::Views::Audioboo::DetailPlayer.name,
-            'tableHeader'           => GUI::Views::Audioboo::TableHeader.name,
-            'croppedImgWithHeader'  => GUI::Views::Audioboo::CroppedImgWithHeader.name,
-            'tableList'             => GUI::Views::Audioboo::TableList.name,
-            'addComment'            => GUI::Views::Audioboo::AddComment.name,
-            'all_user_comments'     => GUI::Views::Audioboo::AllUserComments.name,
-            'footer'                => GUI::Views::Audioboo::Footer.name,
+			# Audioboo specific
+			'followButtonSection'   => GUI::Views::Audioboo::FollowButtonSection.name,
+			'userDetailsBanner'     => GUI::Views::Audioboo::UserDetailsBanner.name,
+			'booMainDetails'        => GUI::Views::Audioboo::BooMainDetails.name,
+			'detailPlayer'          => GUI::Views::Audioboo::DetailPlayer.name,
+			'tableHeader'           => GUI::Views::Audioboo::TableHeader.name,
+			'croppedImgWithHeader'  => GUI::Views::Audioboo::CroppedImgWithHeader.name,
+			'tableList'             => GUI::Views::Audioboo::TableList.name,
+			'addComment'            => GUI::Views::Audioboo::AddComment.name,
+			'all_user_comments'     => GUI::Views::Audioboo::AllUserComments.name,
+			'footer'                => GUI::Views::Audioboo::Footer.name,
+			'editBar'				=> GUI::Views::Audioboo::EditBar.name,
 
-		    # for debugging
+			# for debugging
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,
-            'cellRenderer'          =>  GUI::Views::HooCellRenderer.name,
+			'cellRenderer'          =>  GUI::Views::HooCellRenderer.name,
 
 			'labeledButton'		    =>	GUI::Views::HooLabeledButton1.name,
 			'blueView'			    =>	GUI::Views::HooBlueView.name,
@@ -103,6 +114,7 @@ module GUI
 			'horizontalList1'	=>	GUI::Cells::HooHorizontalListOneCell.name,
 			'sparseBooCell'	    =>	GUI::Cells::HooSparseBooCell.name,
 			'hoo_user_comment_cell' => GUI::Cells::HooUserCommentCell.name,
+			'actionButton1' 	=> GUI::Cells::HooActionButton1Cell.name,
 		}
 
 		def self.cellClass( name )

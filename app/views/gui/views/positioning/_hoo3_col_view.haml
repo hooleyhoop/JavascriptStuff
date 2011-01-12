@@ -1,12 +1,17 @@
 - push( hoo3_col_view )
 
-%div( style="clear:left;float:left;width:100%;overflow:hidden;background:#89ffa2;" )
-	%div( style="clear:left;float:left;width:100%;position:relative;right:33.333%;background:#ffa7a7;" )
-		%div( style="float:left;width:100%;position:relative;right:33.33%;background:#fff689;" )
-			%div( style="float:left;width:29.33%;position:relative;left:68.67%;overflow:hidden;" )
-				steve
-			%div( style="float:left;width:29.33%;position:relative;left:72.67%;overflow:hidden;" )
-				steve
-			%div( style="float:left;width:29.33%;position:relative;left:76.67%;overflow:hidden;" )
-				steve
+%div( style="clear:left;float:left;width:100%;overflow:hidden;" )
+	%div( style="clear:left;float:left;width:100%;position:relative;right:33.333%;" )
+		%div( style="float:left;width:100%;position:relative;right:33.33%;" )
+			%div( style="float:left;width:33.333%;position:relative;left:66.666%;overflow:hidden;" )
+				%div( style="padding: 0 7px 0 0;" )
+					=  insert( _.views[0], "" )
+
+			%div( style="float:left;width:33.333%;position:relative;left:66.666%;overflow:hidden;" )
+				%div( style="padding: 0 7px 0 8px;" )
+					=  insert( _.views[1], "" )
+
+			%div( style="float:left;width:33.333%;position:relative;left:66.666%;overflow:hidden;" )
+				%div( style="padding: 0 0 0 8px;" )
+					=  insert( _.views[2], "" )
 

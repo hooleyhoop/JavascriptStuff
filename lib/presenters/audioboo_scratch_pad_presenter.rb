@@ -7,31 +7,32 @@ module Presenters
 
 			super( controller );
 
-			spacerView 			= widgetClass('spacerView');
-			loremIpsumView 		= widgetClass('loremIpsum');
-			slidingDoorsPanel   = widgetClass('slidingDoorsPanel1')
-			speechBubblePane    = widgetClass('speechBubblePane')
-			verticalSplitView   = widgetClass('verticalSplitView')
-			horizontalSplitView = widgetClass('horizontalSplitView')
-            singlebuttonForm    = widgetClass('singlebuttonForm')
-            followButtonSection = widgetClass('followButtonSection')
-            userDetailsBanner   = widgetClass('userDetailsBanner')
-            fixedSizeImage      = widgetClass('fixedSizeImage')
-            hoo100PercentImg    = widgetClass('hoo100PercentImg')
-            booMainDetails      = widgetClass('booMainDetails')
-            detailPlayer        = widgetClass('detailPlayer')
-            spacedVerticalList  = widgetClass('spacedVerticalList')
-            twoElasticColsFixedGutter  = widgetClass('twoElasticColsFixedGutter')
-            tableHeader         = widgetClass('tableHeader')
-            croppedImg          = widgetClass('croppedImg')
-            croppedImgWithHeader= widgetClass('croppedImgWithHeader')
-            tableList           = widgetClass('tableList')
-            colorFill           = widgetClass('colorFill')
-            addComment          = widgetClass('addComment')
-            allCommentsTable    = widgetClass('all_user_comments')
-            footer              = widgetClass('footer')
+			spacerView				= widgetClass('spacerView');
+			loremIpsumView			= widgetClass('loremIpsum');
+			slidingDoorsPanel		= widgetClass('slidingDoorsPanel1')
+			speechBubblePane		= widgetClass('speechBubblePane')
+			verticalSplitView		= widgetClass('verticalSplitView')
+			horizontalSplitView		= widgetClass('horizontalSplitView')
+			largeSinglebuttonForm	= widgetClass('largeSinglebuttonForm')
+			followButtonSection		= widgetClass('followButtonSection')
+			userDetailsBanner		= widgetClass('userDetailsBanner')
+			fixedSizeImage			= widgetClass('fixedSizeImage')
+			hoo100PercentImg		= widgetClass('hoo100PercentImg')
+			booMainDetails			= widgetClass('booMainDetails')
+			detailPlayer			= widgetClass('detailPlayer')
+			spacedVerticalList		= widgetClass('spacedVerticalList')
+			twoElasticColsFixedGutter  = widgetClass('twoElasticColsFixedGutter')
+			tableHeader				= widgetClass('tableHeader')
+			croppedImg				= widgetClass('croppedImg')
+			croppedImgWithHeader	= widgetClass('croppedImgWithHeader')
+			tableList				= widgetClass('tableList')
+			colorFill				= widgetClass('colorFill')
+			addComment				= widgetClass('addComment')
+			allCommentsTable		= widgetClass('all_user_comments')
+			footer					= widgetClass('footer')
+			editbarView				= widgetClass('editBar')
 
-            @singleItem = false;
+			@singleItem = false;
 
             if( @singleItem )
 
@@ -67,10 +68,6 @@ module Presenters
 
                 # float this one right, make sure it stays aligned to the top
                 followSection = followButtonSection.new();
-                followSection.img = '../images/buttons/follow-button.png';
-			    followSection.width = 105;
-    			followSection.height = 45;
-    			followSection.label = 'Follow';
                 userBubble.addSubView( followSection );
 
                 # The user name and pic, etc.
@@ -124,6 +121,10 @@ module Presenters
                 # TODO: Different layouts depending which elements are present
                 rightSideList = spacedVerticalList.new();
                 divider.addSubView( rightSideList );
+
+				#right side - edit bar
+				editbar = editbarView.new();
+				rightSideList.addSubView( editbar );
 
                 # RIGHT SIDE - Images
                 divider2 = twoElasticColsFixedGutter.new();
@@ -211,40 +212,40 @@ module Presenters
 
 
                 # Bottom section
-                bottomSpacer = spacerView.new( 15, 15, 15, 15 );
+                bottomSpacer = spacerView.new( 15, 0, 15, 0 );
                 outerPanel.addSubView( bottomSpacer );
 
                 footerView = footer.new();
                 footerView.allItems = [
 
-                [   { 'text' =>'About Us',     'link'=> '#' },
-                    { 'text' =>'Audioboo Pro',     'link'=> '#' },
-                    { 'text' =>'Developers',     'link'=> '#' },
-                    { 'text' =>'Widgets',     'link'=> '#' }, ],
+                [   { 'name' =>'About Us',     'url'=> '#' },
+                    { 'name' =>'Audioboo Pro',     'url'=> '#' },
+                    { 'name' =>'Developers',     'url'=> '#' },
+                    { 'name' =>'Widgets',     'url'=> '#' }, ],
 
-                [   { 'text' =>'Support/Discussion',     'link'=> '#' },
-                    { 'text' =>'Community Guidelines',     'link'=> '#' },
-                    { 'text' =>'Terms & Conditions',     'link'=> '#' },
-                    { 'text' =>'Privacy Policy',     'link'=> '#' }, ],
+                [   { 'name' =>'Support/Discussion',     'url'=> '#' },
+                    { 'name' =>'Community Guidelines',     'url'=> '#' },
+                    { 'name' =>'Terms & Conditions',     'url'=> '#' },
+                    { 'name' =>'Privacy Policy',     'url'=> '#' }, ],
 
-                [   { 'text' =>'Quick Tour',     'link'=> '#' },
-                    { 'text' =>'Watch a video intro',     'link'=> '#' },
-                    { 'text' =>'Follow us on Twitter',     'link'=> '#' },
-                    { 'text' =>'Join our Facebook Group',     'link'=> '#' }, ],
+                [   { 'name' =>'Quick Tour',     'url'=> '#' },
+                    { 'name' =>'Watch a video intro',     'url'=> '#' },
+                    { 'name' =>'Follow us on Twitter',     'url'=> '#' },
+                    { 'name' =>'Join our Facebook Group',     'url'=> '#' }, ],
 
-                [   { 'text' =>'Latest from the blog',     'link'=> '#' },
-                    { 'text' =>'iPhone App 2.0',     'link'=> '#' },
-                    { 'text' =>'RIP 4IP',     'link'=> '#' },
-                    { 'text' =>'audioMo',     'link'=> '#' }, ],
+                [   { 'name' =>'Latest from the blog',     'url'=> '#' },
+                    { 'name' =>'iPhone App 2.0',     'url'=> '#' },
+                    { 'name' =>'RIP 4IP',     'url'=> '#' },
+                    { 'name' =>'audioMo',     'url'=> '#' }, ],
                 ];
 
     			bottomSpacer.addSubView( footerView );
-                promotionPlaceHolder2 = loremIpsumView.new();
-    			bottomSpacer.addSubView( promotionPlaceHolder2 );
+                #promotionPlaceHolder2 = loremIpsumView.new();
+    			#bottomSpacer.addSubView( promotionPlaceHolder2 );
 
-            end
+			end
 
-        end
+		end
 
 	end
 end

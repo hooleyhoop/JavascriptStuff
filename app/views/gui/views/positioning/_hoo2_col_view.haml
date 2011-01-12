@@ -1,8 +1,11 @@
 - push( hoo2_col_view )
 
-%div( style="clear:left; float:left; width:100%; overflow:hidden; background:#ffa7a7;" )
-	%div( style="float:left; width:100%; position:relative; right:50%; background:#fff689;" )
-		%div( style="float:left; width:46%; position:relative; left:52%; overflow:hidden;" )
-			steve
-		%div( style="float:left; width:46%; position:relative; left:56%; overflow:hidden;" )
-			steve
+%div( style="clear:left; float:left; width:100%; overflow:hidden;" )
+	%div( style="float:left; width:100%; position:relative; right:50%;" )
+		%div( style="float:left; width:50%; position:relative; left:50%; overflow:hidden;" )
+			%div( style="padding: 0 7px 0 0;" )
+				=  insert( _.views[0], "" )
+
+		%div( style="float:left; width:50%; position:relative; left:50%; overflow:hidden;" )
+			%div( style="padding: 0 0 0 8px;" )
+				=  insert( _.views[1], "" )

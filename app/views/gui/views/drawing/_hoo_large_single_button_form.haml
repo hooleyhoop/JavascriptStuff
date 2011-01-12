@@ -1,0 +1,29 @@
+- push( hoo_large_single_button_form )
+
+-# Draw a div with a background img at fixed size
+%form(  class="largeSingleButton" action="dd" method="post" )
+	%div( style="display:inline" )
+		%input( name="authenticity_token" type="hidden" value="wTet0+r9Q5bOj3dfdAU01rsRvJamF8FWACF9h+AaClQ=" )
+
+	-# Old way used a submit button. Thee are a bitch to style. So is this.
+	-# New way to try to ease styling
+	%button[_]( style="margin: 0 0 0 0; border: none; background-color:transparent; background-image:url( #{_.img} ); width: #{_.width}px; height: #{_.height}px;" name="commit" title="Follow matthew_weaver's Boos" type="submit" value="" )
+		-# Note, the position of the span is different in ie, firefox and safari (didnt even bother to check chrome)
+		-# If you center it in safari it will be to low in firefox, whichever way you tweak it it will be incorrect somewhere
+		-# We really should use links and javascript
+		%span( style="font-size: 15px; color: #{_.labelColor}; line-height: 15px; padding: 0 0 0 15px; position: relative; top:0px; margin:0!important" )
+			#{_.label}
+
+- if( _.includeOnce? )
+
+	%style(type="text/css")
+		:sass
+			.largeSingleButton button
+				background:
+					position: 0 0px
+					color: transparent
+				&:active
+					background-position: 0 -#{_.height}px
+				&:active span
+					color: #555 !important
+
