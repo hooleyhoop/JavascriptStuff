@@ -69,8 +69,9 @@ module GUI
 			'editBar'				=> GUI::Views::Audioboo::EditBar.name,
 
 			# for debugging
+			'testUploadForm'    	=>	GUI::Views::Debug::TestUploadFormView.name,
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,
-			'cellRenderer'          =>  GUI::Views::HooCellRenderer.name,
+			'cellRenderer'          =>	GUI::Views::HooCellRenderer.name,
 
 			'labeledButton'		    =>	GUI::Views::HooLabeledButton1.name,
 			'blueView'			    =>	GUI::Views::HooBlueView.name,

@@ -1,0 +1,13 @@
+- push( test_upload_form_view )
+
+-#= form_tag( :controller=>"upload_test", :action =>"upload" ) do
+-#	-# %form( action="" method="post" enctype="multipart" name="form1" id="form1" )
+-#	%input( type="file" name="fileField" id="fileField" )
+-#	= submit_tag "Upload"
+
+-#= form_for @person, :html => {:multipart => true} do |f| %>
+-#	= f.file_field :picture
+
+= form_tag( {:action=>:upload}, :multipart => true) do
+	= file_field_tag 'picture'
+	= submit_tag "Upload"

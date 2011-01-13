@@ -1,5 +1,9 @@
 JavascriptStuff::Application.routes.draw do
 
+  get "upload_test/home"
+
+  get "upload_test/contact"
+
   get "widgets/show"
 
   resources :elephants
@@ -29,6 +33,9 @@ JavascriptStuff::Application.routes.draw do
   #ajax test - not sure if this is right?
   get "pages/_ajaxHTML"
   get "pages/_singlePartialViaAjaxFromParam"
+
+  get "upload_test/simple_form"
+  post "upload_test/upload"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

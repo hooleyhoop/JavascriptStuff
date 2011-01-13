@@ -29,3 +29,107 @@
 
 	});
 
+
+- push( hoo_sliding_doors_panel )
+
+
+-# Speech Bubble on the right - wrap everything in elastic layout
+- content_for(:rightHandSpeechBubble) do
+
+    %div{ :style=>"position: relative; margin:auto" }
+        %div.floatRight_relative{ :style =>"width:100%; overflow:hidden; clear:both;" }
+
+            %div.floatLeft_relative{ :style=>"margin-left:-15px; right:100%; width:200%;" }
+                %div.floatLeft_relative{ :style=>"left:50%; width:50%;" }
+
+                    / Main Column
+                    %div{ :style=>"margin-left:15px; overflow:hidden;" }
+                        %div{ :style=>"width:100%; height:50px; background-color:#ff0000;" }
+
+                / Right Hand Sidebar
+                %div.floatRight_relative{ :style=>"left:15px; width:15px;" }
+                    %div{ :style=>"width:100%; height:50px; background-color:#00ff00;" }
+
+
+-# The main bit
+- content_for(:bottomOrNoSpeechBubble) do
+
+    %div.hoo_sliding_doors_panel{ :style=>"" }
+
+        %div{ :style=>"position: relative;" }
+
+            %div.hoo_sliding_doors_panel_top_middle{ :style=>"position: absolute; width: auto; background: url( #{_.top} ) repeat-x center top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+            %div.hoo_sliding_doors_panel_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) top left no-repeat;" }
+            %div.hoo_sliding_doors_panel_top_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) top right no-repeat;" }
+
+            %div.hoo_sliding_doors_panel_top{ :style=>"padding-top: #{_.cornerDim}px;" }
+
+                %div.hoo_sliding_doors_panel_bottom{ :style=>"padding-bottom: #{_.cornerDim}px;" }
+
+                    %div.hoo_sliding_doors_panel_left_middle{ :style=>"position: absolute; height:auto; background: url( #{_.left} ) repeat-y right center; width: #{_.cornerDim}px; top:#{_.cornerDim}px; bottom: #{_.cornerDim}px;" }
+
+                    %div.hoo_sliding_doors_panel_left{ :style=>"padding-left: #{_.cornerDim}px; " }
+
+                        %div.hoo_sliding_doors_panel_right{ :style=>"padding-right: #{_.cornerDim}px; background: url( #{_.right} ) repeat-y right center;" }
+
+                            %div.hoo_sliding_doors_panel_inner{ :style=>"background: url( #{_.fill} ) repeat 0;" }
+                                =  insert( _.views, "" )
+                                %div.hoo_sliding_doors_panel_clearfix{ :style=>"clear: both;" }
+
+
+                    %div.hoo_sliding_doors_panel_bottom_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) bottom left no-repeat;" }
+                    %div.hoo_sliding_doors_panel_bottom_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) bottom right no-repeat;" }
+                    %div.hoo_sliding_doors_panel_bottom_middle{ :style=>"position: absolute; width: auto; background: url( #{_.bottom} ) repeat-x center bottom; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+
+        -# add in the speech bubble thingymagig. Notice it is slightly offset vertically
+        - if _.speechPosition=='bottom'
+            %div.speechthing{ :style=>"width:100%; height: #{_.cornerDim}px;" }
+                %div{ :style=>"position: relative; top: -1px; margin-left: #{_.cornerDim*2}px; width: #{_.cornerDim*2}px; height: #{_.cornerDim}px;background: url( #{_.speech} ) top center no-repeat;" }
+
+- if _.speechPosition=='right'
+    -#= yield :rightHandSpeechBubble
+- else
+    = yield :bottomOrNoSpeechBubble
+
+
+
+
+
+
+- if( _.includeOnce? )
+
+    -# Not using this any more
+    -# Obviously we cannot leave this here as it is crazy to include it more than once
+
+    -# Handle swapping in the mouse down image
+    :javascript
+
+        // images/foo.png >> images/foo-active.png
+        function appendBitToUrl( originalURL, bitToAppend ) {
+            var parts = originalURL.split('.');
+            var fileExtension = parts[parts.length-1];
+            var pathWithoutExtension = originalURL.substr(0, originalURL.lastIndexOf('.')) || originalURL;
+            var modifiedPath = pathWithoutExtension + bitToAppend + fileExtension;
+            return modifiedPath;
+        }
+
+
+        var activePic = new Image();
+        activePic.src = appendBitToUrl("#{_.img}", "-active.");
+        var item = $( '#{_.uniqueSelector}' );
+
+        item.mousedown(function() {
+         //   var pathToBackgroundImage = item.css("background-image");
+         //   var modifiedPath = appendBitToUrl( pathToBackgroundImage, "-active." );
+         //   item.css("background-image", modifiedPath );
+         //   //store a refernce to the original url
+         //   jQuery.data( item[0], 'originalUrl', pathToBackgroundImage );
+        });
+        item.mouseup(function() {
+            var storedURL = jQuery.data( item[0], 'originalUrl' );
+            item.css("background-image", storedURL );
+        });
+        item.bind("mouseleave",function() {
+            var storedURL = jQuery.data( item[0], 'originalUrl' );
+            item.css("background-image", storedURL );
+        });
