@@ -25,6 +25,11 @@ JavascriptStuff::Application.routes.draw do
   get "pages/grid_view"
   get "pages/list_view"
   get "pages/horizontal_list_view"
+
+  get 'pages/multiple_buttons_test'
+  post 'pages/multiple_buttons_test_upload'
+
+
   get 'pages/test_audioboo_stuff'
 
   # woo! a more complicated route. Lets try sending a variable

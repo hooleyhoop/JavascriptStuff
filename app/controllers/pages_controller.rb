@@ -1,6 +1,8 @@
 
 class PagesController < ApplicationController
 
+	require 'test/unit'
+	include Test::Unit::Assertions
 
 	# try to get the content of javascript/tests dir and pass it to template so they can be linked
 	def javascript_unit_tests()
@@ -61,7 +63,24 @@ class PagesController < ApplicationController
 		pagePresenter.drawPage();
 	end
 
-    def test_audioboo_stuff
+	# Better practice to use a different action for the post request
+	def multiple_buttons_test
+		pagePresenter = Presenters::MultipleButtonsPagePresenter.new( self );
+		pagePresenter.drawPage();
+	end
+	def multiple_buttons_test_upload
+		#assert request.post
+		#check if ajax or form
+		#puts request.inspect
+		#puts request.to_yaml
+
+		#assert( request.post? );
+		#assert( request.xhr? );
+
+		render :json =>{ :result =>'success', :random => 'scallywag' }
+	end
+
+	def test_audioboo_stuff
 		pagePresenter = Presenters::AudiobooScratchPadPresenter.new( self );
 		pagePresenter.drawPage();
 	end

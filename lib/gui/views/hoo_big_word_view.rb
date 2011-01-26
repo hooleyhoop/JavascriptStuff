@@ -1,6 +1,8 @@
 module GUI::Views
 	class HooBigWordView < GUI::Core::HooView
 
+		attr_accessor :text;
+
 		def initialize( inputString="empty" )
 			super();
 			@text = inputString

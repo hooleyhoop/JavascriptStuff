@@ -54,6 +54,7 @@ module GUI
 			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
 			'croppedImg'            =>	GUI::Views::HooCroppedImg.name,
 			'inlineTextList'        =>  GUI::Views::HooInlineTextList.name,
+			'cuteDropDownMenu'		=>  GUI::Views::HooCuteDropDownMenu.name,
 
 			# Audioboo specific
 			'followButtonSection'   => GUI::Views::Audioboo::FollowButtonSection.name,
@@ -67,6 +68,7 @@ module GUI
 			'all_user_comments'     => GUI::Views::Audioboo::AllUserComments.name,
 			'footer'                => GUI::Views::Audioboo::Footer.name,
 			'editBar'				=> GUI::Views::Audioboo::EditBar.name,
+			'mastHead'				=> GUI::Views::Audioboo::MastHead.name,
 
 			# for debugging
 			'testUploadForm'    	=>	GUI::Views::Debug::TestUploadFormView.name,

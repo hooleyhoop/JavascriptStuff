@@ -53,6 +53,12 @@ module GUI::Core
 			textListSelector = '#' + className.underscore + '_'+ self.object_id.to_s
 		end
 
+		def varName
+			className = self.class.to_s
+			className = className.gsub('::','_')
+			textListSelector = '_' + className.underscore + '_'+ self.object_id.to_s
+		end
+
 		def window
 			window = self
 			while window.parentView !=nil

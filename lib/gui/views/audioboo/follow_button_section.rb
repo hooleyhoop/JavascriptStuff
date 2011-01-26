@@ -8,12 +8,35 @@ module GUI::Views::Audioboo
 		def initialize( args={} )
 			super();
 
+			#
+			# TODO: The follow button must be optional
+			#
+
+			#
+			# TODO: want a toggle button
+			#
+
+			#
+			# TODO: IF button can be different heights, how do i customize the css
+			#
+
+			#
+			# TODO: How can i have an ajax button that falls back to form
+			#
+
+
+			# http://0.0.0.0:3000/widgets/largeSinglebuttonForm
 			largeButtonclass =  GUI::HooWidgetList.widgetClass('largeSinglebuttonForm')
-			@largeButton = largeButtonclass.new
+			@largeButton = largeButtonclass.new();
+
 			@largeButton.img = '../images/buttons/follow-button.png';
+
 			@largeButton.width = 105;
 			@largeButton.height = 45;
+
 			@largeButton.label = 'Follow'
+			@largeButton.label = 'Unfollow'
+
 			@largeButton.labelColor = '#fff'
 
 		end

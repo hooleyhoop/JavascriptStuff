@@ -1,4 +1,4 @@
-!!! #
+!!!
 %html( class="no-js" )
 	%head{:lang=>"en", :class => 'no-js'}
 		%meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=UTF-8"}
@@ -19,6 +19,13 @@
 		:javascript
 
 			// Lets kick it all off
-			$(document).ready(function(){
-				#{runStartupScripts()}
+			$(document).ready(function()
+			{
+				// ERR: the problem with this is that views that do start-up scripts in this fashion
+				// cannot be loaded by ajax!
+
+				#{runStartupScripts()} // call the helper to output collected startup scripts
+
+				// I was thiking along the lines of looking in data- attributes for scripts to run
+				createJSObjectsFromRubyObjects();
 			});

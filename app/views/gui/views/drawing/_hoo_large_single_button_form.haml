@@ -1,18 +1,31 @@
+-# View should be logicless
+-# No Dimensions in CSS
+-# If you don't have Javascript you dont need rollovers
+-# Javascript-less site should be minimal and semantic
+
 - push( hoo_large_single_button_form )
 
 -# Draw a div with a background img at fixed size
-%form(  class="largeSingleButton" action="dd" method="post" )
-	%div( style="display:inline" )
-		%input( name="authenticity_token" type="hidden" value="wTet0+r9Q5bOj3dfdAU01rsRvJamF8FWACF9h+AaClQ=" )
+-# TODO: Use form tag here. Can't quite get it to work!
+-# There are helpers for all these form elements!
 
-	-# Old way used a submit button. Thee are a bitch to style. So is this.
-	-# New way to try to ease styling
-	%button[_]( style="margin: 0 0 0 0; border: none; background-color:transparent; background-image:url( #{_.img} ); width: #{_.width}px; height: #{_.height}px;" name="commit" title="Follow matthew_weaver's Boos" type="submit" value="" )
-		-# Note, the position of the span is different in ie, firefox and safari (didnt even bother to check chrome)
-		-# If you center it in safari it will be to low in firefox, whichever way you tweak it it will be incorrect somewhere
-		-# We really should use links and javascript
-		%span( style="font-size: 15px; color: #{_.labelColor}; line-height: 15px; padding: 0 0 0 15px; position: relative; top:0px; margin:0!important" )
-			#{_.label}
+-# adding the data-jsclass attribute means that a javascript instance will be created
+%div[_]( data-jsclass='HooLargeSingleButtonForm' )
+	%form( accept-charset="UTF-8" class="largeSingleButton" action="#{_.action}" method="post" data-remote="true" )
+
+		%div( style="display:inline" )
+			%input( name="authenticity_token" type="hidden" value="wTet0+r9Q5bOj3dfdAU01rsRvJamF8FWACF9h+AaClQ=" )
+
+		-# Old way used a submit button. Thee are a bitch to style. So is this.
+		-# New way to try to ease styling
+		%button( style="margin: 0 0 0 0; border: none; background-color:transparent; background-image:url( #{_.img} ); width: #{_.width}px; height: #{_.height}px;" name="commit" title="" type="submit" value="" )
+			-# Note, the position of the span is different in ie, firefox and safari (didnt even bother to check chrome)
+			-# If you center it in safari it will be to low in firefox, whichever way you tweak it it will be incorrect somewhere
+
+			-# We really should use links and javascript
+			%span( style="font-size: 15px; color: #{_.labelColor}; line-height: 15px; padding: 0 0 0 15px; position: relative; top:0px; margin:0!important" )
+				#{_.label}
+
 
 - if( _.includeOnce? )
 
@@ -22,8 +35,76 @@
 				background:
 					position: 0 0px
 					color: transparent
-				&:active
-					background-position: 0 -#{_.height}px
+				// Argghh. Cannot put this variable height in here!
+				// &:active
+				//	background-position: 0 -#{_.height}px
 				&:active span
 					color: #555 !important
 
+	:javascript
+
+		HooWidget = SC.Object.extend({
+			json: #{_.jsonProperties},	// these are really class variables, as such, this is a waste of storage
+			id: "undefined",
+		});
+
+		HooLargeSingleButtonForm = HooWidget.extend({
+
+			init: function() {
+				arguments.callee.base.apply(this,arguments);
+				this.setupBindings();
+			},
+
+			setupBindings: function() {
+				this.getForm().submit( {ob: this}, this.onClick );
+			},
+
+			toggleButtonState: function() {
+
+				this.setButtonText( "Fuck you" );
+				this.positionBackground();
+			},
+
+			positionBackground:function() {
+				var $butt = this.getButton();
+				$butt.css( "backgroundPosition", "0px " + 20 + "px" );
+			},
+
+			setButtonText: function( arg ) {
+				var $butt = this.getButton();
+				var $contents = $butt.find("span");
+				$contents.text( arg );
+			},
+
+			getForm: function() {
+				var formQuery = "#"+this.id+" form:first";
+				var $form = $( formQuery );
+				if( $form.length!=1 )
+					console.error("Could not find the form");
+				return $form;
+			},
+
+			getButton: function() {
+				var buttonQuery = "#"+this.id+" button:first";
+				var $button = $( buttonQuery );
+				if( $button.length!=1 )
+					console.error("Could not find the Button");
+				return $button;
+			},
+
+			onClick: function( e ) {
+
+				// -- TODO: dsisable the button after clicking
+
+				$.ajax({ url: this.action, type: 'POST', data: $(this).serialize(),
+					success: function(data) {
+						// alert(  e.data.ob+" muthafucking "+data.result );
+						// Toggle the button graphics
+						e.data.ob.toggleButtonState();
+
+						// -- TODO: enable the button
+					}
+				});
+			    return e.preventDefault();
+			},
+		});

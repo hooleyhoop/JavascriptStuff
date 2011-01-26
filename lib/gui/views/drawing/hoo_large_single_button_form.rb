@@ -8,6 +8,7 @@ module GUI::Views::Drawing
 		attr_accessor :img;
 		attr_accessor :width, :height;
 		attr_accessor :label, :labelColor;
+		attr_accessor :action;
 
 		def initialize( args={} )
 			super();
@@ -21,7 +22,20 @@ module GUI::Views::Drawing
 			@height = 45;
 			@label = 'hello'
 			@labelColor = '#969696'
+			@action = ''
+		end
+
+		def jsonProperties
+			allItems = {
+				:img	=> @img,
+				:width	=> @width
+			}
+			return allItems.to_json();
 		end
 
 	end
 end
+
+
+# Have to run when loaded by ajax
+# self.window.installStartupJavascript( :function=>"crippleListView", :arg1=>@textList.uniqueSelector(), :arg2=>@widgetResizer.actionName );

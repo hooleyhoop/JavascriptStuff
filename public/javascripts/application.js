@@ -36,6 +36,32 @@ function crippleListView( listID, targetFunctionName ) {
 }
 
 /*
+ * look for data-jsclass, create an instance for each
+ */
+function createJSObjectsFromRubyObjects() {
+
+	// -- get all objects with data-jsClass attribute 'steve'
+	var all_jsClass_objects = $(":customdata(jsclass)" );
+	$.each( all_jsClass_objects, function( i, ob ) {
+		var idString = $(ob).attr('id');
+		var className = $(ob).customdata('jsclass');
+		var newInstanceName = '_'+idString;
+		var hmm = eval(className);
+		var newInstance = hmm.create( {id: idString} );
+		if( window[newInstanceName]!=undefined )
+			console.error("Cannot create instance of "+className );
+		window[newInstanceName] = newInstance;
+		console.log( "Created "+newInstanceName );
+	});
+}
+
+
+
+
+
+
+
+/*
  * MyClassA
 */
 MyClassA = SC.Object.extend({
