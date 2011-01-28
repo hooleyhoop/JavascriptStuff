@@ -1,7 +1,7 @@
-include Gui
-
 module Presenters
 	class AudiobooScratchPadPresenter < HooPresenter
+
+		include Gui
 
         def initialize( controller )
 

@@ -46,6 +46,7 @@ module GUI
 
 		    # for drawing
 			'largeSinglebuttonForm' =>	GUI::Views::Drawing::HooLargeSingleButtonForm.name,
+			'toggleButton' 			=>	GUI::Views::Drawing::HooToggleButton.name,
 
 			'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
 			'fixedSizeImage'        =>	GUI::Views::HooFixedSizeImg.name,

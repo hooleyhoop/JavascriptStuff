@@ -5,13 +5,9 @@
 
 - push( hoo_large_single_button_form )
 
--# Draw a div with a background img at fixed size
--# TODO: Use form tag here. Can't quite get it to work!
--# There are helpers for all these form elements!
-
 -# adding the data-jsclass attribute means that a javascript instance will be created
 %div[_]( data-jsclass='HooLargeSingleButtonForm' )
-	%form( accept-charset="UTF-8" class="largeSingleButton" action="#{_.action}" method="post" data-remote="true" )
+	- form_tag( "#{_.action}", :method=>:post, :remote=>true, :class=>'largeSingleButton' ) do
 
 		%div( style="display:inline" )
 			%input( name="authenticity_token" type="hidden" value="wTet0+r9Q5bOj3dfdAU01rsRvJamF8FWACF9h+AaClQ=" )
@@ -27,6 +23,9 @@
 				#{_.label}
 
 
+:javascript
+	#{_.varName}_json = #{_.jsonProperties}
+
 - if( _.includeOnce? )
 
 	%style(type="text/css")
@@ -35,16 +34,14 @@
 				background:
 					position: 0 0px
 					color: transparent
-				// Argghh. Cannot put this variable height in here!
-				// &:active
-				//	background-position: 0 -#{_.height}px
 				&:active span
 					color: #555 !important
 
 	:javascript
 
+		/* set these values in Create( hash ) */
 		HooWidget = SC.Object.extend({
-			json: #{_.jsonProperties},	// these are really class variables, as such, this is a waste of storage
+			json: "undefined",
 			id: "undefined",
 		});
 
@@ -99,7 +96,6 @@
 				$.ajax({ url: this.action, type: 'POST', data: $(this).serialize(),
 					success: function(data) {
 						// alert(  e.data.ob+" muthafucking "+data.result );
-						// Toggle the button graphics
 						e.data.ob.toggleButtonState();
 
 						// -- TODO: enable the button

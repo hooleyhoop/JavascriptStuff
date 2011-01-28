@@ -1,6 +1,7 @@
 module GUI::Views::Drawing
 
-    # Button img must have 2 states. :Height is just the height of one state
+	# 2 state button
+    # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/largeSinglebuttonForm
 	class HooLargeSingleButtonForm < GUI::Core::HooView
