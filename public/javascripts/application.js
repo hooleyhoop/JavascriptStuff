@@ -36,7 +36,7 @@ function crippleListView( listID, targetFunctionName ) {
 }
 
 /*
- * look for data-jsclass, create an instance for each
+ * look for data-jsclass in the page, create an instance for each
  */
 function createJSObjectsFromRubyObjects() {
 
