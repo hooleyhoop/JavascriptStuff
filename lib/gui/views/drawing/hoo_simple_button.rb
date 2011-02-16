@@ -29,7 +29,7 @@ module GUI::Views::Drawing
 			super();
 
 			@labelStates = ['Disabled', 'Ready', 'Pressed'];
-			@img = '../images/buttons/follow_button/5-state-follow-button.png';
+			@img = '../images/buttons/simple-button/3-state-combine.png';
 			@size = [105, 45];
 
 			if @state == nil
@@ -37,7 +37,7 @@ module GUI::Views::Drawing
 			end
 
 			@labelColor = '#969696'
-			@action = '#'
+			@action = ''
 		end
 
 		def labelStates=(states)

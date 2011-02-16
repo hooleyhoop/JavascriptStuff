@@ -3,6 +3,8 @@
 -# If you don't have Javascript you dont need rollovers
 -# Javascript-less site should be minimal and semantic
 
+-# http://0.0.0.0:3000/widgets/simpleButton?state=1
+
 - push( hoo_simple_button )
 
 -# adding the data-jsclass attribute means that a javascript instance will be created
@@ -36,12 +38,20 @@
 
 	:javascript
 
+		/*
+		 * After spending considerable time on this i have come to the conclusion that you
+		 * SHOULD NOT be able to dragout of the button, then back over and have it recieve
+		 * your mouse-up event. Although this seems desirable, it doesn't work if you mouse-up
+		 * outside of the window.
+		 * There are 2 options.. capture events for when the mouse rolls out of the window OR
+		 * just return the button to normal state when you rollout
+		 *
+		 */
 		// static objects for the button stateMachine
 
 		/* States */
 		var active_state			= HooStateMachine_state.create( {name: "active" });
 		var active_down_state		= HooStateMachine_state.create( {name: "active_down" });
-		var active_down_out_state	= HooStateMachine_state.create( {name: "active_down_out" });
 
 		// the clicked state is needed bacuse we dont want to return the button to normal
 		// on mouse up we want to hold it in clicked state until the action is complete
@@ -52,16 +62,26 @@
 		var buttonPressed_event		= HooStateMachine_event.create( {name: "buttonPressed"} );
 		var buttonReleased_event	= HooStateMachine_event.create( {name: "buttonReleased"} );
 		var mouseDraggedOut_event	= HooStateMachine_event.create( {name: "mouseDraggedOutside"} );
-		var mouseDraggedWithin_event= HooStateMachine_event.create( {name: "mouseDraggedWithin"} );
 		var clickComplete_event		= HooStateMachine_event.create( {name: "clickActionCompleted"} );
 		var clickAbortComplete_event= HooStateMachine_event.create( {name: "clickAbortCompleted"} );
 
 		/* Transitions */
 		active_state.addTransition( buttonPressed_event, active_down_state );
+
 		active_down_state.addTransition( buttonReleased_event, clicked_state );
-		active_down_state.addTransition( mouseDraggedOut_event, active_down_out_state );
-		active_down_out_state.addTransition( buttonReleased_event, abortClick_state );
-		active_down_out_state.addTransition( mouseDraggedWithin_event, active_down_state );
+
+		// These are for the version where you can drag outside of the button - its rubbish
+		// var active_down_out_state	= HooStateMachine_state.create( {name: "active_down_out" });
+		// var mouseDraggedWithin_event= HooStateMachine_event.create( {name: "mouseDraggedWithin"} );
+		// var mouseLeftWindow_event	= HooStateMachine_event.create( {name: "mouseLeftWindow"} );
+		// active_down_state.addTransition( mouseDraggedOut_event, active_down_out_state );
+		// active_down_out_state.addTransition( buttonReleased_event, abortClick_state );
+		// active_down_out_state.addTransition( mouseDraggedWithin_event, active_down_state );
+		// active_down_out_state.addTransition( mouseLeftWindow_event, abortClick_state );
+
+		// This is for the alternate version where dragging outside the button resets it
+		active_down_state.addTransition( mouseDraggedOut_event, abortClick_state );
+
 		clicked_state.addTransition( clickComplete_event, active_state );
 		abortClick_state.addTransition( clickAbortComplete_event, active_state );
 
@@ -86,7 +106,7 @@
 				var target = e.data.target;
 				var action = e.data.action;
 				var arg = e.data.arg;
-				target[action](arg);
+				target[action](arg, e);
 			},
 
 			/* JQuery helpers */
@@ -111,6 +131,13 @@
 				var $contents = $butt.find("span");
 				$contents.text( arg );
 			},
+
+			positionBackground:function( state ) {
+				var $butt = this.getButton();
+				var offset = state *45;
+				$butt.css( "backgroundPosition", "0px -"+offset+"px" );
+			},
+
 		});
 
 		/* Simple Button */
@@ -132,18 +159,18 @@
 
 			setupBindings: function() {
 
-				// this.getForm().submit( {ob: this}, this.onClick ); // Bind submit
 				this.getButton().bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this.eventTrampoline );
 				this.getButton().bind( 'mouseenter', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedWithin" }, this.eventTrampoline );
 				this.getButton().bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this.eventTrampoline );
 
-				// -- error check the adding and removing of bindings --
-				// ...
-				// this.getButton().removeAttr("disabled");
-				// this.getButton().css( "pointer-events", "auto" ); // control whether can be the target of mouse events
 
-				//erms var mouseDownText = this.json.labelStates[this.json.state];
-				//erms this.setButtonText( mouseDownText );
+				this.getButton().removeAttr("disabled");
+				this.getButton().css( "pointer-events", "auto" ); // control whether can be the target of mouse events
+
+				var mouseDownText = this.json.labelStates[this.json.state];
+				this.setButtonText( mouseDownText );
+
+				// this.getForm().submit( {ob: this}, this.onClick ); // Bind submit - manually doing this
 			},
 
 			/* Incoming commands from the state machine */
@@ -156,6 +183,8 @@
 
 				var mouseDownText = this.json.labelStates[this.json.state+1];
 				this.setButtonText( mouseDownText );
+
+				this.positionBackground(+2);
 			},
 
 			showMouseUp: function() {
@@ -163,6 +192,8 @@
 
 				var mouseDownText = this.json.labelStates[this.json.state];
 				this.setButtonText( mouseDownText );
+
+				this.positionBackground(+1);
 			},
 
 			abortClickAction: function() {
@@ -174,9 +205,59 @@
 
 				console.log("** Click **");
 
-				// on complete set the button state back to normal
-				this._fsm_controller.handle( "clickActionCompleted" );
+				// ensure we can't click again until we have received response
+				this.temporarySetEnabledState( false );
+
+				var self = this;
+				var form = this.getForm();
+				form.submit(function(e) {
+					// alert('Handler for .submit() called.');
+
+					// this === form at this point
+					$.ajax({ url: this.action, type: 'POST', data: $(this).serialize(),
+						success: function(data) {
+
+							self.temporarySetEnabledState( true );
+
+							// on complete set the button state back to normal
+							self._fsm_controller.handle( "clickActionCompleted" );
+
+							console.log("** Complete **");
+						}
+					});
+
+					// The next two lines are equivalent
+					e.preventDefault();
+					return false;
+				});
+				this.getForm().submit();
 			},
+
+
+
+			temporarySetEnabledState: function( boolVal ) {
+
+				var mouseDownText = "";
+				var backgroundImageState;
+				if( boolVal ) {
+					this.getButton().removeAttr("disabled");
+					this.getButton().css( "pointer-events", "auto" );
+					mouseDownText = this.json.labelStates[this.json.state];
+					backgroundImageState = 1;
+				} else {
+					this.getButton().attr('disabled', 'disabled');
+					this.getButton().css( "pointer-events", "none" );
+					mouseDownText = this.json.labelStates[0];
+					backgroundImageState = 0;
+				}
+				// this.getForm().unbind( "submit", this.onClick );
+				// this.getButton().unbind( "mousedown", this.mouseDown );
+
+				this.setButtonText( mouseDownText );
+				this.positionBackground( backgroundImageState );
+			},
+
+
 
 		});
 
