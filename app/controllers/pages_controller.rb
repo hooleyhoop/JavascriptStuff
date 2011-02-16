@@ -68,6 +68,7 @@ class PagesController < ApplicationController
 		pagePresenter = Presenters::MultipleButtonsPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
+
 	def multiple_buttons_test_upload
 		#assert request.post
 		#check if ajax or form

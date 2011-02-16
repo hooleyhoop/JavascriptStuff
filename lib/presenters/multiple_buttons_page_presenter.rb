@@ -9,6 +9,7 @@ module Presenters
 
 			colorFillClass				= widgetClass('colorFill')
 			testUploadFormClass			= widgetClass('testUploadForm')
+			simpleButton				= widgetClass('simpleButton')
 			toggleButton				= widgetClass('toggleButton')
 
 			@window.showGrid;

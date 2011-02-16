@@ -44,9 +44,10 @@ module GUI
 
 			'paddedHorizontal'		=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
 
-		    # for drawing
-			'largeSinglebuttonForm' =>	GUI::Views::Drawing::HooLargeSingleButtonForm.name,
-			'toggleButton' 			=>	GUI::Views::Drawing::HooToggleButton.name,
+			# for drawing
+			'largeSinglebuttonForm'	=>	GUI::Views::Drawing::HooLargeSingleButtonForm.name,
+			'simpleButton'			=>	GUI::Views::Drawing::HooSimpleButton.name,
+			'toggleButton'			=>	GUI::Views::Drawing::HooToggleButton.name,
 
 			'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
 			'fixedSizeImage'        =>	GUI::Views::HooFixedSizeImg.name,
