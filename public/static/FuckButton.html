@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html class='no-js'>
+<head class='no-js' lang='en'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<title>thierry</title>
+<meta name="csrf-param" content="authenticity_token"/>
+<meta name="csrf-token" content="A+cSA7LPnahs7iVbIu4vxml/hBqeKq8AvLrZUATefW8="/>
+<script src="/javascripts/jquery-1.4.4.min.js?1294134697" type="text/javascript"></script>
+<script src="/javascripts/jquery-tmpl/jquery.tmpl.js?1286279259" type="text/javascript"></script>
+<script src="/javascripts/jquery-tmpl/jquery.tmplPlus.js?1286279259" type="text/javascript"></script>
+<script src="/javascripts/jquery-ujs/src/rails.js?1294137279" type="text/javascript"></script>
+<script src="/javascripts/jquery-customdata/jquery.customdata.js?1296046921" type="text/javascript"></script>
+<script src="/javascripts/HooSC_min.js?1288200632" type="text/javascript"></script>
+<script src="/javascripts/modernizr-1.6.min.js?1294220130" type="text/javascript"></script>
+<script src="/javascripts/simple-state-machine.js?1297879944" type="text/javascript"></script>
+<script src="/javascripts/widgets.js?1297879926" type="text/javascript"></script>
+<script src="/javascripts/application.js?1297879968" type="text/javascript"></script>
+<link href="/stylesheets/simple_reset.css?1296038014" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/audioboo_theme.css?1296038089" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/type.css?1296038014" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/positioning.css?1296037433" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/widget_specific.css?1296037433" media="screen" rel="stylesheet" type="text/css" />
+
+</head>
+<body class='showgrid'>
+
+<div class='gui_views_drawing_hoo_simple_button' data-jsclass='HooSimpleButton' id='testButtonDiv'>
+	<form accept-charset="UTF-8" action="#" data-remote="true" method="post">
+		<div style="margin:0;padding:0;display:inline">
+			<input name="utf8" type="hidden" value="&#x2713;" />
+			<input name="authenticity_token" type="hidden" value="A+cSA7LPnahs7iVbIu4vxml/hBqeKq8AvLrZUATefW8=" />
+		</div>
+		<button name='commit' style='margin: 0 0 0 0; border: none; background-color:transparent; background: url( ../images/buttons/simple-button/3-state-combine.png ) 0 -45px; width: 105px; height: 45px;' title='' type='submit' value=''>
+			<span style='font:13px Verdana; color:#969696; line-height:15px; padding:0 0 0 15px; position:relative; top:0px; margin:0!important; letter-spacing:0pc; word-spacing:-0.1pc;text-shadow:0px -1px 0px #374683;'>
+				Ready
+			</span>
+		</button>
+	</form>
+</div>
+
+
+<script type='text/javascript'>
+
+	$(document).ready(function() {
+
+    	var buttonQuery = "#testButtonDiv button:first";
+		var button = $( buttonQuery );
+    	button.bind( 'mousedown', function() {
+    		alert("woo "+ button.height() );
+    	});
+    	button.bind( 'mouseup', function() {
+    		alert("boo "+ button.height() );
+    	});
+	});
+
+</script>
+
+
+
+
+</body>
+</html>
