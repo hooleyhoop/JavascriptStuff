@@ -16,8 +16,8 @@
 		-# If you center it in safari it will be to low in firefox, whichever way you tweak it it will be incorrect somewhere
 		-# We really should use links and javascript
 
-		- textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0 0 0 15px; position:relative; top:0px; margin:0!important; letter-spacing:0pc; word-spacing:-0.1pc;"
-		- button_attrs = { :style=>"margin: 0 0 0 0; border: none; background-color:transparent; background: url( #{_.img} ) 0 #{_.size[1]*-_.state}px; width: #{_.size[0]}px; height: #{_.size[1]}px;", :name=>"commit", :title=>"", :type=>"submit", :value=>"" }
+		- textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0; position:relative; top:0px; margin: 0!important; letter-spacing:0pc; word-spacing:-0.1pc;"
+		- button_attrs = { :style=>"padding: 0; margin: 0; border: none; background: transparent url( #{_.img} ) 0 #{_.size[1]*-_.state}px; width: #{_.size[0]}px; height: #{_.size[1]}px;", :name=>"commit", :title=>"", :type=>"submit", :value=>"" }
 		- if(  _.state==0 )
 			- button_attrs.merge!( { :disabled=>"disabled" } )
 			- button_attrs[:style] += "pointer-events:none;"
@@ -98,60 +98,8 @@
 		abortClick_state.addAction( abortClickActionCmd );
 
 
-		function makeNewElementFromElement( tag, elem ) {
-
-			var newElem = document.createElement(tag);
-
-			while( elem.firstChild ) {
-				newElem.appendChild( elem.firstChild );
-			}
-
-			// Copy DOM properties
-			for( var i in elem ) {
-				try {
-					prop = elem[i];
-					if( prop && i !== 'outerHTML' && (typeof prop === 'string' || typeof prop === 'number')) {
-						newElem[i] = elem[i];
-					}
-				} catch(e) { /* some props throw getter errors */ }
-			}
-
-			// Copy attributes
-			var attr = elem.attributes;
-			console.debug(attr);
-			//var attrLen = attr.length;
-			//for( var i=0; i<attrLen; i++ ) {
-			//	alert("this is fun");
-			 	// newElem.setAttribute( elem[i].nodeName, elem[i].nodeValue );
-			//}
-
-			// Copy inline CSS
-			newElem.style.cssText = elem.style.cssText;
-		    return newElem;
-		}
-
-
 		/* Abstract Button */
 		HooAbstractButton = HooWidget.extend({
-
-			_height: -1,
-
-			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply( this, arguments );
-
-				/* swap out the button for a div */
-				var $button = this.getButton();
-				var replacementButton = makeNewElementFromElement( 'div', $button.html() ); // Create anchor from div
-
-				console.debug( $button.html() );
-
-				console.debug( replacementButton );
-
-				//debug(replacementButton);
-			    $button.replaceWith( replacementButton );
-
-				// _height = this.getButton().height() +5 ;
-			},
 
 			// forward events to 'this'
 			eventTrampoline: function(e) {
@@ -186,8 +134,14 @@
 
 			positionBackground:function( state ) {
 				var $butt = this.getButton();
-				var offset = state * _height;
-				// alert( "height is "+_height );
+				var height = this.getButton().height();
+				var offset = state * height;
+
+			    if ( typeof this.positionBackground.previousHeight!='undefined' ) {
+			    //	if( typeof console.assert!=undefined )
+				//		console.assert( height==this.positionBackground.previousHeight, "shit" );
+				}
+				this.positionBackground.previousHeight = height;
 				$butt.css( "backgroundPosition", "0px -"+offset+"px" );
 			},
 
@@ -202,11 +156,11 @@
 				arguments.callee.base.apply(this,arguments);
 
 				if(this.json.state>0) {
-					// set up our button statemachine
-					// var stateMachineInstance = HooStateMachine.create( {startState: active_state} );
-					// this._fsm_controller = HooStateMachine_controller.create( { currentState: active_state, machine: stateMachineInstance, commandsChannel: this } );
+					/* set up our button statemachine */
+					var stateMachineInstance = HooStateMachine.create( {startState: active_state} );
+					this._fsm_controller = HooStateMachine_controller.create( { currentState: active_state, machine: stateMachineInstance, commandsChannel: this } );
 
-					// this.setupBindings();
+					this.setupBindings();
 				}
 			},
 
@@ -215,7 +169,6 @@
 				this.getButton().bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this.eventTrampoline );
 				this.getButton().bind( 'mouseenter', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedWithin" }, this.eventTrampoline );
 				this.getButton().bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this.eventTrampoline );
-
 
 				this.getButton().removeAttr("disabled");
 				this.getButton().css( "pointer-events", "auto" ); // control whether can be the target of mouse events
@@ -267,14 +220,16 @@
 					// alert('Handler for .submit() called.');
 
 					// this === form at this point
-					$.ajax({ url: this.action, type: 'POST', data: $(this).serialize(),
+					var hmm = $(this).serialize();
+					// alert(this.action);
+					$.ajax({ url: this.action, type:'POST', data: hmm,
 						success: function(data) {
-
+							alert("success");
+							/* Move this back into the succeess function */
 							self.temporarySetEnabledState( true );
-
 							// on complete set the button state back to normal
 							self._fsm_controller.handle( "clickActionCompleted" );
-
+							form.unbind('submit');
 							console.log("** Complete **");
 						}
 					});

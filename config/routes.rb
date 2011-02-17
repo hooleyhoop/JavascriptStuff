@@ -12,7 +12,9 @@ JavascriptStuff::Application.routes.draw do
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=horizontalList1     -- gives us params[:cellName]       = horizontalList1
     # http://0.0.0.0:3000/widgets/cellRenderer/horizontalList1              -- gives us params[:optionalArg1]   = horizontalList1
+  match "/widgets/_ajaxPostTest" => "widgets#_ajaxPostTest"
   match "/widgets/:name(/:optionalArg1)" => "widgets#show"
+
 
   root :to => "pages#index"
   #get "pages/control_center"

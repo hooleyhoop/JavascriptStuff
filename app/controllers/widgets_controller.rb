@@ -1,13 +1,17 @@
 class WidgetsController < ApplicationController
 
-  def show()
-  	#render :text => params[:name]
+	def show()
+		#render :text => params[:name]
 
-  	widgetToRender = params[:name]
-  	optionalArgs = params.reject{ |key, val| key=='name' };
+		widgetToRender = params[:name]
+		optionalArgs = params.reject{ |key, val| key=='name' };
 
-	pagePresenter = Presenters::SingleWidgetPagePresenter.new( self, widgetToRender, optionalArgs );
-	pagePresenter.drawPage();
-  end
+		pagePresenter = Presenters::SingleWidgetPagePresenter.new( self, widgetToRender, optionalArgs );
+		pagePresenter.drawPage();
+	end
+
+	def _ajaxPostTest
+		render :text => 'Hello world'
+	end
 
 end

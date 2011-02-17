@@ -36,8 +36,8 @@ module GUI::Views::Drawing
 				@state = 0;
 			end
 
-			@labelColor = '#969696'
-			@action = ''
+			@labelColor = '#969696';
+			@action = '/widgets/_ajaxPostTest';
 		end
 
 		def labelStates=(states)
