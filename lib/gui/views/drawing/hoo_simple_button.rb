@@ -19,9 +19,7 @@ module GUI::Views::Drawing
 
 		def initialize( args={} )
 			super();
-			if args['state']
-				@state = args['state'].to_i
-			end
+			@state=args['state'].to_i() if args['state']
 		end
 
         # Mock Data
@@ -31,12 +29,8 @@ module GUI::Views::Drawing
 			@labelStates = ['Disabled', 'Ready', 'Pressed'];
 			@img = '../images/buttons/simple-button/3-state-combine.png';
 			@size = [105, 45];
-
-			if @state == nil
-				@state = 0;
-			end
-
-			@labelColor = '#969696';
+			@state=0 if @state==nil
+			@labelColor = '#eee';
 			@action = '/widgets/_ajaxPostTest';
 		end
 
@@ -45,6 +39,7 @@ module GUI::Views::Drawing
 			assert( states.count==3 );
 		end
 
+		# stuff to write into the page
 		def jsonProperties
 			allItems = {
 				:labelStates	=> @labelStates,

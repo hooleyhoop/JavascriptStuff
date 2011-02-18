@@ -5,6 +5,7 @@ module GUI::Views::Drawing
     # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/toggleButton
+	# http://0.0.0.0:3000/widgets/toggleButton?state=1
 	class HooToggleButton < GUI::Core::HooView
 
 		include Test::Unit::Assertions
@@ -18,6 +19,7 @@ module GUI::Views::Drawing
 
 		def initialize( args={} )
 			super();
+			@state = args['state'].to_i() if args['state']
 		end
 
         # Mock Data
@@ -27,10 +29,9 @@ module GUI::Views::Drawing
 			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
 			@img = '../images/buttons/follow_button/5-state-follow-button.png';
 			@size = [105, 45];
-			@state = 0;
-
-			@labelColor = '#969696'
-			@action = ''
+			@state=0 if @state==nil
+			@labelColor = '#eee';
+			@action = '#'; # /widgets/_ajaxPostTest
 		end
 
 		def labelStates=(states)
@@ -38,6 +39,7 @@ module GUI::Views::Drawing
 			assert( states.count==5 );
 		end
 
+		# stuff to write into the page
 		def jsonProperties
 			allItems = {
 				:labelStates	=> @labelStates,
@@ -49,7 +51,3 @@ module GUI::Views::Drawing
 
 	end
 end
-
-
-# Have to run when loaded by ajax
-# self.window.installStartupJavascript( :function=>"crippleListView", :arg1=>@textList.uniqueSelector(), :arg2=>@widgetResizer.actionName );

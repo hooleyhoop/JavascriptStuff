@@ -36,6 +36,10 @@ HooStateMachine_state = SC.Object.extend({
 		this.transitions[event.name] = t;
 	},
 
+	removeAllTransitions: function() {
+		this.transitions = new Object();
+	},
+
 	addAction: function( cmd ) {
 		this.actions.push(cmd);
 	},
