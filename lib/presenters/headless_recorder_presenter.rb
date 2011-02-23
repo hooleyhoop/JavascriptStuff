@@ -41,6 +41,8 @@ module Presenters
 			}.call
 
 
+
+				headlessRecorder
 		end
 
 	end

@@ -1,0 +1,426 @@
+- push( headless_audio_player )
+
+-# This is a adapted from adam's player
+%div[_]{ :data=>{'jsclass'=>'HeadlessAudioplayer', 'autoplay'=>'false', 'preload'=>'true'} }
+	- link_to _.mp3Url do
+		play
+
+
+-# it would be nice if we didnt have to repeat this everywhere
+:javascript
+	#{_.varName}_json = #{_.jsonProperties}
+
+:javascript
+
+	HeadlessAudioplayer = HooWidget.extend({
+
+	});
+
+	// Wrap 1 or more functions of an object to delay them until a given event fires
+	// Once that event fires, the functions trigger immediately if they're called again.
+	function wrapFunctionsUntilEvent(object, functions, eventName) {
+	  object.__wrappedMethods = {};
+	  $.each(functions, function(){
+		var methodName = this;
+		var originalMethod = object[methodName];
+		object.__wrappedMethods[methodName] = originalMethod;
+		object[methodName] = function(){
+		  var originalArguments = arguments;
+		  $(object).one(eventName, function(){
+			originalMethod.apply(object, originalArguments);
+		  });
+		};
+	  });
+	  $(object).one(eventName, function() {
+		$.extend(object, object.__wrappedMethods);
+		delete object.__wrappedMethods;
+	  });
+	}
+
+	var HTMLPlayer = {
+	  initialize : function() {
+		var self=this;
+		self.observable = self.player;
+
+		// functions
+		$.each(['play', 'pause'], function(i, fn){
+		  self[fn] = function(callback){
+			return callback ? $(self.observable).bind(fn,callback) : self.player[fn]();
+		  };
+		});
+		// getters
+		$.each(['readyState', 'duration'], function(i, reader){
+		  self[reader] = function(){return self.player[reader];};
+		});
+		// getters/setters
+		$.each(['src', 'currentTime', 'volume'], function(i, reader){
+		  var writer = "set"+reader.charAt(0).toUpperCase()+reader.slice(1);
+		  if (!self[writer]) self[reader] = function(){return self.player[reader];};
+		  if (!self[writer]) self[writer] = function(value){return self.player[reader]=value;};
+		});
+	  },
+	  buffered : function() {
+		if (!this.player.buffered)
+		  return 0;
+		// Discount the possibility of multiple buffers for now (theoretically possible with range requests if the user skips forward, but Safari doesn't seem to support it)
+		// and just return the proportion of buffered time
+		var buffers = this.player.buffered.length;
+		return buffers ? this.player.buffered.end(buffers-1)/this.player.duration : 0;
+	  },
+	  ready : function(callback) {
+		// html5 audio is always ready
+		callback.apply(this);
+	  },
+	  setSrc : function(value) {
+		if (!value)
+		  debugger;
+		if (this.player.currentSrc==value)
+		  return;
+		this.player.src = value;
+		this.player.load(); // force the audio to reset & start loading the new url
+	  }
+	};
+	var FlashPlayer = {
+	  initialize : function(){
+		var self=this;
+		self.observable = this;
+
+		// getters
+		$.each(['readyState', 'duration'], function(i, reader){
+		  self[reader] = function(){return self.player['_'+reader]();};
+		});
+		// getters/setters
+		$.each(['src', 'currentTime', 'volume'], function(i, reader){
+		  var writer = "set"+reader.charAt(0).toUpperCase()+reader.slice(1);
+		  if (!self[reader]) self[reader] = function(){return self.player['_'+reader]();};
+		  if (!self[writer]) self[writer] = function(value){return self.player['_'+writer](value);};
+		});
+
+		if (!this.player.didFinishLaunching || !this.player.didFinishLaunching())  // wait until flash loads before calling functions on it
+		  wrapFunctionsUntilEvent(this, ['setSrc', 'play', 'pause'], 'ready');
+
+		$(self.observable).bind('ended', function(){self.playing=false;});
+
+
+		var oldPlay = self.play;
+		var loadChecker;
+		// Wrap the play function to show a warning if Flash hasn't loaded yet.
+		self.play = function(callback){
+		  if (callback) {
+			return oldPlay.call(self, callback);
+		  }
+		  if (self.player._buffered == undefined) {
+			var popup = showPopupMessage("Please enable <a href='http://get.adobe.com/flashplayer'>Flash</a> to play audio", 'error');
+			clearInterval(loadChecker);
+			loadChecker = setInterval(function(){
+			  if (self.player._buffered != undefined) {
+				popup.dismiss();
+				oldPlay.call(self);
+				clearInterval(loadChecker);
+			  }
+			}, 100);
+		  } else {
+			oldPlay.call(self);
+		  }
+		};
+	  },
+	  buffered : function(){
+		var buffered = this.player._buffered();
+		return buffered && buffered[0][1] / this.duration();
+	  },
+	  ready : function(callback) {
+		var self = this;
+		if (self.player.didFinishLaunching && self.player.didFinishLaunching())
+		  callback.apply(self);
+		else
+		  $(self.observable).bind('ready', function(){callback.apply(self);});
+	  },
+	  setCurrentTime : function(value) {
+		this.player._setCurrentTime(value);
+		// Immediately trigger a timeupdate event because flash is quite slow to fire this on its own
+		$(this.observable).trigger('timeupdate');
+	  },
+
+	  // the flash player gets pretty upset at us calling pause twice in a row, and loses its playback point
+	  // try and keep track of whether we're already paused before calling pause again:
+	  play : function(callback) {
+		if (callback)
+		  return $(this.observable).bind('play',callback);
+		if (!this.playing) {
+		  this.playing = true;
+		  this.player._play();
+		}
+		return this;
+	  },
+	  pause : function(callback) {
+		if (callback)
+		  return $(this.observable).bind('pause',callback);
+		if (this.playing) {
+		  this.playing = false;
+		  this.player._pause();
+		}
+		return this;
+	  }
+
+	};
+
+
+	/* Flash Callback */
+	function BooFlashPlayerEvent( id, eventName, optionArg1 ) {
+	  var player = $("#"+id).parent().data('booPlayer');
+	  $(player.observable).triggerHandler(eventName);
+	}
+
+	var OldFlashError="boo.oldflasherror";
+	// console.error( "Please install <a href='http://get.adobe.com/flashplayer'>Flash 10</a> or above" );
+
+	function formatTime(time) {
+	  var minutes = Math.floor(time/60);
+	  var seconds = Math.floor(time)%60;
+	  return minutes + ':' + (seconds<10 ? '0'+seconds : seconds);
+	}
+	$.fn.mousedrag = function(callback) {
+	  this.mousedown(function(e) {
+		callback.apply(this,arguments);
+		var activeElement=this;
+		var mousePos = [e.pageX, e.pageY];
+		$(document.body).bind('mousemove.booDrag', function(e){
+		  if ((mousePos[0] == e.pageX)&&(mousePos[1]==e.pageY)) // IE fires mouse events continuously even when it doesn't move more than 1 pixel
+			return;
+		  mousePos = [e.pageX, e.pageY];
+		  callback.apply(activeElement,arguments);
+		});
+		$(document.body).bind('mouseleave.booDrag mouseup.booDrag', function(){
+		  $(document.body).unbind('.booDrag');
+		});
+		return false; //prevent text selection
+	  });
+	  this.bind('selectstart', function(e){return false;}); //prevent text selection in IE
+	  return this;
+	};
+
+	var AudioPlayer = function(options){
+	  options = $.extend({},options);
+
+	  if (options.playerElement) {
+		this.player = options.playerElement;
+	  } else {
+		var wrapper = options.container;
+		if (!wrapper)
+		  wrapper = $("<div class='booPlayerHolder'/>").appendTo(document.body);
+
+		var elem = document.createElement('audio');
+		//Chrome for some reason thinks it can't play audio/mpeg, so check for mp3 as well
+		var canPlayMP3 = elem.canPlayType && (elem.canPlayType('audio/mpeg;')||elem.canPlayType('audio/mp3;'));
+
+		// Safari 5 on SL has unreliable MP3 playback
+		if (canPlayMP3 && /safari/i.test(navigator.userAgent)) {
+		  // Chrome and android have safari in their user agent string, so let's discount them
+		  if (!elem.canPlayType('audio/webm;')) {
+			// If it has flash, use it. Else stick with audio element (probably IOS)
+			if (DetectFlashVer(10,0,0)) {
+			  canPlayMP3 = false;
+			}
+		  }
+		}
+		if (canPlayMP3) {
+		  this.player = elem;
+		  wrapper.append(this.player);
+		} else {
+
+		  if (!DetectFlashVer(10,0,0)) {
+			throw(OldFlashError);
+		  }
+
+		  if (!AudioPlayer.FlashPlayerId)
+		  	AudioPlayer.FlashPlayerId = 0;
+		  AudioPlayer.FlashPlayerId++;
+		  var playerId = "booPlayer"+AudioPlayer.FlashPlayerId;
+		  var swfSrc = 'http://0.0.0.0:3000/flash/HeadlessPlayer/lib/Release/HeadlessPlayer.swf';
+		  // IE doesn't like you playing with <object>s once they're created, hence the huge string blob & using innerHTML
+		  var objectTag = "<object data='"+swfSrc+"' id='"+playerId+"' type='application/x-shockwave-flash' width=10 height=10>"+
+			"<param name='movie' value='"+swfSrc+"'/><param name='allowScriptAccess' value='always'/><param name='FlashVars' value='rootID="+playerId+"'/></object>";
+		  if ($.browser.msie)
+			wrapper[0].innerHTML = objectTag;
+		  else
+			wrapper.append(objectTag);
+		  this.player = wrapper.find('object')[0];
+		}
+	  }
+
+	  // hoo $.extend(this, this.player.type=="application/x-shockwave-flash" ? FlashPlayer : HTMLPlayer);
+	  $.extend(this, FlashPlayer );
+
+
+	  // Add a data attribute to map from the DOM player back to our AudioPlayer object
+	  // However, we can't use data() on <object> tags (see jQuery.noData), so it'll have to go on the parent wrapper
+	  if ($(this.player).parent().data('booPlayer'))
+		throw("Already added a player to wrapper node");
+	  $(this.player).parent().data('booPlayer', this);
+
+	  this.initialize();
+
+	  var self=this;
+	  // event binders:
+	  $.each(['progress', 'timeupdate', 'ended'], function(i,eventName){
+		self[eventName] = function(callback){
+		  if (callback)
+			$(self.observable).bind(eventName, function(){callback.apply(self);});
+		  else
+			$(self.observable).trigger(eventName);
+		  return self;
+		};
+	  });
+	};
+
+	HooKVOTests = SC.Object.extend({
+
+	  showFullName: NO,
+
+	  sendChangesToServer: function(key) {
+	  	// ... send changes to the server
+	  	// alert("This really works");
+	  }.observes('showFullName')
+
+	});
+
+	var kvoTest = HooKVOTests.create();
+	kvoTest.set('showFullName', YES);
+
+	$(document).ready(function(){
+
+	  // in sproutcore it is better to use invoke later
+	  var delay = 1;
+	  setTimeout( function(){  // Delay setting up the player so that other clients get chance to start observing booError events (in particular, messages.js)
+
+	  $('.booPlayer_audio_clip').each(function(){
+		var player = $(this);
+		var nubbin = player.find('.nubbin');
+		var timeline = player.find('.timeline');
+		var bufferBar = timeline.find('.buffer');
+		var playbackBar = timeline.find('.playback');
+		var startTimeDisplay = player.find('.startTime');
+		var endTimeDisplay = player.find('.endTime');
+		var currentTimeDisplay = player.find('.currentTime');
+		var volumeControl = player.find('.volumeWrapper');
+		var bufferCheckID
+		startTimeDisplay.add(currentTimeDisplay).text('0:00');
+
+		try {
+		  var audio = new AudioPlayer();
+		} catch(err) {
+		  $(this).trigger('booError', err);
+		  alert("boo");
+		  return;
+		}
+
+		var src=player.find('a.playButton, .playButton a').attr('href');
+
+		var audioIsReady=false;
+		var tryingToPlay=false;
+		function setStopState(){
+		  tryingToPlay = false;
+		  player.removeClass('playing');
+		  player.trigger('stopped');
+		}
+
+		player.find('.playButton').click(function(){
+		  if (!tryingToPlay) {
+			$(document.body).trigger('audioWillStartPlaying', audio);
+			audio.setSrc(src);
+			audio.play();
+			player.addClass('playing');
+			$(this).trigger('playing');
+			tryingToPlay = true;
+
+			if (!audioIsReady) {
+			  // show 'loading' spinner
+			  // player.addClass('loading');
+
+			  // Chrome doesn't trigger audio.progress if loading from cache, or when it finishes buffering
+			  bufferCheckID = setInterval(function(){
+				audio.progress();
+			  }, 1000);
+			}
+		  } else {
+			audio.pause();
+			setStopState();
+		  }
+
+		  return false;
+		});
+
+		audio.progress(function(){
+		  var buffered = this.buffered();
+		  if (buffered>0) {
+			bufferBar.animate({
+			  width: 100*buffered+'%'
+			}, 1500 );
+			endTimeDisplay.text(formatTime(this.duration()));
+			if (!audioIsReady) {
+			  audioIsReady = true;
+			}
+		  } else {
+			bufferBar.css('width', '0%');
+			endTimeDisplay.text('');
+		  }
+		  // cancel our manual buffer check for Google Chrome
+		  if (buffered==1) {
+			clearInterval ( bufferCheckID );
+		  }
+		});
+
+		nubbin.bind('selectstart', function(){return false;}); //prevent text selection in IE while dragging the timeline
+
+		audio.timeupdate(function(){
+		  var currentTime = this.currentTime();
+		  currentTimeDisplay.text(formatTime(currentTime));
+
+		  var currentTimeWidth = this.readyState() ? Math.round(timeline.width()*currentTime/this.duration()) : 0;
+		  playbackBar.css('width', currentTimeWidth+'px');
+		  nubbin.css('left', currentTimeWidth-Math.ceil(nubbin.width()/2)+'px');
+		});
+
+		// Make sure the playback elements stay in the correct position on resize:
+		$(window).resize(function(){ audio.progress().timeupdate();});
+
+		audio.ready(function(){
+
+		  startTimeDisplay.fadeIn();
+		  endTimeDisplay.fadeIn();
+		  nubbin.fadeIn();
+
+		  if (volumeControl.length) {
+			function setVolume(volume) {
+			  volume = Math.min(Math.max(volume, 0.1), 1.0); // Don't go all the way to 0 just because it might not be that obvious that it's muted
+			  setTimeout(function(){audio.setVolume(volume);}, 0);  // IE feels very unresponsive while dragging this.  This persuades the redraw to happen without getting blocked by the swf interface
+			  volumeControl.find('.volume').css('height', 100*volume+'%');
+			}
+			volumeControl.mousedrag(function(event){
+			  setVolume((volumeControl.offset().top+volumeControl.height() - event.pageY)/volumeControl.height());
+			});
+			setVolume(audio.volume());  // Browsers are supposed to remember the audio's volume from the last time.  Not sure if this is true in practice.
+		  } else {
+			// No volume control, let's default the volume to 1.0.  This will mess with people's saved volume cookie on detail pages, unfortunately.
+			audio.setVolume(1.0);
+		  }
+
+		  timeline.mousedrag(function(event){
+			if (!audio.readyState())
+			  return;
+			var timeAtCursor = audio.duration() * (event.pageX - timeline.offset().left)/timeline.width();
+			audio.setCurrentTime(Math.min(Math.max(timeAtCursor,0), audio.duration()));
+		  });
+
+		  audio.ended(setStopState);
+
+		});
+
+		$(document.body).bind('audioWillStartPlaying', function(event, otherPlayer){
+		  if (otherPlayer != audio)
+			audio.pause();
+			setStopState();
+		});
+	  });
+	  }, delay);
+	});

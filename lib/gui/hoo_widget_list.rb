@@ -62,6 +62,10 @@ module GUI
 			'inlineTextList'		=>	GUI::Views::HooInlineTextList.name,
 			'cuteDropDownMenu'		=>	GUI::Views::HooCuteDropDownMenu.name,
 
+			# Flash Stuff
+			'headlessPlayer'		=>	GUI::Views::Flash::HeadlessAudioPlayer.name,
+			'headlessRecorder'		=>	GUI::Views::Flash::HeadlessAudioRecorder.name,
+
 			# Audioboo specific
 			'followButtonSection'	=>	GUI::Views::Audioboo::FollowButtonSection.name,
 			'userDetailsBanner'		=>	GUI::Views::Audioboo::UserDetailsBanner.name,

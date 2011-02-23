@@ -22,7 +22,9 @@ module GUI::Views::Drawing
 
 		def initialize( args={} )
 			super();
-			@state = args['state'].to_i() if args['state']
+			if args[:state]
+				@state=args[:state].to_i();
+			end
 		end
 
         # Mock Data
