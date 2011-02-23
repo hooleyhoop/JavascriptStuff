@@ -15,7 +15,10 @@ module GUI::Views::Drawing
 		attr_accessor :labelStates
 		attr_accessor :state;
 		attr_accessor :labelColor;
+
+		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
+		attr_accessor :javascript;
 
 		def initialize( args={} )
 			super();

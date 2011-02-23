@@ -414,7 +414,12 @@ HooSingleActionButton = HooSimpleFormButton.extend({
 	// maybe make this async
 	fireButtonAction: function( nextState ) {
 		this.temporarySetEnabledState( 0, false );
-		this._jsAction( );
+		if(this._jsAction)
+			this._jsAction();
+		else {
+			console.info("button hasnt been given a javascript action");
+			window.location = this.getClickableItem().find( this.textHolder ).attr("href")
+		}
 		this.temporarySetEnabledState( nextState, true );
 		this._fsm_controller.handle( "clickActionCompleted" );
 	},
@@ -429,7 +434,12 @@ HooDoubleActionButton = HooToggleFormButton.extend({
 	// maybe make this async
 	fireButtonAction: function( nextState ) {
 		this.temporarySetEnabledState( 0, false );
-		this._jsAction( );
+		if(this._jsAction)
+			this._jsAction();
+		else {
+			console.info("button hasnt been given a javascript action");
+			window.location = this.getClickableItem().find( this.textHolder ).attr("href")
+		}
 		this.temporarySetEnabledState( nextState, true );
 		this._fsm_controller.handle( "clickActionCompleted" );
 	},

@@ -9,8 +9,8 @@ module Presenters
 
 			colorFillClass				= widgetClass('colorFill')
 			testUploadFormClass			= widgetClass('testUploadForm')
-			simpleButton				= widgetClass('simpleButton')
-			toggleButton				= widgetClass('toggleButton')
+			simpleButton				= widgetClass('simpleFormButton')
+			toggleButton				= widgetClass('toggleFormButton')
 
 			@window.showGrid;
 
@@ -25,7 +25,9 @@ module Presenters
 				@simpleButton1.state = 1;
 				@simpleButton1.labelColor = '#fff'
 				@simpleButton1.action = '/widgets/_ajaxPostTest'
-				#@simpleButton1.javascript = "alert('hello');"
+				@simpleButton1.javascript = "this.hookupAction( function(){
+					alert('Holy Cock');
+				});";
 				@window.contentView.addSubView( @simpleButton1 );
 			}.call
 
