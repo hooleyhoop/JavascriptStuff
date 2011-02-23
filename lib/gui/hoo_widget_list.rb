@@ -44,38 +44,45 @@ module GUI
 
 			'paddedHorizontal'		=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
 
-			# for drawing
+			# for drawing - forms
 			'largeSinglebuttonForm'	=>	GUI::Views::Drawing::HooLargeSingleButtonForm.name,
-			'simpleButton'			=>	GUI::Views::Drawing::HooSimpleButton.name,
-			'toggleButton'			=>	GUI::Views::Drawing::HooToggleButton.name,
+			'simpleFormButton'		=>	GUI::Views::Drawing::HooSimpleFormButton.name,
+			'toggleFormButton'		=>	GUI::Views::Drawing::HooToggleFormButton.name,
 
-			'backgroundImage'       =>	GUI::Views::HooBackgroundImg.name,
-			'fixedSizeImage'        =>	GUI::Views::HooFixedSizeImg.name,
-			'hoo100PercentImg'      =>	GUI::Views::HooOneHundredPercentImg.name,
-			'slidingDoorsPanel1'    =>	GUI::Views::HooSlidingDoorsPanel.name,
-			'speechBubblePane'      =>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
-			'croppedImg'            =>	GUI::Views::HooCroppedImg.name,
-			'inlineTextList'        =>  GUI::Views::HooInlineTextList.name,
-			'cuteDropDownMenu'		=>  GUI::Views::HooCuteDropDownMenu.name,
+			# for drawing - link buttons
+			'singleActionButton'	=> 	GUI::Views::Drawing::HooSingleActionButton.name,
+			'doubleActionButton'	=> 	GUI::Views::Drawing::HooDoubleActionButton.name,
+
+			'backgroundImage'		=>	GUI::Views::HooBackgroundImg.name,
+			'fixedSizeImage'		=>	GUI::Views::HooFixedSizeImg.name,
+			'hoo100PercentImg'		=>	GUI::Views::HooOneHundredPercentImg.name,
+			'slidingDoorsPanel1'	=>	GUI::Views::HooSlidingDoorsPanel.name,
+			'speechBubblePane'		=>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
+			'croppedImg'			=>	GUI::Views::HooCroppedImg.name,
+			'inlineTextList'		=>	GUI::Views::HooInlineTextList.name,
+			'cuteDropDownMenu'		=>	GUI::Views::HooCuteDropDownMenu.name,
 
 			# Audioboo specific
-			'followButtonSection'   => GUI::Views::Audioboo::FollowButtonSection.name,
-			'userDetailsBanner'     => GUI::Views::Audioboo::UserDetailsBanner.name,
-			'booMainDetails'        => GUI::Views::Audioboo::BooMainDetails.name,
-			'detailPlayer'          => GUI::Views::Audioboo::DetailPlayer.name,
-			'tableHeader'           => GUI::Views::Audioboo::TableHeader.name,
-			'croppedImgWithHeader'  => GUI::Views::Audioboo::CroppedImgWithHeader.name,
-			'tableList'             => GUI::Views::Audioboo::TableList.name,
-			'addComment'            => GUI::Views::Audioboo::AddComment.name,
-			'all_user_comments'     => GUI::Views::Audioboo::AllUserComments.name,
-			'footer'                => GUI::Views::Audioboo::Footer.name,
+			'followButtonSection'	=>	GUI::Views::Audioboo::FollowButtonSection.name,
+			'userDetailsBanner'		=>	GUI::Views::Audioboo::UserDetailsBanner.name,
+			'booMainDetails'		=>	GUI::Views::Audioboo::BooMainDetails.name,
+			'detailPlayer'			=>	GUI::Views::Audioboo::DetailPlayer.name,
+			'adam_detailPlayer'		=>	GUI::Views::Audioboo::AdamDetailPlayer.name,
+
+			'tableHeader'			=> GUI::Views::Audioboo::TableHeader.name,
+			'croppedImgWithHeader'	=> GUI::Views::Audioboo::CroppedImgWithHeader.name,
+			'tableList'				=> GUI::Views::Audioboo::TableList.name,
+			'addComment'			=> GUI::Views::Audioboo::AddComment.name,
+			'all_user_comments'		=> GUI::Views::Audioboo::AllUserComments.name,
+			'footer'				=> GUI::Views::Audioboo::Footer.name,
 			'editBar'				=> GUI::Views::Audioboo::EditBar.name,
 			'mastHead'				=> GUI::Views::Audioboo::MastHead.name,
 
 			# for debugging
-			'testUploadForm'    	=>	GUI::Views::Debug::TestUploadFormView.name,
+			'flippyToggleThing'		=>	GUI::Views::Debug::FlippyToggleThing.name,
+			'testUploadForm'		=>	GUI::Views::Debug::TestUploadFormView.name,
 			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,
-			'cellRenderer'          =>	GUI::Views::HooCellRenderer.name,
+			'cellRenderer'			=>	GUI::Views::HooCellRenderer.name,
 
 			'labeledButton'		    =>	GUI::Views::HooLabeledButton1.name,
 			'blueView'			    =>	GUI::Views::HooBlueView.name,

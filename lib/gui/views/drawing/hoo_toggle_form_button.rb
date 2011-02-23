@@ -1,12 +1,12 @@
 module GUI::Views::Drawing
 
-	# 3 state Simple button
-	# 0) Disabled 1)state1 2)state1Pressed
+	# 5 state Toggle button
+	# 0) Disabled 1)state1 2)state1Pressed 3)state2 4)state2Pessed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/simpleButton
-	# http://0.0.0.0:3000/widgets/simpleButton?state=1
-	class HooSimpleButton < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/toggleFormButton
+	# http://0.0.0.0:3000/widgets/toggleFormButton?state=1
+	class HooToggleFormButton < GUI::Core::HooView
 
 		include Test::Unit::Assertions
 
@@ -19,24 +19,24 @@ module GUI::Views::Drawing
 
 		def initialize( args={} )
 			super();
-			@state=args['state'].to_i() if args['state']
+			@state = args['state'].to_i() if args['state']
 		end
 
         # Mock Data
 		def setupDebugFixture
 			super();
 
-			@labelStates = ['Disabled', 'Ready', 'Pressed'];
-			@img = '../images/buttons/simple-button/3-state-combine.png';
+			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
+			@img = '../images/buttons/follow_button/5-state-follow-button.png';
 			@size = [105, 45];
 			@state=0 if @state==nil
 			@labelColor = '#eee';
-			@action = '/widgets/_ajaxPostTest';
+			@action = '#'; # /widgets/_ajaxPostTest
 		end
 
 		def labelStates=(states)
 			@labelStates = states;
-			assert( states.count==3 );
+			assert( states.count==5 );
 		end
 
 		# stuff to write into the page

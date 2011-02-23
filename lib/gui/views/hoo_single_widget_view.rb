@@ -57,7 +57,7 @@ module GUI::Views
         #When the list item is clicked, instead of hooking it up to call widgetResizer.actionName it should just change
         #the value in the model (the javascript representation of this object). widgetResizer would be observing
         #this value
-        if( @hasDefaultWidgets )
+        if( @hasDefaultWidget==false )
             self.window.installStartupJavascript( :function=>"crippleListView", :arg1=>@textList.uniqueSelector(), :arg2=>@widgetResizer.actionName );
         end
     end

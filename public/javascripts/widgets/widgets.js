@@ -2,11 +2,24 @@
 
 /*
  * look for data-jsclass in the page, create an instance for each
+ * ** TODO ** !: $.live() can bind an event handler to not just all objects that exist now but all objects in the future as well.
+ * somehow we can use this to create new instances on ajax-ed html, no?
  */
-function createJSObjectsFromRubyObjects() {
 
-	// -- get all objects with data-jsClass attribute ''
-	var all_jsClass_objects = $(":customdata(jsclass)" );
+ // 1) Object is inserted into page
+ // 2) bind somehow spots it, runs an event - probably not possible! whenever we load html by ajax we must check to see if it needs this running
+ // 3) the inserted object has some javascript to run - it's instance is created.
+ //	4) the element has a custom action, in the json
+function createJSObjectsFromRubyObjects( rootElement ) {
+
+	var all_jsClass_objects;
+	if(rootElement==undefined) {
+		// -- get all objects with data-jsClass attribute ''
+		all_jsClass_objects = $(":customdata(jsclass)" );
+	} else {
+		all_jsClass_objects = rootElement.find(":customdata(jsclass)");
+	}
+
 	$.each( all_jsClass_objects, function( i, ob )
 	{
 		var idString = $(ob).attr('id');
@@ -21,7 +34,7 @@ function createJSObjectsFromRubyObjects() {
 		var newInstance = hmm.create( {id: idString, json: jsonOb} );
 
 		if( window[newInstanceName]!=undefined )
-			console.error("Cannot create instance of "+className );
+			console.error("That instance already exists! Cannot create instance of "+className );
 
 		window[newInstanceName] = newInstance;
 		console.log( "Created "+newInstanceName );
@@ -100,8 +113,8 @@ HooAbstractButton = HooWidget.extend({
  *
  */
 
-/* Simple Button */
-HooSimpleButton = HooAbstractButton.extend({
+/* Simple Form Button */
+HooSimpleFormButton = HooAbstractButton.extend({
 
 	_fsm_controller: undefined,
 
@@ -127,11 +140,12 @@ HooSimpleButton = HooAbstractButton.extend({
 	_fireButtonActionCmd1:		HooStateMachine_command.create( {name: "fireButtonAction1"} ),
 	_abortClickActionCmd:		HooStateMachine_command.create( {name: "abortClickAction"} ),
 
+	/* set this from the json if you want to hook up a different action */
+	_jsAction:					undefined,
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
-
-		if(this.json.state>0) {
+		if( this.json.state>0) {
 
 			/* States */
 			this._active_state1			= HooStateMachine_state.create( {name: "active1" });
@@ -170,6 +184,9 @@ HooSimpleButton = HooAbstractButton.extend({
 			this._fsm_controller = HooStateMachine_controller.create( { currentState: this._active_state1, machine: stateMachineInstance, commandsChannel: this } );
 
 			this.setupBindings();
+
+			if( this.json.javascript )
+				eval( this.json.javascript );
 		}
 	},
 
@@ -225,33 +242,53 @@ HooSimpleButton = HooAbstractButton.extend({
 
 	fireButtonAction: function( nextState ) {
 
-		// ensure we can't click again until we have received response
-		this.temporarySetEnabledState( 0, false );
 		var self = this;
 		var form = this.getForm();
-		form.submit(function(e) {
-			// alert('Handler for .submit() called.');
 
-			// this === form at this point
-			var hmm = $(this).serialize();
-			alert(this.action);
-			$.ajax({ url: this.action, type:'POST', data: hmm,
-				success: function(data) {
-					//alert("success");
-					/* Move this back into the succeess function */
-					self.temporarySetEnabledState( nextState, true );
-					// on complete set the button state back to normal
-					self._fsm_controller.handle( "clickActionCompleted" );
-					form.unbind('submit');
-					console.log("** Complete **");
-				}
+		var beforeAction = function() {
+			// ensure we can't click again until we have received response
+			self.temporarySetEnabledState( 0, false );
+		};
+
+		var afterAction = function() {
+			//alert("success");
+			/* Move this back into the succeess function */
+			self.temporarySetEnabledState( nextState, true );
+			// on complete set the button state back to normal
+			self._fsm_controller.handle( "clickActionCompleted" );
+			console.log("** Complete **");
+		};
+
+		/* Ignore the form action altogether and do a javascript action - cant be async at the mo */
+		if( this._jsAction!=undefined ) {
+			beforeAction();
+			this._jsAction();
+			afterAction();
+
+		/* Submit the forms regular action using jquery */
+		} else {
+
+			beforeAction();
+
+			form.submit(function(e) {
+				// alert('Handler for .submit() called.');
+
+				// this === form at this point
+				var hmm = $(this).serialize();
+				alert(this.action);
+				$.ajax({ url: this.action, type:'POST', data: hmm,
+					success: function(data) {
+						form.unbind('submit');
+						afterAction();
+					}
+				});
+
+				// The next two lines are equivalent
+				e.preventDefault();
+				return false;
 			});
-
-			// The next two lines are equivalent
-			e.preventDefault();
-			return false;
-		});
-		form.submit();
+			form.submit();
+		}
 	},
 
 	fireButtonAction1: function() {
@@ -276,6 +313,11 @@ HooSimpleButton = HooAbstractButton.extend({
 		this.setButtonText( mouseDownText );
 		this.positionBackground( state );
 	},
+
+	hookupAction: function( callback ) {
+		this._jsAction = callback;
+	},
+
 });
 
 
@@ -286,8 +328,8 @@ HooSimpleButton = HooAbstractButton.extend({
  * Extends the simpleButton 2 add another state, eg followed, unfollowed
  *
  */
-/* Toggle Button */
-HooToggleButton = HooSimpleButton.extend({
+/* Toggle Form Button */
+HooToggleFormButton = HooSimpleFormButton.extend({
 
 	/* States */
 	_active_state2:			undefined,
@@ -343,3 +385,14 @@ HooToggleButton = HooSimpleButton.extend({
 	},
 });
 
+Flippy_toggle_thing = HooWidget.extend({
+
+	flippyFlip: function() {
+		var queryString = "#"+this.id;
+		var $thisHTML = $( queryString );
+		if( $thisHTML.length!=1 )
+			console.error("Could not find the thisHTML");
+		$thisHTML.css( "background-color", "#000" );
+
+	},
+});

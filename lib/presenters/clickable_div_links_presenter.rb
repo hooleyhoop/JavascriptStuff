@@ -1,21 +1,22 @@
 module Presenters
-	class MultipleButtonsPagePresenter < HooPresenter
+
+	# Like a Button, but not a button, not part of a form, just an anchor
+	class ClickableDivLinksPresenter < HooPresenter
 
 		include Gui			# Due Care is taken not to make all these methods global
+		require 'test/unit'
+		include Test::Unit::Assertions
 
 		def initialize( controller )
 
 			super( controller );
 
-			colorFillClass				= widgetClass('colorFill')
-			testUploadFormClass			= widgetClass('testUploadForm')
-			simpleButton				= widgetClass('simpleButton')
-			toggleButton				= widgetClass('toggleButton')
+			singleActButton				= widgetClass('singleActionButton');
+			doubleActButton				= widgetClass('doubleActionButton');
 
 			@window.showGrid;
 
-			colorFillView = colorFillClass.new();
-			@window.contentView.addSubView( colorFillView );
+
 
 			lambda {
 				@simpleButton1 = simpleButton.new( :state=>1 );

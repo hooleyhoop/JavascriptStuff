@@ -21,11 +21,11 @@
 			// Lets kick it all off
 			$(document).ready(function()
 			{
+				// I was thinking along the lines of looking in data- attributes for scripts to run
+				createJSObjectsFromRubyObjects();
+
 				// ERR: the problem with this is that views that do start-up scripts in this fashion
 				// cannot be loaded by ajax!
 
 				#{runStartupScripts()} // call the helper to output collected startup scripts
-
-				// I was thiking along the lines of looking in data- attributes for scripts to run
-				createJSObjectsFromRubyObjects();
 			});

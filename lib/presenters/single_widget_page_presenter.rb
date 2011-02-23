@@ -6,7 +6,7 @@ module Presenters
 
 			super( controller );
 
-            @window.showGrid;
+			@window.showGrid;
 
 			# Conflicting ways to set default widget
 			widgetView = widgetClass('singleWidget').new( defaultWidget, optionalArgs )

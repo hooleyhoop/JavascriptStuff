@@ -27,8 +27,11 @@ JavascriptStuff::Application.routes.draw do
   get "pages/grid_view"
   get "pages/list_view"
   get "pages/horizontal_list_view"
+  get "pages/headless_player"
+  get "pages/headless_recorder"
 
-  get 'pages/multiple_buttons_test'
+  get 'pages/multiple_link_buttons_test'
+  get 'pages/multiple_form_buttons_test'
   post 'pages/multiple_buttons_test_upload'
 
 

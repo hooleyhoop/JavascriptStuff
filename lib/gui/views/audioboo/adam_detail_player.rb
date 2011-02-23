@@ -1,9 +1,10 @@
 module GUI::Views::Audioboo
 
-	class DetailPlayer < GUI::Core::HooView
+	class AdamDetailPlayer < GUI::Core::HooView
 
 		attr_accessor :playerLeft, :playerRight, :playerMid, :playButton, :carat;
 		attr_accessor :playerLeft2, :playerRight2, :playerMid2
+		attr_accessor :durationString
 
 		def initialize( args={} )
 			super();
@@ -18,6 +19,8 @@ module GUI::Views::Audioboo
 
 			@playButton		= '../images/player/play-button.png';
 			@carat			= '../images/player/carat.png';
+
+			@durationString = '03:23'
 		end
 
 		# Mock Data

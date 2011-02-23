@@ -58,13 +58,28 @@ class PagesController < ApplicationController
 		pagePresenter.drawPage();
 	end
 
+	def headless_recorder
+		pagePresenter = Presenters::HeadlessRecorderPresenter.new( self );
+		pagePresenter.drawPage();
+	end
+
+	def headless_player
+		pagePresenter = Presenters::HeadlessPlayerPresenter.new( self );
+		pagePresenter.drawPage();
+	end
+
 	def horizontal_list_view
 		pagePresenter = Presenters::HorizontalListViewPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
 
 	# Better practice to use a different action for the post request
-	def multiple_buttons_test
+	def multiple_link_buttons_test
+		pagePresenter = Presenters::ClickableDivLinksPresenter.new( self );
+		pagePresenter.drawPage();
+	end
+
+	def multiple_form_buttons_test
 		pagePresenter = Presenters::MultipleButtonsPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end

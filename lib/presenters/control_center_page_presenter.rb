@@ -16,7 +16,13 @@ module Presenters
 				{ 'name'=>"horizontal list view",	'url'=> controller.pages_horizontal_list_view_path },
 				{ 'name'=>"elephant view",			'url'=> controller.elephants_path },
 				{ 'name'=>"audiobooScratchPad",		'url'=> controller.pages_test_audioboo_stuff_path },
-				{ 'name'=>"all the buttons",		'url'=> controller.pages_multiple_buttons_test_path },
+
+				{ 'name'=>"all the <form> buttons",	'url'=> controller.pages_multiple_form_buttons_test_path },
+				{ 'name'=>"all the <link> buttons",	'url'=> controller.pages_multiple_link_buttons_test_path },
+
+				{ 'name'=>"headless player",		'url'=> controller.pages_headless_player_path },
+				{ 'name'=>"headless recorder",		'url'=> controller.pages_headless_recorder_path },
+
 
 			];
 
