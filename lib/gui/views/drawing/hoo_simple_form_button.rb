@@ -37,7 +37,9 @@ module GUI::Views::Drawing
 			@state=0 if @state==nil
 			@labelColor = '#eee';
 			@action = '/widgets/_ajaxPostTest';
-			#@javascript = "alert('shaomene');";
+			@javascript = "this.hookupAction( function(){
+				alert('Holy Cock');
+			});";
 		end
 
 		def labelStates=(states)

@@ -31,7 +31,10 @@ module GUI::Views::Drawing
 			@size = [105, 45];
 			@state=0 if @state==nil
 			@labelColor = '#eee';
-			@action = '#'; # /widgets/_ajaxPostTest
+			@action = 'http://apple.com';
+			@javascript = "this.hookupAction( function(){
+				alert('Holy Smuck');
+			});";
 		end
 
 		def labelStates=(states)
@@ -45,6 +48,7 @@ module GUI::Views::Drawing
 				:labelStates	=> @labelStates,
 				:state			=> @state,
 				:size			=> @size,
+				:javascript		=> @javascript,
 			}
 			return allItems.to_json();
 		end

@@ -36,8 +36,10 @@ module GUI::Views::Drawing
 			@size = [105, 45];
 			@state=0 if @state==nil
 			@labelColor = '#eee';
-			@action = '/widgets/_ajaxPostTest';
-			@javascript = "alert('shaomene');";
+			@action = 'http://apple.com';
+			@javascript = "this.hookupAction( function(){
+				alert('Holy Smuck');
+			});";
 		end
 
 		def labelStates=(states)

@@ -5,6 +5,8 @@ module Presenters
 
 			super( controller );
 
+			@window.showGrid;
+
 			@menuItems = [
 				{ 'name'=>"javascript tests",		'url'=> controller.pages_javascript_unit_tests_path },
 				{ 'name'=>"widgets",				'url'=> controller.pages_widgets_path },

@@ -57,6 +57,9 @@ HooWidget = SC.Object.extend({
 /* Abstract Button */
 HooAbstractButton = HooWidget.extend({
 
+	itemType: "button",
+	textHolder: "span",
+
 	// forward events to 'this'
 	eventTrampoline: function(e) {
 		var target = e.data.target;
@@ -66,8 +69,8 @@ HooAbstractButton = HooWidget.extend({
 	},
 
 	/* JQuery helpers */
-	getButton: function() {
-		var buttonQuery = "#"+this.id+" button:first";
+	getClickableItem: function() {
+		var buttonQuery = "#"+this.id+" "+this.itemType+":first";
 		var $button = $( buttonQuery );
 		if( $button.length!=1 )
 			console.error("Could not find the Button");
@@ -82,15 +85,16 @@ HooAbstractButton = HooWidget.extend({
 		return $form;
 	},
 
-	setButtonText: function( arg ) {
-		var $butt = this.getButton();
-		var $contents = $butt.find("span");
+	// works for buttons and spans if textHolder is set correctly
+	setContentText:  function( arg ) {
+		var $butt = this.getClickableItem();
+		var $contents = $butt.find( this.textHolder );
 		$contents.text( arg );
 	},
 
 	positionBackground:function( state ) {
-		var $butt = this.getButton();
-		var height = this.getButton().height();
+		var $butt = this.getClickableItem();
+		var height = $butt.height();
 		var offset = state * height;
 
 		if ( typeof this.positionBackground.previousHeight!='undefined' ) {
@@ -192,14 +196,15 @@ HooSimpleFormButton = HooAbstractButton.extend({
 
 	setupBindings: function() {
 
-		this.getButton().bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this.eventTrampoline );
-		this.getButton().bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this.eventTrampoline );
+		var button = this.getClickableItem();
+		button.bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this.eventTrampoline );
+		button.bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this.eventTrampoline );
 
-		this.getButton().removeAttr("disabled");
-		this.getButton().css( "pointer-events", "auto" ); // control whether can be the target of mouse events
+		button.removeAttr("disabled");
+		button.css( "pointer-events", "auto" ); // control whether can be the target of mouse events
 
 		var mouseDownText = this.json.labelStates[this.json.state];
-		this.setButtonText( mouseDownText );
+		this.setContentText( mouseDownText );
 
 		// this.getForm().submit( {ob: this}, this.onClick ); // Bind submit - manually doing this
 	},
@@ -213,7 +218,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		$('body').bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this.eventTrampoline );
 
 		var mouseDownText = this.json.labelStates[state];
-		this.setButtonText( mouseDownText );
+		this.setContentText( mouseDownText );
 
 		this.positionBackground(state);
 	},
@@ -222,7 +227,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		$('body').unbind( 'mouseup' );
 
 		var mouseDownText = this.json.labelStates[state];
-		this.setButtonText( mouseDownText );
+		this.setContentText( mouseDownText );
 
 		this.positionBackground(state);
 	},
@@ -243,7 +248,6 @@ HooSimpleFormButton = HooAbstractButton.extend({
 	fireButtonAction: function( nextState ) {
 
 		var self = this;
-		var form = this.getForm();
 
 		var beforeAction = function() {
 			// ensure we can't click again until we have received response
@@ -260,16 +264,17 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		};
 
 		/* Ignore the form action altogether and do a javascript action - cant be async at the mo */
-		if( this._jsAction!=undefined ) {
-			beforeAction();
-			this._jsAction();
-			afterAction();
+		var jsOveridingFormAction = function( argsHash ) {
+			self._jsAction();
+			self.getForm().submit(function(e) { return false; });
+			self.getForm().submit();
+			argsHash.onComplete();
+		}
 
 		/* Submit the forms regular action using jquery */
-		} else {
+		var formSubmitAction = function( argsHash ) {
 
-			beforeAction();
-
+			var form = self.getForm();
 			form.submit(function(e) {
 				// alert('Handler for .submit() called.');
 
@@ -279,7 +284,9 @@ HooSimpleFormButton = HooAbstractButton.extend({
 				$.ajax({ url: this.action, type:'POST', data: hmm,
 					success: function(data) {
 						form.unbind('submit');
-						afterAction();
+
+						// of course, you remebered to pass in the callback..
+						argsHash.onComplete();
 					}
 				});
 
@@ -289,6 +296,15 @@ HooSimpleFormButton = HooAbstractButton.extend({
 			});
 			form.submit();
 		}
+
+
+		// Ok, lets do it!
+		beforeAction();
+
+		if( this._jsAction!=undefined )
+			jsOveridingFormAction( {onComplete: afterAction } );
+		else
+			formSubmitAction( {onComplete: afterAction } );
 	},
 
 	fireButtonAction1: function() {
@@ -298,22 +314,24 @@ HooSimpleFormButton = HooAbstractButton.extend({
 	temporarySetEnabledState: function( state, enabled ) {
 
 		var mouseDownText = "";
+		var button = this.getClickableItem();
 
 		if(enabled){
-			this.getButton().removeAttr("disabled");
-			this.getButton().css( "pointer-events", "auto" );
+			button.removeAttr("disabled");
+			button.css( "pointer-events", "auto" );
 		} else {
-			this.getButton().attr('disabled', 'disabled');
-			this.getButton().css( "pointer-events", "none" );
+			button.attr('disabled', 'disabled');
+			button.css( "pointer-events", "none" );
 		}
 		// this.getForm().unbind( "submit", this.onClick );
-		// this.getButton().unbind( "mousedown", this.mouseDown );
+		// button.unbind( "mousedown", this.mouseDown );
 
 		var mouseDownText = this.json.labelStates[state];
-		this.setButtonText( mouseDownText );
+		this.setContentText( mouseDownText );
 		this.positionBackground( state );
 	},
 
+	/* add a dynamic javascript action */
 	hookupAction: function( callback ) {
 		this._jsAction = callback;
 	},
@@ -384,6 +402,40 @@ HooToggleFormButton = HooSimpleFormButton.extend({
 		this.fireButtonAction(3);
 	},
 });
+
+/* Simple link button */
+
+HooSingleActionButton = HooSimpleFormButton.extend({
+
+	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
+	itemType: "div",
+	textHolder: "a",
+
+	// maybe make this async
+	fireButtonAction: function( nextState ) {
+		this.temporarySetEnabledState( 0, false );
+		this._jsAction( );
+		this.temporarySetEnabledState( nextState, true );
+		this._fsm_controller.handle( "clickActionCompleted" );
+	},
+});
+
+HooDoubleActionButton = HooToggleFormButton.extend({
+
+	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
+	itemType: "div",
+	textHolder: "a",
+
+	// maybe make this async
+	fireButtonAction: function( nextState ) {
+		this.temporarySetEnabledState( 0, false );
+		this._jsAction( );
+		this.temporarySetEnabledState( nextState, true );
+		this._fsm_controller.handle( "clickActionCompleted" );
+	},
+});
+
+/* Flippy Debug thing */
 
 Flippy_toggle_thing = HooWidget.extend({
 

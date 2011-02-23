@@ -7,29 +7,25 @@
 
 - push( hoo_double_action_button )
 
--# adding the data-jsclass attribute means that a javascript instance will be created
-%div[_]( data-jsclass='HooDoubleActionButton' )
-	= form_tag( "#{_.action}", :method=>:post, :remote=>true ) do
+-#
+-# ok, ok, these double and single action things are the same, different javascript, yeah?
+-#
 
-		-# Old way used a submit button. Thee are a bitch to style. So is this.
-		-# Note, the position of the span is different in ie, firefox and safari (didnt even bother to check chrome)
-		-# If you center it in safari it will be to low in firefox, whichever way you tweak it it will be incorrect somewhere
-		-# We really should use links and javascript
+- textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0; position:relative; top:15px; letter-spacing:0pc; word-spacing:-0.1pc;"
+- button_attrs = { :style=>" text-align: center; padding:0; margin:0; border:none; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.state}px; width: #{_.size[0]}px; height:#{_.size[1]}px;" }
+- if(  _.state==0 )
+	- button_attrs.merge!( { :disabled=>"disabled" } )
+	- button_attrs[:style] += "pointer-events:none;"
+	- textStyle += "opacity:0.6;"
+- else
+	- textStyle += "text-shadow:0px -1px 0px #374683;"
 
-		- textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0 0 0 15px; position:relative; top:0px; margin:0!important; letter-spacing:0pc; word-spacing:-0.1pc;"
-		- button_attrs = { :style=>"padding: 0; margin: 0; border: none; background: transparent url( #{_.img} ) 0 #{_.size[1]*-_.state}px; width: #{_.size[0]}px; height: #{_.size[1]}px;", :name=>"commit", :title=>"", :type=>"submit", :value=>"" }
-		- if(  _.state==0 )
-			- button_attrs.merge!( { :disabled=>"disabled" } )
-			- button_attrs[:style] += "pointer-events:none;"
-			- textStyle += "opacity:0.6;"
-		- else
-			- textStyle += "text-shadow:0px -1px 0px #374683;"
+%div[_]{ :data=> {'jsclass'=>'HooDoubleActionButton'} }
+	%div{button_attrs}
+		%a( href="http://apple.com" style="#{textStyle}" )
+			-# Insert the correct label for this state
+			#{_.labelStates[_.state]}
 
-		%button{ button_attrs }
-			%span( style="#{textStyle}" )
-				-# Insert the correct label for this state
-				#{_.labelStates[_.state]}
-
-
+-# it would be nice if we didnt have to repeat this everywhere
 :javascript
 	#{_.varName}_json = #{_.jsonProperties}
