@@ -118,7 +118,7 @@ function GetSwfVer(){
 }
 
 // When called with reqMajorVer, reqMinorVer, reqRevision returns true if that version or greater is available
-function DetectFlashVer(reqMajorVer, reqMinorVer, reqRevision)
+function detectFlashVer(reqMajorVer, reqMinorVer, reqRevision)
 {
 	versionStr = GetSwfVer();
 	if (versionStr == -1 ) {
@@ -151,3 +151,7 @@ function DetectFlashVer(reqMajorVer, reqMinorVer, reqRevision)
 	}
 }
 
+// we would probably be ok in flash 9?
+function hasMinimumFlash() {
+	return detectFlashVer(10,0,0);
+}

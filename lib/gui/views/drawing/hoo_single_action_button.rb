@@ -19,9 +19,11 @@ module GUI::Views::Drawing
 		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
 		attr_accessor :javascript;
+		attr_accessor :bindings;
 
 		def initialize( args={} )
 			super();
+			@bindings = {};
 			if args[:state]
 				@state=args[:state].to_i();
 			end
@@ -47,13 +49,20 @@ module GUI::Views::Drawing
 			assert( states.count==3 );
 		end
 
+		def addBinding( aHash )
+			@bindings.merge!( aHash );
+		end
+
 		# stuff to write into the page
 		def jsonProperties
 			allItems = {
 				:labelStates	=> @labelStates,
 				:state			=> @state,
 				:size			=> @size,
+
+				# simple click action - this isnt going to cut it
 				:javascript		=> @javascript,
+				:bindings		=> @bindings,
 			}
 			return allItems.to_json();
 		end

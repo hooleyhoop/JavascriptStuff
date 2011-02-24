@@ -123,6 +123,8 @@ HooSimpleFormButton = HooAbstractButton.extend({
 	_fsm_controller: undefined,
 
 	/* States */
+	_disabled_state:			undefined,
+	_enabled_state:				undefined,	// just passes thru here
 	_active_state1:				undefined,
 	_active_down_state1:		undefined,
 
@@ -132,6 +134,8 @@ HooSimpleFormButton = HooAbstractButton.extend({
 	_abortClick_state1:			undefined,
 
 	/* Events - so these are like, Class variables? */
+	_enable_event:				HooStateMachine_event.create( {name: "enable"} ),
+	_enabledSuccessfully_event:	HooStateMachine_event.create( {name: "enabledSuccessfully"} ),
 	_buttonPressed_event:		HooStateMachine_event.create( {name: "buttonPressed"} ),
 	_buttonReleased_event:		HooStateMachine_event.create( {name: "buttonReleased"} ),
 	_mouseDraggedOut_event:		HooStateMachine_event.create( {name: "mouseDraggedOutside"} ),
@@ -139,6 +143,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
 	_clickAbortComplete_event:	HooStateMachine_event.create( {name: "clickAbortCompleted"} ),
 
 	/* Commands */
+	_enableButtonCmd:			HooStateMachine_command.create( {name: "enableButton"} ),
 	_showMouseUpCmd1:			HooStateMachine_command.create( {name: "showMouseUp1"} ),
 	_showMouseDownCmd1: 		HooStateMachine_command.create( {name: "showMouseDown1"} ),
 	_fireButtonActionCmd1:		HooStateMachine_command.create( {name: "fireButtonAction1"} ),
@@ -149,64 +154,82 @@ HooSimpleFormButton = HooAbstractButton.extend({
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
+
+		// if state is 0 button is completely disabled
 		if( this.json.state>0) {
 
 			/* States */
+			this._disabled_state		= HooStateMachine_state.create( {name: "disabled" });
+			this._enabled_state			= HooStateMachine_state.create( {name: "enabled" });
 			this._active_state1			= HooStateMachine_state.create( {name: "active1" });
 			this._active_down_state1	= HooStateMachine_state.create( {name: "active_down1" });
 			this._clicked_state1		= HooStateMachine_state.create( {name: "clicked1" });
 			this._abortClick_state1		= HooStateMachine_state.create( {name: "abort-click1" });
 
 			/* Transitions */
+			this._disabled_state.addTransition( this._enable_event, this._enabled_state );
+			this._enabled_state.addTransition( this._enabledSuccessfully_event, this._active_state1 );
 			this._active_state1.addTransition( this._buttonPressed_event, this._active_down_state1 );
 			this._active_down_state1.addTransition( this._buttonReleased_event, this._clicked_state1 );
 
-			// These are for the version where you can drag outside of the button - its rubbish
-			// _active_down_out_state	= HooStateMachine_state.create( {name: "active_down_out" }),
-			// _mouseDraggedWithin_event= HooStateMachine_event.create( {name: "mouseDraggedWithin"} ),
-			// _mouseLeftWindow_event	= HooStateMachine_event.create( {name: "mouseLeftWindow"} ),
-			// active_down_state.addTransition( mouseDraggedOut_event, active_down_out_state ),
-			// active_down_out_state.addTransition( buttonReleased_event, abortClick_state ),
-			// active_down_out_state.addTransition( mouseDraggedWithin_event, active_down_state ),
-			// active_down_out_state.addTransition( mouseLeftWindow_event, abortClick_state ),
-
-			// This is for the alternate version where dragging outside the button resets it
 			this._active_down_state1.addTransition( this._mouseDraggedOut_event, this._abortClick_state1 );
-
 			this._clicked_state1.addTransition( this._clickComplete_event, this._active_state1 );
 
 			/* This needs overiding in button 2 - how to handle ? */
 			this._abortClick_state1.addTransition( this._clickAbortComplete_event, this._active_state1 );
 
-			this._active_state1.addAction( this._showMouseUpCmd1 ),
-			this._active_down_state1.addAction( this._showMouseDownCmd1 ),
-			this._clicked_state1.addAction( this._fireButtonActionCmd1 ),
-			this._abortClick_state1.addAction( this._abortClickActionCmd ),
+			this._enabled_state.addAction( this._enableButtonCmd );
+			this._active_state1.addAction( this._showMouseUpCmd1 );
+			this._active_down_state1.addAction( this._showMouseDownCmd1 );
+			this._clicked_state1.addAction( this._fireButtonActionCmd1 );
+			this._abortClick_state1.addAction( this._abortClickActionCmd );
+
+			// what is our start state?
+			var shouldStartActive = true;
+			if( this.json.bindings ) {
+				if( this.json.bindings.enabled ) {
+					// begin disabled, wait for a short while, then inspect the targets state.
+					// If the target is already 'ready' - no need to bind!
+					shouldStartActive = false;
+					var self = this;
+					setTimeout( function(){
+						var target = window[self.json.bindings.enabled.enabled_taget];
+						if(target==undefined)
+							debugger;
+						var initialState = target.get( self.json.bindings.enabled.enabled_property );
+						if(initialState)
+							self._fsm_controller.handle( "enable" );
+						else
+							target.addObserver( self.json.bindings.enabled.enabled_property, function(){ self._fsm_controller.handle( "enable" ); } );
+					}, 33);
+				}
+			}
 
 			/* set up our button statemachine */
-			var stateMachineInstance = HooStateMachine.create( {startState: this._active_state1} );
-			this._fsm_controller = HooStateMachine_controller.create( { currentState: this._active_state1, machine: stateMachineInstance, commandsChannel: this } );
+			var stateMachineInstance = HooStateMachine.create( {startState: this._disabled_state} );
+			this._fsm_controller = HooStateMachine_controller.create( { currentState: this._disabled_state, machine: stateMachineInstance, commandsChannel: this } );
 
-			this.setupBindings();
-
-			if( this.json.javascript )
-				eval( this.json.javascript );
+			// initial state depends on whether _enabled? has been bound or not.. if it is bound, then follow that property, if it isnt bound start in the on state
+			this.setInitialState( shouldStartActive );
 		}
 	},
 
-	setupBindings: function() {
+	readyDidChange: function( target, property ) {
+		alert("i can not believe how far this is going!"+target.get(property));
+	},
 
-		var button = this.getClickableItem();
-		button.bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this.eventTrampoline );
-		button.bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this.eventTrampoline );
+	setInitialState: function( shouldStartActive ) {
+		// regardless, begin in the disabled state
+		this.temporarySetEnabledState( 0, false );
+		// if enabled? is not observing anything, assume we should advance to the enabled state automatically
+		if(shouldStartActive)
+			this._fsm_controller.handle( "enable" );
+	},
 
-		button.removeAttr("disabled");
-		button.css( "pointer-events", "auto" ); // control whether can be the target of mouse events
-
-		var mouseDownText = this.json.labelStates[this.json.state];
+	setBackgroundAndTextState: function( state ) {
+		var mouseDownText = this.json.labelStates[state];
 		this.setContentText( mouseDownText );
-
-		// this.getForm().submit( {ob: this}, this.onClick ); // Bind submit - manually doing this
+		this.positionBackground(state);
 	},
 
 	/* Incoming commands from the state machine */
@@ -214,22 +237,33 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		this[command.name](); // interpet the command as an instance method and call it
 	},
 
+	/* This should only be called once, when it enters the enabled state */
+	enableButton: function( state ) {
+
+		var button = this.getClickableItem();
+		button.bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this.eventTrampoline );
+		button.bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this.eventTrampoline );
+
+		this.temporarySetEnabledState( 1, true );
+
+		// this could do anything..
+		if( this.json.javascript )
+			eval( this.json.javascript );
+
+		// we dont rest in enabled state - move on to active state
+		this._fsm_controller.handle( "enabledSuccessfully" );
+	},
+
 	showMouseDownState: function( state ) {
 		$('body').bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this.eventTrampoline );
 
-		var mouseDownText = this.json.labelStates[state];
-		this.setContentText( mouseDownText );
-
-		this.positionBackground(state);
+		this.setBackgroundAndTextState( state );
 	},
 
 	showMouseUpState: function( state ) {
 		$('body').unbind( 'mouseup' );
 
-		var mouseDownText = this.json.labelStates[state];
-		this.setContentText( mouseDownText );
-
-		this.positionBackground(state);
+		this.setBackgroundAndTextState( state );
 	},
 
 	showMouseDown1: function() {
@@ -311,6 +345,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		this.fireButtonAction( 1 );
 	},
 
+	// this has somewhere to go..
 	temporarySetEnabledState: function( state, enabled ) {
 
 		var mouseDownText = "";
@@ -326,9 +361,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		// this.getForm().unbind( "submit", this.onClick );
 		// button.unbind( "mousedown", this.mouseDown );
 
-		var mouseDownText = this.json.labelStates[state];
-		this.setContentText( mouseDownText );
-		this.positionBackground( state );
+		this.setBackgroundAndTextState( state );
 	},
 
 	/* add a dynamic javascript action */
@@ -363,7 +396,6 @@ HooToggleFormButton = HooSimpleFormButton.extend({
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
-
 		if(this.json.state>0) {
 
 			this._active_state2			= HooStateMachine_state.create( {name: "active2" });
@@ -424,6 +456,8 @@ HooSingleActionButton = HooSimpleFormButton.extend({
 		this._fsm_controller.handle( "clickActionCompleted" );
 	},
 });
+
+/* two state link button */
 
 HooDoubleActionButton = HooToggleFormButton.extend({
 
