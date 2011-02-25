@@ -34,19 +34,21 @@ module Presenters
 				@simpleButton2.action = '#'
 
 				# old way
-				@simpleButton2.javascript = "this.hookupAction( function(){
-					alert('Holy Cock');
-				});";
+				#@simpleButton2.javascript = "this.hookupAction( function(){
+				#	alert('Holy Cock');
+				#});";
 
-				@simpleButton2.addBinding( { :enabled=>{ :enabled_taget=>@headlessPlayer1.varName, :enabled_property=>'ready' } } );
+				headlessPlayer1InstanceName = @headlessPlayer1.varName;
+				@simpleButton2.addBinding( { :enabled=>{ :enabled_taget=>headlessPlayer1InstanceName, :enabled_property=>'ready' } } );
+				@simpleButton2.addJavascriptAction( { :mouseClick=>{ :action_taget=>headlessPlayer1InstanceName, :action_event=>'play' }} );
 
 				@window.contentView.addSubView( @simpleButton2 );
 			}.call
 
 
 			lambda {
-				@headlessPlayer2 = headlessPlayer.new({ :url=>'http://0.0.0.0:3000/audio/test.mp3'});
-				@window.contentView.addSubView( @headlessPlayer2 );
+			#	@headlessPlayer2 = headlessPlayer.new({ :url=>'http://0.0.0.0:3000/audio/test.mp3'});
+			#	@window.contentView.addSubView( @headlessPlayer2 );
 			}.call
 
 

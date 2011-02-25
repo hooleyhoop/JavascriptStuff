@@ -14,44 +14,24 @@
 - if( _.includeOnce? )
 	:javascript
 
-		HooKVOTests = SC.Object.extend({
-		  showFullName: NO,
-		  sendChangesToServer: function(key) {
-			// ... send changes to the server
-			// alert("This really works");
-		  }.observes('showFullName'),
-
-		  readyState: function( arg ) {
-			alert("woo woo mutha fucker");
-		  }
-		});
-		var kvoTest = HooKVOTests.create();
-		kvoTest.set('showFullName', YES);
-
-		// flashPlayerInstance.addObserver('ready', kvoTest.readyState );
+		/* Flash Callback */
+		function BooFlashPlayerEvent( id, eventName, optionArg1 ) {
+			FlashPlayerBackend.sharedInstance._flash_callBack( id, eventName, optionArg1 )
+		}
 
 		/*
 		 *
 		*/
 		FlashPlayerBackend = SC.Object.extend({
 
-			_swfSrc: 'http://0.0.0.0:3000/flash/HeadlessPlayer/lib/Debug/headlessPlayer.swf',
+			_swfSrc: 		'http://0.0.0.0:3000/flash/HeadlessPlayer/lib/Debug/headlessPlayer.swf',
+			ready:			undefined,
+			_embeddedSwf:	undefined,
 
 			init: function( /* init never has args */ ) {
 
-				// var self=this;
-				// self.observable = this;
-
-				// getters
-				// $.each(['readyState', 'duration'], function(i, reader){
-				//  self[reader] = function(){return self.player['_'+reader]();};
-				//});
-				// getters/setters
-				// $.each(['src', 'currentTime', 'volume'], function(i, reader){
-				// var writer = "set"+reader.charAt(0).toUpperCase()+reader.slice(1);
-				// if (!self[reader]) self[reader] = function(){return self.player['_'+reader]();};
-				// if (!self[writer]) self[writer] = function(value){return self.player['_'+writer](value);};
-				// });
+				this.ready = false;
+				FlashPlayerBackend.sharedInstance = this;
 
 				// if (!this.player.didFinishLaunching || !this.player.didFinishLaunching())  // wait until flash loads before calling functions on it
 				//wrapFunctionsUntilEvent(this, ['setSrc', 'play', 'pause'], 'ready');
@@ -89,13 +69,42 @@
 				HeadlessPlayerSingleton.FlashPlayerId++;
 				var playerId = "booPlayer"+HeadlessPlayerSingleton.FlashPlayerId;
 				// IE doesn't like you playing with <object>s once they're created, hence the huge string blob & using innerHTML
-				var objectTag = "<object data='"+this._swfSrc+"' id='"+playerId+"' type='application/x-shockwave-flash' width=10 height=10>"+
+				var objectTag = "<object data='"+this._swfSrc+"' id='"+playerId+"' type='application/x-shockwave-flash' width=300 height=300>"+
 				 "<param name='movie' value='"+this._swfSrc+"'/><param name='allowScriptAccess' value='always'/><param name='FlashVars' value='rootID="+playerId+"'/></object>";
 				if($.browser.msie)
 					$wrapper[0].innerHTML = objectTag;
 				else
 					$wrapper.append(objectTag);
-				return $wrapper.find('object')[0];
+				this._embeddedSwf = $wrapper.find('object')[0];
+			},
+
+			/* receive events from the swf */
+			_flash_callBack: function( id, eventName, optionArg1 ) {
+
+				if( eventName=="ready" ) {
+					this.set('ready', YES);
+				} else if( eventName=="didSetSrc" ) {
+				} else if( eventName=="play" ) {
+				} else if( eventName=="progress" ) {
+				} else if( eventName=="timeupdate" ) {
+				} else if( eventName=="ended" ) {
+					// began playing
+				} else {
+					alert("Unknown callback "+eventName);
+				}
+			},
+
+			play: function(callback) {
+				this._embeddedSwf._play();
+			},
+
+			src: function() {
+				return this._embeddedSwf._src
+			},
+
+			setSrc: function( url ) {
+				this._embeddedSwf._setSrc( url );
+				this._embeddedSwf._load(); // force the audio to reset & start loading the new url
 			},
 
 			buffered: function(){
@@ -103,30 +112,10 @@
 			// return buffered && buffered[0][1] / this.duration();
 			},
 
-			ready: function(callback) {
-			// var self = this;
-			// if (self.player.didFinishLaunching && self.player.didFinishLaunching())
-			// callback.apply(self);
-			// else
-			//   $(self.observable).bind('ready', function(){callback.apply(self);});
-			},
-
 			setCurrentTime: function(value) {
 			// this.player._setCurrentTime(value);
 			// Immediately trigger a timeupdate event because flash is quite slow to fire this on its own
 			// $(this.observable).trigger('timeupdate');
-			},
-
-			// the flash player gets pretty upset at us calling pause twice in a row, and loses its playback point
-			// try and keep track of whether we're already paused before calling pause again:
-			play: function(callback) {
-			// if (callback)
-			//  return $(this.observable).bind('play',callback);
-			// if (!this.playing) {
-			//  this.playing = true;
-			//  this.player._play();
-			//}
-			return this;
 			},
 
 			pause: function(callback) {
@@ -141,13 +130,14 @@
 		});
 
 
-
-
-
-
 		HTMLPlayerBackend = SC.Object.extend({
 
+			ready:				undefined,
+			_audioElement:		undefined,
+
 			init: function( /* init never has args */ ) {
+
+				this.ready = false;
 				// var self=this;
 				// self.observable = self.player;
 
@@ -171,11 +161,27 @@
 
 			// stick the audio element at the end of the page
 			_attachToPage: function() {
-
 				var audioElem = document.createElement('audio');
 				var $wrapper = $("<div class='booPlayerHolder'/>").appendTo(document.body);
 			  	$wrapper.append(audioElem);
-			  	return audioElem;
+				this.ready = true;				/* html5 was born ready */
+			  	this._audioElement = audioElem;
+			},
+
+			play: function() {
+				this._audioElement.autoplay = true;
+				this._audioElement.play();
+			},
+
+			src: function() {
+				return this._audioElement.src;
+			},
+
+			setSrc: function( url ) {
+				if (!url) debugger;
+				this._audioElement.src = url;
+				this._audioElement.preload = "auto";
+				this._audioElement.load(); // force the audio to reset & start loading the new url
 			},
 
 		  buffered: function() {
@@ -187,23 +193,10 @@
 			return buffers ? this.player.buffered.end(buffers-1)/this.player.duration : 0;
 		  },
 
-		  ready: function(callback) {
-			// html5 audio is always ready
-			callback.apply(this);
-		  },
 
-		  setSrc: function(value) {
-			if (!value)
-			  debugger;
-			if (this.player.currentSrc==value)
-			  return;
-			this.player.src = value;
-			this.player.load(); // force the audio to reset & start loading the new url
-		  }
+
 
 		});
-
-
 
 
 		/*
@@ -229,19 +222,22 @@
 
 				this._playerBackend = useNativePlayback ? HTMLPlayerBackend.create() : FlashPlayerBackend.create();
 				this._playerBackend._attachToPage();
-
-				// this._player = useNativePlayback ? this._attachAudioElement( $wrapper ) : this._attachHeadlessFlashPlayer( $wrapper );
-				// this._playerType = useNativePlayback ? HTMLPlayer : FlashPlayer;
-
-				// Add a data attribute to map from the DOM player back to our AudioPlayer object
-				// However, we can't use data() on <object> tags (see jQuery.noData), so it'll have to go on the parent wrapper
-				// if($(this._player).parent().data('booPlayer'))
-				//	throw("Already added a player to wrapper node");
-				// $(this._player).parent().data('booPlayer', this);
 			},
 
+			whenReady: function( target, callBack ) {
+				if(this._playerBackend.ready) {
+					callBack.apply(target);
+				} else {
+					console.log("not already ready "+ target);
+					this._playerBackend.addObserver( 'ready', target, callBack );// !grr kinda leaking this
+				}
+			},
 
-
+			play: function( mp3Url ) {
+				if( mp3Url!=this._playerBackend.src )
+					this._playerBackend.setSrc(mp3Url); // wait?
+				this._playerBackend.play();
+			}
 
 		});
 
@@ -251,20 +247,35 @@
 		*/
 		HeadlessAudioplayer = HooWidget.extend({
 
-			ready: undefined,
+			ready:	undefined,
+			_src:	undefined,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
 				this.ready = false;
-				if( HeadlessAudioplayer.sharedHeadlessPlayerSwf==undefined ){
+				if( HeadlessAudioplayer.sharedHeadlessPlayer==undefined ){
 					try {
-						HeadlessAudioplayer.sharedHeadlessPlayerSwf = HeadlessPlayerSingleton.create();
+						HeadlessAudioplayer.sharedHeadlessPlayer = HeadlessPlayerSingleton.create();
 					} catch(err) {
 			 			 $(this).trigger('booError', err);
 			  			alert("install flash dufus "+err);
 			  			return;
 			  		}
 				}
+
+				if( this.json.mp3Url ) {
+					this._src = this.json.mp3Url;
+					HeadlessAudioplayer.sharedHeadlessPlayer.whenReady( this, this.didBecomeReady );
+				}
+			},
+
+			// we should be observing this
+			didBecomeReady: function(){
+				this.set( "ready", YES );
+			},
+
+			play: function(){
+				HeadlessAudioplayer.sharedHeadlessPlayer.play( this._src );
 			},
 		});
 
@@ -297,11 +308,7 @@
 
 
 
-		/* Flash Callback */
-		function BooFlashPlayerEvent( id, eventName, optionArg1 ) {
-		  var player = $("#"+id).parent().data('booPlayer');
-		  $(player.observable).triggerHandler(eventName);
-		}
+
 
 		var OldFlashError="boo.oldflasherror";
 		// console.error( "Please install <a href='http://get.adobe.com/flashplayer'>Flash 10</a> or above" );

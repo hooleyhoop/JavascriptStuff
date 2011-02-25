@@ -149,8 +149,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
 	_fireButtonActionCmd1:		HooStateMachine_command.create( {name: "fireButtonAction1"} ),
 	_abortClickActionCmd:		HooStateMachine_command.create( {name: "abortClickAction"} ),
 
-	/* set this from the json if you want to hook up a different action */
-	_jsAction:					undefined,
+	_mouseClickAction:			undefined,
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
@@ -184,24 +183,40 @@ HooSimpleFormButton = HooAbstractButton.extend({
 			this._clicked_state1.addAction( this._fireButtonActionCmd1 );
 			this._abortClick_state1.addAction( this._abortClickActionCmd );
 
-			// what is our start state?
+			var self = this;
+
+			// Setup bindings as configured in the json
 			var shouldStartActive = true;
-			if( this.json.bindings ) {
+			if( this.json.bindings )
+			{
 				if( this.json.bindings.enabled ) {
 					// begin disabled, wait for a short while, then inspect the targets state.
 					// If the target is already 'ready' - no need to bind!
 					shouldStartActive = false;
-					var self = this;
 					setTimeout( function(){
 						var target = window[self.json.bindings.enabled.enabled_taget];
 						if(target==undefined)
 							debugger;
 						var initialState = target.get( self.json.bindings.enabled.enabled_property );
-						if(initialState)
+						if(initialState) {
 							self._fsm_controller.handle( "enable" );
-						else
-							target.addObserver( self.json.bindings.enabled.enabled_property, function(){ self._fsm_controller.handle( "enable" ); } );
-					}, 33);
+						} else {
+							target.addObserver( self.json.bindings.enabled.enabled_property, self, self.readyDidChange );
+						}
+					}, 10);
+				}
+			}
+
+			// set up actions as configured in the json
+			if( this.json.javascriptActions )
+			{
+				if( this.json.javascriptActions.mouseClick )
+				{
+					setTimeout( function(){
+						var target = window[ self.json.javascriptActions.mouseClick.action_taget ];
+						var action = target[ self.json.javascriptActions.mouseClick.action_event ];
+						self._mouseClickAction = { t:target, a:action };
+					}, 10);
 				}
 			}
 
@@ -214,8 +229,12 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		}
 	},
 
+	// we observed a change!
 	readyDidChange: function( target, property ) {
-		alert("i can not believe how far this is going!"+target.get(property));
+		target.removeObserver( property, self, self.readyDidChange );
+
+		if(target.get(property))
+			this._fsm_controller.handle( "enable" );
 	},
 
 	setInitialState: function( shouldStartActive ) {
@@ -247,8 +266,8 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		this.temporarySetEnabledState( 1, true );
 
 		// this could do anything..
-		if( this.json.javascript )
-			eval( this.json.javascript );
+		// if( this.json.javascript )
+		//	eval( this.json.javascript );
 
 		// we dont rest in enabled state - move on to active state
 		this._fsm_controller.handle( "enabledSuccessfully" );
@@ -299,7 +318,10 @@ HooSimpleFormButton = HooAbstractButton.extend({
 
 		/* Ignore the form action altogether and do a javascript action - cant be async at the mo */
 		var jsOveridingFormAction = function( argsHash ) {
-			self._jsAction();
+
+			self._mouseClickAction.a.apply(self._mouseClickAction.t);
+
+			// -if we are in a form - stop the form doing it's thing
 			self.getForm().submit(function(e) { return false; });
 			self.getForm().submit();
 			argsHash.onComplete();
@@ -335,7 +357,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		// Ok, lets do it!
 		beforeAction();
 
-		if( this._jsAction!=undefined )
+		if( this._mouseClickAction!=undefined )
 			jsOveridingFormAction( {onComplete: afterAction } );
 		else
 			formSubmitAction( {onComplete: afterAction } );
@@ -362,11 +384,6 @@ HooSimpleFormButton = HooAbstractButton.extend({
 		// button.unbind( "mousedown", this.mouseDown );
 
 		this.setBackgroundAndTextState( state );
-	},
-
-	/* add a dynamic javascript action */
-	hookupAction: function( callback ) {
-		this._jsAction = callback;
 	},
 
 });
@@ -446,8 +463,11 @@ HooSingleActionButton = HooSimpleFormButton.extend({
 	// maybe make this async
 	fireButtonAction: function( nextState ) {
 		this.temporarySetEnabledState( 0, false );
-		if(this._jsAction)
-			this._jsAction();
+
+		// we might want to make this async
+		if( this._mouseClickAction!=undefined )
+			this._mouseClickAction.a.apply(this._mouseClickAction.t);
+
 		else {
 			console.info("button hasnt been given a javascript action");
 			window.location = this.getClickableItem().find( this.textHolder ).attr("href")

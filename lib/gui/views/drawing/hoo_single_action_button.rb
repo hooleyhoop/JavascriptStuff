@@ -18,12 +18,13 @@ module GUI::Views::Drawing
 
 		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
-		attr_accessor :javascript;
 		attr_accessor :bindings;
+		attr_accessor :javascriptActions;
 
 		def initialize( args={} )
 			super();
 			@bindings = {};
+			@javascriptActions = {};
 			if args[:state]
 				@state=args[:state].to_i();
 			end
@@ -39,9 +40,11 @@ module GUI::Views::Drawing
 			@state=0 if @state==nil
 			@labelColor = '#eee';
 			@action = 'http://apple.com';
-			@javascript = "this.hookupAction( function(){
-				alert('Holy Smuck');
-			});";
+
+			#@javascript = "this.hookupAction( function(){
+			#	alert('Holy Smuck');
+			#});";
+
 		end
 
 		def labelStates=(states)
@@ -53,16 +56,21 @@ module GUI::Views::Drawing
 			@bindings.merge!( aHash );
 		end
 
+		def addJavascriptAction( aHash )
+			@javascriptActions.merge!( aHash );
+		end
+
 		# stuff to write into the page
 		def jsonProperties
 			allItems = {
-				:labelStates	=> @labelStates,
-				:state			=> @state,
-				:size			=> @size,
+				:labelStates		=> @labelStates,
+				:state				=> @state,
+				:size				=> @size,
 
 				# simple click action - this isnt going to cut it
-				:javascript		=> @javascript,
-				:bindings		=> @bindings,
+				:javascriptActions	=> @javascriptActions,
+				:bindings			=> @bindings,
+
 			}
 			return allItems.to_json();
 		end

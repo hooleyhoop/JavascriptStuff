@@ -21,6 +21,7 @@ module GUI::Views::Flash
 		# stuff to write into the page
 		def jsonProperties
 			allItems = {
+				:mp3Url		=> @mp3Url,
 			}
 			return allItems.to_json();
 		end
