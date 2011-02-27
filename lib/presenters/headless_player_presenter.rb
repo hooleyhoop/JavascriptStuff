@@ -7,13 +7,12 @@ module Presenters
 
 			headlessPlayer				= widgetClass('headlessPlayer');
 			singleActButton				= widgetClass('singleActionButton');
+			slider_class				= widgetClass('simpleSlider');
 
 			lambda {
 
 				# OK - move these components into the player widget.
 				@headlessPlayer1 = headlessPlayer.new({ :url=>'http://0.0.0.0:3000/audio/test.mp3'});
-
-
 				@window.contentView.addSubView( @headlessPlayer1 );
 			}.call
 
@@ -45,6 +44,11 @@ module Presenters
 				@window.contentView.addSubView( @simpleButton2 );
 			}.call
 
+			# A simple slider
+			lambda {
+				@simpleSlider = slider_class.new();
+				@window.contentView.addSubView( @simpleSlider );
+			}.call
 
 			lambda {
 			#	@headlessPlayer2 = headlessPlayer.new({ :url=>'http://0.0.0.0:3000/audio/test.mp3'});

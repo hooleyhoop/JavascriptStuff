@@ -48,7 +48,8 @@ module GUI
 			'largeSinglebuttonForm'	=>	GUI::Views::Drawing::HooLargeSingleButtonForm.name,
 			'simpleFormButton'		=>	GUI::Views::Drawing::HooSimpleFormButton.name,
 			'toggleFormButton'		=>	GUI::Views::Drawing::HooToggleFormButton.name,
-
+			'simpleSlider'			=>	GUI::Views::Drawing::HooSimpleSlider.name,
+			
 			# for drawing - link buttons
 			'singleActionButton'	=> 	GUI::Views::Drawing::HooSingleActionButton.name,
 			'doubleActionButton'	=> 	GUI::Views::Drawing::HooDoubleActionButton.name,

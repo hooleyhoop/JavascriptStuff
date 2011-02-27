@@ -29,7 +29,7 @@
 			_embeddedSwf:	undefined,
 
 			init: function( /* init never has args */ ) {
-
+				arguments.callee.base.apply(this,arguments);
 				this.ready = false;
 				FlashPlayerBackend.sharedInstance = this;
 
@@ -136,28 +136,9 @@
 			_audioElement:		undefined,
 
 			init: function( /* init never has args */ ) {
-
+				arguments.callee.base.apply(this,arguments);
 				this.ready = false;
-				// var self=this;
-				// self.observable = self.player;
-
-				// functions
-				//$.each(['play', 'pause'], function(i, fn){
-				//  self[fn] = function(callback){
-				//	return callback ? $(self.observable).bind(fn,callback) : self.player[fn]();
-				//  };
-				//});
-				// getters
-				//$.each(['readyState', 'duration'], function(i, reader){
-				//  self[reader] = function(){return self.player[reader];};
-				//});
-				// getters/setters
-				//$.each(['src', 'currentTime', 'volume'], function(i, reader){
-				//  var writer = "set"+reader.charAt(0).toUpperCase()+reader.slice(1);
-				//  if (!self[writer]) self[reader] = function(){return self.player[reader];};
-				//  if (!self[writer]) self[writer] = function(value){return self.player[reader]=value;};
-				//});
-			  },
+			},
 
 			// stick the audio element at the end of the page
 			_attachToPage: function() {
@@ -166,6 +147,38 @@
 			  	$wrapper.append(audioElem);
 				this.ready = true;				/* html5 was born ready */
 			  	this._audioElement = audioElem;
+			  	
+			  	// chrome
+			  	// emptied, loadstart, play, waiting, error
+			  	// emptied, loadstart, play, waiting, durationchange, loadedmetadat, timeupdate, loadeddata, canplay, canplaythru, timeupdate
+			  	
+			  	// Safari
+			  	// loadstart, play, waiting, timeupdate, error
+			  	// loadstart, play, waiting, durationchange, loadedmetadata, loadeddata, canplay, canplaythrough
+			  	
+			  	// http://www.w3schools.com/html5/html5_ref_eventattributes.asp
+			  	// https://developer.mozilla.org/En/Using_audio_and_video_in_Firefox
+				this._audioElement.addEventListener( "canplay", function() { 			console.log("canplay"); }, true);
+				this._audioElement.addEventListener( "abort", function() { 				console.log("abort"); }, true);
+				this._audioElement.addEventListener( "canplaythrough", function() { 	console.log("canplaythrough"); }, true);
+				this._audioElement.addEventListener( "dataunavailable", function() { 	console.log("dataunavailable"); }, true);
+				this._audioElement.addEventListener( "durationchange", function() { 	console.log("durationchange"); }, true);
+				this._audioElement.addEventListener( "emptied", function() { 			console.log("emptied"); }, true);
+				this._audioElement.addEventListener( "empty", function() { 				console.log("empty"); }, true);
+				this._audioElement.addEventListener( "ended", function() { 				console.log("ended"); }, true);
+				this._audioElement.addEventListener( "error", function() { 				console.log("error"); }, true);
+				this._audioElement.addEventListener( "loadeddata", function() { 		console.log("loadeddata"); }, true);
+				this._audioElement.addEventListener( "loadedmetadata", function() { 	console.log("loadedmetadata"); }, true);
+				this._audioElement.addEventListener( "loadstart", function() { 			console.log("loadstart"); }, true);
+				this._audioElement.addEventListener( "pause", function() { 				console.log("pause"); }, true);
+				this._audioElement.addEventListener( "play", function() { 				console.log("play"); }, true);
+				this._audioElement.addEventListener( "progress", function() { 			console.log("progress"); }, true);
+				this._audioElement.addEventListener( "ratechange", function() { 		console.log("ratechange"); }, true);
+				this._audioElement.addEventListener( "seeked", function() { 			console.log("seeked"); }, true);
+				this._audioElement.addEventListener( "seeking", function() { 			console.log("seeking"); }, true);
+				this._audioElement.addEventListener( "timeupdate", function() { 		console.log("timeupdate"); }, true);
+				this._audioElement.addEventListener( "volumechange", function() { 		console.log("volumechange"); }, true);
+				this._audioElement.addEventListener( "waiting", function() { 			console.log("waiting"); }, true);
 			},
 
 			play: function() {
@@ -215,7 +228,7 @@
 
 				var browserHasNativeMp3Support = browserCanPlayNativeMP3();
 				var browserHasFlash = hasMinimumFlash();
-				var useNativePlayback = browserHasNativeMp3Support && !browserIsSafari();
+				var useNativePlayback = browserHasNativeMp3Support; // && !browserIsSafari();
 				// flash may be blocked, but we still report that we have it
 				if( !useNativePlayback && !browserHasFlash )
 					throw("boo.oldflasherror");
@@ -275,12 +288,22 @@
 			},
 
 			play: function(){
+				//TODO: Where do we check that the mp3 exits?
 				HeadlessAudioplayer.sharedHeadlessPlayer.play( this._src );
 			},
 		});
 
 
-
+		// woah trigger() is fucking cool man
+		// we should definitely, like, use it
+		function printPlayerInfos() {
+			$.each( HeadlessAudioplayer.players, function( index, value ){
+				console.log( "Player "+value+" :type "+value.type+
+					"url "+value.src+
+					"playCount "+value.playCount
+				);
+			});
+		}
 
 
 
