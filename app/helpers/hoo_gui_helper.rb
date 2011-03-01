@@ -62,12 +62,30 @@ module HooGuiHelper
 
 	#
 	def _renderSingleView( view )
+
+		# Try string output first
 		output = view.stringOutput
 		if(output==nil)
 	    	output = render view;
 	    	pop()
 		end
-		output
+		if view.class.method_defined? :jsonProperties
+
+			instanceName = view.varName+'_json'
+
+			#j = ActiveSupport::JSON
+			data = instanceName+" = "+view.jsonProperties();
+
+			tt= <<END
+<script type="text/javascript">
+	//<![CDATA[
+		#{data}
+ 	//]]>
+</script>
+END
+			output = output +  tt.html_safe();
+		end
+		return output
 	end
 
   # will render a view or array of views

@@ -47,6 +47,8 @@ JavascriptStuff::Application.routes.draw do
   get "upload_test/simple_form"
   post "upload_test/upload"
 
+  get 'boos/:filename' => 'pages#show_boo'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

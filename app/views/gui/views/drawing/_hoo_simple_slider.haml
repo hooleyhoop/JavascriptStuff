@@ -12,10 +12,6 @@
 %div[_]( data-jsclass='HooSimpleSlider' style="width:300px; height:50px; background-color:#ff0000;" )
 	.nubbin( style="width:20px; height:20px; background-color:#00ff00;" )
 
--# it would be nice if we didnt have to repeat this everywhere
-:javascript
-	#{_.varName}_json = #{_.jsonProperties}
-
 - if( _.includeOnce? )
 	:javascript
 
@@ -26,5 +22,5 @@
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
 				// the nubbin needs to be draggable
-			},		
+			},
 		});

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.4'
+gem 'rails', '3.0.5'
 gem 'mongrel', '1.2.0.pre2'
 gem 'jquery-rails', '0.2.7'
 gem 'haml', '3.0.25'
@@ -11,7 +11,7 @@ gem 'mysql'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # Use unicorn as the web server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'

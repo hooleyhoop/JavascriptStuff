@@ -6,13 +6,13 @@
 		play
 
 
--# it would be nice if we didnt have to repeat this everywhere
-:javascript
-	#{_.varName}_json = #{_.jsonProperties}
-
-
 - if( _.includeOnce? )
 	:javascript
+
+		function getPercentProg() {
+			console.log("Some progress was made at least");
+		}
+
 
 		/* Flash Callback */
 		function BooFlashPlayerEvent( id, eventName, optionArg1 ) {
@@ -76,6 +76,11 @@
 				else
 					$wrapper.append(objectTag);
 				this._embeddedSwf = $wrapper.find('object')[0];
+
+				// woo woo
+				//this._embeddedSwf.addEventListener( "Play", function(e) { 			console.log("PPPPPLLLLLAAAAAYYYYY!!"); }, true);
+
+				$('.booPlayerHolder').bind('foo', { 'bar' : 'bam' }, function(e) { alert(e.data.bar); });
 			},
 
 			/* receive events from the swf */
@@ -147,43 +152,90 @@
 			  	$wrapper.append(audioElem);
 				this.ready = true;				/* html5 was born ready */
 			  	this._audioElement = audioElem;
-			  	
+
 			  	// chrome
 			  	// emptied, loadstart, play, waiting, error
 			  	// emptied, loadstart, play, waiting, durationchange, loadedmetadat, timeupdate, loadeddata, canplay, canplaythru, timeupdate
-			  	
+
 			  	// Safari
 			  	// loadstart, play, waiting, timeupdate, error
 			  	// loadstart, play, waiting, durationchange, loadedmetadata, loadeddata, canplay, canplaythrough
-			  	
+
 			  	// http://www.w3schools.com/html5/html5_ref_eventattributes.asp
 			  	// https://developer.mozilla.org/En/Using_audio_and_video_in_Firefox
-				this._audioElement.addEventListener( "canplay", function() { 			console.log("canplay"); }, true);
-				this._audioElement.addEventListener( "abort", function() { 				console.log("abort"); }, true);
-				this._audioElement.addEventListener( "canplaythrough", function() { 	console.log("canplaythrough"); }, true);
-				this._audioElement.addEventListener( "dataunavailable", function() { 	console.log("dataunavailable"); }, true);
-				this._audioElement.addEventListener( "durationchange", function() { 	console.log("durationchange"); }, true);
-				this._audioElement.addEventListener( "emptied", function() { 			console.log("emptied"); }, true);
-				this._audioElement.addEventListener( "empty", function() { 				console.log("empty"); }, true);
-				this._audioElement.addEventListener( "ended", function() { 				console.log("ended"); }, true);
-				this._audioElement.addEventListener( "error", function() { 				console.log("error"); }, true);
-				this._audioElement.addEventListener( "loadeddata", function() { 		console.log("loadeddata"); }, true);
-				this._audioElement.addEventListener( "loadedmetadata", function() { 	console.log("loadedmetadata"); }, true);
-				this._audioElement.addEventListener( "loadstart", function() { 			console.log("loadstart"); }, true);
-				this._audioElement.addEventListener( "pause", function() { 				console.log("pause"); }, true);
-				this._audioElement.addEventListener( "play", function() { 				console.log("play"); }, true);
-				this._audioElement.addEventListener( "progress", function() { 			console.log("progress"); }, true);
-				this._audioElement.addEventListener( "ratechange", function() { 		console.log("ratechange"); }, true);
-				this._audioElement.addEventListener( "seeked", function() { 			console.log("seeked"); }, true);
-				this._audioElement.addEventListener( "seeking", function() { 			console.log("seeking"); }, true);
-				this._audioElement.addEventListener( "timeupdate", function() { 		console.log("timeupdate"); }, true);
-				this._audioElement.addEventListener( "volumechange", function() { 		console.log("volumechange"); }, true);
-				this._audioElement.addEventListener( "waiting", function() { 			console.log("waiting"); }, true);
+			  	var self = this;
+
+				audioElem.addEventListener( "error", function( e ) {
+					console.log("Event: error "+e); debugger;
+				}, true);
+
+				this._audioElement.addEventListener( "loadstart", function() {
+					console.log("Loaded 0");
+				}, true);
+
+				/* Progress isnt always called */
+				$(audioElem).bind( 'progress', function() {
+					console.log("Event: load progress "+self.buffered());
+				});
+
+				/* Dont count on the metadata */
+				//this._audioElement.addEventListener( "loadedmetadata", function() {
+				//	console.log("Event: loadedmetadata "+audioElem.duration);
+				//	if(audioElem.duration!=NaN && audioElem.duration!=Infinity)
+				//		self.setDuration( audioElem.duration );
+				//}, true);
+
+				this._audioElement.addEventListener( "loadeddata", function() {
+					console.log("All Loaded "+self.buffered());
+				}, true);
+
+
+
+
+				// can play thru is not the same as fully loaded
+				this._audioElement.addEventListener( "canplaythrough", function() {
+					console.log("Event: canplaythrough "+audioElem.duration);
+				}, true);
+
+				audioElem.addEventListener( "canplay", function() { 			console.log("Event: canplay"); }, true);
+				audioElem.addEventListener( "abort", function() { 				console.log("Event: abort"); }, true);
+				audioElem.addEventListener( "dataunavailable", function() { 	console.log("Event: dataunavailable"); }, true);
+				audioElem.addEventListener( "durationchange", function() { 	console.log("Event: durationchange"); }, true);
+				audioElem.addEventListener( "emptied", function() { 			console.log("Event: emptied"); }, true);
+				audioElem.addEventListener( "empty", function() { 				console.log("Event: empty"); }, true);
+				audioElem.addEventListener( "ended", function() { 				console.log("Event: ended"); }, true);
+				audioElem.addEventListener( "pause", function() { 				console.log("Event: pause"); }, true);
+				audioElem.addEventListener( "play", function() { 				console.log("Event: play"); }, true);
+				audioElem.addEventListener( "ratechange", function() { 		console.log("Event: ratechange"); }, true);
+				audioElem.addEventListener( "seeked", function() { 			console.log("Event: seeked"); }, true);
+				audioElem.addEventListener( "seeking", function() { 			console.log("Event: seeking"); }, true);
+				audioElem.addEventListener( "timeupdate", function() { 		console.log("Event: timeupdate"); }, true);
+				audioElem.addEventListener( "volumechange", function() { 		console.log("Event: volumechange"); }, true);
+				audioElem.addEventListener( "waiting", function() { 			console.log("Event: waiting"); }, true);
+			},
+
+			// alert(video.networkState == video.NETWORK_EMPTY); // true
+			buffered: function() {
+				if (!this._audioElement.buffered)
+			  		return 0;
+			  	var timeRanges = this._audioElement.buffered;
+			  	var endTime = 0;
+
+			  	if( timeRanges.length )
+				try {
+						// Discount the possibility of multiple buffers for now (theoretically possible with range requests if the user skips forward, but Safari doesn't seem to support it)
+						// and just return the proportion of buffered time
+						endTime = timeRanges.end(timeRanges.length-1);
+				} catch(err) {
+					alert(err);
+					return 0;
+				}
+				return endTime;
 			},
 
 			play: function() {
-				this._audioElement.autoplay = true;
-				this._audioElement.play();
+				// this._audioElement.autoplay = true;
+				//this._audioElement.play();
 			},
 
 			src: function() {
@@ -193,21 +245,10 @@
 			setSrc: function( url ) {
 				if (!url) debugger;
 				this._audioElement.src = url;
-				this._audioElement.preload = "auto";
+				// this._audioElement.type = 'audio/mpeg';
+				// this._audioElement.preload = "auto";
 				this._audioElement.load(); // force the audio to reset & start loading the new url
 			},
-
-		  buffered: function() {
-			if (!this.player.buffered)
-			  return 0;
-			// Discount the possibility of multiple buffers for now (theoretically possible with range requests if the user skips forward, but Safari doesn't seem to support it)
-			// and just return the proportion of buffered time
-			var buffers = this.player.buffered.length;
-			return buffers ? this.player.buffered.end(buffers-1)/this.player.duration : 0;
-		  },
-
-
-
 
 		});
 
@@ -218,6 +259,7 @@
 		HeadlessPlayerSingleton = SC.Object.extend({
 
 			_playerBackend: undefined,
+			_activePlayer:undefined,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
@@ -246,6 +288,17 @@
 				}
 			},
 
+			reset: function() {
+
+			},
+
+			playerBecameCurrent: function( playerInstance ) {
+				if(playerInstance!=this._activePlayer){
+					this.reset();
+					this.set('_activePlayer', playerInstance);
+				}
+			},
+
 			play: function( mp3Url ) {
 				if( mp3Url!=this._playerBackend.src )
 					this._playerBackend.setSrc(mp3Url); // wait?
@@ -257,6 +310,8 @@
 
 		/*
 		 * We can create an instance of this for each audio clip
+		 * We need to bind the spinners and progress to this, not the singleton
+		 * If we had 100 in a page when would we set up bindings?
 		*/
 		HeadlessAudioplayer = HooWidget.extend({
 
@@ -289,6 +344,7 @@
 
 			play: function(){
 				//TODO: Where do we check that the mp3 exits?
+				HeadlessAudioplayer.sharedHeadlessPlayer.playerBecameCurrent(this);
 				HeadlessAudioplayer.sharedHeadlessPlayer.play( this._src );
 			},
 		});

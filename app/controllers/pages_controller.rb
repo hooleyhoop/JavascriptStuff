@@ -146,4 +146,11 @@ class PagesController < ApplicationController
 		render :text => partialAsString
 	end
 
+	def show_boo
+		headers['Content-Length'] = '3117539'
+		headers['Content-Type'] = 'audio/mpeg'
+		headers['Accept-Ranges'] =  'bytes'
+		send_file Rails.root.join('public/audio/test.mp3')
+		#redirect_to "/audio/#{params[:filename]}.#{params[:format]}"
+	end
 end

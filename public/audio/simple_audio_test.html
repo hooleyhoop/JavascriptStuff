@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<title>simple htyml5 audio test</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+
+</head>
+	<body>
+		<audio id="audio1" src="test.mp3" controls preload="auto" ></audio>
+
+		<script type="text/javascript">
+			// http://0.0.0.0:3000/audio/simple_audio_test.html
+			// file:///Users/shooley/Desktop/Organ/Programming/Ruby/javascriptStuff/public/audio/simple_audio_test.html
+			$(document).ready( function() {
+				$('#audio1').bind('progress', function(e){
+					console.log("grr");
+				});
+				$('#audio1').bind('loadeddata', function(e){
+				  	console.log( "duration is "+$('#audio1')[0].duration );
+				});
+			});
+		</script>
+
+	</body>
+</html>
+
+
