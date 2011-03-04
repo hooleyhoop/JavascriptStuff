@@ -1,5 +1,7 @@
 /* S E T   U P */
 
+// use http://jshint.com/
+
 /*
  * look for data-jsclass in the page, create an instance for each
  * ** TODO ** !: $.live() can bind an event handler to not just all objects that exist now but all objects in the future as well.
@@ -13,7 +15,7 @@
 function createJSObjectsFromRubyObjects( rootElement ) {
 
 	var all_jsClass_objects;
-	if(rootElement==undefined) {
+	if(rootElement===undefined) {
 		// -- get all objects with data-jsClass attribute ''
 		all_jsClass_objects = $(":customdata(jsclass)" );
 	} else {
@@ -27,15 +29,15 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 		var newInstanceName = '_'+idString;
 		var jsonName = newInstanceName+'_json';
 		var jsonOb =  window[jsonName];
-		if( jsonOb==undefined )
+		if( jsonOb===undefined )
 			console.error("cannot find json for "+className );
 
 		var hmm = eval(className);
 		var newInstance = hmm.create( {id: idString, json: jsonOb} );
 
-		if( window[newInstanceName]!=undefined )
+		if( window[newInstanceName]!==undefined ) {
 			console.error("That instance already exists! Cannot create instance of "+className );
-
+		}
 		window[newInstanceName] = newInstance;
 		console.log( "Created "+newInstanceName );
 	});
@@ -65,5 +67,5 @@ Flippy_toggle_thing = HooWidget.extend({
 			console.error("Could not find the thisHTML");
 		$thisHTML.css( "background-color", "#000" );
 
-	},
+	}
 });

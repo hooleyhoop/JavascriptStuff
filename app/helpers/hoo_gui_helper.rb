@@ -71,19 +71,22 @@ module HooGuiHelper
 		end
 		if view.class.method_defined? :jsonProperties
 
-			instanceName = view.varName+'_json'
+			jsonProps = view.jsonProperties()
+			unless jsonProps.empty?
+				instanceName = view.varName+'_json'
 
-			#j = ActiveSupport::JSON
-			data = instanceName+" = "+view.jsonProperties();
+				#j = ActiveSupport::JSON
+				data = instanceName+" = "+jsonProps;
 
-			tt= <<END
+				tt= <<END
 <script type="text/javascript">
 	//<![CDATA[
-		#{data}
+		#{data};
  	//]]>
 </script>
 END
-			output = output +  tt.html_safe();
+				output = output +  tt.html_safe();
+			end
 		end
 		return output
 	end

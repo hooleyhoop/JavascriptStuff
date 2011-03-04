@@ -54,6 +54,7 @@ module GUI
 			'singleActionButton'	=> 	GUI::Views::Drawing::HooSingleActionButton.name,
 			'doubleActionButton'	=> 	GUI::Views::Drawing::HooDoubleActionButton.name,
 			'simpleBusySpinner'		=>	GUI::Views::Drawing::HooSimpleSpinner.name,
+			'simpleTextField'		=>	GUI::Views::Drawing::HooSimpleTextField.name,
 
 			'backgroundImage'		=>	GUI::Views::HooBackgroundImg.name,
 			'fixedSizeImage'		=>	GUI::Views::HooFixedSizeImg.name,

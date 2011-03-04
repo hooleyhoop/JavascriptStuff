@@ -22,7 +22,7 @@
 
 %div[_]{ :data=> {'jsclass'=>'HooDoubleActionButton'} }
 	%div{button_attrs}
-		%a( href="http://apple.com" style="#{textStyle}" )
+		%a( href="#{_.action}" style="#{textStyle}" )
 			-# Insert the correct label for this state
 			#{_.labelStates[_.state]}
 

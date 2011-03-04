@@ -35,9 +35,8 @@ module Presenters
 				@simpleButton2.state = 1;
 				@simpleButton2.labelColor = '#fff'
 				@simpleButton2.action = '#'
-				@simpleButton2.javascript = "this.hookupAction( function(){
-					alert('Holy Cock');
-				});";
+				# This can only do actions with no args..
+				@simpleButton2.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 				@window.contentView.addSubView( @simpleButton2 );
 			}.call
 
@@ -49,9 +48,7 @@ module Presenters
 				@largeButton2.state = 1;
 				@largeButton2.labelColor = '#fff'
 				@largeButton2.action = 'http://audioboo.com'
-				@largeButton2.javascript = "this.hookupAction( function(){
-					alert('Holy Cock');
-				});";
+				@largeButton2.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 				@window.contentView.addSubView( @largeButton2 );
 			}.call
 
@@ -64,9 +61,7 @@ module Presenters
 				@largeButton3.state = 3;
 				@largeButton3.labelColor = '#fff'
 				@largeButton3.action = 'http://audioboo.com'
-				@largeButton3.javascript = "this.hookupAction( function(){
-					alert('Holy Cock');
-				});";
+				@largeButton3.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 				@window.contentView.addSubView( @largeButton3 );
 			}.call
 
@@ -79,11 +74,10 @@ module Presenters
 				@largeButton1.state = 0;
 				@largeButton1.labelColor = '#fff'
 				@largeButton1.action = 'http://audioboo.com'
-				@largeButton1.javascript = "this.hookupAction( function(){
-					alert('Holy Cock');
-				});";
+				@largeButton1.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 				@window.contentView.addSubView( @largeButton1 );
 			}.call
+
 		end
 	end
 end

@@ -23,8 +23,6 @@ module GUI::Views::Drawing
 
 		def initialize( args={} )
 			super();
-			@bindings = {};
-			@javascriptActions = {};
 			if args[:state]
 				@state=args[:state].to_i();
 			end
@@ -40,11 +38,6 @@ module GUI::Views::Drawing
 			@state=0 if @state==nil
 			@labelColor = '#eee';
 			@action = 'http://apple.com';
-
-			#@javascript = "this.hookupAction( function(){
-			#	alert('Holy Smuck');
-			#});";
-
 		end
 
 		def labelStates=(states)
@@ -53,10 +46,18 @@ module GUI::Views::Drawing
 		end
 
 		def addBinding( aHash )
+			if(@bindings==nil)
+				@bindings = {};
+			end
 			@bindings.merge!( aHash );
 		end
 
+#TODO: Still got to work out the bindings superclass
+
 		def addJavascriptAction( aHash )
+			if(@javascriptActions==nil)
+				@javascriptActions = {};
+			end
 			@javascriptActions.merge!( aHash );
 		end
 
@@ -66,12 +67,9 @@ module GUI::Views::Drawing
 				:labelStates		=> @labelStates,
 				:state				=> @state,
 				:size				=> @size,
-
-				# simple click action - this isnt going to cut it
-				:javascriptActions	=> @javascriptActions,
-				:bindings			=> @bindings,
-
 			}
+			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
 			return allItems.to_json();
 		end
 

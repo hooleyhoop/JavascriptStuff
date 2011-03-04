@@ -29,7 +29,7 @@ module GUI::Views::Audioboo
 			largeButtonclass =  GUI::HooWidgetList.widgetClass('largeSinglebuttonForm')
 			@largeButton = largeButtonclass.new();
 
-			@largeButton.img = '../images/buttons/follow-button.png';
+			@largeButton.img = '../images/buttons/follow_button/follow-button.png';
 
 			@largeButton.width = 105;
 			@largeButton.height = 45;
