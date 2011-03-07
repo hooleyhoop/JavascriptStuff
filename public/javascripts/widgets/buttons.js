@@ -99,35 +99,11 @@ HooFormButtonSimple = HooAbstractButton.extend({
 		arguments.callee.base.apply(this,arguments);
 
 		// if state is 0 button is completely disabled
-		if( this.json.state>0) {
-
-			/* States */
-			this._disabled_state		= HooStateMachine_state.create( {name: "disabled" });
-			this._enabled_state			= HooStateMachine_state.create( {name: "enabled" });
-			this._active_state1			= HooStateMachine_state.create( {name: "active1" });
-			this._active_down_state1	= HooStateMachine_state.create( {name: "active_down1" });
-			this._clicked_state1		= HooStateMachine_state.create( {name: "clicked1" });
-			this._abortClick_state1		= HooStateMachine_state.create( {name: "abort-click1" });
-
-			/* Transitions */
-			this._disabled_state.addTransition( this._enable_event, this._enabled_state );
-			this._enabled_state.addTransition( this._enabledSuccessfully_event, this._active_state1 );
-			this._active_state1.addTransition( this._buttonPressed_event, this._active_down_state1 );
-			this._active_down_state1.addTransition( this._buttonReleased_event, this._clicked_state1 );
-
-			this._active_down_state1.addTransition( this._mouseDraggedOut_event, this._abortClick_state1 );
-			this._clicked_state1.addTransition( this._clickComplete_event, this._active_state1 );
-
-			/* This needs overiding in button 2 - how to handle ? */
-			this._abortClick_state1.addTransition( this._clickAbortComplete_event, this._active_state1 );
-
-			this._enabled_state.addAction( this._enableButtonCmd );
-			this._active_state1.addAction( this._showMouseUpCmd1 );
-			this._active_down_state1.addAction( this._showMouseDownCmd1 );
-			this._clicked_state1.addAction( this._fireButtonActionCmd1 );
-			this._abortClick_state1.addAction( this._abortClickActionCmd );
+		if(this.json.state>0) {
 
 			var self = this;
+
+			this._setupStateMachine();
 
 			// Setup bindings as configured in the json
 			var shouldStartActive = true;
@@ -167,13 +143,43 @@ HooFormButtonSimple = HooAbstractButton.extend({
 				}
 			}
 
-			/* set up our button statemachine */
-			var stateMachineInstance = HooStateMachine.create( {startState: this._disabled_state} );
-			this._fsm_controller = HooStateMachine_controller.create( { currentState: this._disabled_state, machine: stateMachineInstance, commandsChannel: this } );
-
 			// initial state depends on whether _enabled? has been bound or not.. if it is bound, then follow that property, if it isnt bound start in the on state
 			this.setInitialState( shouldStartActive );
 		}
+	},
+
+	/* Overide this is more complex buttons */
+	_setupStateMachine: function() {
+
+		/* States TODO: Couldn't i just use strings instead of these objects? */
+		this._disabled_state		= HooStateMachine_state.create( {name: "disabled" });
+		this._enabled_state			= HooStateMachine_state.create( {name: "enabled" });
+		this._active_state1			= HooStateMachine_state.create( {name: "active1" });
+		this._active_down_state1	= HooStateMachine_state.create( {name: "active_down1" });
+		this._clicked_state1		= HooStateMachine_state.create( {name: "clicked1" });
+		this._abortClick_state1		= HooStateMachine_state.create( {name: "abort-click1" });
+
+		/* Transitions */
+		this._disabled_state.addTransition( this._enable_event, this._enabled_state );
+		this._enabled_state.addTransition( this._enabledSuccessfully_event, this._active_state1 );
+		this._active_state1.addTransition( this._buttonPressed_event, this._active_down_state1 );
+		this._active_down_state1.addTransition( this._buttonReleased_event, this._clicked_state1 );
+
+		this._active_down_state1.addTransition( this._mouseDraggedOut_event, this._abortClick_state1 );
+		this._clicked_state1.addTransition( this._clickComplete_event, this._active_state1 );
+
+		/* This needs overiding in button 2 - how to handle ? */
+		this._abortClick_state1.addTransition( this._clickAbortComplete_event, this._active_state1 );
+
+		this._enabled_state.addAction( this._enableButtonCmd );
+		this._active_state1.addAction( this._showMouseUpCmd1 );
+		this._active_down_state1.addAction( this._showMouseDownCmd1 );
+		this._clicked_state1.addAction( this._fireButtonActionCmd1 );
+		this._abortClick_state1.addAction( this._abortClickActionCmd );
+
+		/* set up our button statemachine */
+		var stateMachineInstance = HooStateMachine.create( {startState: this._disabled_state} );
+		this._fsm_controller = HooStateMachine_controller.create( { currentState: this._disabled_state, machine: stateMachineInstance, commandsChannel: this } );
 	},
 
 	// we observed a change!
@@ -193,6 +199,7 @@ HooFormButtonSimple = HooAbstractButton.extend({
 	},
 
 	setBackgroundAndTextState: function( state ) {
+
 		var mouseDownText = this.json.labelStates[state];
 		this.setContentText( mouseDownText );
 		this.positionBackground(state);
@@ -210,7 +217,8 @@ HooFormButtonSimple = HooAbstractButton.extend({
 		button.bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this.eventTrampoline );
 		button.bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this.eventTrampoline );
 
-		this.temporarySetEnabledState( 1, true );
+		/* for a working button the state was set to either 1 or 3 */
+		this.temporarySetEnabledState( this.json.state, true );
 
 		// this could do anything..
 		// if( this.json.javascript )
@@ -357,33 +365,36 @@ HooFormButtonToggle = HooFormButtonSimple.extend({
 	_showMouseUpCmd2:		HooStateMachine_command.create( {name: "showMouseUp2"} ),
 	_fireButtonActionCmd2:	HooStateMachine_command.create( {name: "fireButtonAction2"} ),
 
-
-	init: function( /* init never has args */ ) {
+	/* Add some extra states and overide some */
+	_setupStateMachine: function() {
 		arguments.callee.base.apply(this,arguments);
-		if(this.json.state>0) {
 
-			this._active_state2			= HooStateMachine_state.create( {name: "active2" });
-			this._active_down_state2	= HooStateMachine_state.create( {name: "active_down2" });
-			this._clicked_state2		= HooStateMachine_state.create( {name: "clicked2" });
-			this._abortClick_state2		= HooStateMachine_state.create( {name: "abort-click2" });
+		this._active_state2			= HooStateMachine_state.create( {name: "active2" });
+		this._active_down_state2	= HooStateMachine_state.create( {name: "active_down2" });
+		this._clicked_state2		= HooStateMachine_state.create( {name: "clicked2" });
+		this._abortClick_state2		= HooStateMachine_state.create( {name: "abort-click2" });
 
-			/* Transitions */
-			this._active_state2.addTransition( this._buttonPressed_event, this._active_down_state2 );
-			this._active_down_state2.addTransition( this._buttonReleased_event, this._clicked_state2 );
-			this._active_down_state2.addTransition( this._mouseDraggedOut_event, this._abortClick_state2 );
-			this._abortClick_state2.addTransition( this._clickAbortComplete_event, this._active_state2 );
+		/* Transitions */
+		this._active_state2.addTransition( this._buttonPressed_event, this._active_down_state2 );
+		this._active_down_state2.addTransition( this._buttonReleased_event, this._clicked_state2 );
+		this._active_down_state2.addTransition( this._mouseDraggedOut_event, this._abortClick_state2 );
+		this._abortClick_state2.addTransition( this._clickAbortComplete_event, this._active_state2 );
 
-			// these need to overide simple button ? How?
-			this._clicked_state1.removeAllTransitions();
-			this._clicked_state1.addTransition( this._clickComplete_event, this._active_state2 );
-			this._clicked_state2.addTransition( this._clickComplete_event, this._active_state1 );
+		// these need to overide simple button ? How?
+		this._clicked_state1.removeAllTransitions();
+		this._clicked_state1.addTransition( this._clickComplete_event, this._active_state2 );
+		this._clicked_state2.addTransition( this._clickComplete_event, this._active_state1 );
 
-			this._active_state2.addAction( this._showMouseUpCmd2 );
-			this._active_down_state2.addAction( this._showMouseDownCmd2 );
-			this._clicked_state2.addAction( this._fireButtonActionCmd2 );
-			this._abortClick_state2.addAction( this._abortClickActionCmd );
-
+		// dont assume that when the button goes to 'enabled' this means state1
+		if( this.json.state==3 ) {
+			this._enabled_state.removeAllTransitions();
+			this._enabled_state.addTransition( this._enabledSuccessfully_event, this._active_state2 );
 		}
+
+		this._active_state2.addAction( this._showMouseUpCmd2 );
+		this._active_down_state2.addAction( this._showMouseDownCmd2 );
+		this._clicked_state2.addAction( this._fireButtonActionCmd2 );
+		this._abortClick_state2.addAction( this._abortClickActionCmd );
 	},
 
 	showMouseDown2: function() {
