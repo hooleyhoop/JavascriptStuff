@@ -4,9 +4,9 @@ module GUI::Views::Drawing::Buttons
 	# 0) Disabled 1)state1 2)state1Pressed 3)state2 4)state2Pessed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/doubleActionButton
-	# http://0.0.0.0:3000/widgets/doubleActionButton?state=1
-	class HooDoubleActionButton < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/divButtonToggle
+	# http://0.0.0.0:3000/widgets/divButtonToggle?state=1
+	class HooDivButtonToggle < GUI::Core::HooView
 
 		include Test::Unit::Assertions
 
@@ -42,7 +42,7 @@ module GUI::Views::Drawing::Buttons
 
 		def labelStates=(states)
 			@labelStates = states;
-			assert( states.count==5 );
+			assert( states.count==5, 'you need to have 5 states for the button' );
 		end
 
 		def addBinding( aHash )

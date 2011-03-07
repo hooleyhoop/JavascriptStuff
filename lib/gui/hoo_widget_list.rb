@@ -45,13 +45,13 @@ module GUI
 			'paddedHorizontal'		=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
 
 			# for drawing - forms
-			'largeSinglebuttonForm'	=>	GUI::Views::Drawing::Buttons::HooLargeSingleButtonForm.name,
-			'simpleFormButton'		=>	GUI::Views::Drawing::Buttons::HooSimpleFormButton.name,
-			'toggleFormButton'		=>	GUI::Views::Drawing::Buttons::HooToggleFormButton.name,
+			'largeSinglebuttonForm'	=>	GUI::Views::Drawing::Buttons::HooFormButtonLargeSingle.name,
+			'formButtonSimple'		=>	GUI::Views::Drawing::Buttons::HooFormButtonSimple.name,
+			'formButtonToggle'		=>	GUI::Views::Drawing::Buttons::HooFormButtonToggle.name,
 
 			# for drawing - link buttons
-			'singleActionButton'	=> 	GUI::Views::Drawing::Buttons::HooSingleActionButton.name,
-			'doubleActionButton'	=> 	GUI::Views::Drawing::Buttons::HooDoubleActionButton.name,
+			'divButtonSimple'		=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimple.name,
+			'divButtonToggle'		=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggle.name,
 
 			'simpleBusySpinner'		=>	GUI::Views::Drawing::Other::HooSimpleSpinner.name,
 			'simpleTextField'		=>	GUI::Views::Drawing::Other::HooSimpleTextField.name,

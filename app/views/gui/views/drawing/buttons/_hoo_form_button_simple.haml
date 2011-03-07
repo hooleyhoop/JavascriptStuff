@@ -3,13 +3,13 @@
 -# If you don't have Javascript you dont need rollovers
 -# Javascript-less site should be minimal and semantic
 
--# http://0.0.0.0:3000/widgets/simpleFormButton?state=1
+-# http://0.0.0.0:3000/widgets/formButtonSimple?state=1
 
-- push( hoo_simple_form_button )
+- push( hoo_form_button_simple )
 
 -# adding the data-jsclass attribute means that a javascript instance will be created on-load
 -# Todo: I also need to have it created if it is inserted by ajax!
-%div[_]( data-jsclass='HooSimpleFormButton' )
+%div[_]( data-jsclass='HooFormButtonSimple' )
 	= form_tag( "#{_.action}", :method=>:post, :remote=>true ) do
 
 		-# Old way used a submit button. Thee are a bitch to style. So is this.

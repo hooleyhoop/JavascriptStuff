@@ -20,7 +20,7 @@ module GUI::Views::Audioboo
 			@carat			= '../images/player/carat.png';
 
 			headlessPlayer				= GUI::HooWidgetList.widgetClass('headlessPlayer');
-			singleActButton				= GUI::HooWidgetList.widgetClass('singleActionButton');
+			singleActButton				= GUI::HooWidgetList.widgetClass('divButtonSimple');
 			slider_class				= GUI::HooWidgetList.widgetClass('simpleSlider');
 			spinner_class				= GUI::HooWidgetList.widgetClass('simpleBusySpinner');
 			simpleTextFieldClass		= GUI::HooWidgetList.widgetClass('simpleTextField');

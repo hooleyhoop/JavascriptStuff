@@ -1,12 +1,12 @@
 module GUI::Views::Drawing::Buttons
 
-	# 3 state Simple button
-	# 0) Disabled 1)state1 2)state1Pressed
+	# 5 state Toggle button
+	# 0) Disabled 1)state1 2)state1Pressed 3)state2 4)state2Pessed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/simpleFormButton
-	# http://0.0.0.0:3000/widgets/simpleFormButton?state=1
-	class HooSimpleFormButton < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/formButtonToggle
+	# http://0.0.0.0:3000/widgets/formButtonToggle?state=1
+	class HooFormButtonToggle < GUI::Core::HooView
 
 		include Test::Unit::Assertions
 
@@ -15,10 +15,7 @@ module GUI::Views::Drawing::Buttons
 		attr_accessor :labelStates
 		attr_accessor :state;
 		attr_accessor :labelColor;
-
-		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
-		attr_accessor :javascript;
 
 		def initialize( args={} )
 			super();
@@ -31,20 +28,17 @@ module GUI::Views::Drawing::Buttons
 		def setupDebugFixture
 			super();
 
-			@labelStates = ['Disabled', 'Ready', 'Pressed'];
-			@img = '../images/buttons/simple-button/3-state-combine.png';
+			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
+			@img = '../images/buttons/follow_button/5-state-follow-button.png';
 			@size = [105, 45];
 			@state=0 if @state==nil
 			@labelColor = '#eee';
-			@action = '/widgets/_ajaxPostTest';
-			@javascript = "this.hookupAction( function(){
-				alert('Holy Cock');
-			});";
+			@action = '#'; # /widgets/_ajaxPostTest
 		end
 
 		def labelStates=(states)
 			@labelStates = states;
-			assert( states.count==3 );
+			assert( states.count==5, 'you need to have 5 label states, you have '+states.count.to_s );
 		end
 
 		# stuff to write into the page
@@ -53,7 +47,6 @@ module GUI::Views::Drawing::Buttons
 				:labelStates	=> @labelStates,
 				:state			=> @state,
 				:size			=> @size,
-				:javascript		=> @javascript,
 			}
 			return allItems.to_json();
 		end

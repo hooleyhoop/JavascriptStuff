@@ -1,7 +1,7 @@
 module Presenters
 	# http://0.0.0.0:3000/pages/multiple_link_buttons_test
 	# Like a Button, but not a button, not part of a form, just an anchor
-	class ClickableDivLinksPresenter < HooPresenter
+	class MultipleDivButtonsPagePresenter < HooPresenter
 
 		include Gui			# Due Care is taken not to make all these methods global
 		require 'test/unit'
@@ -11,8 +11,8 @@ module Presenters
 
 			super( controller );
 
-			singleActButton				= widgetClass('singleActionButton');
-			doubleActButton				= widgetClass('doubleActionButton');
+			singleActButton				= widgetClass('divButtonSimple');
+			doubleActButton				= widgetClass('divButtonToggle');
 
 			@window.showGrid;
 

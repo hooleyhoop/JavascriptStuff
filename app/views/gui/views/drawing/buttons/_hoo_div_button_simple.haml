@@ -3,13 +3,12 @@
 -# If you don't have Javascript you dont need rollovers
 -# Javascript-less site should be minimal and semantic
 
--# http://0.0.0.0:3000/widgets/doubleActionButton?state=1
+-# http://0.0.0.0:3000/widgets/divButtonSimple?state=1
 
-- push( hoo_double_action_button )
+- push( hoo_div_button_simple )
 
--#
--# ok, ok, these double and single action things are the same, different javascript, yeah?
--#
+-# adding the data-jsclass attribute means that a javascript instance will be created on-load
+-# Todo: I also need to have it created if it is inserted by ajax!
 
 - textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0; position:relative; top:15px; letter-spacing:0pc; word-spacing:-0.1pc;"
 - button_attrs = { :style=>" text-align: center; padding:0; margin:0; border:none; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.state}px; width: #{_.size[0]}px; height:#{_.size[1]}px;" }
@@ -20,9 +19,8 @@
 - else
 	- textStyle += "text-shadow:0px -1px 0px #374683;"
 
-%div[_]{ :data=> {'jsclass'=>'HooDoubleActionButton'} }
+%div[_]{ :data=> {'jsclass'=>'HooDivButtonSimple'} }
 	%div{button_attrs}
 		%a( href="#{_.action}" style="#{textStyle}" )
 			-# Insert the correct label for this state
 			#{_.labelStates[_.state]}
-

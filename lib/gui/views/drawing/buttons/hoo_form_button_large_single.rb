@@ -4,7 +4,7 @@ module GUI::Views::Drawing::Buttons
     # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/largeSinglebuttonForm
-	class HooLargeSingleButtonForm < GUI::Core::HooView
+	class HooFormButtonLargeSingle < GUI::Core::HooView
 
 		attr_accessor :img;
 		attr_accessor :width, :height;

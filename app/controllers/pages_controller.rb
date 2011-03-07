@@ -75,12 +75,12 @@ class PagesController < ApplicationController
 
 	# Better practice to use a different action for the post request
 	def multiple_link_buttons_test
-		pagePresenter = Presenters::ClickableDivLinksPresenter.new( self );
+		pagePresenter = Presenters::MultipleDivButtonsPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
 
 	def multiple_form_buttons_test
-		pagePresenter = Presenters::MultipleButtonsPagePresenter.new( self );
+		pagePresenter = Presenters::MultipleFormButtonsPagePresenter.new( self );
 		pagePresenter.drawPage();
 	end
 

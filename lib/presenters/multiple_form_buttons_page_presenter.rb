@@ -1,6 +1,6 @@
 module Presenters
 	# http://0.0.0.0:3000/pages/multiple_form_buttons_test
-	class MultipleButtonsPagePresenter < HooPresenter
+	class MultipleFormButtonsPagePresenter < HooPresenter
 
 		include Gui			# Due Care is taken not to make all these methods global
 
@@ -9,9 +9,8 @@ module Presenters
 			super( controller );
 
 			colorFillClass				= widgetClass('colorFill')
-			testUploadFormClass			= widgetClass('testUploadForm')
-			simpleButton				= widgetClass('simpleFormButton')
-			toggleButton				= widgetClass('toggleFormButton')
+			simpleButton				= widgetClass('formButtonSimple')
+			toggleButton				= widgetClass('formButtonToggle')
 
 			@window.showGrid;
 
@@ -31,6 +30,7 @@ module Presenters
 				});";
 				@window.contentView.addSubView( @simpleButton1 );
 			}.call
+
 
 			lambda {
 				@simpleButton2 = simpleButton.new( :state=>1 );
@@ -77,7 +77,6 @@ module Presenters
 				@largeButton1.action = '/widgets/_ajaxPostTest'
 				@window.contentView.addSubView( @largeButton1 );
 			}.call
-
 		end
 	end
 end
