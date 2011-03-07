@@ -1,4 +1,4 @@
-module GUI::Views::Drawing
+module GUI::Views::Drawing::Buttons
 
 	# 5 state Toggle button
 	# 0) Disabled 1)state1 2)state1Pressed 3)state2 4)state2Pessed
@@ -19,7 +19,9 @@ module GUI::Views::Drawing
 
 		def initialize( args={} )
 			super();
-			@state = args['state'].to_i() if args['state']
+			if args[:state]
+				@state=args[:state].to_i();
+			end
 		end
 
         # Mock Data

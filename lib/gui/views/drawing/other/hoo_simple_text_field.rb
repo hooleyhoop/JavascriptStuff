@@ -1,4 +1,4 @@
-module GUI::Views::Drawing
+module GUI::Views::Drawing::Other
 
 	# http://0.0.0.0:3000/widgets/simpleTextField
 	# http://0.0.0.0:3000/widgets/simpleTextField?prefix=Hello&text=World&postfix=Humpf

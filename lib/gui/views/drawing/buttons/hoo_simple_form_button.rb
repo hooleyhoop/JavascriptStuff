@@ -1,12 +1,12 @@
-module GUI::Views::Drawing
+module GUI::Views::Drawing::Buttons
 
 	# 3 state Simple button
 	# 0) Disabled 1)state1 2)state1Pressed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/singleActionButton
-	# http://0.0.0.0:3000/widgets/singleActionButton?state=1
-	class HooSingleActionButton < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/simpleFormButton
+	# http://0.0.0.0:3000/widgets/simpleFormButton?state=1
+	class HooSimpleFormButton < GUI::Core::HooView
 
 		include Test::Unit::Assertions
 
@@ -18,8 +18,7 @@ module GUI::Views::Drawing
 
 		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
-		attr_accessor :bindings;
-		attr_accessor :javascriptActions;
+		attr_accessor :javascript;
 
 		def initialize( args={} )
 			super();
@@ -37,7 +36,10 @@ module GUI::Views::Drawing
 			@size = [105, 45];
 			@state=0 if @state==nil
 			@labelColor = '#eee';
-			@action = 'http://apple.com';
+			@action = '/widgets/_ajaxPostTest';
+			@javascript = "this.hookupAction( function(){
+				alert('Holy Cock');
+			});";
 		end
 
 		def labelStates=(states)
@@ -45,31 +47,14 @@ module GUI::Views::Drawing
 			assert( states.count==3 );
 		end
 
-		def addBinding( aHash )
-			if(@bindings==nil)
-				@bindings = {};
-			end
-			@bindings.merge!( aHash );
-		end
-
-#TODO: Still got to work out the bindings superclass
-
-		def addJavascriptAction( aHash )
-			if(@javascriptActions==nil)
-				@javascriptActions = {};
-			end
-			@javascriptActions.merge!( aHash );
-		end
-
 		# stuff to write into the page
 		def jsonProperties
 			allItems = {
-				:labelStates		=> @labelStates,
-				:state				=> @state,
-				:size				=> @size,
+				:labelStates	=> @labelStates,
+				:state			=> @state,
+				:size			=> @size,
+				:javascript		=> @javascript,
 			}
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
 			return allItems.to_json();
 		end
 

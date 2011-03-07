@@ -1,12 +1,12 @@
-module GUI::Views::Drawing
+module GUI::Views::Drawing::Buttons
 
-	# 5 state Toggle button
-	# 0) Disabled 1)state1 2)state1Pressed 3)state2 4)state2Pessed
+	# 3 state Simple button
+	# 0) Disabled 1)state1 2)state1Pressed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/doubleActionButton
-	# http://0.0.0.0:3000/widgets/doubleActionButton?state=1
-	class HooDoubleActionButton < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/singleActionButton
+	# http://0.0.0.0:3000/widgets/singleActionButton?state=1
+	class HooSingleActionButton < GUI::Core::HooView
 
 		include Test::Unit::Assertions
 
@@ -32,8 +32,8 @@ module GUI::Views::Drawing
 		def setupDebugFixture
 			super();
 
-			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
-			@img = '../images/buttons/follow_button/5-state-follow-button.png';
+			@labelStates = ['Disabled', 'Ready', 'Pressed'];
+			@img = '../images/buttons/simple-button/3-state-combine.png';
 			@size = [105, 45];
 			@state=0 if @state==nil
 			@labelColor = '#eee';
@@ -42,7 +42,7 @@ module GUI::Views::Drawing
 
 		def labelStates=(states)
 			@labelStates = states;
-			assert( states.count==5 );
+			assert( states.count==3 );
 		end
 
 		def addBinding( aHash )
@@ -72,7 +72,6 @@ module GUI::Views::Drawing
 			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
 			return allItems.to_json();
 		end
-
 
 	end
 end

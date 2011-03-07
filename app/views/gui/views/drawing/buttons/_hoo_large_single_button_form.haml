@@ -5,6 +5,8 @@
 
 - push( hoo_large_single_button_form )
 
+-# http://0.0.0.0:3000/widgets/largeSinglebuttonForm?state=1
+
 -# adding the data-jsclass attribute means that a javascript instance will be created
 %div[_]( data-jsclass='HooLargeSingleButtonForm' )
 	- form_tag( "#{_.action}", :method=>:post, :remote=>true, :class=>'largeSingleButton' ) do

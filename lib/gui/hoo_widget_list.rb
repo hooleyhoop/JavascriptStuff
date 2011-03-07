@@ -45,16 +45,17 @@ module GUI
 			'paddedHorizontal'		=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
 
 			# for drawing - forms
-			'largeSinglebuttonForm'	=>	GUI::Views::Drawing::HooLargeSingleButtonForm.name,
-			'simpleFormButton'		=>	GUI::Views::Drawing::HooSimpleFormButton.name,
-			'toggleFormButton'		=>	GUI::Views::Drawing::HooToggleFormButton.name,
-			'simpleSlider'			=>	GUI::Views::Drawing::HooSimpleSlider.name,
+			'largeSinglebuttonForm'	=>	GUI::Views::Drawing::Buttons::HooLargeSingleButtonForm.name,
+			'simpleFormButton'		=>	GUI::Views::Drawing::Buttons::HooSimpleFormButton.name,
+			'toggleFormButton'		=>	GUI::Views::Drawing::Buttons::HooToggleFormButton.name,
 
 			# for drawing - link buttons
-			'singleActionButton'	=> 	GUI::Views::Drawing::HooSingleActionButton.name,
-			'doubleActionButton'	=> 	GUI::Views::Drawing::HooDoubleActionButton.name,
-			'simpleBusySpinner'		=>	GUI::Views::Drawing::HooSimpleSpinner.name,
-			'simpleTextField'		=>	GUI::Views::Drawing::HooSimpleTextField.name,
+			'singleActionButton'	=> 	GUI::Views::Drawing::Buttons::HooSingleActionButton.name,
+			'doubleActionButton'	=> 	GUI::Views::Drawing::Buttons::HooDoubleActionButton.name,
+
+			'simpleBusySpinner'		=>	GUI::Views::Drawing::Other::HooSimpleSpinner.name,
+			'simpleTextField'		=>	GUI::Views::Drawing::Other::HooSimpleTextField.name,
+			'simpleSlider'			=>	GUI::Views::Drawing::Other::HooSimpleSlider.name,
 
 			'backgroundImage'		=>	GUI::Views::HooBackgroundImg.name,
 			'fixedSizeImage'		=>	GUI::Views::HooFixedSizeImg.name,

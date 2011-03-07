@@ -1,4 +1,4 @@
-module GUI::Views::Drawing
+module GUI::Views::Drawing::Buttons
 
 	# 2 state button
     # Height is just the height of one state

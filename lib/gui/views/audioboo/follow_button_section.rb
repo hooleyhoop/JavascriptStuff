@@ -26,18 +26,22 @@ module GUI::Views::Audioboo
 
 
 			# http://0.0.0.0:3000/widgets/largeSinglebuttonForm
-			largeButtonclass =  GUI::HooWidgetList.widgetClass('largeSinglebuttonForm')
-			@largeButton = largeButtonclass.new();
-
+			largeButtonclass =  GUI::HooWidgetList.widgetClass('toggleFormButton')
+			@largeButton = largeButtonclass.new( :state=>1 );
 			@largeButton.img = '../images/buttons/follow_button/follow-button.png';
-
-			@largeButton.width = 105;
-			@largeButton.height = 45;
-
-			@largeButton.label = 'Follow'
-			@largeButton.label = 'Unfollow'
-
+			@largeButton.size = [105,45];
+			@largeButton.labelStates = ['Follow', 'Follow', 'Unfollow'];
 			@largeButton.labelColor = '#fff'
+			@largeButton.action = '/widgets/_ajaxPostTest'
+
+			#largeButtonclass =  GUI::HooWidgetList.widgetClass('largeSinglebuttonForm')
+			#@largeButton = largeButtonclass.new();
+			#@largeButton.img = '../images/buttons/follow_button/follow-button.png';
+			#@largeButton.width = 105;
+			#@largeButton.height = 45;
+			#@largeButton.label = 'Follow'
+			#@largeButton.label = 'Unfollow'
+			#@largeButton.labelColor = '#fff'
 
 		end
 
