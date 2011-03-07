@@ -13,7 +13,6 @@ module Presenters
 			speechBubblePane		= widgetClass('speechBubblePane')
 			verticalSplitView		= widgetClass('verticalSplitView')
 			horizontalSplitView		= widgetClass('horizontalSplitView')
-			largeSinglebuttonForm	= widgetClass('largeSinglebuttonForm')
 			followButtonSection		= widgetClass('followButtonSection')
 			userDetailsBanner		= widgetClass('userDetailsBanner')
 			fixedSizeImage			= widgetClass('fixedSizeImage')
@@ -32,11 +31,11 @@ module Presenters
 			footer					= widgetClass('footer')
 			editbarView				= widgetClass('editBar')
 
+			@window.showGrid;
+
 			@singleItem = false;
 
             if( @singleItem )
-
-                @window.showGrid;
 
                 spacedVerticalList1 = spacedVerticalList.new();
     			@window.contentView.addSubView( spacedVerticalList1 );
@@ -44,202 +43,212 @@ module Presenters
                 tagsTable = tableList.new();
                 tagsTable.label = 'Info'
                 tagsTable.color = 'pink'
+ 				tagsTable.content = [
+				# remember, the hash rocked is dead!
+     				{ name: 'motiongraphics',	url: '#' },
+					{ name: 'aftereffects',     url: '#' },
+                 ];
                 spacedVerticalList1.addSubView( tagsTable );
 
                 #promotionPlaceHolder2 = loremIpsumView.new();
 
             else
-                #@window.showGrid;
-
                 # Some breathing space
 				sideBarSpacer = spacerView.new( 15, 15, 15, 15 );
-                @window.contentView.addSubView( sideBarSpacer );
+				@window.contentView.addSubView( sideBarSpacer );
 
-                # Outer Panel
-                outerPanel = slidingDoorsPanel.new();
-                outerPanel.style = 'main'
-                sideBarSpacer.addSubView( outerPanel );
+				# Outer Panel
+				outerPanel = slidingDoorsPanel.new();
+				outerPanel.style = 'main'
+				sideBarSpacer.addSubView( outerPanel );
 
-                # User Info Panel
-                userBubble = speechBubblePane.new();
-                userBubble.speechPosition = 'bottom'
-                userBubble.constructSubViews();
-                outerPanel.addSubView( userBubble );
+				# User Info Panel
+				userBubble = speechBubblePane.new();
+				userBubble.speechPosition = 'bottom'
+				userBubble.constructSubViews();
+				outerPanel.addSubView( userBubble );
 
-                # float this one right, make sure it stays aligned to the top
-                followSection = followButtonSection.new();
-                userBubble.addSubView( followSection );
+				# float this one right, make sure it stays aligned to the top
+				followSection = followButtonSection.new();
+				userBubble.addSubView( followSection );
 
-                # The user name and pic, etc.
-                userDetailsBanner = userDetailsBanner.new();
-                userDetailsBanner.img = '../images/user/sample_user1.png';
-                userDetailsBanner.width = 75;
-                userDetailsBanner.height = 75;
-                userDetailsBanner.userName = 'stevehooley';
-                userBubble.addSubView( userDetailsBanner );
+				# The user name and pic, etc.
+				userDetailsBanner = userDetailsBanner.new();
+				userDetailsBanner.img = '../images/user/sample_user1.png';
+				userDetailsBanner.imgSize = [75,75];
+				userDetailsBanner.userName = 'stevehooley';
+				userDetailsBanner.userHomePageURL = 'http://apple.com'
+
+				# This is a bit wrong as the hash isnt ordered, so these could come out in any order
+				userDetailsBanner.stats = {
+						boos: { total:190, url: 'http://apple.com'},
+						favourites: { total:3, url: 'http://virgin.com'},
+						followers: { total:347, url: 'http://facebook.com'}
+						};
+				userBubble.addSubView( userDetailsBanner );
 
                 #Main Boo Panel
-                mainBooPanel = slidingDoorsPanel.new();
-                mainBooPanel.style = 'inner'
-                outerPanel.addSubView( mainBooPanel );
+                #comeback mainBooPanel = slidingDoorsPanel.new();
+                #comeback mainBooPanel.style = 'inner'
+                #comeback outerPanel.addSubView( mainBooPanel );
 
                 # split 50% left right
-                divider = verticalSplitView.new();
+                #comeback divider = verticalSplitView.new();
                 #divider.setPercentage( 'left', 50 );
-                divider.setFixedColumn( 'right', 23*15 )
-                mainBooPanel.addSubView( divider );
+                #comeback divider.setFixedColumn( 'right', 23*15 )
+                #comeback mainBooPanel.addSubView( divider );
 
                 # LEFT SIDE
-				mainBooDetailsSpacer = spacerView.new( 0, 15, 0, 0 );
-                divider.addSubView( mainBooDetailsSpacer );
+				#comeback mainBooDetailsSpacer = spacerView.new( 0, 15, 0, 0 );
+                #comeback divider.addSubView( mainBooDetailsSpacer );
 
-                listView1 = spacedVerticalList.new();
-                mainBooDetailsSpacer.addSubView( listView1 );
+                #comeback listView1 = spacedVerticalList.new();
+                #comeback mainBooDetailsSpacer.addSubView( listView1 );
 
-                mainBooDetails = booMainDetails.new();
-                listView1.addSubView( mainBooDetails );
+                #comeback mainBooDetails = booMainDetails.new();
+                #comeback listView1.addSubView( mainBooDetails );
 
-                thePlayer = detailPlayer.new();
-                listView1.addSubView( thePlayer );
+                #comeback thePlayer = detailPlayer.new();
+                #comeback listView1.addSubView( thePlayer );
 
                 # LeftSide - description
-                booDescription = loremIpsumView.new();
-                listView1.addSubView( booDescription );
+                #comeback booDescription = loremIpsumView.new();
+                #comeback listView1.addSubView( booDescription );
 
                 # LeftSide - comments
-                addAComment = addComment.new();
-			    addAComment.img = '../images/user/sample_user2.png';
-                addAComment.postButtonImg = '../images/buttons/post-button.png';
-                addAComment.width = 75;
-                addAComment.height = 75;
-                listView1.addSubView( addAComment );
+                #comeback addAComment = addComment.new();
+			    #comeback addAComment.img = '../images/user/sample_user2.png';
+                #comeback addAComment.postButtonImg = '../images/buttons/post-button.png';
+                #comeback addAComment.width = 75;
+                #comeback addAComment.height = 75;
+                #comeback listView1.addSubView( addAComment );
 
-                allComments = allCommentsTable.new();
-                listView1.addSubView( allComments );
+                #comeback allComments = allCommentsTable.new();
+                #comeback listView1.addSubView( allComments );
 
                 # RIGHT SIDE - here's where we can really feel the power & speed of presenters
                 # TODO: Different layouts depending which elements are present
-                rightSideList = spacedVerticalList.new();
-                divider.addSubView( rightSideList );
+                #comeback rightSideList = spacedVerticalList.new();
+                #comeback divider.addSubView( rightSideList );
 
 				#right side - edit bar
-				editbar = editbarView.new();
-				rightSideList.addSubView( editbar );
+				#comeback editbar = editbarView.new();
+				#comeback rightSideList.addSubView( editbar );
 
                 # RIGHT SIDE - Images
-                divider2 = twoElasticColsFixedGutter.new();
-                rightSideList.addSubView( divider2 );
+                #comeback divider2 = twoElasticColsFixedGutter.new();
+                #comeback rightSideList.addSubView( divider2 );
 
-                booImage = croppedImgWithHeader.new();
-                booImage.label = 'Image'
-                booImage.color = 'lime';
-                booImage.path = '/images/boo/sampleImage5.jpg';
+                #comeback booImage = croppedImgWithHeader.new();
+                #comeback booImage.label = 'Image'
+                #comeback booImage.color = 'lime';
+                #comeback booImage.path = '/images/boo/sampleImage5.jpg';
                 #mapImg.labelLink = 'www.apple.com'
-    			divider2.addSubView( booImage );
+    			#comeback divider2.addSubView( booImage );
 
-                mapImg = croppedImgWithHeader.new();
-                mapImg.label = 'Location'
-                mapImg.color = 'orange';
-                mapImg.path = '../images/map/map_image.jpg';
+                #comeback mapImg = croppedImgWithHeader.new();
+                #comeback mapImg.label = 'Location'
+                #comeback mapImg.color = 'orange';
+                #comeback mapImg.path = '../images/map/map_image.jpg';
                 #mapImg.labelLink = 'www.apple.com'
-    			divider2.addSubView( mapImg );
+    			#comeback divider2.addSubView( mapImg );
 
                 # RIGHT SIDE - Tags
-                divider3 = twoElasticColsFixedGutter.new();
-                rightSideList.addSubView( divider3 );
+                #comeback divider3 = twoElasticColsFixedGutter.new();
+                #comeback rightSideList.addSubView( divider3 );
 
-                tagsTable1 = tableList.new( :style=>'continuousText' );
-                tagsTable1.label = 'Tags'
-                tagsTable1.color = 'blue'
-                tagsTable1.content = [
-
-                    { 'name'=>'motiongraphics',     'url'=> '#' },
-                    { 'name'=>'aftereffects',      	'url'=> '#' },
-                    { 'name'=>'cinema 4D',      'url'=> '#' },
-                    { 'name'=>'C4D',      'url'=> '#' },
-                    { 'name'=>'mograph',      'url'=> '#' },
-                    { 'name'=>'cube',      'url'=> '#' },
-                    { 'name'=>'sphere',      'url'=> '#' },
-                    { 'name'=>'hsgn',      'url'=> '#' },
-                    { 'name'=>'hosogane',      'url'=> '#' },
-                    { 'name'=>'bonsajo',      'url'=> '#' },
-                    { 'name'=>'cubesato',      'url'=> '#' },
-                    { 'name'=>'sweez',      'url'=> '#' },
-                ];
-                divider3.addSubView( tagsTable1 );
+                #comeback tagsTable1 = tableList.new( :style=>'continuousText' );
+                #comeback tagsTable1.label = 'Tags'
+                #comeback tagsTable1.color = 'blue'
+                #comeback tagsTable1.content = [
+				# remember, the hash rocked is dead!
+                #comeback     { 'name'=>'motiongraphics',     'url'=> '#' },
+                #comeback     { 'name'=>'aftereffects',      	'url'=> '#' },
+                #comeback     { 'name'=>'cinema 4D',      'url'=> '#' },
+                #comeback     { 'name'=>'C4D',      'url'=> '#' },
+                #comeback     { 'name'=>'mograph',      'url'=> '#' },
+                #comeback     { 'name'=>'cube',      'url'=> '#' },
+                #comeback     { 'name'=>'sphere',      'url'=> '#' },
+                #comeback     { 'name'=>'hsgn',      'url'=> '#' },
+                #comeback     { 'name'=>'hosogane',      'url'=> '#' },
+                #comeback     { 'name'=>'bonsajo',      'url'=> '#' },
+                 #comeback    { 'name'=>'cubesato',      'url'=> '#' },
+                 #comeback    { 'name'=>'sweez',      'url'=> '#' },
+                #comeback ];
+                #comeback divider3.addSubView( tagsTable1 );
 
                 # RightSide - Info
-                infoTable = tableList.new( :style=>'textList' );
-                infoTable.label = 'Info'
-                infoTable.color = 'pink'
-                infoTable.content = [
-                    { 'name'=>'number of plays: 0',     'url'=> '' },
-                    { 'name'=>'report this boo',      	'url'=> '#' },
-                    { 'name'=>'download this boo',      'url'=> '#' },
-                ];
+               #comeback infoTable = tableList.new( :style=>'textList' );
+               #comeback  infoTable.label = 'Info'
+               #comeback  infoTable.color = 'pink'
+               #comeback  infoTable.content = [
+               #comeback      { 'name'=>'number of plays: 0',     'url'=> '' },
+               #comeback      { 'name'=>'report this boo',      	'url'=> '#' },
+               #comeback      { 'name'=>'download this boo',      'url'=> '#' },
+              #comeback   ];
 
-                divider3.addSubView( infoTable );
+              #comeback  divider3.addSubView( infoTable );
 
                 # RightSide - Related Boos
-                relatedBoosTable = tableList.new( :style=>'cell' );
-                relatedBoosTable.label = 'Related Boos'
-                relatedBoosTable.color = 'orange'
-                relatedBoosTable.content = [
-                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user3.png' },
-                    { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user4.png'  },
-                    { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user5.png'  },
-                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user6.png' },
-                    { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user7.png'  },
-                    { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user8.png'  },
-                ];
+             #comeback    relatedBoosTable = tableList.new( :style=>'cell' );
+             #comeback    relatedBoosTable.label = 'Related Boos'
+             #comeback    relatedBoosTable.color = 'orange'
+             #comeback    relatedBoosTable.content = [
+             #comeback        { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user3.png' },
+            #comeback         { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user4.png'  },
+            #comeback         { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user5.png'  },
+            #comeback         { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user6.png' },
+            #comeback         { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user7.png'  },
+           #comeback          { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user8.png'  },
+            #comeback     ];
 
-                rightSideList.addSubView( relatedBoosTable );
+            #comeback    rightSideList.addSubView( relatedBoosTable );
 
                 # Rightside - Popular Boos
-                popularBoosTable = tableList.new( :style=>'cell' );
-                popularBoosTable.label = 'Popular Boos'
-                popularBoosTable.color = 'blue'
-                popularBoosTable.content = [
-                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user9.png' },
-                    { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user10.png'  },
-                    { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user2.png'  },
-                    { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user4.png' },
-                    { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user3.png'  },
-                    { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user1.png'  },
-                ];
+             #comeback    popularBoosTable = tableList.new( :style=>'cell' );
+             #comeback    popularBoosTable.label = 'Popular Boos'
+             #comeback    popularBoosTable.color = 'blue'
+             #comeback    popularBoosTable.content = [
+             #comeback        { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user9.png' },
+            #comeback         { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user10.png'  },
+            #comeback         { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user2.png'  },
+            #comeback         { 'username' =>'lonnyjihnnygon',     'title'=> 'Syncopated Clock by daughters second grade class Syncopated Clock by daughters second grade class',   'booPicPath'=> '../images/user/sample_user4.png' },
+           #comeback          { 'username' =>'daredevel',          'title'=> 'When the levy breaks',                               'booPicPath'=> '../images/user/sample_user3.png'  },
+           #comeback          { 'username' =>'hooleyhooppe',       'title'=> 'choo choo choose me',                                'booPicPath'=> '../images/user/sample_user1.png'  },
+           #comeback      ];
 
-                rightSideList.addSubView( popularBoosTable );
+           #comeback      rightSideList.addSubView( popularBoosTable );
 
 
                 # Bottom section
-                bottomSpacer = spacerView.new( 15, 0, 15, 0 );
-                outerPanel.addSubView( bottomSpacer );
+          #comeback      bottomSpacer = spacerView.new( 15, 0, 15, 0 );
+          #comeback       outerPanel.addSubView( bottomSpacer );
 
-                footerView = footer.new();
-                footerView.allItems = [
+          #comeback       footerView = footer.new();
+           #comeback      footerView.allItems = [
 
-                [   { 'name' =>'About Us',     'url'=> '#' },
-                    { 'name' =>'Audioboo Pro',     'url'=> '#' },
-                    { 'name' =>'Developers',     'url'=> '#' },
-                    { 'name' =>'Widgets',     'url'=> '#' }, ],
+          #comeback       [   { 'name' =>'About Us',     'url'=> '#' },
+          #comeback           { 'name' =>'Audioboo Pro',     'url'=> '#' },
+          #comeback           { 'name' =>'Developers',     'url'=> '#' },
+          #comeback           { 'name' =>'Widgets',     'url'=> '#' }, ],
 
-                [   { 'name' =>'Support/Discussion',     'url'=> '#' },
-                    { 'name' =>'Community Guidelines',     'url'=> '#' },
-                    { 'name' =>'Terms & Conditions',     'url'=> '#' },
-                    { 'name' =>'Privacy Policy',     'url'=> '#' }, ],
+          #comeback       [   { 'name' =>'Support/Discussion',     'url'=> '#' },
+          #comeback           { 'name' =>'Community Guidelines',     'url'=> '#' },
+          #comeback           { 'name' =>'Terms & Conditions',     'url'=> '#' },
+          #comeback           { 'name' =>'Privacy Policy',     'url'=> '#' }, ],
 
-                [   { 'name' =>'Quick Tour',     'url'=> '#' },
-                    { 'name' =>'Watch a video intro',     'url'=> '#' },
-                    { 'name' =>'Follow us on Twitter',     'url'=> '#' },
-                    { 'name' =>'Join our Facebook Group',     'url'=> '#' }, ],
+          #comeback      [   { 'name' =>'Quick Tour',     'url'=> '#' },
+          #comeback           { 'name' =>'Watch a video intro',     'url'=> '#' },
+          #comeback           { 'name' =>'Follow us on Twitter',     'url'=> '#' },
+         #comeback           { 'name' =>'Join our Facebook Group',     'url'=> '#' }, ],
+#comeback
+         #comeback        [   { 'name' =>'Latest from the blog',     'url'=> '#' },
+         #comeback            { 'name' =>'iPhone App 2.0',     'url'=> '#' },
+         #comeback            { 'name' =>'RIP 4IP',     'url'=> '#' },
+        #comeback             { 'name' =>'audioMo',     'url'=> '#' }, ],
+        #comeback         ];
 
-                [   { 'name' =>'Latest from the blog',     'url'=> '#' },
-                    { 'name' =>'iPhone App 2.0',     'url'=> '#' },
-                    { 'name' =>'RIP 4IP',     'url'=> '#' },
-                    { 'name' =>'audioMo',     'url'=> '#' }, ],
-                ];
-
-    			bottomSpacer.addSubView( footerView );
+    	#comeback 		bottomSpacer.addSubView( footerView );
                 #promotionPlaceHolder2 = loremIpsumView.new();
     			#bottomSpacer.addSubView( promotionPlaceHolder2 );
 

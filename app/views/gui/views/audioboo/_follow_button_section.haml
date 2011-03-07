@@ -4,17 +4,27 @@
 -# Maybe look at adding widget.flotRight();
 
 -# http://0.0.0.0:3000/widgets/followButtonSection
-%div( style="width: #{_.width}px; float:right;" )
+%div( style="float: right;" )
+	%ul
+		- liTextStyle = "font: normal normal 10px Verdana; color: #1389E5;"
+		%li( style="display: inline;" )
+			%a( style="#{liTextStyle}" )
+				follow
+		%li( style="display: inline;" )
+			%a( style="#{liTextStyle}" )
+				RSS
+		%li( style="display: inline;" )
+			%a( style="#{liTextStyle}" )
+				itunes
 
 	-# Follow button
-	= insert( _.largeButton, "hey you need the edit button" )
-
+	-# = insert( _.largeButton, "hey you need the edit button" )
 	-# itunes and rss link buttons
-	%div( style="padding: 7px 2px 8px 2px; overflow: auto;" )
-		%ul
-			%li( style="display: inline;" )
-				%a
-					%img( src="/images/buttons/itunes.gif" style="display:block; float: left; padding-left:0px; padding-right:2px")
-			%li( style="display: inline;" )
-				%a
-					%img( src="/images/buttons/rss.gif" style="display:block; float: right; padding-left:5px" )
+	-#%div( style="padding: 7px 2px 8px 2px; overflow: auto;" )
+	-#	%ul
+	-#		%li( style="display: inline;" )
+	-#			%a
+	-#				%img( src="/images/buttons/itunes.gif" style="display:block; float: left; padding-left:0px; padding-right:2px")
+	-#		%li( style="display: inline;" )
+	-#			%a
+	-#				%img( src="/images/buttons/rss.gif" style="display:block; float: right; padding-left:5px" )

@@ -3,7 +3,8 @@ module GUI::Views::Audioboo
     # http://0.0.0.0:3000/widgets/followButtonSection
 	class FollowButtonSection < GUI::Core::HooView
 
-		attr_accessor :largeButton;
+		#attr_accessor	:largeButton;
+		attr_accessor	:inLineMenu;
 
 		def initialize( args={} )
 			super();
@@ -26,13 +27,23 @@ module GUI::Views::Audioboo
 
 
 			# http://0.0.0.0:3000/widgets/largeSinglebuttonForm
-			largeButtonclass =  GUI::HooWidgetList.widgetClass('formButtonToggle')
-			@largeButton = largeButtonclass.new( :state=>1 );
-			@largeButton.img = '../images/buttons/follow_button/follow-button.png';
-			@largeButton.size = [105,45];
-			@largeButton.labelStates = ['Follow', 'Follow', '', 'Unfollow', ''];
-			@largeButton.labelColor = '#fff';
-			@largeButton.action = '/widgets/_ajaxPostTest';
+
+			isFollowing = true;
+			followButtonState = isFollowing ? 3 : 1;
+
+			@inLineMenu = GUI::HooWidgetList.widgetClass('miniInLineMenu');
+
+			inLineMenu.addToggleItem();
+			inLineMenu.addLinkItem();
+			inLineMenu.addLinkItem();
+
+			#largeButtonclass = GUI::HooWidgetList.widgetClass('formButtonToggle')
+			#@largeButton = largeButtonclass.new( :state=>followButtonState );
+			#@largeButton.img = '../images/buttons/follow_button/follow-button.png';
+			#@largeButton.size = [105,45];
+			#@largeButton.labelStates = ['Follow', 'Follow', '', 'Unfollow', ''];
+			#@largeButton.labelColor = '#fff';
+			#@largeButton.action = '/widgets/_ajaxPostTest';
 
 			#largeButtonclass =  GUI::HooWidgetList.widgetClass('largeSinglebuttonForm')
 			#@largeButton = largeButtonclass.new();

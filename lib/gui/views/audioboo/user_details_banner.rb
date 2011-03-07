@@ -1,12 +1,15 @@
 module GUI::Views::Audioboo
 
+    # http://0.0.0.0:3000/widgets/userDetailsBanner
 	class UserDetailsBanner < GUI::Core::HooView
 
         attr_accessor :img;
-        attr_accessor :width, :height;
+        attr_accessor :imgSize;
         attr_accessor :userName;
+		attr_accessor :userHomePageURL;
+		attr_accessor :stats;
 
-		def initialize
+		def initialize( args={} )
 			super();
 		end
 
@@ -14,9 +17,14 @@ module GUI::Views::Audioboo
 		def setupDebugFixture
 			super();
 			@img = '../images/user/sample_user2.png';
-			@width = 75;
-			@height = 75;
+			@imgSize = [75,75];
 			@userName = 'stevehooley';
+			@userHomePageURL = 'http://apple.com'
+			@stats = {	boos: { total:190, url: 'http://apple.com'},
+						favourites: { total:3, url: 'http://virgin.com'},
+						followers: { total:347, url: 'http://facebook.com'}
+						};
+
 		end
 
 	end

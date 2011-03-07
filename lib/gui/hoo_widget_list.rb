@@ -52,6 +52,13 @@ module GUI
 			'divButtonSimple'		=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimple.name,
 			'divButtonToggle'		=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggle.name,
 
+			# for Drawing - menus
+			'miniInLineMenu'		=> 	GUI::Views::Drawing::Menus::HooMiniInlineMenu.name,
+
+			# for Drawing - menuItems
+			'textToggleItem'		=> 	GUI::Views::Drawing::Menus::Items::HooTextToggleItem.name,
+			'textLinkItem'			=> 	GUI::Views::Drawing::Menus::Items::HooTextLinkItem.name,
+
 			'simpleBusySpinner'		=>	GUI::Views::Drawing::Other::HooSimpleSpinner.name,
 			'simpleTextField'		=>	GUI::Views::Drawing::Other::HooSimpleTextField.name,
 			'simpleSlider'			=>	GUI::Views::Drawing::Other::HooSimpleSlider.name,
