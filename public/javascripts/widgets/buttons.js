@@ -62,7 +62,7 @@ HooAbstractButton = HooWidget.extend({
  */
 
 /* Simple Form Button */
-HooSimpleFormButton = HooAbstractButton.extend({
+HooFormButtonSimple = HooAbstractButton.extend({
 
 	_fsm_controller: undefined,
 
@@ -344,7 +344,7 @@ HooSimpleFormButton = HooAbstractButton.extend({
  *
  */
 /* Toggle Form Button */
-HooToggleFormButton = HooSimpleFormButton.extend({
+HooFormButtonToggle = HooFormButtonSimple.extend({
 
 	/* States */
 	_active_state2:			undefined,
@@ -401,7 +401,7 @@ HooToggleFormButton = HooSimpleFormButton.extend({
 
 /* Simple link button */
 
-HooSingleActionButton = HooSimpleFormButton.extend({
+HooDivButtonSimple = HooFormButtonSimple.extend({
 
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 	itemType: "div",
@@ -416,7 +416,7 @@ HooSingleActionButton = HooSimpleFormButton.extend({
 		{
 			this._mouseClickAction.a.call( this._mouseClickAction.t, this._mouseClickAction.w );
 		} else {
-			console.info("HooSingleActionButton - button hasnt been given a javascript action");
+			console.info("HooDivButtonSimple - button hasnt been given a javascript action");
 			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
 		}
 		this.temporarySetEnabledState( nextState, true );
@@ -426,7 +426,7 @@ HooSingleActionButton = HooSimpleFormButton.extend({
 
 /* two state link button */
 
-HooDoubleActionButton = HooToggleFormButton.extend({
+HooDivButtonToggle = HooFormButtonToggle.extend({
 
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 	itemType: "div",
@@ -438,7 +438,7 @@ HooDoubleActionButton = HooToggleFormButton.extend({
 		if(this._jsAction)
 			this._jsAction();
 		else {
-			console.info("HooDoubleActionButton -button hasnt been given a javascript action");
+			console.info("HooDivButtonToggle -button hasnt been given a javascript action");
 			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
 		}
 		this.temporarySetEnabledState( nextState, true );
