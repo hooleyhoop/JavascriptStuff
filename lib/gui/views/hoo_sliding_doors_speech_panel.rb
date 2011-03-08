@@ -54,12 +54,12 @@ module GUI::Views
                 # manually tweak the position of the triangle
                 offsetView = relativeOffsetView.new( 15,0,0,1 );
 
-                placeholder = backgroundImage.new();
-                placeholder.img = '../images/inner_white_panel/inner_panel_speech_left.png';
-                placeholder.width = 15;
-                placeholder.height = 30;
+                triangleImg = backgroundImage.new();
+                triangleImg.img = '../images/inner_white_panel/inner_panel_speech_left.png';
+                triangleImg.width = 15;
+                triangleImg.height = 30;
 
-                offsetView.addSubView( placeholder );
+                offsetView.addSubView( triangleImg );
                 dividerView.addSubView( offsetView );
 
                  # TODO: This is for the speech thing on the right, lets also do the speech thingy on the bottom
@@ -78,14 +78,15 @@ module GUI::Views
                 dividerView.addSubView( @innerPanel1 );
 
                 # manually tweak the position
-                offsetView = relativeOffsetView.new( -1,0,0,30 );
+                offsetView = relativeOffsetView.new( 0,0,0, 30 );
 
-                placeholder = backgroundImage.new();
-                placeholder.img = '../images/innerpanel/inner_panel_speech_bottom.png';
-                placeholder.width = 30;
-                placeholder.height = 15;
+                triangleImg = backgroundImage.new();
+                triangleImg.img = '../images/innerpanel/inner_panel_speech_bottom.png';
+                triangleImg.width = 30;
+                triangleImg.height = 15;
+				triangleImg.customCSSAttributes = { opacity:0.8 };
 
-                offsetView.addSubView( placeholder );
+                offsetView.addSubView( triangleImg );
                 dividerView.addSubView( offsetView );
             end
 

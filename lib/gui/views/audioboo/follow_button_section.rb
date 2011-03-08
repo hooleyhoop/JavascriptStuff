@@ -33,9 +33,9 @@ module GUI::Views::Audioboo
 
 			@inLineMenu = GUI::HooWidgetList.widgetClass('miniInLineMenu');
 
-			inLineMenu.addToggleItem();
-			inLineMenu.addLinkItem();
-			inLineMenu.addLinkItem();
+			#inLineMenu.addToggleItem();
+			#inLineMenu.addLinkItem();
+			#inLineMenu.addLinkItem();
 
 			#largeButtonclass = GUI::HooWidgetList.widgetClass('formButtonToggle')
 			#@largeButton = largeButtonclass.new( :state=>followButtonState );

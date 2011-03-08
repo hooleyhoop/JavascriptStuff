@@ -31,7 +31,7 @@ module Presenters
 			footer					= widgetClass('footer')
 			editbarView				= widgetClass('editBar')
 
-			@window.showGrid;
+			#@window.showGrid;
 
 			@singleItem = false;
 

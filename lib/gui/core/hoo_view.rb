@@ -17,7 +17,7 @@ module GUI::Core
 			return self;
 		end
 
-		def initialize
+		def initialize( args={} )
 			@views = Array.new;
 		end
 

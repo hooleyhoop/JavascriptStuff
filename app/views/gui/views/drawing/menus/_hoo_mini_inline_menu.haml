@@ -7,3 +7,9 @@
 
 - push( hoo_mini_inline_menu )
 
+	- _.views.each_with_index do |view, i|
+	= insert( view, "" )
+	- if( i < (_.views.count-1))
+		%div( style="display: inline-block; width: 100%; height: 15px; background-color: #ff0000;")
+			hello
+

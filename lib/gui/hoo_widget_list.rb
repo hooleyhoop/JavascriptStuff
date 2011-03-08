@@ -63,6 +63,8 @@ module GUI
 			'simpleTextField'		=>	GUI::Views::Drawing::Other::HooSimpleTextField.name,
 			'simpleSlider'			=>	GUI::Views::Drawing::Other::HooSimpleSlider.name,
 
+			'speechBubbleBottomCanvas'	=>	GUI::Views::Drawing::Experiments::HooSpeechBubbleBottomCanvas.name,
+
 			'backgroundImage'		=>	GUI::Views::HooBackgroundImg.name,
 			'fixedSizeImage'		=>	GUI::Views::HooFixedSizeImg.name,
 			'hoo100PercentImg'		=>	GUI::Views::HooOneHundredPercentImg.name,

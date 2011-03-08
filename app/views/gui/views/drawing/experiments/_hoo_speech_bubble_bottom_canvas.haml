@@ -1,0 +1,39 @@
+- push( hoo_speech_bubble_bottom_canvas )
+
+-# http://0.0.0.0:3000/widgets/speechBubbleBottomCanvas
+-# Speech Bubble is actual a split view with a panel on the left and the speech thingy on the right
+
+-# Top Elastic Row
+%div{ :style =>"margin:auto;" }
+	%div
+		%div[_]( class="hoo_sliding_doors_panel panel_style_inner" style="position: relative;" )
+
+			%div.hoo_sliding_doors_panel_top_middle{ :style=>"position: absolute; overflow: auto; background: url( #{_.top} ) repeat-x left top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+			%div.hoo_sliding_doors_panel_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left top no-repeat;" }
+			%div.hoo_sliding_doors_panel_top_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right top no-repeat;" }
+
+			%div.hoo_sliding_doors_panel_top{ :style=>"padding-top: #{_.cornerDim}px;" }
+
+				%div.hoo_sliding_doors_panel_bottom{ :style=>"padding-bottom: #{_.cornerDim}px;" }
+
+					%div.hoo_sliding_doors_panel_left_middle{ :style=>"position: absolute; height:auto; background: url( #{_.left} ) repeat-y left top; width: #{_.cornerDim}px; top:#{_.cornerDim}px; bottom: #{_.cornerDim}px; overflow: auto;" }
+
+					%div.hoo_sliding_doors_panel_left{ :style=>"padding-left: #{_.cornerDim}px;" }
+
+						%div.hoo_sliding_doors_panel_right{ :style=>"padding-right: #{_.cornerDim}px; background: url( #{_.right} ) repeat-y right top;" }
+
+							%div.hoo_sliding_doors_panel_inner{ :style=>"background: url( #{_.fill} ) repeat left top; background-origin: border-box; padding:0 0 0 0;" }
+								=  insert( _.views, "" )
+								%div( style="clear:both;")
+
+					%div.hoo_sliding_doors_panel_bottom_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left bottom no-repeat;" }
+					%div.hoo_sliding_doors_panel_bottom_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right bottom no-repeat;" }
+					%div.hoo_sliding_doors_panel_bottom_middle{ :style=>"position: absolute; width: auto; background: url( #{_.bottom} ) repeat-x left bottom; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+
+
+
+-# Bottom Fixed Row
+	%div{ :style=>"height: #{_.fixedRowHeight}px;" }
+		-# Draw a div with a background img at fixed size
+		- img_attrs = { :style=>"width:#{_.triangleImgSize[0]}px; height:#{_.triangleImgSize[1]}px; background: url( #{_.triangleImgpath} ) left top no-repeat; opacity:0.8;" }
+		%div{img_attrs}

@@ -9,23 +9,34 @@ module GUI::Views::Drawing::Menus
 			super();
 		end
 
-		def addToggleItem
+		def addToggleItem( item )
+			self.addSubView( item );
 		end
 
-		def addLinkItem
+		def addLinkItem( item )
+			self.addSubView( item );
 		end
 
         # Mock Data
 		def setupDebugFixture
 			super();
 
-			item1 = GUI::HooWidgetList.widgetClass('textToggleItem');
-			item2 =	GUI::HooWidgetList.widgetClass('textLinkItem');
-			item3 = GUI::HooWidgetList.widgetClass('textLinkItem');
+			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new();
+			item1.initialState=1;
+			item1.labelStates = ['Disabled', 'Follow', 'Down1', 'Unfollow', 'Down2'];
+			item1.action = '/widgets/_ajaxPostTest';
 
-			this.addToggleItem( item1 );
-			this.addLinkItem( item2 );
-			this.addLinkItem( item3 );
+			item2 =	GUI::HooWidgetList.widgetClass('textLinkItem').new();
+			item2.text = 'click me!'
+			item2.url = 'http://apple.com'
+
+			item3 = GUI::HooWidgetList.widgetClass('textLinkItem').new();
+			item3.text = 'click me!'
+			item3.url = 'http://apple.com'
+
+			#self.addToggleItem( item1 );
+			#self.addLinkItem( item2 );
+			#self.addLinkItem( item3 );
 		end
 
 
