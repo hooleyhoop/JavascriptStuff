@@ -7,9 +7,21 @@
 
 - push( hoo_mini_inline_menu )
 
+%div( class='hooMiniInlineMenu' style="overflow:auto; text-align: center; padding: 5px 10px 5px 10px; margin: 12px 0 8px 0; float: right; background: transparent url( #{_.img} )")
 	- _.views.each_with_index do |view, i|
-	= insert( view, "" )
-	- if( i < (_.views.count-1))
-		%div( style="display: inline-block; width: 100%; height: 15px; background-color: #ff0000;")
-			hello
+		%div( class='hooMiniInlineMenu_itemWrapper' style="font: normal normal 10px/15px Helvetica; background-color:transparent; display:inline-block; overflow: auto; min-width:50px; float: left; padding: 0 5px 0 5px;")
+			= insert( view, "" )
+		- if( i < (_.views.count-1))
+			%div( class="hooMiniInlineMenu_spacer" style="display: inline-block; width: 15px; height: 15px; background-color:transparent; float:left")
+				%div( style="width:1px; height:100%; background-color:gray;")
 
+
+
+- if( _.includeOnce? )
+	%style(type="text/css")
+		:sass
+			.borderradius .hooMiniInlineMenu
+				border: 0px solid lightgray
+				-webkit-border-radius: 4px
+				-moz-border-radius: 4px
+				border-radius: 4px

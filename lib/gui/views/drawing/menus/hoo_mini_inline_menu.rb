@@ -5,7 +5,10 @@ module GUI::Views::Drawing::Menus
 
 		include Test::Unit::Assertions
 
+		attr_accessor :img;
+
 		def initialize( args={} )
+			@img = '../images/menu/mini_menu.png';
 			super();
 		end
 
@@ -34,9 +37,9 @@ module GUI::Views::Drawing::Menus
 			item3.text = 'click me!'
 			item3.url = 'http://apple.com'
 
-			#self.addToggleItem( item1 );
-			#self.addLinkItem( item2 );
-			#self.addLinkItem( item3 );
+			self.addToggleItem( item1 );
+			self.addLinkItem( item2 );
+			self.addLinkItem( item3 );
 		end
 
 

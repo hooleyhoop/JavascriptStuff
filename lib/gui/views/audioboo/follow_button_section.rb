@@ -31,12 +31,26 @@ module GUI::Views::Audioboo
 			isFollowing = true;
 			followButtonState = isFollowing ? 3 : 1;
 
-			@inLineMenu = GUI::HooWidgetList.widgetClass('miniInLineMenu');
+			@inLineMenu = GUI::HooWidgetList.widgetClass('miniInLineMenu').new();
 
-			#inLineMenu.addToggleItem();
-			#inLineMenu.addLinkItem();
-			#inLineMenu.addLinkItem();
+			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new();
+			item1.initialState=1;
+			item1.labelStates = ['Disabled', 'Follow', 'Down1', 'Unfollow', 'Down2'];
+			item1.action = '/widgets/_ajaxPostTest';
 
+			item2 =	GUI::HooWidgetList.widgetClass('textLinkItem').new();
+			item2.text = 'click me!'
+			item2.url = 'http://apple.com'
+
+			item3 = GUI::HooWidgetList.widgetClass('textLinkItem').new();
+			item3.text = 'click me!'
+			item3.url = 'http://apple.com'
+
+			@inLineMenu.addToggleItem( item1 );
+			@inLineMenu.addLinkItem( item2 );
+			@inLineMenu.addLinkItem( item3 );
+
+			# OLD WAY
 			#largeButtonclass = GUI::HooWidgetList.widgetClass('formButtonToggle')
 			#@largeButton = largeButtonclass.new( :state=>followButtonState );
 			#@largeButton.img = '../images/buttons/follow_button/follow-button.png';

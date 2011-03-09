@@ -12,12 +12,13 @@
 - if(  _.initialState==0 )
 	- button_attrs.merge!( { :disabled=>"disabled" } )
 	- button_attrs[:style] += "pointer-events:none;"
+- else
+	- button_attrs.merge!( { :data=> {'jsclass'=>'HooTextToggleItem'} } )
+	- button_attrs.merge!( { :href=> "#{_.action}" } )
 
-%div[_]{ :data=> {'jsclass'=>'HooTextToggleItem'} }
-	%div{button_attrs}
-		%a( href="#{_.action}" )
-			-# Insert the correct label for this state
-			#{_.labelStates[_.initialState]}
+%a{button_attrs}
+	-# Insert the correct label for this state
+	#{_.labelStates[_.initialState]}
 
 - if( _.includeOnce? )
 	:javascript

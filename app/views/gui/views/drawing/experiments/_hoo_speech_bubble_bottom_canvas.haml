@@ -4,32 +4,32 @@
 -# Speech Bubble is actual a split view with a panel on the left and the speech thingy on the right
 
 -# Top Elastic Row
-%div[_]{ :class=>"speechBubble", :data=>{'jsclass'=>'HooSpeechBubbleBottomCanvas'}, :style =>"margin:auto;" }
+%div[_]{ :class=>"speechBubble", :data=>{'jsclass'=>'HooSpeechBubbleBottomCanvas'}, :style =>"margin:auto; overflow:hidden;" }
 	%canvas( width="100%" height="100%" style="border:0 solid white; z-index: -1; position: absolute;")
-	%div
-		%div( class="hoo_sliding_doors_panel panel_style_inner" style="position: relative;" )
 
-			%div.hoo_sliding_doors_panel_top_middle{ :style=>"position: absolute; overflow: auto; background: url( #{_.top} ) repeat-x left top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
-			%div.hoo_sliding_doors_panel_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left top no-repeat;" }
-			%div.hoo_sliding_doors_panel_top_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right top no-repeat;" }
+	%div( class="panel_style_inner" style="position: relative;" )
 
-			%div.hoo_sliding_doors_panel_top{ :style=>"padding-top: #{_.cornerDim}px;" }
+		%div.speechBubble_top_middle{ :style=>"position: absolute; overflow: auto; background: url( #{_.top} ) repeat-x left top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+		%div.speechBubble_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left top no-repeat;" }
+		%div.speechBubble_top_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right top no-repeat;" }
 
-				%div.hoo_sliding_doors_panel_bottom{ :style=>"padding-bottom: #{_.cornerDim}px;" }
+		%div.speechBubble_top{ :style=>"padding-top: #{_.cornerDim}px;" }
 
-					%div.hoo_sliding_doors_panel_left_middle{ :style=>"position: absolute; height:auto; background: url( #{_.left} ) repeat-y left top; width: #{_.cornerDim}px; top:#{_.cornerDim}px; bottom: #{_.cornerDim}px; overflow: auto;" }
+			%div.speechBubble_bottom{ :style=>"padding-bottom: #{_.cornerDim}px;" }
 
-					%div.hoo_sliding_doors_panel_left{ :style=>"padding-left: #{_.cornerDim}px;" }
+				%div.speechBubble_left_middle{ :style=>"position: absolute; height:auto; background: url( #{_.left} ) repeat-y left top; width: #{_.cornerDim}px; top:#{_.cornerDim}px; bottom: #{_.cornerDim}px; overflow: auto;" }
 
-						%div.hoo_sliding_doors_panel_right{ :style=>"padding-right: #{_.cornerDim}px; background: url( #{_.right} ) repeat-y right top;" }
+				%div.speechBubble_left{ :style=>"padding-left: #{_.cornerDim}px;" }
 
-							%div.hoo_sliding_doors_panel_inner{ :style=>"background: url( #{_.fill} ) repeat left top; background-origin: border-box; padding:0 0 0 0;" }
-								=  insert( _.views, "" )
-								%div( style="clear:both;")
+					%div.speechBubble_right{ :style=>"padding-right: #{_.cornerDim}px; background: url( #{_.right} ) repeat-y right top;" }
 
-					%div.hoo_sliding_doors_panel_bottom_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left bottom no-repeat;" }
-					%div.hoo_sliding_doors_panel_bottom_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right bottom no-repeat;" }
-					%div.hoo_sliding_doors_panel_bottom_middle{ :style=>"position: absolute; width: auto; background: url( #{_.bottom} ) repeat-x left bottom; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
+						%div.speechBubble_inner{ :style=>"background: url( #{_.fill} ) repeat left top; background-origin: border-box; padding:0 0 0 0;" }
+							=  insert( _.views, "" )
+							%div( style="clear:both;")
+
+				%div.speechBubble_bottom_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left bottom no-repeat;" }
+				%div.speechBubble_bottom_right{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:right; background: url( #{_.corners} ) right bottom no-repeat;" }
+				%div.speechBubble_bottom_middle{ :style=>"position: absolute; width: auto; background: url( #{_.bottom} ) repeat-x left bottom; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
 
 
 
@@ -43,6 +43,25 @@
 
 -# Obviously we cannot leave this here as it is crazy to include it more than once
 - if( _.includeOnce? )
+
+	%style(type="text/css")
+		:sass
+
+			// Lovely modernizr stuff. if .borderradius and rgba are supported rip out the background images and use css rounded corners instead
+			// body
+			//	background: none!important
+			//	background-color: red!important
+
+			// remove each background image
+			// Bah! If you disable javascript, you dont get moderninzer
+			.canvas.rgba .speechBubble
+				.speechBubble_top_middle, .speechBubble_top_left, .speechBubble_top_right, .speechBubble_left_middle, .speechBubble_right, .speechBubble_inner, .speechBubble_bottom_left, .speechBubble_bottom_right, .speechBubble_bottom_middle
+					background: none no-repeat !important
+				.triangle div
+					background: none no-repeat !important
+
+
+
 	:javascript
 
 		HooSpeechBubbleBottomCanvas = HooWidget.extend({
@@ -68,7 +87,8 @@
 
 			draw: function( ctx, width, height ) {
 
-				console.log( height%15 );
+				if( height%15!=0) console.error("why is this height fucked? "+height);
+				console.log("height is "+height);
 				var gradient;
 
 				var anticlockwise = true;
@@ -85,7 +105,7 @@
 				ctx.save();
 				ctx.save();
 
-				ctx.shadowColor = "rgba(0, 0, 0, 1)";
+				ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
 				ctx.shadowOffsetX = 1;
 				ctx.shadowOffsetY = 3.0;
 				ctx.shadowBlur = 3.0;
@@ -95,7 +115,7 @@
 				var startx = 1;
 				var starty = 1;
 				width = width-2;
-				height = height-20;
+				height = height-2 - 3; // allow for shadow
 
 				// antio- clockwise origin top left
 				var penx = startx;
@@ -148,10 +168,11 @@
 				ctx.closePath();
 
 				gradient = ctx.createLinearGradient(122.5, 1.1, 122.5, 201.3);
-				gradient.addColorStop(0.00, "rgba(255, 255, 255, 0.3)");
-				gradient.addColorStop(1.00, "rgba(0, 0, 0, 0.3)");
+				gradient.addColorStop(0.00, "rgba(255, 255, 255, 1)");
+				gradient.addColorStop(0.3, "rgba(255, 255, 255, 1)");
+				gradient.addColorStop(1.0, "rgba(125, 125, 200, 1)");
 
-				ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+				ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
 				ctx.fill();
 
 				ctx.fillStyle = gradient;
@@ -163,20 +184,4 @@
 
 			}
 		});
-
-	%style(type="text/css")
-		:sass
-
-			// Lovely modernizr stuff. if .borderradius and rgba are supported rip out the background images and use css rounded corners instead
-			body
-				background: none!important
-				background-color: red!important
-
-			// remove each background image
-			// Bah! If you disable javascript, you dont get moderninzer
-			.canvas.rgba
-				.hoo_sliding_doors_panel_top_middle, .hoo_sliding_doors_panel_top_left, .hoo_sliding_doors_panel_top_right, .hoo_sliding_doors_panel_left_middle, .hoo_sliding_doors_panel_right, .hoo_sliding_doors_panel_inner, .hoo_sliding_doors_panel_bottom_left, .hoo_sliding_doors_panel_bottom_right, .hoo_sliding_doors_panel_bottom_middle
-					background: none no-repeat !important
-				.speechBubble .triangle div
-					background: none no-repeat !important
 

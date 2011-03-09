@@ -11,10 +11,11 @@
 
 	-# Overflow hidden makes sure the text doesn't wrap - is this reliable?
 	%div( style='overflow: hidden;' )
-		%div.bigType
-			%a( href="#{_.userHomePageURL}" style="font: normal normal 28px/30px Georgia; color: #be178b;") #{_.userName}
+		%div.bigType( style="font: normal normal 28px/30px Georgia;" )
+			-# crazy stuff happening here, dont try to set the font on an anchor
+			%a( href="#{_.userHomePageURL}" style="font-weight: normal; color: #be178b;") #{_.userName}
 
-		%div.mediumType( style="margin-top: -24px;" )
+		%div.mediumType( style="font: normal normal 16px/30px Helvetica; margin-top:-20px; margin-bottom:-10px; padding:0;" )
 			-# go thru stats hash
 			- sparator = ' / '
 			- first = true
@@ -23,6 +24,6 @@
 					- first = false
 				- else
 					=sparator
-				%a( href="#{_.stats[key][:url]}" style="font: normal normal 16px/30px Helvetica" ) #{_.stats[key][:total]} #{key}
+				%a( href="#{_.stats[key][:url]}" style="font-weight: normal; margin:0px;" ) #{_.stats[key][:total]} #{key}
 
 	%div( style="clear:both;" )

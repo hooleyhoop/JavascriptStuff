@@ -1,4 +1,5 @@
 module Presenters
+	# http://0.0.0.0:3000/pages/test_audioboo_stuff
 	class AudiobooScratchPadPresenter < HooPresenter
 
 		include Gui
@@ -7,29 +8,30 @@ module Presenters
 
 			super( controller );
 
-			spacerView				= widgetClass('spacerView');
-			loremIpsumView			= widgetClass('loremIpsum');
-			slidingDoorsPanel		= widgetClass('slidingDoorsPanel1')
-			speechBubblePane		= widgetClass('speechBubblePane')
-			verticalSplitView		= widgetClass('verticalSplitView')
-			horizontalSplitView		= widgetClass('horizontalSplitView')
-			followButtonSection		= widgetClass('followButtonSection')
-			userDetailsBanner		= widgetClass('userDetailsBanner')
-			fixedSizeImage			= widgetClass('fixedSizeImage')
-			hoo100PercentImg		= widgetClass('hoo100PercentImg')
-			booMainDetails			= widgetClass('booMainDetails')
-			detailPlayer			= widgetClass('detailPlayer')
-			spacedVerticalList		= widgetClass('spacedVerticalList')
-			twoElasticColsFixedGutter  = widgetClass('twoElasticColsFixedGutter')
-			tableHeader				= widgetClass('tableHeader')
-			croppedImg				= widgetClass('croppedImg')
-			croppedImgWithHeader	= widgetClass('croppedImgWithHeader')
-			tableList				= widgetClass('tableList')
-			colorFill				= widgetClass('colorFill')
-			addComment				= widgetClass('addComment')
-			allCommentsTable		= widgetClass('all_user_comments')
-			footer					= widgetClass('footer')
-			editbarView				= widgetClass('editBar')
+			spacerView					= widgetClass('spacerView');
+			loremIpsumView				= widgetClass('loremIpsum');
+			slidingDoorsPanel			= widgetClass('slidingDoorsPanel1')
+			verticalSplitView			= widgetClass('verticalSplitView')
+			horizontalSplitView			= widgetClass('horizontalSplitView')
+			followButtonSection			= widgetClass('followButtonSection')
+			userDetailsBanner			= widgetClass('userDetailsBanner')
+			fixedSizeImage				= widgetClass('fixedSizeImage')
+			hoo100PercentImg			= widgetClass('hoo100PercentImg')
+			booMainDetails				= widgetClass('booMainDetails')
+			detailPlayer				= widgetClass('detailPlayer')
+			spacedVerticalList			= widgetClass('spacedVerticalList')
+			twoElasticColsFixedGutter	= widgetClass('twoElasticColsFixedGutter')
+			tableHeader					= widgetClass('tableHeader')
+			croppedImg					= widgetClass('croppedImg')
+			croppedImgWithHeader		= widgetClass('croppedImgWithHeader')
+			tableList					= widgetClass('tableList')
+			colorFill					= widgetClass('colorFill')
+			addComment					= widgetClass('addComment')
+			allCommentsTable			= widgetClass('all_user_comments')
+			footer						= widgetClass('footer')
+			editbarView					= widgetClass('editBar')
+			speechBubbleBottomClass		= widgetClass('speechBubbleBottomCanvas')
+			speechBubblePaneClass		= widgetClass('speechBubblePane')
 
 			#@window.showGrid;
 
@@ -63,8 +65,8 @@ module Presenters
 				sideBarSpacer.addSubView( outerPanel );
 
 				# User Info Panel
-				userBubble = speechBubblePane.new();
-				userBubble.speechPosition = 'bottom'
+				userBubble = speechBubbleBottomClass.new();
+				#userBubble.speechPosition = 'bottom'
 				userBubble.constructSubViews();
 				outerPanel.addSubView( userBubble );
 
