@@ -4,9 +4,10 @@
 -# Speech Bubble is actual a split view with a panel on the left and the speech thingy on the right
 
 -# Top Elastic Row
-%div{ :style =>"margin:auto;" }
+%div[_]{ :class=>"speechBubble", :data=>{'jsclass'=>'HooSpeechBubbleBottomCanvas'}, :style =>"margin:auto;" }
+	%canvas( width="100%" height="100%" style="border:0 solid white; z-index: -1; position: absolute;")
 	%div
-		%div[_]( class="hoo_sliding_doors_panel panel_style_inner" style="position: relative;" )
+		%div( class="hoo_sliding_doors_panel panel_style_inner" style="position: relative;" )
 
 			%div.hoo_sliding_doors_panel_top_middle{ :style=>"position: absolute; overflow: auto; background: url( #{_.top} ) repeat-x left top; height: #{_.cornerDim}px; left:#{_.cornerDim}px; right: #{_.cornerDim}px; " }
 			%div.hoo_sliding_doors_panel_top_left{ :style=>"width: #{_.cornerDim}px; height: #{_.cornerDim}px; float:left; background: url( #{_.corners} ) left top no-repeat;" }
@@ -32,8 +33,150 @@
 
 
 
--# Bottom Fixed Row
-	%div{ :style=>"height: #{_.fixedRowHeight}px;" }
+	-# Bottom Fixed Row
+	%div.triangle{ :style=>"height: #{_.fixedRowHeight}px; position:relative; top:-1px; left:30px;" }
 		-# Draw a div with a background img at fixed size
-		- img_attrs = { :style=>"width:#{_.triangleImgSize[0]}px; height:#{_.triangleImgSize[1]}px; background: url( #{_.triangleImgpath} ) left top no-repeat; opacity:0.8;" }
+		- img_attrs = { :style=>"width:#{_.triangleImgSize[0]}px; height:#{_.triangleImgSize[1]}px; background: url( #{_.triangleImgpath} ) left top no-repeat;" }
 		%div{img_attrs}
+
+
+
+-# Obviously we cannot leave this here as it is crazy to include it more than once
+- if( _.includeOnce? )
+	:javascript
+
+		HooSpeechBubbleBottomCanvas = HooWidget.extend({
+
+			_$parentDiv: undefined,
+			_$canvas: undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+
+				this._$parentDiv = $( "#"+this.id );
+				this._$canvas = this._$parentDiv.find( "canvas:first" );
+				this.resizeCanvas();
+			},
+
+			resizeCanvas: function() {
+				var newWidth = this._$parentDiv.width();
+				var newHeight = this._$parentDiv.height();
+				this._$canvas.attr({ width:newWidth, height:newHeight });
+				var ctx = this._$canvas[0].getContext('2d');
+			    this.draw(ctx, newWidth, newHeight);
+			},
+
+			draw: function( ctx, width, height ) {
+
+				console.log( height%15 );
+				var gradient;
+
+				var anticlockwise = true;
+				var south = Math.PI/2;
+				var east = 0;
+				var west = Math.PI;
+				var north = Math.PI*3/2;
+
+				var cornerRad = 12;	// make this dynamic?
+				var nubbinWidth = 30;
+				var nubbinHeight = 12;
+
+				// layer1/Path
+				ctx.save();
+				ctx.save();
+
+				ctx.shadowColor = "rgba(0, 0, 0, 1)";
+				ctx.shadowOffsetX = 1;
+				ctx.shadowOffsetY = 3.0;
+				ctx.shadowBlur = 3.0;
+
+				ctx.beginPath();
+
+				var startx = 1;
+				var starty = 1;
+				width = width-2;
+				height = height-20;
+
+				// antio- clockwise origin top left
+				var penx = startx;
+				var peny = starty+cornerRad;
+				ctx.moveTo( penx, peny );
+				peny += height-cornerRad-cornerRad-nubbinHeight;
+				ctx.lineTo( penx, peny );
+
+				// bottom left corner
+				ctx.arc( penx+cornerRad, peny, cornerRad, west, south, anticlockwise );
+
+				// to nubbin
+				penx += nubbinWidth;
+				peny += cornerRad;
+				ctx.lineTo(penx, peny);
+
+				// nubbin pt
+				penx += nubbinWidth/2;
+				peny += nubbinHeight;
+				ctx.lineTo(penx, peny);
+
+				penx += nubbinWidth/2;
+				peny -= nubbinHeight;
+				ctx.lineTo(penx, peny);
+
+				penx += width-cornerRad-nubbinWidth-nubbinWidth;
+				peny += 0;
+				ctx.lineTo(penx, peny);
+
+				// bottom right corner
+				peny -= cornerRad;
+				ctx.arc( penx, peny, cornerRad, south, east, anticlockwise );
+
+				penx += cornerRad;
+				peny -= height-cornerRad-cornerRad-nubbinHeight;
+				ctx.lineTo( penx, peny );
+
+				// top right
+				penx -= cornerRad;
+				ctx.arc( penx, peny, cornerRad, east, north, anticlockwise );
+
+				penx -= width-cornerRad-cornerRad;
+				peny -= cornerRad;
+				ctx.lineTo( penx, peny );
+
+				// top left
+				peny += cornerRad;
+				ctx.arc( penx, peny, cornerRad, north, west, anticlockwise );
+
+				ctx.closePath();
+
+				gradient = ctx.createLinearGradient(122.5, 1.1, 122.5, 201.3);
+				gradient.addColorStop(0.00, "rgba(255, 255, 255, 0.3)");
+				gradient.addColorStop(1.00, "rgba(0, 0, 0, 0.3)");
+
+				ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+				ctx.fill();
+
+				ctx.fillStyle = gradient;
+				ctx.fill();
+
+				//ctx.stroke();
+				ctx.restore();
+				ctx.restore();
+
+			}
+		});
+
+	%style(type="text/css")
+		:sass
+
+			// Lovely modernizr stuff. if .borderradius and rgba are supported rip out the background images and use css rounded corners instead
+			body
+				background: none!important
+				background-color: red!important
+
+			// remove each background image
+			// Bah! If you disable javascript, you dont get moderninzer
+			.canvas.rgba
+				.hoo_sliding_doors_panel_top_middle, .hoo_sliding_doors_panel_top_left, .hoo_sliding_doors_panel_top_right, .hoo_sliding_doors_panel_left_middle, .hoo_sliding_doors_panel_right, .hoo_sliding_doors_panel_inner, .hoo_sliding_doors_panel_bottom_left, .hoo_sliding_doors_panel_bottom_right, .hoo_sliding_doors_panel_bottom_middle
+					background: none no-repeat !important
+				.speechBubble .triangle div
+					background: none no-repeat !important
+

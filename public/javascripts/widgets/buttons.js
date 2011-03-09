@@ -4,14 +4,6 @@ HooAbstractButton = HooWidget.extend({
 	itemType: "button",
 	textHolder: "span",
 
-	// forward events to 'this'
-	eventTrampoline: function(e) {
-		var target = e.data.target;
-		var action = e.data.action;
-		var arg = e.data.arg;
-		target[action](arg, e);
-	},
-
 	/* JQuery helpers */
 	getClickableItem: function() {
 		var buttonQuery = "#"+this.id+" "+this.itemType+":first";

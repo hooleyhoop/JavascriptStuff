@@ -76,16 +76,8 @@ module HooGuiHelper
 				instanceName = view.varName+'_json'
 
 				#j = ActiveSupport::JSON
-				data = instanceName+" = "+jsonProps;
-
-				tt= <<END
-<script type="text/javascript">
-	//<![CDATA[
-		#{data};
- 	//]]>
-</script>
-END
-				output = output +  tt.html_safe();
+				data = instanceName+' = '+jsonProps+';';
+				@window.pushJSONString( data );
 			end
 		end
 		return output
@@ -119,33 +111,57 @@ END
 
 	  result = ""
 	  if( @window.startupScripts )
-  	  @window.startupScripts.each do |script|
-  	    # arguments must be strings t the moment
-  	    # for each script rebuild the function call "function('arg1','arg2');function('arg1');function('arg1','arg2','arg3')"
-  	    result = result + script[:function]+"("
-  	    1.upto(script.length-1) { |i|
-  	      argName = ("arg"+i.to_s).to_sym
-          result = result + "\'" + script[argName].to_s + "\'"
-          if(i<script.length-1)
-            result = result + ","
-          end
-        }
-  	    result = result + ");"
-      end
-    end
+	  @window.startupScripts.each do |script|
+		# arguments must be strings t the moment
+		# for each script rebuild the function call "function('arg1','arg2');function('arg1');function('arg1','arg2','arg3')"
+		result = result + script[:function]+"("
+		1.upto(script.length-1) { |i|
+		  argName = ("arg"+i.to_s).to_sym
+		  result = result + "\'" + script[argName].to_s + "\'"
+		  if(i<script.length-1)
+			result = result + ","
+		  end
+		}
+		result = result + ");"
+	  end
+	end
 	  return result;
 	end
 
-	def insertHeaderAdditions
+	#
+	#
+	#
+	def insertHeaderAdditions()
 	  result = ""
 	  if( @window.headerComponents )
-	    @window.headerComponents.each do |headerElement|
-	      result = result + headerElement
-      end
+		@window.headerComponents.each do |headerElement|
+		  result = result + headerElement
+		end
 	  end
 	  return result;
-  end
+	end
 
+	#
+	#
+	#
+	def insertJSONData()
+
+		result = ""
+		if( @window.jSONContent )
+			@window.jSONContent.each do |jsonElement|
+			  result = result + jsonElement
+			end
+		end
+
+		tt = <<END
+<script type="text/javascript">
+	//<![CDATA[
+		#{result};
+ 	//]]>
+</script>
+END
+		return  tt.html_safe()
+	end
 
 end
 

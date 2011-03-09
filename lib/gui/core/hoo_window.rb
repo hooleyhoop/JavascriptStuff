@@ -4,6 +4,7 @@ module GUI::Core
 		attr_accessor :name;
 		attr_accessor :headerComponents;
 		attr_accessor :startupScripts;
+		attr_accessor :jSONContent;
 		attr_accessor :contentView;
 		attr_accessor :style;
 		attr_accessor :controller;
@@ -22,10 +23,12 @@ module GUI::Core
 			}
 		end
 
+
 		def addheaderComponent( arg )
 			@headerComponents ||=  Array.new();
 			@headerComponents.push( arg );
 		end
+
 
 		def drawNow( controller )
 
@@ -40,14 +43,23 @@ module GUI::Core
 			controller.render( @displaySettings )
 		end
 
+
 		def installStartupJavascript( args )
 			@startupScripts ||=  Array.new();
 			@startupScripts.push( args );
 		end
 
+
+		def pushJSONString( data )
+			@jSONContent ||=  Array.new();
+			@jSONContent.push( data );
+		end
+
+
 		def parentView
 			return nil;
 		end
+
 
         def showGrid
             @style = 'showgrid'

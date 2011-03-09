@@ -14,6 +14,10 @@
  //	4) the element has a custom action, in the json
 function createJSObjectsFromRubyObjects( rootElement ) {
 
+	// create the global window instance
+	var $win = $('hooWindow');
+	_hooWindow = HooWindow.create( {id: hooWindow} );
+
 	var all_jsClass_objects;
 	if(rootElement===undefined) {
 		// -- get all objects with data-jsClass attribute ''
@@ -30,7 +34,7 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 		var jsonName = newInstanceName+'_json';
 		var jsonOb =  window[jsonName];
 		if( jsonOb===undefined )
-			console.error("cannot find json for "+className );
+			console.warn("cannot find json for "+className );
 
 		var hmm = eval(className);
 		var newInstance = hmm.create( {id: idString, json: jsonOb} );
@@ -54,6 +58,24 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 HooWidget = SC.Object.extend({
 	json: "undefined",
 	id: "undefined",
+
+	// forward events to 'this'
+	eventTrampoline: function(e) {
+		var target = e.data.target;
+		var action = e.data.action;
+		var arg = e.data.arg;
+		target[action](arg, e);
+	}
+});
+
+HooWindow = HooWidget.extend({
+	init: function( /* init never has args */ ) {
+		arguments.callee.base.apply(this,arguments);
+		$(window).bind( 'resize', {target:this, action:'windowDidResize', arg:"" }, this.eventTrampoline );
+	},
+	windowDidResize: function() {
+		// alert("window did resize");
+	}
 });
 
 /* Flippy Debug thing */
