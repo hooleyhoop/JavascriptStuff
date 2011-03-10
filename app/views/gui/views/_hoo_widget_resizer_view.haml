@@ -31,42 +31,19 @@
 		  return this;
 		};
 
-
-		// HooPage Class - change name
-		HooWidgetResizerView = HooWidget.extend({
-
-			_resizeableDiv:		undefined,
-			_leftHandle:		undefined,
-			_rightHandle:		undefined,
-			_topHandle:			undefined,
-			_bottomHandle:		undefined,
-
-			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
-
-				this._resizeableDiv = ResizeableDiv.create( {_$div: $('#{_.uniqueSelector}')} );
-				this._leftHandle	= Handle.create( {_$div: $('#left_handle')} );
-				this._rightHandle	= Handle.create( {_$div: $('#right_handle')} );
-				this._topHandle		= Handle.create( {_$div:  $('#top_handle')} );
-				this._bottomHandle	= Handle.create( {_$div: $('#bottom_handle')} );
-
-				this._leftHandle.initBindingsTo( this._resizeableDiv, 'left' );
-				this._rightHandle.initBindingsTo( this._resizeableDiv, 'right' );
-				this._topHandle.initBindingsTo( this._resizeableDiv, 'top' );
-				this._bottomHandle.initBindingsTo( this._resizeableDiv, 'bottom' );
-
-				// somehow kick it off with sensible values
-				this._resizeableDiv.setLeftBounds( this._leftHandle.rightBounds() );
-				this._resizeableDiv.setRightBounds( this._rightHandle.leftBounds() );
-				this._resizeableDiv.setTopBounds( this._topHandle.bottomBounds()  + (15- this._topHandle.bottomBounds() %15) );
-				this._resizeableDiv.setBottomBounds( this._bottomHandle.topBounds() );
-			}
-		});
-
 		// Basic Div Class - Renanme!
 		BasicDiv = HooWidget.extend({
 
 			_$div: undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+
+				if( this._$div!=undefined) {
+					//alert(this._$div instanceof jQuery);
+					// alert(this._$div.html())
+				}
+			},
 
 			leftBounds: function() {
 				return this._$div.position().left;
@@ -85,6 +62,8 @@
 			},
 
 			width: function() {
+				//alert("hello");
+
 				return this._$div.width();
 			},
 
@@ -93,30 +72,90 @@
 			},
 
 			setLeftBounds: function( leftVal ) {
-				var newWidth = this.width()+this.leftBounds()-leftVal;
+				var newWidth = this.width()+this.leftBounds();//-leftVal;
 				this._$div.css( 'left', leftVal );
 				this._$div.css( 'width', newWidth );
+				this.frameDidChange();
 			},
 
 			setRightBounds: function( rightVal ) {
 				var newWidth = rightVal - this.leftBounds();
 				this._$div.css( 'width', newWidth );
+				this.frameDidChange();
 			},
 
 			setBottomBounds: function( bottomBounds ) {
 				var newHeight = bottomBounds-this.topBounds();
 				this._$div.css( 'height', newHeight );
+				this.frameDidChange();
 			},
 
 			setTopBounds: function( topBounds ) {
 				var newHeight = this.height()-(topBounds-this.topBounds());
 				this._$div.css( 'top', topBounds );
 				this._$div.css( 'height', newHeight );
+				this.frameDidChange();
+			},
+
+			// hack at the moment unless we build a view graph
+			frameDidChange: function( rect ) {
+			},
+
+			html: function() {
+				return this._$div.html();
 			}
+
 		});
 
-		// Resizeable Div Class
-		ResizeableDiv = BasicDiv.extend({
+		// HooPage Class - change name
+		HooWidgetResizerView = BasicDiv.extend({
+
+			_resizeableDiv:		undefined,
+			_leftHandle:		undefined,
+			_rightHandle:		undefined,
+			_topHandle:			undefined,
+			_bottomHandle:		undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+
+				if( this._$div===undefined) {
+					this._$div = $('#'+this.id);
+				}
+
+				// The id on these handles wont be set automagically - be careful not to use id
+				this._leftHandle	= Handle.create( {_$div: $('#left_handle')} );
+				this._rightHandle	= Handle.create( {_$div: $('#right_handle')} );
+				this._topHandle		= Handle.create( {_$div:  $('#top_handle')} );
+				this._bottomHandle	= Handle.create( {_$div: $('#bottom_handle')} );
+			},
+
+			// nibDidLoad
+			setupDidComplete: function() {
+
+				this._leftHandle.initBindingsTo( this, 'left' );
+				this._rightHandle.initBindingsTo( this, 'right' );
+				this._topHandle.initBindingsTo( this, 'top' );
+				this._bottomHandle.initBindingsTo( this, 'bottom' );
+
+				// somehow kick it off with sensible values
+				this.setLeftBounds( this._leftHandle.rightBounds() );
+				this.setRightBounds( this._rightHandle.leftBounds() );
+				this.setTopBounds( this._topHandle.bottomBounds()  + (15- this._topHandle.bottomBounds() %15) );
+				this.setBottomBounds( this._bottomHandle.topBounds() );
+			},
+
+			// called to often - need to have the runloop shit
+			frameDidChange: function( rect ) {
+
+				var all_jsClass_objects = this._$div.find(":customdata(jsclass)");
+				all_jsClass_objects.each(function(index, value) {
+
+					var idString = $(value).attr('id');
+					var instanceName = '_'+idString;
+					window[instanceName].parentDidResize();
+				});
+			}
 		});
 
 		// Handle Class
@@ -128,7 +167,7 @@
 
 				this._boundToObject = resizeableDiv;
 				var self = this;
-				this._$div.mousedown( function($event){ return self.horizontalDrag( $event, self._boundToObject.htmlElement, side ); } );
+				this._$div.mousedown( function($event){ return self.horizontalDrag( $event, self._boundToObject.html(), side ); } );
 			},
 
 			horizontalDrag: function( $event, $puppet, cssProp ) {
@@ -155,7 +194,7 @@
 
 				var clickedPos = { x:$event.pageX, y:$event.pageY };
 				var newPos = { x:(clickedPos.x-this._$div.width()/2), y:(clickedPos.y-this._$div.height()/2) };
-				var $objectToManipulate = this._boundToObject.htmlElement;
+				var $objectToManipulate = this._boundToObject.html();
 				var cssProp = $event.data.tcssProp;
 
 				if( cssProp=='left' ) {
@@ -184,6 +223,8 @@
 					alert("countdown to detenation - 10 "+cssProp);
 				}
 			}
+
+
 		});
 
 		/* ok, so this is called by clicking a widget link */

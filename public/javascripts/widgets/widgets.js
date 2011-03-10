@@ -43,8 +43,14 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 			console.error("That instance already exists! Cannot create instance of "+className );
 		}
 		window[newInstanceName] = newInstance;
+
+		// maybe should add to content view
+		_hooWindow.addSubView( newInstance );
+
 		console.log( "Created "+newInstanceName );
 	});
+
+	_hooWindow.setupDidComplete();
 }
 
 
@@ -67,21 +73,39 @@ HooWidget = SC.Object.extend({
 		// target[action](arg, e);
 		target[action].call(target,arg, e);
 
+	},
+
+	parentDidResize: function() {
 	}
 });
 
 HooWindow = HooWidget.extend({
+
+	_allViews: undefined, // maybe should go into content view? Just an unordered array of every view at the mo
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
+		this._allViews = new Array();
 		$(window).bind( 'resize', {target:this, action:'windowDidResize', arg:"" }, this.eventTrampoline );
 	},
 	windowDidResize: function() {
-		// alert("window did resize");
+		$(this._allViews).each( function(i,ob){
+			ob.parentDidResize();
+		});
+	},
+	addSubView: function( childView ) {
+		this._allViews.push( childView );
+	},
 
-		//-- contentView set frame
+	/* all the child views were created */
+	setupDidComplete: function() {
+		$(this._allViews).each( function(i,ob){
+			if(ob.setupDidComplete!==undefined)
+				ob.setupDidComplete();
+		});
 	}
 });
 
+// not using at the mo.. think might be useful tho
 HooContentView = HooWidget.extend({
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
