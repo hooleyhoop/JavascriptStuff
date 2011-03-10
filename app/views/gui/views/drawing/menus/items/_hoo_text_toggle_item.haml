@@ -16,7 +16,7 @@
 	- button_attrs.merge!( { :data=> {'jsclass'=>'HooTextToggleItem'} } )
 	- button_attrs.merge!( { :href=> "#{_.action}" } )
 
-%a{button_attrs}
+%a[_]{button_attrs}
 	-# Insert the correct label for this state
 	#{_.labelStates[_.initialState]}
 
@@ -24,8 +24,8 @@
 	:javascript
 
 		/*
-		 *
+		 * Clickable item
 		*/
-		HooTextToggleItem = SC.Object.extend({
+		HooTextToggleItem = HooFiveStateItem.extend({
 
 		});

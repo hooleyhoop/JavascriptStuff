@@ -84,9 +84,14 @@
 			resizeCanvas: function() {
 				var newWidth = this._$parentDiv.width();
 				var newHeight = this._$parentDiv.height();
-				this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
-				var ctx = this._$canvas[0].getContext('2d');
-			    this.draw(ctx, newWidth, newHeight);
+				var currentWidth = this._$canvas.width();
+				var currentHeight = this._$canvas.height();
+				if( newWidth!=currentWidth || newHeight!=currentHeight)
+				{
+					this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
+					var ctx = this._$canvas[0].getContext('2d');
+				    this.draw(ctx, newWidth, newHeight);
+				}
 			},
 
 			draw: function( ctx, width, height ) {

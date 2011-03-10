@@ -7,13 +7,13 @@
 
 - push( hoo_mini_inline_menu )
 
-%div( class='hooMiniInlineMenu' style="overflow:auto; text-align: center; padding: 2px 10px 2px 10px; margin: 0px 0 8px 0; float: right; background: transparent url( #{_.img} )")
+%div( class='hooMiniInlineMenu' style="overflow:auto; text-align: center; padding:0; margin:0; float: right; background: transparent url( #{_.img} )")
 	- _.views.each_with_index do |view, i|
-		%div( class='hooMiniInlineMenu_itemWrapper' style="font: normal normal 10px/15px Helvetica; background-color:transparent; display:inline-block; overflow: auto; min-width:50px; float: left; padding: 0 5px 0 5px;")
+		%div( class='hooMiniInlineMenu_itemWrapper' style="font: normal normal 10px/15px Helvetica; background-color:transparent; display:inline-block; overflow: auto; float: left; padding: 0")
 			= insert( view, "" )
 		- if( i < (_.views.count-1))
-			%div( class="hooMiniInlineMenu_spacer" style="display: inline-block; width: 15px; height: 15px; background-color:transparent; float:left")
-				%div( style="width:1px; height:100%; background-color:gray; margin:0 7px 0 7px;")
+			%div( class="hooMiniInlineMenu_spacer" style="display: inline-block; width: 1px; height: 23px; background-color:transparent; float:left")
+				%div( style="width:1px; height:100%; background-color:#ccc; margin:0 1px 0 1px;")
 
 
 
@@ -25,3 +25,13 @@
 				-webkit-border-radius: 4px
 				-moz-border-radius: 4px
 				border-radius: 4px
+
+			.hooMiniInlineMenu_itemWrapper a
+				display: inline-block
+				min-width: 100px
+				height: 19px
+				padding: 4px 0 0 0
+
+			.hooMiniInlineMenu_itemWrapper a:hover
+				background-color: rgba(0,0,0,0.1)
+				color: #333

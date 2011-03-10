@@ -26,15 +26,21 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 		all_jsClass_objects = rootElement.find(":customdata(jsclass)");
 	}
 
+	// var anExperiment = $win.find(":nth-child(0)");
+		// $("div span:nth-child(1)")
+
 	$.each( all_jsClass_objects, function( i, ob )
 	{
 		var idString = $(ob).attr('id');
+		if(idString==="") {
+			alert("cunt data class without id");
+		}
 		var className = $(ob).customdata('jsclass');
 		var newInstanceName = '_'+idString;
 		var jsonName = newInstanceName+'_json';
 		var jsonOb =  window[jsonName];
 		if( jsonOb===undefined )
-			console.warn("cannot find json for "+className );
+			console.info("cannot find json for "+className );
 
 		var hmm = eval(className);
 		var newInstance = hmm.create( {id: idString, json: jsonOb} );
@@ -47,7 +53,7 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 		// maybe should add to content view
 		_hooWindow.addSubView( newInstance );
 
-		console.log( "Created "+newInstanceName );
+		console.log( "Created "+newInstance +" > "+ newInstanceName );
 	});
 
 	_hooWindow.setupDidComplete();
@@ -89,7 +95,10 @@ HooWindow = HooWidget.extend({
 	},
 	windowDidResize: function() {
 		$(this._allViews).each( function(i,ob){
-			ob.parentDidResize();
+			if(ob.parentDidResize)
+				ob.parentDidResize();
+			else
+				debugger;
 		});
 	},
 	addSubView: function( childView ) {

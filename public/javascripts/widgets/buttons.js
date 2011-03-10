@@ -1,4 +1,6 @@
 /* Abstract Button */
+// HooAbstractButton.mixin = HooWidget.extend({
+
 HooAbstractButton = HooWidget.extend({
 
 	itemType: "button",
@@ -42,6 +44,12 @@ HooAbstractButton = HooWidget.extend({
 	}
 });
 
+// rework this with mixins!
+HooThreeStateItem = HooWidget.extend({
+});
+
+HooFiveStateItem = HooWidget.extend({
+});
 
 /*
  * After spending considerable time on this i have come to the conclusion that you
