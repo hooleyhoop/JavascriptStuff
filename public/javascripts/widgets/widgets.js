@@ -60,11 +60,13 @@ HooWidget = SC.Object.extend({
 	id: "undefined",
 
 	// forward events to 'this'
-	eventTrampoline: function(e) {
+	eventTrampoline: function(e,a) {
 		var target = e.data.target;
 		var action = e.data.action;
 		var arg = e.data.arg;
-		target[action](arg, e);
+		// target[action](arg, e);
+		target[action].call(target,arg, e);
+
 	}
 });
 
@@ -75,7 +77,16 @@ HooWindow = HooWidget.extend({
 	},
 	windowDidResize: function() {
 		// alert("window did resize");
+
+		//-- contentView set frame
 	}
+});
+
+HooContentView = HooWidget.extend({
+	init: function( /* init never has args */ ) {
+		arguments.callee.base.apply(this,arguments);
+	},
+
 });
 
 /* Flippy Debug thing */

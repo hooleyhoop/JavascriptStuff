@@ -1,8 +1,8 @@
 - push( hoo_widget_resizer_view )
 
-%div[_]{ :style=>"width:400px;height:400px; position:absolute; left:50px; top:150px;"}
+%div[_]{ :style=>"width:400px;height:400px; position:absolute; left:50px; top:150px;", :data=> {'jsclass'=>'HooWidgetResizerView'}}
 	- if _.views.count > 0
-		=  insert( _.views, "" )
+		=  insert( _.views, "Please have a view to render!" )
 	- else
 		%p{ :style=>"background-color:#ff0000; margin:10px;"} !!! Render The Widget Here !!!
 
@@ -31,203 +31,160 @@
 		  return this;
 		};
 
-		// Base Class
-		(function() {
-			var global = this;
-			global.BaseClass = function() {
-			return {};
-		};})();
 
-		// HooPage Class
-		(function() {
-			var global = this;
-			global.HooPage = function() {
-				var self = new BaseClass();
+		// HooPage Class - change name
+		HooWidgetResizerView = HooWidget.extend({
 
-				var _resizeableDiv	= new ResizeableDiv( $( '#{_.uniqueSelector}' ) );
-				var _leftHandle		= new Handle( $('#left_handle') );
-				var _rightHandle	= new Handle( $('#right_handle') );
-				var _topHandle		= new Handle( $('#top_handle') );
-				var _bottomHandle	= new Handle( $('#bottom_handle') );
+			_resizeableDiv:		undefined,
+			_leftHandle:		undefined,
+			_rightHandle:		undefined,
+			_topHandle:			undefined,
+			_bottomHandle:		undefined,
 
-				_leftHandle.initBindingsTo( _resizeableDiv, 'left' );
-				_rightHandle.initBindingsTo( _resizeableDiv, 'right' );
-				_topHandle.initBindingsTo( _resizeableDiv, 'top' );
-				_bottomHandle.initBindingsTo( _resizeableDiv, 'bottom' );
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+
+				this._resizeableDiv = ResizeableDiv.create( {_$div: $('#{_.uniqueSelector}')} );
+				this._leftHandle	= Handle.create( {_$div: $('#left_handle')} );
+				this._rightHandle	= Handle.create( {_$div: $('#right_handle')} );
+				this._topHandle		= Handle.create( {_$div:  $('#top_handle')} );
+				this._bottomHandle	= Handle.create( {_$div: $('#bottom_handle')} );
+
+				this._leftHandle.initBindingsTo( this._resizeableDiv, 'left' );
+				this._rightHandle.initBindingsTo( this._resizeableDiv, 'right' );
+				this._topHandle.initBindingsTo( this._resizeableDiv, 'top' );
+				this._bottomHandle.initBindingsTo( this._resizeableDiv, 'bottom' );
 
 				// somehow kick it off with sensible values
-				_resizeableDiv.setLeftBounds( _leftHandle.rightBounds() );
-				_resizeableDiv.setRightBounds( _rightHandle.leftBounds() );
-				_resizeableDiv.setTopBounds( _topHandle.bottomBounds()  + (15- _topHandle.bottomBounds() %15) );
+				this._resizeableDiv.setLeftBounds( this._leftHandle.rightBounds() );
+				this._resizeableDiv.setRightBounds( this._rightHandle.leftBounds() );
+				this._resizeableDiv.setTopBounds( this._topHandle.bottomBounds()  + (15- this._topHandle.bottomBounds() %15) );
+				this._resizeableDiv.setBottomBounds( this._bottomHandle.topBounds() );
+			}
+		});
 
-				_resizeableDiv.setBottomBounds( _bottomHandle.topBounds() );
+		// Basic Div Class - Renanme!
+		BasicDiv = HooWidget.extend({
 
-				return self;
-			};
-		})();
+			_$div: undefined,
 
-		// Basic Div Class
-		(function() {
-			var global = this;
-			global.BasicDiv = function( $targetDiv ) {
+			leftBounds: function() {
+				return this._$div.position().left;
+			},
 
-				var self = new BaseClass();
+			rightBounds: function() {
+				return this.leftBounds()+this.width();
+			},
 
-				// ivars
-				var _$div = $targetDiv.assertSize(1);
+			bottomBounds: function() {
+				return this.topBounds() + this.height();
+			},
 
-				function _leftBounds() {
-					return _$div.position().left;
-				}
+			topBounds: function() {
+				return this._$div.position().top;
+			},
 
-				function _rightBounds() {
-					return _leftBounds()+_width();
-				}
+			width: function() {
+				return this._$div.width();
+			},
 
-				function _bottomBounds() {
-					return _topBounds() + _height();
-				}
+			height: function() {
+				return this._$div.height();
+			},
 
-				function _topBounds() {
-					return _$div.position().top;
-				}
+			setLeftBounds: function( leftVal ) {
+				var newWidth = this.width()+this.leftBounds()-leftVal;
+				this._$div.css( 'left', leftVal );
+				this._$div.css( 'width', newWidth );
+			},
 
-				function _width() {
-					return _$div.width();
-				}
+			setRightBounds: function( rightVal ) {
+				var newWidth = rightVal - this.leftBounds();
+				this._$div.css( 'width', newWidth );
+			},
 
-				function _height() {
-					return _$div.height();
-				}
+			setBottomBounds: function( bottomBounds ) {
+				var newHeight = bottomBounds-this.topBounds();
+				this._$div.css( 'height', newHeight );
+			},
 
-				function _setLeftBounds( leftVal ) {
-
-					var newWidth = _width()+_leftBounds()-leftVal;
-					_$div.css( 'left', leftVal );
-					_$div.css( 'width', newWidth );
-				}
-
-				function _setRightBounds( rightVal ) {
-
-					var newWidth = rightVal - _leftBounds();
-					_$div.css( 'width', newWidth );
-				}
-
-				function _setBottomBounds( bottomBounds ) {
-
-					var newHeight = bottomBounds-_topBounds();
-					_$div.css( 'height', newHeight );
-				}
-
-				function _setTopBounds( topBounds ) {
-
-					var newHeight = _height()-(topBounds-_topBounds());
-					_$div.css( 'top', topBounds );
-					_$div.css( 'height', newHeight );
-				}
-
-				self.$div				= _$div;
-				self.leftBounds			= _leftBounds;
-				self.rightBounds		= _rightBounds;
-				self.bottomBounds		= _bottomBounds;
-				self.topBounds			= _topBounds;
-				self.setLeftBounds		= _setLeftBounds;
-				self.setRightBounds		= _setRightBounds;
-				self.setBottomBounds	= _setBottomBounds;
-				self.setTopBounds 		= _setTopBounds;
-				self.width 				= _width;
-				self.height				= _height;
-				return self;
-			};
-		})();
+			setTopBounds: function( topBounds ) {
+				var newHeight = this.height()-(topBounds-this.topBounds());
+				this._$div.css( 'top', topBounds );
+				this._$div.css( 'height', newHeight );
+			}
+		});
 
 		// Resizeable Div Class
-		(function() {
-			var global = this;
-			global.ResizeableDiv = function( $targetDiv ) {
-
-				var self = new BasicDiv( $targetDiv );
-
-				return self;
-			};
-		})();
+		ResizeableDiv = BasicDiv.extend({
+		});
 
 		// Handle Class
-		(function() {
-			var global = this;
-			global.Handle = function( $targetDiv ) {
+		Handle = BasicDiv.extend({
 
-				// ivars
-				var self = new BasicDiv( $targetDiv );
+			_boundToObject: undefined,
 
-				var _boundToObject;
+			initBindingsTo: function( resizeableDiv, side ) {
 
-				function _initBindingsTo( resizeableDiv, side ) {
+				this._boundToObject = resizeableDiv;
+				var self = this;
+				this._$div.mousedown( function($event){ return self.horizontalDrag( $event, self._boundToObject.htmlElement, side ); } );
+			},
 
-					_boundToObject = resizeableDiv;
-					self.$div.mousedown( function($event){ return horizontalDrag( $event, _boundToObject.htmlElement, side ); } );
+			horizontalDrag: function( $event, $puppet, cssProp ) {
+
+				var $jqueryClickedObject = $($event.target); // notice how we wrap HTMLDivElement
+				var $clickedObjectPos = this._$div.offset();
+				var mouseDownPt = { x:$event.pageX, y:$event.pageY };
+				var offsetFromCentrePt = { x:(mouseDownPt.x-$clickedObjectPos.left-this._$div.width()/2), y:(mouseDownPt.y-$clickedObjectPos.top-this._$div.height()/2) };
+				// console.warn( "offset from centre = "+offsetFromCentrePt.x + ", "+offsetFromCentrePt.y );
+
+				var mouseUpData = { target:this, action:'mouseup' };
+				$('body').bind('mouseup', mouseUpData, this.eventTrampoline );
+
+				var mouseMoveData = { offset:offsetFromCentrePt, tcssProp:cssProp, target:this, action:'mousemove' };
+				$('body').bind( 'mousemove', mouseMoveData, this.eventTrampoline );
+			},
+
+			mouseup: function( arg, $event ) {
+				$('body').unbind('mousemove', this.eventTrampoline); // is this right?
+				$('body').unbind('mouseup', this.eventTrampoline);
+			},
+
+			mousemove: function( arg, $event ) {
+
+				var clickedPos = { x:$event.pageX, y:$event.pageY };
+				var newPos = { x:(clickedPos.x-this._$div.width()/2), y:(clickedPos.y-this._$div.height()/2) };
+				var $objectToManipulate = this._boundToObject.htmlElement;
+				var cssProp = $event.data.tcssProp;
+
+				if( cssProp=='left' ) {
+					this._$div.css( 'left', newPos.x-$event.data.offset.x );
+					var newXPos = this._$div.offset().left+this._$div.width();
+					this._boundToObject.setLeftBounds( newXPos );
+
+				} else if( cssProp=='right') {
+					this._$div.css( 'left', newPos.x-$event.data.offset.x );
+					var newXPos = this._$div.offset().left;
+					this._boundToObject.setRightBounds( newXPos );
+
+				} else if( cssProp=='top') {
+					var constrainedYpos = $event.data.offset.y;
+					this._$div.css( 'top', newPos.y-constrainedYpos );
+					var newYPos = this._$div.offset().top+this._$div.height();
+					newYPos = newYPos + (15-newYPos%15)
+					this._boundToObject.setTopBounds( newYPos );
+
+				} else if( cssProp=='bottom') {
+					this._$div.css( 'top', newPos.y-$event.data.offset.y );
+					var newYPos = this._$div.offset().top;
+					this._boundToObject.setBottomBounds( newYPos );
+
+				} else {
+					alert("countdown to detenation - 10 "+cssProp);
 				}
-
-				function horizontalDrag( $event, $puppet, cssProp ) {
-
-					// var $jqueryClickedObject = $($event.target); // notice how we wrap HTMLDivElement
-					var $clickedObjectPos = self.$div.offset();
-					var mouseDownPt = { x:$event.pageX, y:$event.pageY };
-					var offsetFromCentrePt = { x:(mouseDownPt.x-$clickedObjectPos.left-self.$div.width()/2), y:(mouseDownPt.y-$clickedObjectPos.top-self.$div.height()/2) };
-					// console.warn( "offset from centre = "+offsetFromCentrePt.x + ", "+offsetFromCentrePt.y );
-
-					$('body').bind('mouseup', mouseup);
-
-					mouseMoveData = { offset:offsetFromCentrePt, tcssProp:cssProp };
-					$('body').bind('mousemove', mouseMoveData, mousemove);
-				}
-
-				function mouseup( $event ) {
-
-					$('body').unbind('mousemove');
-					$('body').unbind('mouseup');
-				}
-
-				function mousemove( $event ) {
-
-					var clickedPos = { x:$event.pageX, y:$event.pageY };
-					var newPos = { x:(clickedPos.x-self.$div.width()/2), y:(clickedPos.y-self.$div.height()/2) };
-					var $objectToManipulate = _boundToObject.htmlElement;
-					var cssProp = $event.data.tcssProp;
-
-					if( cssProp=='left' ) {
-						self.$div.css( 'left', newPos.x-$event.data.offset.x );
-						var newXPos = self.$div.offset().left+self.$div.width();
-						_boundToObject.setLeftBounds( newXPos );
-
-					} else if( cssProp=='right') {
-						self.$div.css( 'left', newPos.x-$event.data.offset.x );
-						var newXPos = self.$div.offset().left;
-						_boundToObject.setRightBounds( newXPos );
-
-					} else if( cssProp=='top') {
-
-						var constrainedYpos = $event.data.offset.y;
-						self.$div.css( 'top', newPos.y-constrainedYpos );
-						var newYPos = self.$div.offset().top+self.$div.height();
-						newYPos = newYPos + (15-newYPos%15)
-
-						_boundToObject.setTopBounds( newYPos );
-
-					} else if( cssProp=='bottom') {
-						self.$div.css( 'top', newPos.y-$event.data.offset.y );
-						var newYPos = self.$div.offset().top;
-						_boundToObject.setBottomBounds( newYPos );
-
-					} else {
-						alert("countdown to detenation - 10 "+cssProp);
-					}
-				}
-
-				self.initBindingsTo = _initBindingsTo;
-				return self;
-			};
-		})();
+			}
+		});
 
 		/* ok, so this is called by clicking a widget link */
 		function loadSomeHTMLByAjax2( arg ) {
@@ -247,14 +204,12 @@
 		}
 
 		// Lets kick it all off
-		$(document).ready(function(){
-
+		// $(document).ready(function(){
 			// build the javascript model
-			_page = new HooPage();
-
+			// _page = new HooPage();
 			// load default content by ajax
 			//loadSomeHTMLByAjax2( '#{_.dataSrc.defaultItem}' );
-		});
+		// });
 
 		// make coloured objects transparent
 		function hackColors() {

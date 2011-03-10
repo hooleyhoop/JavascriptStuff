@@ -4,8 +4,8 @@
 -# Speech Bubble is actual a split view with a panel on the left and the speech thingy on the right
 
 -# Top Elastic Row
-%div[_]{ :class=>"speechBubble", :data=>{'jsclass'=>'HooSpeechBubbleBottomCanvas'}, :style =>"margin:auto; overflow:hidden;" }
-	%canvas( width="100%" height="100%" style="border:0 solid white; z-index: -1; position: absolute;")
+%div[_]{ :class=>"speechBubble", :data=>{'jsclass'=>'HooSpeechBubbleBottomCanvas'}, :style =>"margin:auto; overflow:visible; width:100%" }
+	%canvas( width="100%" height="100%" style="border:0 solid white; z-index: -1; position: absolute; ")
 
 	%div( class="panel_style_inner" style="position: relative;" )
 
@@ -77,10 +77,14 @@
 				this.resizeCanvas();
 			},
 
+			windowDidResize: function() {
+				alert("yopzza");
+			},
+
 			resizeCanvas: function() {
 				var newWidth = this._$parentDiv.width();
 				var newHeight = this._$parentDiv.height();
-				this._$canvas.attr({ width:newWidth, height:newHeight });
+				this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
 				var ctx = this._$canvas[0].getContext('2d');
 			    this.draw(ctx, newWidth, newHeight);
 			},
