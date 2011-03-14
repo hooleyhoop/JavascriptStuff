@@ -149,28 +149,41 @@ HooFormButtonSimple = HooAbstractButton.extend({
 
 		var self = this;
 
-		/* Submit the forms regular action using jquery */
-		var form = self.getForm();
-		form.submit(function(e) {
-			// alert('Handler for .submit() called.');
+		if( this._mouseClickAction!==undefined ){
 
-			// this === form at this point
-			var hmm = $(this).serialize();
-			alert(this.action);
-			$.ajax({ url: this.action, type:'POST', data: hmm,
-				success: function(data) {
-					form.unbind('submit');
+		/* Ignore the form action altogether and do a javascript action - cant be async at the mo */
+			self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
 
-					// of course, you remebered to pass in the callback..
-					argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
-				}
+			// -if we are in a form - stop the form doing it's thing
+			self.getForm().submit(function(e) { return false; });
+			self.getForm().submit();
+			argsHash.onComplete();
+
+		} else {
+			/* Submit the forms regular action using jquery */
+			var form = self.getForm();
+			form.submit(function(e) {
+				// alert('Handler for .submit() called.');
+
+				// this === form at this point
+				var hmm = $(this).serialize();
+				// alert(this.action);
+				$.ajax({ url: this.action, type:'POST', data: hmm,
+					success: function(data) {
+						form.unbind('submit');
+
+						// of course, you remebered to pass in the callback..
+						argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+					}
+				});
+
+				// The next two lines are equivalent
+				e.preventDefault();
+				return false;
 			});
+			form.submit();
+		}
 
-			// The next two lines are equivalent
-			e.preventDefault();
-			return false;
-		});
-		form.submit();
 	},
 
 	/* This should only be called once, when it enters the enabled state */
@@ -198,4 +211,63 @@ HooFormButtonSimple = HooAbstractButton.extend({
 });
 
 
+/*
+ * Extends the simpleButton 2 add another state, eg followed, unfollowed
+ *
+ */
+/* Toggle Form Button */
+HooFormButtonToggle = HooFormButtonSimple.extend({
+
+	// we just use a different state machine than the three state button, everthing else is the same
+	createStatemachine: function() {
+		this._stateMachine = HooFiveStateItem.create();
+	}
+});
+
+
+/* Simple link button */
+
+HooDivButtonSimple = HooFormButtonSimple.extend({
+
+	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
+	itemType: "div",
+	textHolder: "a",
+
+	// maybe make this async
+	fireAction: function( nextState, argsHash ) {
+
+		// we might want to make this async
+		if( this._mouseClickAction!==undefined )
+		{
+			this._mouseClickAction.a.call( this._mouseClickAction.t, this._mouseClickAction.w );
+		} else {
+			console.info("HooDivButtonSimple - button hasnt been given a javascript action");
+			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
+		}
+		// of course, you remebered to pass in the callback..
+		argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+	}
+});
+
+/* two state link button */
+
+HooDivButtonToggle = HooFormButtonToggle.extend({
+
+	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
+	itemType: "div",
+	textHolder: "a",
+
+	// maybe make this async
+	fireAction: function( nextState, argsHash ) {
+
+		if(this._jsAction)
+			this._jsAction();
+		else {
+			console.info("HooDivButtonToggle -button hasnt been given a javascript action");
+			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
+		}
+		// of course, you remebered to pass in the callback..
+		argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+	}
+});
 

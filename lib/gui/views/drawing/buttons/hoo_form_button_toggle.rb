@@ -45,7 +45,7 @@ module GUI::Views::Drawing::Buttons
 		def jsonProperties
 			allItems = {
 				:labelStates	=> @labelStates,
-				:initailState	=> @state,
+				:initailState	=> @initailState,
 				:size			=> @size,
 			}
 			return allItems.to_json();
