@@ -44,11 +44,11 @@ module GUI::Views::Audioboo
 			# so initial state must be 1
 
 			lambda {
-				@simpleButton2 = singleActButton.new( :state=>1 );
+				@simpleButton2 = singleActButton.new( :initailState=>1 );
 				@simpleButton2.img = '../images/buttons/simple-button/3-state-combine.png';
 				@simpleButton2.size = [105,45];
 				@simpleButton2.labelStates = ['', 'Play', 'Play'];
-				@simpleButton2.state = 1;
+				@simpleButton2.initailState = 1;
 				@simpleButton2.labelColor = '#fff'
 				@simpleButton2.action = '#'
 

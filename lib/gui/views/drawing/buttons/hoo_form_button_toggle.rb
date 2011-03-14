@@ -13,14 +13,14 @@ module GUI::Views::Drawing::Buttons
 		attr_accessor :img;
 		attr_accessor :size;
 		attr_accessor :labelStates
-		attr_accessor :state;
+		attr_accessor :initailState;
 		attr_accessor :labelColor;
 		attr_accessor :action;
 
 		def initialize( args={} )
 			super();
-			if args[:state]
-				@state=args[:state].to_i();
+			if args[:initailState]
+				@initailState=args[:initailState].to_i();
 			end
 		end
 
@@ -31,7 +31,7 @@ module GUI::Views::Drawing::Buttons
 			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
 			@img = '../images/buttons/follow_button/5-state-follow-button.png';
 			@size = [105, 45];
-			@state=0 if @state==nil
+			@initailState=0 if @initailState==nil
 			@labelColor = '#eee';
 			@action = '#'; # /widgets/_ajaxPostTest
 		end
@@ -45,7 +45,7 @@ module GUI::Views::Drawing::Buttons
 		def jsonProperties
 			allItems = {
 				:labelStates	=> @labelStates,
-				:state			=> @state,
+				:initailState	=> @state,
 				:size			=> @size,
 			}
 			return allItems.to_json();

@@ -13,7 +13,7 @@ module GUI::Views::Drawing::Buttons
 		attr_accessor :img;
 		attr_accessor :size;
 		attr_accessor :labelStates
-		attr_accessor :state;
+		attr_accessor :initailState;
 		attr_accessor :labelColor;
 
 		# the button action (no javascript) and the javacript action it will be replaced with
@@ -23,8 +23,8 @@ module GUI::Views::Drawing::Buttons
 
 		def initialize( args={} )
 			super();
-			if args[:state]
-				@state=args[:state].to_i();
+			if args[:initailState]
+				@initailState=args[:initailState].to_i();
 			end
 		end
 
@@ -35,7 +35,7 @@ module GUI::Views::Drawing::Buttons
 			@labelStates = ['Disabled', 'Ready', 'Pressed'];
 			@img = '../images/buttons/simple-button/3-state-combine.png';
 			@size = [105, 45];
-			@state=0 if @state==nil
+			@initailState=0 if @initailState==nil
 			@labelColor = '#eee';
 			@action = 'http://apple.com';
 		end
@@ -65,7 +65,7 @@ module GUI::Views::Drawing::Buttons
 		def jsonProperties
 			allItems = {
 				:labelStates		=> @labelStates,
-				:state				=> @state,
+				:initailState		=> @initailState,
 				:size				=> @size,
 			}
 			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
