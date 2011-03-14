@@ -95,9 +95,9 @@ HooWindow = HooWidget.extend({
 	},
 	windowDidResize: function() {
 		$(this._allViews).each( function(i,ob){
-			if(ob.parentDidResize)
+			if(ob.parentDidResize) {
 				ob.parentDidResize();
-			else
+			} else
 				debugger;
 		});
 	},

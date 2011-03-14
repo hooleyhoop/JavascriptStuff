@@ -62,8 +62,6 @@
 			},
 
 			width: function() {
-				//alert("hello");
-
 				return this._$div.width();
 			},
 
@@ -72,13 +70,15 @@
 			},
 
 			setLeftBounds: function( leftVal ) {
-				var newWidth = this.width()+this.leftBounds();//-leftVal;
+
+				var moveAmount = this.leftBounds() - leftVal;
 				this._$div.css( 'left', leftVal );
-				this._$div.css( 'width', newWidth );
+				this._$div.css( 'width', this.width()+moveAmount );
 				this.frameDidChange();
 			},
 
 			setRightBounds: function( rightVal ) {
+
 				var newWidth = rightVal - this.leftBounds();
 				this._$div.css( 'width', newWidth );
 				this.frameDidChange();
@@ -99,6 +99,7 @@
 
 			// hack at the moment unless we build a view graph
 			frameDidChange: function( rect ) {
+				// abstract
 			},
 
 			html: function() {
@@ -145,7 +146,7 @@
 				this.setBottomBounds( this._bottomHandle.topBounds() );
 			},
 
-			// called to often - need to have the runloop shit
+			// called too often - need to have the runloop shit
 			frameDidChange: function( rect ) {
 
 				var all_jsClass_objects = this._$div.find(":customdata(jsclass)");
