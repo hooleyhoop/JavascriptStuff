@@ -5,7 +5,7 @@ module GUI::Views::Drawing::Buttons
     # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/divButtonSimple
-	# http://0.0.0.0:3000/widgets/divButtonSimple?state=1
+	# http://0.0.0.0:3000/widgets/divButtonSimple?initailState=1
 	class HooDivButtonSimple < GUI::Core::HooView
 
 		include Test::Unit::Assertions

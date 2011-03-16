@@ -1,5 +1,7 @@
 module GUI::Views::Audioboo
 
+	# YES, the follow button section is small, but i dont think it should be on this page at all,  so this is a consession
+
     # http://0.0.0.0:3000/widgets/followButtonSection
 	class FollowButtonSection < GUI::Core::HooView
 
@@ -25,30 +27,31 @@ module GUI::Views::Audioboo
 			# TODO: How can i have an ajax button that falls back to form
 			#
 
-
-			# http://0.0.0.0:3000/widgets/largeSinglebuttonForm
-
 			isFollowing = true;
 			followButtonState = isFollowing ? 3 : 1;
 
 			@inLineMenu = GUI::HooWidgetList.widgetClass('miniInLineMenu').new();
+			@inLineMenu.height = 22;
+			@inLineMenu.labelColor = '#3171d7';
 
-			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new();
-			item1.initialState=1;
-			item1.labelStates = ['Disabled', 'Follow', 'Down1', 'Unfollow', 'Down2'];
+			item1 = GUI::HooWidgetList.widgetClass('textLinkItem').new(  :initailState=>1 );
+			item1.labelStates = ['follow', 'follow', 'follow'];
 			item1.action = '/widgets/_ajaxPostTest';
+			item1.position = 'left';
 
-			item2 =	GUI::HooWidgetList.widgetClass('textLinkItem').new();
-			item2.text = 'click me!'
-			item2.url = 'http://apple.com'
+			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new(  :initailState=>1 );
+			itemMid.labelStates = ['rss', 'rss', 'rss'];
+			itemMid.action = '/widgets/_ajaxPostTest';
+			itemMid.position = 'middle';
 
-			item3 = GUI::HooWidgetList.widgetClass('textLinkItem').new();
-			item3.text = 'click me!'
-			item3.url = 'http://apple.com'
+			item2 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>1 );
+			item2.labelStates = ['iTunes', 'iTunes', 'iTunes'];
+			item2.action = '/widgets/_ajaxPostTest';
+			item2.position = 'right';
 
 			@inLineMenu.addToggleItem( item1 );
+			@inLineMenu.addLinkItem( itemMid );
 			@inLineMenu.addLinkItem( item2 );
-			@inLineMenu.addLinkItem( item3 );
 
 			# OLD WAY
 			#largeButtonclass = GUI::HooWidgetList.widgetClass('formButtonToggle')

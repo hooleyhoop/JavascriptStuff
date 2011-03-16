@@ -32,14 +32,15 @@ HooAbstractButton = HooWidget.extend({
 
 	positionBackground:function( state ) {
 		var $butt = this.getClickableItem();
-		var height = $butt.height();
+		var height = $butt.outerHeight();
 		var offset = state * height;
-
 		if ( typeof this.positionBackground.previousHeight!='undefined' ) {
 		//	if( typeof console.assert!==undefined )
 		//		console.assert( height==this.positionBackground.previousHeight, "shit" );
 		}
 		this.positionBackground.previousHeight = height;
+		console.log("moving background "+offset);
+
 		$butt.css( "backgroundPosition", "0px -"+offset+"px" );
 	}
 });
@@ -167,7 +168,7 @@ HooFormButtonSimple = HooAbstractButton.extend({
 
 				// this === form at this point
 				var hmm = $(this).serialize();
-				// alert(this.action);
+
 				$.ajax({ url: this.action, type:'POST', data: hmm,
 					success: function(data) {
 						form.unbind('submit');
@@ -239,7 +240,8 @@ HooDivButtonSimple = HooFormButtonSimple.extend({
 		// we might want to make this async
 		if( this._mouseClickAction!==undefined )
 		{
-			this._mouseClickAction.a.call( this._mouseClickAction.t, this._mouseClickAction.w );
+			// Doesnt work on ie
+			this._mouseClickAction.a.apply( this._mouseClickAction.t, [this._mouseClickAction.w] );
 		} else {
 			console.info("HooDivButtonSimple - button hasnt been given a javascript action");
 			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
@@ -271,3 +273,10 @@ HooDivButtonToggle = HooFormButtonToggle.extend({
 	}
 });
 
+/*$.ajax({url:'/', success:function(r) {
+  alert(r);
+}, error:function(a,b){
+debugger;
+  alert(a); alert(b)
+ }});
+*/

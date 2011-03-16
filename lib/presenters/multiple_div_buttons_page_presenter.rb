@@ -16,6 +16,8 @@ module Presenters
 
 			@window.showGrid;
 
+			# What about if we dont want to set an explicit width?
+
 			lambda {
 				@simpleButton1 = singleActButton.new( :initailState=>1 );
 				@simpleButton1.img = '../images/buttons/simple-button/3-state-combine.png';
@@ -54,29 +56,27 @@ module Presenters
 
 
 			lambda {
-				@largeButton3 = doubleActButton.new( :initailState=>1 );
+				@largeButton3 = doubleActButton.new( :initailState=>3 );
 				@largeButton3.labelStates = ['-Off-', 'Go', 'Go-D', 'un Go', 'un go-D'];
 				@largeButton3.size = [105,45];
 				@largeButton3.img = '../images/buttons/follow_button/5-state-follow-button.png';
-				@largeButton3.initailState = 3;
 				@largeButton3.labelColor = '#fff'
 				@largeButton3.action = 'http://audioboo.com'
 				@largeButton3.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 				@window.contentView.addSubView( @largeButton3 );
 			}.call
 
-
+			# Try a dynamic resize
 			lambda {
-				@largeButton1 = doubleActButton.new( :initailState=>1 );
-				@largeButton1.img = '../images/buttons/follow_button/5-state-follow-button.png';
-				@largeButton1.size = [105,45];
-				@largeButton1.labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
-				@largeButton1.initailState = 0;
-				@largeButton1.labelColor = '#fff'
-				@largeButton1.action = 'http://audioboo.com'
-				@largeButton1.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
-				@window.contentView.addSubView( @largeButton1 );
+				@resizeButton1 = widgetClass('divButtonSimpleDynamicWidth').new( :initailState=>1 );
+				@resizeButton1.img = '../images/buttons/simple-button/3-state-combine.png';
+				@resizeButton1.size = [-1,22];
+				@resizeButton1.labelStates = ['coffee monssoon gap maplin', 'coffee monssoon gap maplin', 'coffee monssoon gap maplin'];
+				@resizeButton1.labelColor = '#3171d7';
+				@resizeButton1.action = 'http://audioboo.com';
+				@window.contentView.addSubView( @resizeButton1 );
 			}.call
+
 
 		end
 	end

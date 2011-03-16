@@ -5,7 +5,7 @@ module GUI::Views::Drawing::Buttons
     # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/formButtonToggle
-	# http://0.0.0.0:3000/widgets/formButtonToggle?state=1
+	# http://0.0.0.0:3000/widgets/formButtonToggle?initailState=1
 	class HooFormButtonToggle < GUI::Core::HooView
 
 		include Test::Unit::Assertions

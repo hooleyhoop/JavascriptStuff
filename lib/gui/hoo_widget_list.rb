@@ -45,11 +45,13 @@ module GUI
 			'paddedHorizontal'		=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
 
 			# for drawing - forms
-			'formButtonSimple'		=>	GUI::Views::Drawing::Buttons::HooFormButtonSimple.name,
-			'formButtonToggle'		=>	GUI::Views::Drawing::Buttons::HooFormButtonToggle.name,
+			'formButtonSimple'				=>	GUI::Views::Drawing::Buttons::HooFormButtonSimple.name,
+			'formButtonToggle'				=>	GUI::Views::Drawing::Buttons::HooFormButtonToggle.name,
 
 			# for drawing - link buttons
-			'divButtonSimple'		=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimple.name,
+			'divButtonSimple'				=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimple.name,
+			'divButtonSimpleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimpleDynamicWidth.name,
+
 			'divButtonToggle'		=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggle.name,
 
 			# for Drawing - menus

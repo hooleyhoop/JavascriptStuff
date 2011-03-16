@@ -8,7 +8,7 @@ HooStateMachine_testCommandChannel = SC.Object.extend({
 });
 
 HooStateMachine_abstractEvent = SC.Object.extend({
-	name: undefined,
+	name: undefined
 });
 
 HooStateMachine_command = HooStateMachine_abstractEvent.extend({

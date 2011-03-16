@@ -10,6 +10,9 @@
 		-# Rails 3 only
 		= csrf_meta_tag
 
+		-# This works incredibly well, but i dont know how to not include it in ie9, and it breaks modernizr
+		<!--[if IE]><script src="/javascripts/third_party/excanvas.js"></script><![endif]-->
+
 		= javascript_include_tag :defaults, :cache=>'base'
 		= stylesheet_link_tag :app, :cache=>'base'
 

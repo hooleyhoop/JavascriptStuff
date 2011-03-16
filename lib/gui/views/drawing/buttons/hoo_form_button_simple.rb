@@ -5,7 +5,7 @@ module GUI::Views::Drawing::Buttons
     # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/formButtonSimple
-	# http://0.0.0.0:3000/widgets/formButtonSimple?state=1
+	# http://0.0.0.0:3000/widgets/formButtonSimple?initailState=1
 	class HooFormButtonSimple < GUI::Core::HooView
 
 		include Test::Unit::Assertions

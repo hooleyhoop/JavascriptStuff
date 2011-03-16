@@ -11,6 +11,7 @@ class WidgetsController < ApplicationController
 	end
 
 	def _ajaxPostTest
+		puts "hello"
 		render :text => 'Hello world'
 	end
 

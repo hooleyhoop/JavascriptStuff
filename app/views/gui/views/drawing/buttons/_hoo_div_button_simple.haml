@@ -10,8 +10,13 @@
 -# adding the data-jsclass attribute means that a javascript instance will be created on-load
 -# Todo: I also need to have it created if it is inserted by ajax!
 
+
+-# Easy enough to switch in different stuff depending on whether a size was specified
+-# But the whole point was that views should be logicless..? Better to make another button?
+
 - textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0; position:relative; top:15px; letter-spacing:0pc; word-spacing:-0.1pc;"
-- button_attrs = { :style=>" text-align: center; padding:0; margin:0; border:none; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.initailState}px; width: #{_.size[0]}px; height:#{_.size[1]}px;" }
+- button_attrs = { :style=>" text-align: center; padding:0; margin:10; border:none; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.initailState}px; width: #{_.size[0]}px; height:#{_.size[1]}px;" }
+
 - if(  _.initailState==0 )
 	- button_attrs.merge!( { :disabled=>"disabled" } )
 	- button_attrs[:style] += "pointer-events:none;"

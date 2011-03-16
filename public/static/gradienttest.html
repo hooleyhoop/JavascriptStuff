@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<!-- Created with Ai->Canvas Export Plug-In Version 1.0 (Mac) -->
+<!-- By Mike Swanson (http://blogs.msdn.com/mswanson/)        -->
+<!-- and MIX Online  (http://visitmix.com/)                   -->
+
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  	<!--[if IE]><script type="text/javascript" src="../javascripts/third_party/excanvas.js"></script><![endif]-->
+
+  <title>gradienttest</title>
+  <script>
+
+    function init() {
+
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+
+      draw(ctx);
+    }
+
+    function draw(ctx) {
+
+      var gradient;
+
+      // layer1/Path
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(232.5, 58.3);
+      ctx.lineTo(219.9, 58.3);
+      ctx.lineTo(217.9, 46.5);
+      ctx.lineTo(236.5, 28.3);
+      ctx.lineTo(210.7, 24.5);
+      ctx.lineTo(199.2, 1.1);
+      ctx.lineTo(187.6, 24.5);
+      ctx.lineTo(161.8, 28.3);
+      ctx.lineTo(180.5, 46.5);
+      ctx.lineTo(178.5, 58.3);
+      ctx.lineTo(12.5, 58.3);
+      ctx.bezierCurveTo(5.9, 58.3, 0.5, 63.7, 0.5, 70.3);
+      ctx.lineTo(0.5, 189.3);
+      ctx.bezierCurveTo(0.5, 196.0, 5.9, 201.3, 12.5, 201.3);
+      ctx.lineTo(232.5, 201.3);
+      ctx.bezierCurveTo(239.1, 201.3, 244.5, 196.0, 244.5, 189.3);
+      ctx.lineTo(244.5, 70.3);
+      ctx.bezierCurveTo(244.5, 63.7, 239.1, 58.3, 232.5, 58.3);
+      ctx.closePath();
+      gradient = ctx.createLinearGradient(122.5, 1.1, 122.5, 201.3);
+      gradient.addColorStop(0.00, "rgb(255, 255, 255)");
+      gradient.addColorStop(1.00, "rgb(0, 0, 0)");
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+  </script>
+ </head>
+ <body onload="init()">
+   <canvas id="canvas" width="245" height="202"></canvas>
+ </body>
+</html>

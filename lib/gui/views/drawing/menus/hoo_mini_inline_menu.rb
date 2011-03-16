@@ -5,18 +5,28 @@ module GUI::Views::Drawing::Menus
 
 		include Test::Unit::Assertions
 
-		attr_accessor :img;
+		attr_accessor	:height
+		attr_accessor 	:img
+		attr_accessor	:labelColor
 
 		def initialize( args={} )
-			@img = '../images/menu/mini_menu.png';
+			@img = '../images/buttons/simple-button-dynamic-width/3-state-combine.png';
 			super();
 		end
 
 		def addToggleItem( item )
+			item.size = [-1,@height];
+			item.img = @img;
+			item.labelColor = @labelColor;
+			item.cornerRad = 5
 			self.addSubView( item );
 		end
 
 		def addLinkItem( item )
+			item.size = [-1,@height];
+			item.img = @img;
+			item.labelColor = @labelColor;
+			item.cornerRad = 5
 			self.addSubView( item );
 		end
 
@@ -24,24 +34,56 @@ module GUI::Views::Drawing::Menus
 		def setupDebugFixture
 			super();
 
-			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new();
-			item1.initialState=1;
-			item1.labelStates = ['Disabled', 'Follow', 'Down1', 'Unfollow', 'Down2'];
+			@height = 22; # Border will nesarily be applied ontop of this
+			@labelColor = '#3171d7';
+
+			item1 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>1, :cornerRad=>10, :border=>0 );
+			item1.labelStates = ['coffee monssoon gap maplin', 'coffee monssoon gap maplin', 'coffee monssoon gap maplin'];
 			item1.action = '/widgets/_ajaxPostTest';
+			item1.position = 'left';
 
-			item2 =	GUI::HooWidgetList.widgetClass('textLinkItem').new();
-			item2.text = 'click me!'
-			item2.url = 'http://apple.com'
+			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>0, :cornerRad=>10, :border=>0 );
+			itemMid.labelStates = ['coffee maplin', 'coffee maplin', 'coffee maplin'];
+			itemMid.action = '/widgets/_ajaxPostTest';
+			itemMid.position = 'middle';
 
-			item3 = GUI::HooWidgetList.widgetClass('textLinkItem').new();
-			item3.text = 'click me!'
-			item3.url = 'http://apple.com'
+			item2 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>0, :cornerRad=>10, :border=>0 );
+			item2.labelStates = ['coffee maplin', 'coffee maplin', 'coffee maplin'];
+			item2.action = '/widgets/_ajaxPostTest';
+			item2.position = 'right';
+
+			#item2 =	GUI::HooWidgetList.widgetClass('textLinkItem').new();
+			#item2.text = 'click me!'
+			#item2.url = 'http://apple.com'
+
+			#item3 = GUI::HooWidgetList.widgetClass('textLinkItem').new();
+			#item3.text = 'click me!'
+			#item3.url = 'http://apple.com'
 
 			self.addToggleItem( item1 );
+			self.addLinkItem( itemMid );
 			self.addLinkItem( item2 );
-			self.addLinkItem( item3 );
-		end
+			#self.addLinkItem( item3 );
 
+			#item4 = GUI::HooWidgetList.widgetClass('formButtonToggle').new( :initailState=>1 );
+			#item4.img = '../images/menu/mini_menu.png';
+			#item4.size = [105,23];
+			#item4.labelStates = ['-Off-', 'Do It', 'Do It-D', 'UnDoIt', 'UnDoIt-D'];
+			#item4.labelColor = '#ff'
+			#item4.action = '/widgets/_ajaxPostTest'
+
+			#self.addToggleItem( item4 );
+
+			#item5 = GUI::HooWidgetList.widgetClass('formButtonToggle').new( :initailState=>1 );
+			#item5.img = '../images/menu/mini_menu.png';
+			#item5.size = [105,23];
+			#item5.labelStates = ['-Off-', 'Do It', 'Do It-D', 'UnDoIt', 'UnDoIt-D'];
+			#item5.labelColor = '#ff'
+			#item5.action = '/widgets/_ajaxPostTest'
+
+			#self.addToggleItem( item5 );
+
+		end
 
 
 	end

@@ -1,0 +1,51 @@
+-# View should be logicless
+-# No Dimensions in CSS
+-# If you don't have Javascript you dont need rollovers
+-# Javascript-less site should be minimal and semantic
+
+-# http://0.0.0.0:3000/widgets/divButtonSimpleDynamicWidth?initailState=1
+
+- push( hoo_div_button_simple_dynamic_width )
+
+-# adding the data-jsclass attribute means that a javascript instance will be created on-load
+-# Todo: I also need to have it created if it is inserted by ajax!
+
+- textStyle = "color:#{_.labelColor}; line-height:#{_.size[1]-_.border*2}px; padding:0; margin:0; position:relative; letter-spacing:0.0pc; word-spacing:-0.1pc;"
+
+-# Notice margin rounds up to the nearest fifteen. clever!
+-# zoom: 1; *display:inline; is needed inline-block hack for ie
+
+- div_attrs = { :class=>"dynamicWidthButton", :style=>"font:bold 10px Helvetica; overflow: auto; text-align: center; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.initailState}px; padding:0 1.5em 0 1.5em; margin:0 0 #{(_.size[1]) % 15}px 0; display:inline-block; height: #{_.size[1]-_.border*2}px; zoom: 1; *display:inline; -webkit-border-radius: #{_.cornerRad}px; -moz-border-radius: #{_.cornerRad}px; border: #{_.border}px solid #fff;" }
+- anchor_attrs = { :href=>"#{_.action}" }
+
+- if(  _.initailState==0 )
+	- div_attrs.merge!( { :disabled=>"disabled" } )
+	- anchor_attrs.merge!( { :disabled=>"disabled" } )
+	- div_attrs[:style] += "pointer-events:none;"
+	- anchor_attrs.merge!( { :style=>"pointer-events:none;" } )
+	- textStyle += "opacity:0.6;"
+- else
+	- anchor_attrs.merge!( { :style=>"" } )
+	- textStyle += ""
+
+- anchor_attrs[:style] += "#{textStyle};"
+
+%div[_]{ :data=> {'jsclass'=>'HooDivButtonSimple'} }
+	%div{div_attrs}
+		%a{anchor_attrs}
+			-# Insert the correct label for this initailState
+			#{_.labelStates[_.initailState]}
+
+-# just test the 15px boundry %div(style="width:60px;height:60px;background-color:red;")
+
+- if( _.includeOnce? )
+	%style(type="text/css")
+		:sass
+			.dynamicWidthButton
+				-webkit-box-shadow: rgba(0,0,0,0.1) 0px 0px 10px inset
+				-moz-box-shadow: rgba(0,0,0,0.1) 0px 0px 10px inset
+
+			.dynamicWidthButton[disabled="disabled"]
+				-webkit-box-shadow: rgba(0,0,0,0.1) 0px 2px 10px inset
+				-moz-box-shadow: rgba(0,0,0,0.1) 0px 2px 10px inset
+				border-color: #ccc!important

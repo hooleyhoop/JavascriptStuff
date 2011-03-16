@@ -16,7 +16,7 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 
 	// create the global window instance
 	var $win = $('hooWindow');
-	_hooWindow = HooWindow.create( {id: hooWindow} );
+	_hooWindow = HooWindow.create( {id: 'hooWindow'} );
 
 	var all_jsClass_objects;
 	if(rootElement===undefined) {
@@ -58,7 +58,6 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 
 	_hooWindow.setupDidComplete();
 }
-
 
 /* W I D G E T S */
 
@@ -118,8 +117,7 @@ HooWindow = HooWidget.extend({
 HooContentView = HooWidget.extend({
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
-	},
-
+	}
 });
 
 /* Flippy Debug thing */
