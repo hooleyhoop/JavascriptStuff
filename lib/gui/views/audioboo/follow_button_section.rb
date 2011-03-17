@@ -9,7 +9,7 @@ module GUI::Views::Audioboo
 		attr_accessor	:inLineMenu;
 
 		def initialize( args={} )
-			super();
+			super(args);
 
 			#
 			# TODO: The follow button must be optional
@@ -34,17 +34,17 @@ module GUI::Views::Audioboo
 			@inLineMenu.height = 22;
 			@inLineMenu.labelColor = '#3171d7';
 
-			item1 = GUI::HooWidgetList.widgetClass('textLinkItem').new(  :initailState=>1 );
-			item1.labelStates = ['follow', 'follow', 'follow'];
+			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new(  :initialState=>1 );
+			item1.labelStates = ['follow', 'follow', 'follow', 'un-follow', 'un-follow'];
 			item1.action = '/widgets/_ajaxPostTest';
 			item1.position = 'left';
 
-			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new(  :initailState=>1 );
+			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new(  :initialState=>1 );
 			itemMid.labelStates = ['rss', 'rss', 'rss'];
 			itemMid.action = '/widgets/_ajaxPostTest';
 			itemMid.position = 'middle';
 
-			item2 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>1 );
+			item2 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>1 );
 			item2.labelStates = ['iTunes', 'iTunes', 'iTunes'];
 			item2.action = '/widgets/_ajaxPostTest';
 			item2.position = 'right';

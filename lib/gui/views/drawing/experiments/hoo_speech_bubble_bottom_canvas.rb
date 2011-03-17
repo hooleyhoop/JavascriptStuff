@@ -11,7 +11,7 @@ module GUI::Views::Drawing::Experiments
     	attr_accessor :triangleImgSize;
 
 		def initialize( args={} )
-			super();
+			super(args);
 			self.cornerDim = 15;
 			@speechPosition = '';
 		end

@@ -10,7 +10,7 @@ module GUI::Views::Audioboo
 		attr_accessor :stats;
 
 		def initialize( args={} )
-			super();
+			super(args);
 		end
 
         # Mock Data

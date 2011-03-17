@@ -3,9 +3,9 @@
 -# If you don't have Javascript you dont need rollovers
 -# Javascript-less site should be minimal and semantic
 
--# http://0.0.0.0:3000/widgets/divButtonSimpleDynamicWidth?initialState=1
+-# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth?initialState=1
 
-- push( hoo_div_button_simple_dynamic_width )
+- push( hoo_div_button_toggle_dynamic_width )
 
 -# adding the data-jsclass attribute means that a javascript instance will be created on-load
 -# Todo: I also need to have it created if it is inserted by ajax!
@@ -30,7 +30,7 @@
 
 - anchor_attrs[:style] += "#{textStyle};"
 
-%div[_]{ :data=> {'jsclass'=>'HooDivButtonSimpleDynamicWidth'} }
+%div[_]{ :data=> {'jsclass'=>'HooDivButtonToggleDynamicWidth'} }
 	%div{div_attrs}
 		%a{anchor_attrs}
 			-# Insert the correct label for this initialState
@@ -49,4 +49,3 @@
 				-webkit-box-shadow: rgba(0,0,0,0.1) 0px 2px 10px inset
 				-moz-box-shadow: rgba(0,0,0,0.1) 0px 2px 10px inset
 				border-color: #ccc!important
-

@@ -10,7 +10,7 @@ module GUI::Views::Drawing::Other
 		attr_accessor :bindings
 
 		def initialize( args={} )
-			super();
+			super(args);
 
 			# This must be automaticalable?
 			if args[:prefix]

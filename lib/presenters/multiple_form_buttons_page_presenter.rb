@@ -18,11 +18,11 @@ module Presenters
 			@window.contentView.addSubView( colorFillView );
 
 			lambda {
-				@simpleButton1 = simpleButton.new( :initailState=>1 );
+				@simpleButton1 = simpleButton.new( :initialState=>1 );
 				@simpleButton1.img = '../images/buttons/simple-button/3-state-combine.png';
 				@simpleButton1.size = [105,45];
 				@simpleButton1.labelStates = ['-- --', 'Submit', 'Pressed'];
-				#@simpleButton1.initailState = 1;
+				#@simpleButton1.initialState = 1;
 				@simpleButton1.labelColor = '#fff'
 				@simpleButton1.action = '/widgets/_ajaxPostTest'
 				@simpleButton1.javascript = "this.hookupAction( function(){
@@ -33,22 +33,22 @@ module Presenters
 
 
 			lambda {
-				@simpleButton2 = simpleButton.new( :initailState=>1 );
+				@simpleButton2 = simpleButton.new( :initialState=>1 );
 				@simpleButton2.img = '../images/buttons/simple-button/3-state-combine.png';
 				@simpleButton2.size = [105,45];
 				@simpleButton2.labelStates = ['-- --', 'Submit', 'Pressed'];
-				#@simpleButton2.initailState = 1;
+				#@simpleButton2.initialState = 1;
 				@simpleButton2.labelColor = '#fff'
 				@simpleButton2.action = '/widgets/_ajaxPostTest'
 				@window.contentView.addSubView( @simpleButton2 );
 			}.call
 
 			lambda {
-				@largeButton2 = toggleButton.new( :initailState=>1 );
+				@largeButton2 = toggleButton.new( :initialState=>1 );
 				@largeButton2.img = '../images/buttons/follow_button/5-state-follow-button.png';
 				@largeButton2.size = [105,45];
 				@largeButton2.labelStates = ['-Off-', 'Do It', 'Do It-D', 'UnDoIt', 'UnDoIt-D'];
-				#@largeButton2.initailState = 1;
+				#@largeButton2.initialState = 1;
 				@largeButton2.labelColor = '#fff'
 				@largeButton2.action = '/widgets/_ajaxPostTest'
 				@window.contentView.addSubView( @largeButton2 );
@@ -56,11 +56,11 @@ module Presenters
 
 			# PRoblem here with start state!
 			lambda {
-				@largeButton3 = toggleButton.new( :initailState=>3 );
+				@largeButton3 = toggleButton.new( :initialState=>3 );
 				@largeButton3.labelStates = ['-Off-', 'Go', 'Go-D', 'StartHere', 'un go-D'];
 				@largeButton3.size = [105,45];
 				@largeButton3.img = '../images/buttons/follow_button/5-state-follow-button.png';
-				@largeButton3.initailState = 3;
+				@largeButton3.initialState = 3;
 				@largeButton3.labelColor = '#fff'
 				@largeButton3.action = '/widgets/_ajaxPostTest'
 				@window.contentView.addSubView( @largeButton3 );
@@ -68,11 +68,11 @@ module Presenters
 
 
 			lambda {
-				@largeButton1 = toggleButton.new( :initailState=>0 );
+				@largeButton1 = toggleButton.new( :initialState=>0 );
 				@largeButton1.img = '../images/buttons/follow_button/5-state-follow-button.png';
 				@largeButton1.size = [105,45];
 				@largeButton1.labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
-				#@largeButton1.initailState = 0;
+				#@largeButton1.initialState = 0;
 				@largeButton1.labelColor = '#fff'
 				@largeButton1.action = '/widgets/_ajaxPostTest'
 				@window.contentView.addSubView( @largeButton1 );

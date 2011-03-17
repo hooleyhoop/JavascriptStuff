@@ -5,7 +5,7 @@ module GUI::Views::Flash
 		attr_accessor :mp3Url;
 
 		def initialize( args={} )
-			super();
+			super(args);
 			@mp3Url = '';
 			if args[:url]
 				@mp3Url=args[:url];

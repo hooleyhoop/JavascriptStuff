@@ -27,7 +27,7 @@ module Presenters
 
 			# A basic button
 			lambda {
-				@simpleButtonForDebug = widgetClass('simpleButton').new( {:initailState => 1} );
+				@simpleButtonForDebug = widgetClass('simpleButton').new( {:initialState => 1} );
 				@simpleButtonForDebug.img = '../images/buttons/simple-button/3-state-combine.png';
 				@simpleButtonForDebug.size = [105,45];
 				@simpleButtonForDebug.labelStates = ['-- --', 'toggle', '** **'];

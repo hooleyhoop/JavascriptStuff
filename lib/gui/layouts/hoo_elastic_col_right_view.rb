@@ -7,7 +7,7 @@ module GUI::Layouts
 		attr_accessor :debugBorder, :debugCol1, :debugCol2, :debugCol3, :debugCol4;
 
 		def initialize( hashArg )
-			super();
+			super(hashArg);
 			@sideBarWidth = hashArg[:sideBarPxWidth];
 
 			if(false)

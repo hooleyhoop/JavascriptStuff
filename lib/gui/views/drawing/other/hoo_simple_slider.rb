@@ -6,7 +6,7 @@ module GUI::Views::Drawing::Other
 		include Test::Unit::Assertions
 
 		def initialize( args={} )
-			super();
+			super(args);
 		end
 
         # Mock Data

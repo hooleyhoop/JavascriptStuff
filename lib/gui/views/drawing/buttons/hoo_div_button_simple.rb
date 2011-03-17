@@ -5,7 +5,7 @@ module GUI::Views::Drawing::Buttons
     # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/divButtonSimple
-	# http://0.0.0.0:3000/widgets/divButtonSimple?initailState=1
+	# http://0.0.0.0:3000/widgets/divButtonSimple?initialState=1
 	class HooDivButtonSimple < GUI::Core::HooView
 
 		include Test::Unit::Assertions
@@ -13,7 +13,7 @@ module GUI::Views::Drawing::Buttons
 		attr_accessor :img;
 		attr_accessor :size;
 		attr_accessor :labelStates
-		attr_accessor :initailState;
+		attr_accessor :initialState;
 		attr_accessor :labelColor;
 
 		# the button action (no javascript) and the javacript action it will be replaced with
@@ -22,9 +22,9 @@ module GUI::Views::Drawing::Buttons
 		attr_accessor :javascriptActions;
 
 		def initialize( args={} )
-			super();
-			if args[:initailState]
-				@initailState=args[:initailState].to_i();
+			super(args);
+			if args[:initialState]
+				@initialState=args[:initialState].to_i();
 			end
 		end
 
@@ -35,9 +35,10 @@ module GUI::Views::Drawing::Buttons
 			@labelStates = ['Disabled', 'Ready', 'Pressed'];
 			@img = '../images/buttons/simple-button/3-state-combine.png';
 			@size = [105, 45];
-			@initailState=0 if @initailState==nil
+			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
 			@action = 'http://apple.com';
+			self.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 		end
 
 		def labelStates=(states)
@@ -65,7 +66,7 @@ module GUI::Views::Drawing::Buttons
 		def jsonProperties
 			allItems = {
 				:labelStates		=> @labelStates,
-				:initailState		=> @initailState,
+				:initialState		=> @initialState,
 				:size				=> @size,
 			}
 			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;

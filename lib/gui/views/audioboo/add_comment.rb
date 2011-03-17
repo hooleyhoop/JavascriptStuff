@@ -6,7 +6,7 @@ module GUI::Views::Audioboo
         attr_accessor :width, :height;
 
 		def initialize( args={} )
-			super();
+			super(args);
 		end
 
         # Mock Data

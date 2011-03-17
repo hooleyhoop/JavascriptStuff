@@ -8,7 +8,7 @@ module GUI::Views::Audioboo
         # You must build your elements in initialize, even if conditional.
         # Therefor you must pass the conditional data to initialize
 		def initialize( args={} )
-			super();
+			super(args);
 
             @backgroundColor = '#ffffff'
 

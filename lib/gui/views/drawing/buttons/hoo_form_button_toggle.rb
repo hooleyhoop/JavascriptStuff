@@ -5,7 +5,7 @@ module GUI::Views::Drawing::Buttons
     # Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/formButtonToggle
-	# http://0.0.0.0:3000/widgets/formButtonToggle?initailState=1
+	# http://0.0.0.0:3000/widgets/formButtonToggle?initialState=1
 	class HooFormButtonToggle < GUI::Core::HooView
 
 		include Test::Unit::Assertions
@@ -13,14 +13,14 @@ module GUI::Views::Drawing::Buttons
 		attr_accessor :img;
 		attr_accessor :size;
 		attr_accessor :labelStates
-		attr_accessor :initailState;
+		attr_accessor :initialState;
 		attr_accessor :labelColor;
 		attr_accessor :action;
 
 		def initialize( args={} )
-			super();
-			if args[:initailState]
-				@initailState=args[:initailState].to_i();
+			super(args);
+			if args[:initialState]
+				@initialState=args[:initialState].to_i();
 			end
 		end
 
@@ -31,7 +31,7 @@ module GUI::Views::Drawing::Buttons
 			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
 			@img = '../images/buttons/follow_button/5-state-follow-button.png';
 			@size = [105, 45];
-			@initailState=0 if @initailState==nil
+			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
 			@action = '#'; # /widgets/_ajaxPostTest
 		end
@@ -45,7 +45,7 @@ module GUI::Views::Drawing::Buttons
 		def jsonProperties
 			allItems = {
 				:labelStates	=> @labelStates,
-				:initailState	=> @initailState,
+				:initialState	=> @initialState,
 				:size			=> @size,
 			}
 			return allItems.to_json();

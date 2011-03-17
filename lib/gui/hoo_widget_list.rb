@@ -52,7 +52,8 @@ module GUI
 			'divButtonSimple'				=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimple.name,
 			'divButtonSimpleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimpleDynamicWidth.name,
 
-			'divButtonToggle'		=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggle.name,
+			'divButtonToggle'				=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggle.name,
+			'divButtonToggleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggleDynamicWidth.name,
 
 			# for Drawing - menus
 			'miniInLineMenu'		=> 	GUI::Views::Drawing::Menus::HooMiniInlineMenu.name,

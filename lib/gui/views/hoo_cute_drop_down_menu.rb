@@ -7,7 +7,7 @@ module GUI::Views
 		attr_accessor :cell;
 
 		def initialize( args={} )
-			super();
+			super(args);
 		end
 
 		# Mock data

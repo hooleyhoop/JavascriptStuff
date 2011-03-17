@@ -7,7 +7,7 @@ module GUI::Views::Audioboo
 		attr_accessor :durationString
 
 		def initialize( args={} )
-			super();
+			super(args);
 
 			@playerLeft		= '../images/player/player-left-cap.png';
 			@playerMid		= '../images/player/player-mid.png';

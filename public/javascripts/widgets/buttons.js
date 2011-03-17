@@ -23,6 +23,22 @@ HooAbstractButton = HooWidget.extend({
 		return $form;
 	},
 
+	getOuterWidth: function() {
+		var $butt = this.getClickableItem();
+		return $butt.outerWidth();
+	},
+
+	setOuterWidth: function( arg ) {
+		var $butt = this.getClickableItem();
+		$butt.width(arg);
+	},
+
+	getTextContent: function() {
+		var $butt = this.getClickableItem();
+		var $contents = $butt.find( this.textHolder );
+		return $contents.text();
+	},
+
 	// works for buttons and spans if textHolder is set correctly
 	setContentText:  function( arg ) {
 		var $butt = this.getClickableItem();
@@ -66,13 +82,13 @@ HooFormButtonSimple = HooAbstractButton.extend({
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
 
-		if( this.json.initailState>0 ) {
+		if( this.json.initialState>0 ) {
 
 			var self = this;
 
 			this.createStatemachine();
 			this._stateMachine._delegate = this;
-			this._stateMachine._setupStateMachine( this.json.initailState );
+			this._stateMachine._setupStateMachine( this.json.initialState );
 
 			// Setup bindings as configured in the json
 			var shouldStartActive = true;
@@ -225,11 +241,8 @@ HooFormButtonToggle = HooFormButtonSimple.extend({
 	}
 });
 
-
-/* Simple link button */
-
-HooDivButtonSimple = HooFormButtonSimple.extend({
-
+/* 'Orrible Multiple Inheritance stuff */
+DivButtonMixin = {
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 	itemType: "div",
 	textHolder: "a",
@@ -249,34 +262,40 @@ HooDivButtonSimple = HooFormButtonSimple.extend({
 		// of course, you remebered to pass in the callback..
 		argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
 	}
+};
+
+/* Simple link button */
+HooDivButtonSimple = HooFormButtonSimple.extend( DivButtonMixin, {
 });
 
 /* two state link button */
-
-HooDivButtonToggle = HooFormButtonToggle.extend({
-
-	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
-	itemType: "div",
-	textHolder: "a",
-
-	// maybe make this async
-	fireAction: function( nextState, argsHash ) {
-
-		if(this._jsAction)
-			this._jsAction();
-		else {
-			console.info("HooDivButtonToggle -button hasnt been given a javascript action");
-			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
-		}
-		// of course, you remebered to pass in the callback..
-		argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
-	}
+HooDivButtonToggle = HooFormButtonToggle.extend( DivButtonMixin, {
 });
 
-/*$.ajax({url:'/', success:function(r) {
-  alert(r);
-}, error:function(a,b){
-debugger;
-  alert(a); alert(b)
- }});
-*/
+DynamicWidthButtonMixin = {
+
+	initMixin: function( /* init never has args */ ) {
+		var maxWidth = this._calculateGreatestWidth();
+		this.setOuterWidth(maxWidth);
+	},
+
+	// swap in each text label and measure
+	_calculateGreatestWidth: function() {
+		var self = this;
+		var maxWidth = 0;
+		var label = this.getTextContent();
+		$(this.json.labelStates).each(function(index,element) {
+			self.setContentText(element);
+			var widthForText = self.getOuterWidth();
+			maxWidth = widthForText > maxWidth ? widthForText : maxWidth;
+		});
+		self.setContentText(label);
+		return maxWidth;
+	}
+}
+
+HooDivButtonSimpleDynamicWidth = HooDivButtonSimple.extend( DynamicWidthButtonMixin, {
+});
+
+HooDivButtonToggleDynamicWidth = HooDivButtonToggle.extend( DynamicWidthButtonMixin, {
+});

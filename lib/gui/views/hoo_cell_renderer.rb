@@ -8,7 +8,7 @@ module GUI::Views
 
         # will create it's own cell but you need to set the cell-name
 		def initialize( args={} )
-			super();
+			super(args);
 
 			if( args.has_key?(:cellName) )
 			    @cellName = args[:cellName]

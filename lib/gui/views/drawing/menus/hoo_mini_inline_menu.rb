@@ -11,7 +11,7 @@ module GUI::Views::Drawing::Menus
 
 		def initialize( args={} )
 			@img = '../images/buttons/simple-button-dynamic-width/3-state-combine.png';
-			super();
+			super(args);
 		end
 
 		def addToggleItem( item )
@@ -37,17 +37,17 @@ module GUI::Views::Drawing::Menus
 			@height = 22; # Border will nesarily be applied ontop of this
 			@labelColor = '#3171d7';
 
-			item1 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>1, :cornerRad=>10, :border=>0 );
+			item1 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>1, :cornerRad=>10, :border=>0 );
 			item1.labelStates = ['coffee monssoon gap maplin', 'coffee monssoon gap maplin', 'coffee monssoon gap maplin'];
 			item1.action = '/widgets/_ajaxPostTest';
 			item1.position = 'left';
 
-			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>0, :cornerRad=>10, :border=>0 );
+			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>0, :cornerRad=>10, :border=>0 );
 			itemMid.labelStates = ['coffee maplin', 'coffee maplin', 'coffee maplin'];
 			itemMid.action = '/widgets/_ajaxPostTest';
 			itemMid.position = 'middle';
 
-			item2 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initailState=>0, :cornerRad=>10, :border=>0 );
+			item2 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>0, :cornerRad=>10, :border=>0 );
 			item2.labelStates = ['coffee maplin', 'coffee maplin', 'coffee maplin'];
 			item2.action = '/widgets/_ajaxPostTest';
 			item2.position = 'right';
@@ -65,7 +65,7 @@ module GUI::Views::Drawing::Menus
 			self.addLinkItem( item2 );
 			#self.addLinkItem( item3 );
 
-			#item4 = GUI::HooWidgetList.widgetClass('formButtonToggle').new( :initailState=>1 );
+			#item4 = GUI::HooWidgetList.widgetClass('formButtonToggle').new( :initialState=>1 );
 			#item4.img = '../images/menu/mini_menu.png';
 			#item4.size = [105,23];
 			#item4.labelStates = ['-Off-', 'Do It', 'Do It-D', 'UnDoIt', 'UnDoIt-D'];
@@ -74,7 +74,7 @@ module GUI::Views::Drawing::Menus
 
 			#self.addToggleItem( item4 );
 
-			#item5 = GUI::HooWidgetList.widgetClass('formButtonToggle').new( :initailState=>1 );
+			#item5 = GUI::HooWidgetList.widgetClass('formButtonToggle').new( :initialState=>1 );
 			#item5.img = '../images/menu/mini_menu.png';
 			#item5.size = [105,23];
 			#item5.labelStates = ['-Off-', 'Do It', 'Do It-D', 'UnDoIt', 'UnDoIt-D'];

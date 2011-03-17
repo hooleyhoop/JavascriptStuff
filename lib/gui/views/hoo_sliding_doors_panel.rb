@@ -9,7 +9,7 @@ module GUI::Views
         attr_accessor :style;
 
 		def initialize( args={} )
-			super();
+			super(args);
 			self.cornerDim = 15;
 			@speechPosition = '';
 		end
