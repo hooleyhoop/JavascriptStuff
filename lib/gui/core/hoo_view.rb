@@ -48,15 +48,17 @@ module GUI::Core
 
 		# gui_hoo_text_list_view_2168956940
 		def uniqueSelector
-			className = self.class.to_s
-			className = className.gsub('::','_')
-			textListSelector = '#' + className.underscore + '_'+ self.object_id.to_s
+			self.varName
 		end
 
+		# gui_hoo_text_list_view_2168956940
 		def varName
+			'_' + self.jsClassName.underscore + '_'+ self.object_id.to_s
+		end
+
+		def jsClassName
 			className = self.class.to_s
 			className = className.gsub('::','_')
-			textListSelector = '_' + className.underscore + '_'+ self.object_id.to_s
 		end
 
 		def window

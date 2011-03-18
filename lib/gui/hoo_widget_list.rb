@@ -1,6 +1,8 @@
 module GUI
 	class HooWidgetList
 
+		require "gui/views/drawing.rb"
+
 		@@layouts = {
 			'fixedWidthSingleCol'	=>	GUI::Layouts::HooFixedSingleColView.name,
 			'elasticColRight'		=>	GUI::Layouts::HooElasticColRightView.name,
@@ -22,41 +24,43 @@ module GUI
 		@@widgets = {
 
 			# for positioning
-			'verticalSplitView'     =>	GUI::Views::HooVerticalSplitView.name,
-			'horizontalSplitView'   =>	GUI::Views::HooHorizontalSplitView.name,
-			'spacerView'		    =>	GUI::Views::HooSpacerView.name,
-			'relativeOffsetView'    =>	GUI::Views::HooRelativeOffsetView.name,
-			'spacedVerticalList'    =>	GUI::Views::HooSpacedVerticalList.name,
-			'twoElasticColsFixedGutter' =>	GUI::Views::HooTwoElasticColsFixedGutter.name,
-			'spacedCellList'		=>	GUI::Views::HooSpacedCellList.name,
+			'verticalSplitView'				=>	GUI::Views::HooVerticalSplitView.name,
+			'horizontalSplitView'			=>	GUI::Views::HooHorizontalSplitView.name,
+			'spacerView'					=>	GUI::Views::HooSpacerView.name,
+			'relativeOffsetView'			=>	GUI::Views::HooRelativeOffsetView.name,
+			'spacedVerticalList'			=>	GUI::Views::HooSpacedVerticalList.name,
+			'twoElasticColsFixedGutter'		=>	GUI::Views::HooTwoElasticColsFixedGutter.name,
+			'spacedCellList'				=>	GUI::Views::HooSpacedCellList.name,
 
 			# These have a percentage spacing, not what i want!
-			'2col_percent_padded'					=>	GUI::Views::Positioning::Hoo2ColPercentPaddedView.name,
-			'3col_percent_padded'					=>	GUI::Views::Positioning::Hoo3ColPercentPaddedView.name,
-			'4col_percent_padded'					=>	GUI::Views::Positioning::Hoo4ColPercentPaddedView.name,
-			'5col_percent_padded'					=>	GUI::Views::Positioning::Hoo5ColPercentPaddedView.name,
+			'2col_percent_padded'			=>	GUI::Views::Positioning::Hoo2ColPercentPaddedView.name,
+			'3col_percent_padded'			=>	GUI::Views::Positioning::Hoo3ColPercentPaddedView.name,
+			'4col_percent_padded'			=>	GUI::Views::Positioning::Hoo4ColPercentPaddedView.name,
+			'5col_percent_padded'			=>	GUI::Views::Positioning::Hoo5ColPercentPaddedView.name,
 
 			# What i want is fixed space
-			'2col'					=>	GUI::Views::Positioning::Hoo2ColView.name,
-			'3col'					=>	GUI::Views::Positioning::Hoo3ColView.name,
-			'4col'					=>	GUI::Views::Positioning::Hoo4ColView.name,
-			'5col'					=>	GUI::Views::Positioning::Hoo5ColView.name,
+			'2col'							=>	GUI::Views::Positioning::Hoo2ColView.name,
+			'3col'							=>	GUI::Views::Positioning::Hoo3ColView.name,
+			'4col'							=>	GUI::Views::Positioning::Hoo4ColView.name,
+			'5col'							=>	GUI::Views::Positioning::Hoo5ColView.name,
 
-			'paddedHorizontal'		=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
+			'paddedHorizontal'				=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
 
 			# for drawing - forms
-			'formButtonSimple'				=>	GUI::Views::Drawing::Buttons::HooFormButtonSimple.name,
-			'formButtonToggle'				=>	GUI::Views::Drawing::Buttons::HooFormButtonToggle.name,
+			'formButtonSimple'				=> Views::Drawing::Buttons::FormButton::HooFormButtonSimple.name,
+			'formButtonToggle'				=> GUI::Views::Drawing::Buttons::FormButton::HooFormButtonToggle.name,
 
 			# for drawing - link buttons
-			'divButtonSimple'				=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimple.name,
-			'divButtonSimpleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::HooDivButtonSimpleDynamicWidth.name,
+			'divButtonSimple'				=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimple.name,
+			'divButtonSimpleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimpleDynamicWidth.name,
 
-			'divButtonToggle'				=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggle.name,
-			'divButtonToggleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::HooDivButtonToggleDynamicWidth.name,
+			'divButtonToggle'				=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggle.name,
+			'divButtonToggleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggleDynamicWidth.name,
+
+			'jqueryTestButton'				=> GUI::Views::Drawing::Buttons::Jquery::JqueryButtonTest.name,
 
 			# for Drawing - menus
-			'miniInLineMenu'		=> 	GUI::Views::Drawing::Menus::HooMiniInlineMenu.name,
+			'miniInLineMenu'				=> 	GUI::Views::Drawing::Menus::HooMiniInlineMenu.name,
 
 			# for Drawing - menuItems
 			'textToggleItem'		=> 	GUI::Views::Drawing::Menus::Items::HooTextToggleItem.name,

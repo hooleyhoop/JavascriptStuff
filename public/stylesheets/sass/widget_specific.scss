@@ -9,3 +9,48 @@
  *
  * NO! measurments in CSS. NO! 12px. NO! 2em. NO! 25%
 */
+
+
+/* small menu */
+
+.dynamicWidthButton {
+
+	-webkit-box-shadow: rgba(0,0,0,0.1) 0px 0px 10px inset;
+	-moz-box-shadow: rgba(0,0,0,0.1) 0px 0px 10px inset;
+	border:1px solid #ffffff;
+	overflow:auto;
+	text-align:center;
+	padding:0 1.5em 0 1.5em;
+	margin:0;
+	display:inline-block;
+	zoom:1;
+	*display:inline;
+
+	a {}
+
+	&[disabled="disabled"] {
+		-webkit-box-shadow: rgba(0,0,0,0.1) 0px 2px 10px inset;
+		-moz-box-shadow: rgba(0,0,0,0.1) 0px 2px 10px inset;
+		pointer-events: none;
+
+		a {
+			opacity: 0.6;
+			pointer-events: none;
+		}
+	}
+
+	// the left-most menu-item
+	&[data-position="left"] {
+		border-right:0 none black;
+	}
+
+	// the right-most menu item
+	&[data-position="right"] {
+	}
+
+	// every menu-item between left and right
+	&[data-position="middle"] {
+		border-right: 0 none black;
+	}
+}
+

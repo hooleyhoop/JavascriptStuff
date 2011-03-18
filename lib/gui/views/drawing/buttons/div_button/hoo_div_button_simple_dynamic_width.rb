@@ -1,8 +1,12 @@
-module GUI::Views::Drawing::Buttons
+module GUI::Views::Drawing::Buttons::DivButton
 
-	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth
-	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth?initialState=1
-	class HooDivButtonToggleDynamicWidth < HooDivButtonToggle
+	# 3 state Simple button
+	# 0) Disabled 1)state1 2)state1Pressed
+    # Height is just the height of one state
+
+	# http://0.0.0.0:3000/widgets/divButtonSimpleDynamicWidth
+	# http://0.0.0.0:3000/widgets/divButtonSimpleDynamicWidth?initialState=1
+	class HooDivButtonSimpleDynamicWidth < HooDivButtonSimple
 
 		attr_accessor :cornerRad;
 		attr_accessor :border;
@@ -21,8 +25,8 @@ module GUI::Views::Drawing::Buttons
 		def setupDebugFixture
 			super();
 
-			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
-			@img = '../images/buttons/toggle-button-dynamic-width/5-state-combine.png';
+			@labelStates = ['Disabled', 'Ready', 'Pressed down hard'];
+			@img = '../images/buttons/simple-button-dynamic-width/3-state-combine.png';
 
 			# you still need a specific height, otherwise background image wouldnt work.
 			@size = [-1, 22];
@@ -31,6 +35,7 @@ module GUI::Views::Drawing::Buttons
 			@border = 1 if @border==nil
 			@labelColor = '#3171d7';
 			@action = '/widgets/_ajaxPostTest';
+
 		end
 	end
 end

@@ -1,6 +1,8 @@
 module Presenters
 	class WidgetsPagePresenter < HooPresenter
 
+		require "gui/views/drawing.rb"
+
 		def initialize( controller )
 
 			super( controller );

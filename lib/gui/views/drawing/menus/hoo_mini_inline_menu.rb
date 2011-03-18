@@ -37,13 +37,13 @@ module GUI::Views::Drawing::Menus
 			@height = 22; # Border will nesarily be applied ontop of this
 			@labelColor = '#3171d7';
 
-			item1 = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>1, :cornerRad=>10, :border=>0 );
-			item1.labelStates = ['coffee monssoon gap maplin', 'coffee monssoon gap maplin', 'coffee monssoon gap maplin'];
+			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new( :initialState=>1, :cornerRad=>10, :border=>0 );
+			item1.labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
 			item1.action = '/widgets/_ajaxPostTest';
 			item1.position = 'left';
 
-			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>0, :cornerRad=>10, :border=>0 );
-			itemMid.labelStates = ['coffee maplin', 'coffee maplin', 'coffee maplin'];
+			itemMid = GUI::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>1, :cornerRad=>10, :border=>0 );
+			itemMid.labelStates = ['off', 'coffee maplin', 'down'];
 			itemMid.action = '/widgets/_ajaxPostTest';
 			itemMid.position = 'middle';
 

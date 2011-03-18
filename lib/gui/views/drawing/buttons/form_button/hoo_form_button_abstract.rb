@@ -1,14 +1,6 @@
-module GUI::Views::Drawing::Buttons
+module GUI::Views::Drawing::Buttons::FormButton
 
-	# 3 state Simple button
-	# 0) Disabled 1)state1 2)state1Pressed
-    # Height is just the height of one state
-
-	# http://0.0.0.0:3000/widgets/formButtonSimple
-	# http://0.0.0.0:3000/widgets/formButtonSimple?initialState=1
-	class HooFormButtonSimple < GUI::Core::HooView
-
-		include Test::Unit::Assertions
+	class HooFormButtonAbstract < GUI::Core::HooView
 
 		attr_accessor :img;
 		attr_accessor :size;
@@ -44,6 +36,10 @@ module GUI::Views::Drawing::Buttons
 
 		def labelStates=(states)
 			@labelStates = states;
+
+			-- pad out if it comes up short.. to 3 or five?
+
+			-- get rid of this --
 			assert( states.count==3, 'you need to have 3 states for the button' );
 		end
 

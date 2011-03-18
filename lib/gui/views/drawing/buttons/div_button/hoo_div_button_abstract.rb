@@ -1,12 +1,10 @@
-module GUI::Views::Drawing::Buttons
+module GUI::Views::Drawing::Buttons::DivButton
 
 	# 3 state Simple button
 	# 0) Disabled 1)state1 2)state1Pressed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/divButtonSimple
-	# http://0.0.0.0:3000/widgets/divButtonSimple?initialState=1
-	class HooDivButtonSimple < GUI::Core::HooView
+	class HooDivButtonAbstract < GUI::Core::HooView
 
 		include Test::Unit::Assertions
 
@@ -31,19 +29,20 @@ module GUI::Views::Drawing::Buttons
         # Mock Data
 		def setupDebugFixture
 			super();
-
-			@labelStates = ['Disabled', 'Ready', 'Pressed'];
-			@img = '../images/buttons/simple-button/3-state-combine.png';
 			@size = [105, 45];
 			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
-			@action = 'http://apple.com';
+			@action = '/widgets/_ajaxPostTest';
 			self.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 		end
 
 		def labelStates=(states)
+			# pad out if we only set 1 value.. pad out to 3 or 5 ?
+			if(states.count!=@_states)
+				states.fill('--machine added--', states.count..@_states) # => ["b", "c", "a", "a"]
+			end
 			@labelStates = states;
-			assert( states.count==3, 'you need to have 3 states' );
+			assert( @labelStates.count==@_states, "you need to have #{@_states} states" );
 		end
 
 		def addBinding( aHash )

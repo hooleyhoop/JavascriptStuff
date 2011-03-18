@@ -1,14 +1,10 @@
 module GUI::Views::Drawing::Menus::Items
 
-	# http://0.0.0.0:3000/widgets/textLinkItem
-	class HooTextLinkItem < GUI::Views::Drawing::Buttons::HooDivButtonSimpleDynamicWidth
+	# http://0.0.0.0:3000/widgets/textLinkItem?initialState=1
+	class HooTextLinkItem < GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimpleDynamicWidth
 
-		include Test::Unit::Assertions
 		attr_accessor :position;
 
-		def initialize( args={} )
-			super(args);
-		end
 
         # Mock Data
 		def setupDebugFixture

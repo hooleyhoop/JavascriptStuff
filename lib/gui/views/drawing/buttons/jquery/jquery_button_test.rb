@@ -1,21 +1,22 @@
-module GUI::Views::Drawing::Buttons
+module GUI::Views::Drawing::Buttons::Jquery
 
-	# 5 state Toggle button
-	# 0) Disabled 1)state1 2)state1Pressed 3)state2 4)state2Pessed
+	# 3 state Simple button
+	# 0) Disabled 1)state1 2)state1Pressed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/formButtonToggle
-	# http://0.0.0.0:3000/widgets/formButtonToggle?initialState=1
-	class HooFormButtonToggle < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/jqueryTestButton
 
-		include Test::Unit::Assertions
+	class JqueryButtonTest < GUI::Core::HooView
 
 		attr_accessor :img;
 		attr_accessor :size;
 		attr_accessor :labelStates
 		attr_accessor :initialState;
 		attr_accessor :labelColor;
+
+		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
+		attr_accessor :javascript;
 
 		def initialize( args={} )
 			super(args);
@@ -28,17 +29,20 @@ module GUI::Views::Drawing::Buttons
 		def setupDebugFixture
 			super();
 
-			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
-			@img = '../images/buttons/follow_button/5-state-follow-button.png';
+			@labelStates = ['Disabled', 'Ready', 'Pressed'];
+			@img = '../images/buttons/simple-button/3-state-combine.png';
 			@size = [105, 45];
 			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
-			@action = '#'; # /widgets/_ajaxPostTest
+			@action = '/widgets/_ajaxPostTest';
+			@javascript = "this.hookupAction( function(){
+				alert('Holy Cock');
+			});";
 		end
 
 		def labelStates=(states)
 			@labelStates = states;
-			assert( states.count==5, 'you need to have 5 label states, you have '+states.count.to_s );
+			assert( states.count==3, 'you need to have 3 states for the button' );
 		end
 
 		# stuff to write into the page
@@ -47,6 +51,7 @@ module GUI::Views::Drawing::Buttons
 				:labelStates	=> @labelStates,
 				:initialState	=> @initialState,
 				:size			=> @size,
+				:javascript		=> @javascript,
 			}
 			return allItems.to_json();
 		end
