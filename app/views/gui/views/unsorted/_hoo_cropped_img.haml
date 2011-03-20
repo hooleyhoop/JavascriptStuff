@@ -1,0 +1,49 @@
+- push( hoo_cropped_img )
+
+%div[_](style="position: relative; width:100%; background-color: ; overflow: hidden;")
+    %img( src="#{_.path}" alt="accompanying image" style="position:absolute; display:block; width:100%; border: 0px solid lightgray; background-color: pink;" )
+
+
+-# Obviously we cannot leave this here as it is crazy to include it more than once
+-# make the div a square
+-# err, this doesn't really do what i think it does, it works one off - one time only on load, and doesn't mean that the layout is 'fluid'
+:javascript
+
+
+    $(document).ready(function(){
+
+        // square off the container
+        var container = $( '#{_.uniqueSelector}' );
+        var containerDim = container.width();
+        container.height( containerDim );
+    });
+
+    $( '#{_.uniqueSelector}>img' ).load(function(){
+
+        var container = $( '#{_.uniqueSelector}' );
+        var containerDim = container.width();
+
+        // size the img to fill
+        var img = $( '#{_.uniqueSelector}>img' );
+        var imgWidth = img.width();
+        var imgHeight = img.height();
+        var ratio = imgWidth/imgHeight;
+
+        // tall image
+        if( ratio<1.0 ) {
+            img.width( containerDim );
+            var newHeight = containerDim*(1/ratio);
+            img.height( newHeight );
+            var yOffset = (newHeight-containerDim)/2.0;
+            img.css('top', -yOffset);
+
+        // wide image
+        } else {
+            img.height( containerDim );
+            var newWidth = containerDim*ratio;
+            img.width( newWidth );
+            var xOffset = (newWidth-containerDim)/2.0;
+            img.css('left', -xOffset);
+        }
+
+    });

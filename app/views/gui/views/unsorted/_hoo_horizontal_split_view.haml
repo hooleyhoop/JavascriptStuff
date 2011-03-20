@@ -1,0 +1,20 @@
+- push( hoo_horizontal_split_view )
+
+-# Fixed Column on the top
+
+- if( _.fixedColSide=='top' )
+    %div[_]{ :style=>"margin:auto" }
+        %div{ :style=>"height: #{_.fixedColWidth}px;" }
+            = insert( _.views[0], "need a left view" )
+        %div
+            = insert( _.views[1], "need a left view" )
+
+
+-# Fixed Column on the bottom
+
+- if( _.fixedColSide=='bottom' )
+    %div{ :style =>"margin:auto;" }
+        %div
+            = insert( _.views[0], "need a left view" )
+        %div{ :style=>"height: #{_.fixedColWidth}px;" }
+            = insert( _.views[1], "need a left view" )

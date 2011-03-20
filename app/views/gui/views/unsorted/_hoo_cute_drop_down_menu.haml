@@ -1,0 +1,6 @@
+- push( hoo_cute_drop_down_menu )
+
+%ul[_]
+	- _.content.each do |item|
+		%li{ :style=>"display:inline; overflow: auto; display: inline-block;" }
+			= render :partial=>_.cell.partial, :object=>item, :locals=>{ :_ => _.cell }

@@ -1,0 +1,11 @@
+- push( hoo_two_elastic_cols_fixed_gutter )
+
+%div[_]{ :style=>"position: relative; width:100%;" }
+    %div( style="display: inline-block; width: 50%; float: left; background-color: ;" )
+        %div( style="background-color: ; margin: 0 7px 0 0;" )
+            = insert( _.views[0], "need a left view" )
+    %div( style="display: inline-block; width: 50%; float: right; background-color: ;" )
+        %div( style="background-color: ; margin: 0 0 0 7px;" )
+            = insert( _.views[1], "need a right view" )
+    %div( style="clear:both;" )
+

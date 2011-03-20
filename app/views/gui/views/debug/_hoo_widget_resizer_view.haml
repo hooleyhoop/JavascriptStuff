@@ -1,0 +1,341 @@
+- push( hoo_widget_resizer_view )
+
+%div[_]{ :style=>"width:400px;height:400px; position:absolute; left:50px; top:150px;", :data=> {'jsclass'=>'HooWidgetResizerView'}}
+	- if _.views.count > 0
+		=  insert( _.views, "Please have a view to render!" )
+	- else
+		%p{ :style=>"background-color:#ff0000; margin:10px;"} !!! Render The Widget Here !!!
+
+/ The left handle div
+%div#left_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:200px; left:60px;"}
+
+/ The right handle div
+%div#right_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:200px; left:600px;"}
+
+/ The top handle div
+%div#top_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:125px; left:200px;"}
+
+/ The Bottom handle div
+%div#bottom_handle{ :style=>"background-color:#333; position:absolute; width:33px; height:33px; top:450px; left:200px;"}
+
+-# Obviously we cannot leave this here as it is crazy to include it more than once
+- if( _.includeOnce? )
+
+	:javascript
+
+		// Helpers
+		$.fn.assertSize = function(size) {
+		  if (this.size() != size) {
+			alert("Expected " + size + " elements, but got " + this.size() + ".");
+		  }
+		  return this;
+		};
+
+		// Basic Div Class - Renanme!
+		BasicDiv = HooWidget.extend({
+
+			_$div: undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+
+				if( this._$div!=undefined) {
+					//alert(this._$div instanceof jQuery);
+					// alert(this._$div.html())
+				}
+			},
+
+			leftBounds: function() {
+				return this._$div.position().left;
+			},
+
+			rightBounds: function() {
+				return this.leftBounds()+this.width();
+			},
+
+			bottomBounds: function() {
+				return this.topBounds() + this.height();
+			},
+
+			topBounds: function() {
+				return this._$div.position().top;
+			},
+
+			width: function() {
+				return this._$div.width();
+			},
+
+			height: function() {
+				return this._$div.height();
+			},
+
+			setLeftBounds: function( leftVal ) {
+
+				var moveAmount = this.leftBounds() - leftVal;
+				this._$div.css( 'left', leftVal );
+				this._$div.css( 'width', this.width()+moveAmount );
+				this.frameDidChange();
+			},
+
+			setRightBounds: function( rightVal ) {
+
+				var newWidth = rightVal - this.leftBounds();
+				this._$div.css( 'width', newWidth );
+				this.frameDidChange();
+			},
+
+			setBottomBounds: function( bottomBounds ) {
+				var newHeight = bottomBounds-this.topBounds();
+				this._$div.css( 'height', newHeight );
+				this.frameDidChange();
+			},
+
+			setTopBounds: function( topBounds ) {
+				var newHeight = this.height()-(topBounds-this.topBounds());
+				this._$div.css( 'top', topBounds );
+				this._$div.css( 'height', newHeight );
+				this.frameDidChange();
+			},
+
+			// hack at the moment unless we build a view graph
+			frameDidChange: function( rect ) {
+				// abstract
+			},
+
+			html: function() {
+				return this._$div.html();
+			}
+
+		});
+
+		// HooPage Class - change name
+		HooWidgetResizerView = BasicDiv.extend({
+
+			_resizeableDiv:		undefined,
+			_leftHandle:		undefined,
+			_rightHandle:		undefined,
+			_topHandle:			undefined,
+			_bottomHandle:		undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+
+				if( this._$div===undefined) {
+					this._$div = $('#'+this.id);
+				}
+
+				// The id on these handles wont be set automagically - be careful not to use id
+				this._leftHandle	= Handle.create( {_$div: $('#left_handle')} );
+				this._rightHandle	= Handle.create( {_$div: $('#right_handle')} );
+				this._topHandle		= Handle.create( {_$div:  $('#top_handle')} );
+				this._bottomHandle	= Handle.create( {_$div: $('#bottom_handle')} );
+			},
+
+			// nibDidLoad
+			setupDidComplete: function() {
+
+				this._leftHandle.initBindingsTo( this, 'left' );
+				this._rightHandle.initBindingsTo( this, 'right' );
+				this._topHandle.initBindingsTo( this, 'top' );
+				this._bottomHandle.initBindingsTo( this, 'bottom' );
+
+				// somehow kick it off with sensible values
+				this.setLeftBounds( this._leftHandle.rightBounds() );
+				this.setRightBounds( this._rightHandle.leftBounds() );
+				this.setTopBounds( this._topHandle.bottomBounds()  + (15- this._topHandle.bottomBounds() %15) );
+				this.setBottomBounds( this._bottomHandle.topBounds() );
+			},
+
+			// called too often - need to have the runloop shit
+			frameDidChange: function( rect ) {
+
+				var all_jsClass_objects = this._$div.find(":customdata(jsclass)");
+				all_jsClass_objects.each(function(index, value) {
+
+					var idString = $(value).attr('id');
+					var instanceName = '_'+idString;
+					window[instanceName].parentDidResize();
+				});
+			}
+		});
+
+		// Handle Class
+		Handle = BasicDiv.extend({
+
+			_boundToObject: undefined,
+
+			initBindingsTo: function( resizeableDiv, side ) {
+
+				this._boundToObject = resizeableDiv;
+				var self = this;
+				this._$div.mousedown( function($event){ return self.horizontalDrag( $event, self._boundToObject.html(), side ); } );
+			},
+
+			horizontalDrag: function( $event, $puppet, cssProp ) {
+
+				var $jqueryClickedObject = $($event.target); // notice how we wrap HTMLDivElement
+				var $clickedObjectPos = this._$div.offset();
+				var mouseDownPt = { x:$event.pageX, y:$event.pageY };
+				var offsetFromCentrePt = { x:(mouseDownPt.x-$clickedObjectPos.left-this._$div.width()/2), y:(mouseDownPt.y-$clickedObjectPos.top-this._$div.height()/2) };
+				// console.warn( "offset from centre = "+offsetFromCentrePt.x + ", "+offsetFromCentrePt.y );
+
+				var mouseUpData = { target:this, action:'mouseup' };
+				$('body').bind('mouseup', mouseUpData, this.eventTrampoline );
+
+				var mouseMoveData = { offset:offsetFromCentrePt, tcssProp:cssProp, target:this, action:'mousemove' };
+				$('body').bind( 'mousemove', mouseMoveData, this.eventTrampoline );
+			},
+
+			mouseup: function( arg, $event ) {
+				$('body').unbind('mousemove', this.eventTrampoline); // is this right?
+				$('body').unbind('mouseup', this.eventTrampoline);
+			},
+
+			mousemove: function( arg, $event ) {
+
+				var clickedPos = { x:$event.pageX, y:$event.pageY };
+				var newPos = { x:(clickedPos.x-this._$div.width()/2), y:(clickedPos.y-this._$div.height()/2) };
+				var $objectToManipulate = this._boundToObject.html();
+				var cssProp = $event.data.tcssProp;
+
+				if( cssProp=='left' ) {
+					this._$div.css( 'left', newPos.x-$event.data.offset.x );
+					var newXPos = this._$div.offset().left+this._$div.width();
+					this._boundToObject.setLeftBounds( newXPos );
+
+				} else if( cssProp=='right') {
+					this._$div.css( 'left', newPos.x-$event.data.offset.x );
+					var newXPos = this._$div.offset().left;
+					this._boundToObject.setRightBounds( newXPos );
+
+				} else if( cssProp=='top') {
+					var constrainedYpos = $event.data.offset.y;
+					this._$div.css( 'top', newPos.y-constrainedYpos );
+					var newYPos = this._$div.offset().top+this._$div.height();
+					newYPos = newYPos + (15-newYPos%15)
+					this._boundToObject.setTopBounds( newYPos );
+
+				} else if( cssProp=='bottom') {
+					this._$div.css( 'top', newPos.y-$event.data.offset.y );
+					var newYPos = this._$div.offset().top;
+					this._boundToObject.setBottomBounds( newYPos );
+
+				} else {
+					alert("countdown to detenation - 10 "+cssProp);
+				}
+			}
+
+
+		});
+
+		/* ok, so this is called by clicking a widget link */
+		function loadSomeHTMLByAjax2( arg ) {
+
+			$.ajax({
+				url: '/pages/_singlePartialViaAjaxFromParam',
+				data:{"urlpath": arg},
+				success: function(data,textStatus,xmlhttprequestobject) {
+						var newEle = $(data).appendTo($( '#{_.uniqueSelector}' ).empty());
+						// see if it has any javascript that needs running!
+
+						/* If the parent contains a data attribute need to make sure that this doesn't recreate the jscript instance */
+						createJSObjectsFromRubyObjects( $('#{_.uniqueSelector}') );
+					},
+				dataType:"html"
+			});
+		}
+
+		// Lets kick it all off
+		// $(document).ready(function(){
+			// build the javascript model
+			// _page = new HooPage();
+			// load default content by ajax
+			//loadSomeHTMLByAjax2( '#{_.dataSrc.defaultItem}' );
+		// });
+
+		// make coloured objects transparent
+		function hackColors() {
+
+			$.each( $('*'), function(index, value) {
+				$each = $(value);
+				var col1 = hooRGB($each.css('color'));
+				if( (col1[0]==0 && col1[1]==0 && col1[2]==0)==false )
+					$each.css('color', 'rgba(0, 70, 255, 0.5)' );
+
+				var col2 = hooRGB($each.css('background-color'));
+				if(col2!='')
+					$each.css('opacity', 0.75 );
+
+
+			});
+		}
+
+		function hooRGB( color ){
+
+			if( typeof color=='string' ){
+				if( isRGBColor( fmtColor(color,'rgb'))){
+					return [parseInt(RegExp.$1),parseInt(RegExp.$2),parseInt(RegExp.$3)];
+			}
+			return [];
+		}else if(color instanceof Array && color.length == 3
+		&& isFinite(color[0]-0) && isFinite(color[1]-0) && isFinite(color[2]-0)
+		&& ( 0 <= color[0]-0 && color[0] -0 <= 255)
+		&& ( 0 <= color[1]-0 && color[1] -0 <= 255)
+		&& ( 0 <= color[2]-0 && color[2] -0 <= 255)){
+		return 'rgb('+color[0]+', '+color[1] + ', ' + color[2]+')';
+		}
+		return color;
+		}
+
+		function fmtColor( color,fmt ){
+			if( isColor(color) == false) return color;
+			var pad = function(str){
+			if(str.length < 2){
+			for(var i = 0,len = 2 - str.length ; i<len ; i++){
+			str = '0'+str;
+			}
+			}
+			return str;
+			}
+			if(color.match(/^#[0-9a-fA-F]{3}$/)){
+			var r = color.substr(1,1);
+			var g = color.substr(2,1);
+			var b = color.substr(3,1);
+			color = '#' + r + r + g + g + b + b;
+			}
+
+			fmt = (fmt)?fmt:(function(c){
+			if( isRGBColor(c)) return 'hexadecimal';
+			else if( isHexadecimalColor(c)) return 'rgb';
+			else return '';
+			})(color);
+			if (fmt == 'rgb' && isHexadecimalColor(color)) {
+			var r = parseInt(color.substr(1,2),16);
+			var g = parseInt(color.substr(3,2),16);
+			var b = parseInt(color.substr(5,2),16);
+			color = $.RGB([r,g,b]);
+			}else if (fmt == 'hexadecimal') {
+			var c = $.RGB(color);
+			if(c.length == 3){
+			var r = pad(c[0].toString(16)),g = pad(c[1].toString(16)),b= pad(c[2].toString(16));
+			color = '#' + r + g + b;
+			}
+			}
+			return color;
+		}
+
+		function isColor(color) {
+			if( isHexadecimalColor(color) || isRGBColor(color)) return true;
+			else    return false;
+		}
+
+		function isHexadecimalColor(color){
+			if(color && color.match
+			&& ( color.match(/^#[0-9a-fA-F]{3}$/) || color.match(/^#[0-9a-fA-F]{6}$/)) ) return true;
+			else return false;
+		}
+
+		function isRGBColor(color){
+			if(color && color.match && color.match(/^rgb\(([0-9]|[1-9][0-9]|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5]),[ ]{0,1}([0-9]|[1-9][0-9]|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5]),[ ]{0,1}([0-9]|[1-9][0-9]|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5])\)$/) ) return true;
+			else return false;
+		}

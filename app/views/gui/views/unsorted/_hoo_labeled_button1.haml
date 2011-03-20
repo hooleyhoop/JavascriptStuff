@@ -1,0 +1,11 @@
+- push( hoo_labeled_button1 )
+
+%button[_]{ :type=>"button" }
+	#{_.label}
+
+-# Obviously we cannot leave this here as it is crazy to include it more than once
+:javascript
+
+	$( '#{_.uniqueSelector}' ).click(function() {
+	  	#{_.action}();
+	});
