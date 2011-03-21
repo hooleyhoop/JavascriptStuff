@@ -35,12 +35,13 @@ module GUI::Views::Drawing::Buttons::FormButton
 		end
 
 		def labelStates=(states)
+
+			# pad out if we only set 1 value.. pad out to 3 or 5 ?
+			if(states.count!=@_states)
+				states.fill('--machine added--', states.count..@_states) # => ["b", "c", "a", "a"]
+			end
 			@labelStates = states;
-
-			-- pad out if it comes up short.. to 3 or five?
-
-			-- get rid of this --
-			assert( states.count==3, 'you need to have 3 states for the button' );
+			assert( @labelStates.count==@_states, "you need to have #{@_states} states" );
 		end
 
 		# stuff to write into the page

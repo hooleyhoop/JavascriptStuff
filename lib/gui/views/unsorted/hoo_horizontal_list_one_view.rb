@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Unsorted
 	class HooHorizontalListOneView < GUI::Core::HooView
 
 		attr_accessor :content;

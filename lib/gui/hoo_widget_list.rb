@@ -24,13 +24,11 @@ module GUI
 		@@widgets = {
 
 			# for positioning
-			'verticalSplitView'				=>	GUI::Views::HooVerticalSplitView.name,
-			'horizontalSplitView'			=>	GUI::Views::HooHorizontalSplitView.name,
-			'spacerView'					=>	GUI::Views::HooSpacerView.name,
-			'relativeOffsetView'			=>	GUI::Views::HooRelativeOffsetView.name,
-			'spacedVerticalList'			=>	GUI::Views::HooSpacedVerticalList.name,
-			'twoElasticColsFixedGutter'		=>	GUI::Views::HooTwoElasticColsFixedGutter.name,
-			'spacedCellList'				=>	GUI::Views::HooSpacedCellList.name,
+			'verticalSplitView'				=>	GUI::Views::Positioning::HooVerticalSplitView.name,
+			'horizontalSplitView'			=>	GUI::Views::Positioning::HooHorizontalSplitView.name,
+			'spacerView'					=>	GUI::Views::Positioning::HooSpacerView.name,
+			'relativeOffsetView'			=>	GUI::Views::Positioning::HooRelativeOffsetView.name,
+			'twoElasticColsFixedGutter'		=>	GUI::Views::Positioning::HooTwoElasticColsFixedGutter.name,
 
 			# These have a percentage spacing, not what i want!
 			'2col_percent_padded'			=>	GUI::Views::Positioning::Hoo2ColPercentPaddedView.name,
@@ -44,7 +42,10 @@ module GUI
 			'4col'							=>	GUI::Views::Positioning::Hoo4ColView.name,
 			'5col'							=>	GUI::Views::Positioning::Hoo5ColView.name,
 
-			'paddedHorizontal'				=>	GUI::Views::Positioning::HooPaddedHorizontalList2View.name,
+			'paddedHorizontal'				=>	GUI::Views::Unsorted::HooPaddedHorizontalList2View.name,
+
+			'spacedVerticalList'			=>	GUI::Views::Unsorted::HooSpacedVerticalList.name,
+			'spacedCellList'				=>	GUI::Views::Unsorted::HooSpacedCellList.name,
 
 			# for drawing - forms
 			'formButtonSimple'				=> Views::Drawing::Buttons::FormButton::HooFormButtonSimple.name,
@@ -72,14 +73,14 @@ module GUI
 
 			'speechBubbleBottomCanvas'	=>	GUI::Views::Drawing::Experiments::HooSpeechBubbleBottomCanvas.name,
 
-			'backgroundImage'		=>	GUI::Views::HooBackgroundImg.name,
-			'fixedSizeImage'		=>	GUI::Views::HooFixedSizeImg.name,
-			'hoo100PercentImg'		=>	GUI::Views::HooOneHundredPercentImg.name,
-			'slidingDoorsPanel1'	=>	GUI::Views::HooSlidingDoorsPanel.name,
-			'speechBubblePane'		=>	GUI::Views::HooSlidingDoorsSpeechPanel.name,
-			'croppedImg'			=>	GUI::Views::HooCroppedImg.name,
-			'inlineTextList'		=>	GUI::Views::HooInlineTextList.name,
-			'cuteDropDownMenu'		=>	GUI::Views::HooCuteDropDownMenu.name,
+			'backgroundImage'		=>	GUI::Views::Unsorted::HooBackgroundImg.name,
+			'fixedSizeImage'		=>	GUI::Views::Unsorted::HooFixedSizeImg.name,
+			'hoo100PercentImg'		=>	GUI::Views::Unsorted::HooOneHundredPercentImg.name,
+			'slidingDoorsPanel1'	=>	GUI::Views::Unsorted::HooSlidingDoorsPanel.name,
+			'speechBubblePane'		=>	GUI::Views::Unsorted::HooSlidingDoorsSpeechPanel.name,
+			'croppedImg'			=>	GUI::Views::Unsorted::HooCroppedImg.name,
+			'inlineTextList'		=>	GUI::Views::Unsorted::HooInlineTextList.name,
+			'cuteDropDownMenu'		=>	GUI::Views::Unsorted::HooCuteDropDownMenu.name,
 
 			# Flash Stuff
 			'headlessPlayer'		=>	GUI::Views::Flash::HeadlessAudioPlayer.name,
@@ -104,22 +105,24 @@ module GUI
 			# for debugging
 			'flippyToggleThing'		=>	GUI::Views::Debug::FlippyToggleThing.name,
 			'testUploadForm'		=>	GUI::Views::Debug::TestUploadFormView.name,
-			'singleWidget'		    =>	GUI::Views::HooSingleWidgetView.name,
-			'cellRenderer'			=>	GUI::Views::HooCellRenderer.name,
+			'singleWidget'		    =>	GUI::Views::Debug::HooSingleWidgetView.name,
+			'widgetResizer'		    =>	GUI::Views::Debug::HooWidgetResizerView.name,
+			'blueView'			    =>	GUI::Views::Debug::HooBlueView.name,
+			'redView'			    =>	GUI::Views::Debug::HooRedView.name,
+			'colorFill'			    =>	GUI::Views::Debug::HooColorFill.name,
+			'bigWord'			    =>	GUI::Views::Debug::HooBigWordView.name,
 
-			'labeledButton'		    =>	GUI::Views::HooLabeledButton1.name,
-			'blueView'			    =>	GUI::Views::HooBlueView.name,
-			'redView'			    =>	GUI::Views::HooRedView.name,
-			'colorFill'			    =>	GUI::Views::HooColorFill.name,
-			'info1'				    =>	GUI::Views::HooInfoOneView.name,
-			'loremIpsum'		    =>	GUI::Views::HooLoremIpsumView.name,
-			'loremIpsumTitle'	    =>	GUI::Views::HooLoremIpsumTitleView.name,
-			'pullQuote1'		    =>	GUI::Views::HooPullQuoteOneView.name,
-			'list1'				    =>	GUI::Views::HooListOneView.name,
-			'horizontalList1'	    =>	GUI::Views::HooHorizontalListOneView.name,
-			'textList1'			    =>	GUI::Views::HooTextListView.name,
-			'gridView'			    =>	GUI::Views::HooGridOneView.name,
-			'bigWord'			    =>	GUI::Views::HooBigWordView.name,
+			'cellRenderer'			=>	GUI::Views::Unsorted::HooCellRenderer.name,
+
+			'labeledButton'		    =>	GUI::Views::Unsorted::HooLabeledButton1.name,
+			'info1'				    =>	GUI::Views::Unsorted::HooInfoOneView.name,
+			'loremIpsum'		    =>	GUI::Views::Unsorted::HooLoremIpsumView.name,
+			'loremIpsumTitle'	    =>	GUI::Views::Unsorted::HooLoremIpsumTitleView.name,
+			'pullQuote1'		    =>	GUI::Views::Unsorted::HooPullQuoteOneView.name,
+			'list1'				    =>	GUI::Views::Unsorted::HooListOneView.name,
+			'horizontalList1'	    =>	GUI::Views::Unsorted::HooHorizontalListOneView.name,
+			'textList1'			    =>	GUI::Views::Unsorted::HooTextListView.name,
+			'gridView'			    =>	GUI::Views::Unsorted::HooGridOneView.name,
 		}
 
 		def self.widgets

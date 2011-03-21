@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Positioning
 
     # PLEASE FILL ME IN
 	class HooTwoElasticColsFixedGutter < GUI::Core::HooView

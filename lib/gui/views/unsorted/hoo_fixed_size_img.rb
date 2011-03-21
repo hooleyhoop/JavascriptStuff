@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Unsorted
 
     # Please fill me in
 	class HooFixedSizeImg < GUI::Core::HooView

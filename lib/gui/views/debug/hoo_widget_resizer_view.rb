@@ -1,11 +1,13 @@
 module GUI::Views::Debug
+
+	# http://0.0.0.0:3000/widgets/widgetResizer
 	class HooWidgetResizerView < GUI::Core::HooView
 
     attr_accessor :dataSrc;
     attr_accessor :actionName
 
-		def initialize
-			super();
+		def initialize(args={})
+			super(args);
 			@actionName = :loadSomeHTMLByAjax2;
 		end
 

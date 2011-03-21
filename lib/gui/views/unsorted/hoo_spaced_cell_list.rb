@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Unsorted
 	class HooSpacedCellList < GUI::Core::HooView
 
 		attr_accessor :cell;

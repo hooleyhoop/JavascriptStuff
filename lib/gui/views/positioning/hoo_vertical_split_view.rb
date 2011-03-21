@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Positioning
 
     # First of all lets split left right
 	class HooVerticalSplitView < GUI::Core::HooView

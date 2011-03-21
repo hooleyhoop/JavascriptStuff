@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Positioning
 
     # First of all lets split top / bottom
 	class HooHorizontalSplitView < GUI::Core::HooView

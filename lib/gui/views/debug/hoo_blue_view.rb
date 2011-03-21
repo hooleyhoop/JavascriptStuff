@@ -1,4 +1,6 @@
-module GUI::Views
+module GUI::Views::Debug
+
+	# http://0.0.0.0:3000/widgets/blueView
 	class HooBlueView < GUI::Core::HooView
 
 		def initialize( args={} )

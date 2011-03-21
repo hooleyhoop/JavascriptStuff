@@ -1,4 +1,6 @@
-module GUI::Views
+module GUI::Views::Debug
+
+	# http://0.0.0.0:3000/widgets/singleWidget
 	class HooSingleWidgetView < GUI::Core::HooView
 
     attr_accessor :menuItems
@@ -9,10 +11,10 @@ module GUI::Views
 
         @hasDefaultWidget = (defaultWidget=='') ? false : true;
 
-        @widgetResizer = HooWidgetResizerView.new();
+        @widgetResizer = GUI::HooWidgetList.widgetClass('widgetResizer').new();
         @widgetResizer.dataSrc = self;
 
-        @setTransparencyButton = HooLabeledButton1.new();
+        @setTransparencyButton = GUI::HooWidgetList.widgetClass('labeledButton').new();
         addSubView( @setTransparencyButton );
 
         # dont show textlist if we have a default widget

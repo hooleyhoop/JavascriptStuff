@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Unsorted
 	class HooTextListView < GUI::Core::HooView
 
     	attr_accessor :allItems;

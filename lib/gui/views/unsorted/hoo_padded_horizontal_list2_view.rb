@@ -1,4 +1,4 @@
-module GUI::Views::Positioning
+module GUI::Views::Unsorted
 	class HooPaddedHorizontalList2View < GUI::Core::HooView
 
 		attr_accessor :content;

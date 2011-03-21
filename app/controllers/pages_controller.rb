@@ -141,7 +141,8 @@ class PagesController < ApplicationController
 		#objectToRender = HooBlueView.new();
 
 		#haml_string = "%p Haml-tastic!"
-		#engine = Haml::Engine.new(haml_string)
+		#engine = Haml::Engine.new(haml_string) # should use haml_tag, capture_haml, haml_concat .. etc.?
+
 		#hamlResult = engine.render
 		render :text => partialAsString
 	end

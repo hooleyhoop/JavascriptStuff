@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Unsorted
 
     # Welcomen! There are 2 types at the moment. Outer and Inner
 

@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Positioning
 	class HooSpacerView < GUI::Core::HooView
 
 		attr_accessor :top, :right, :bottom, :left

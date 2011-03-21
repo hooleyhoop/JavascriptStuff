@@ -21,6 +21,24 @@ module GUI::Core
 			@views = Array.new;
 		end
 
+		def extractArgs( argHash, defaultValues )
+
+    		defaultValues.each do |key, value|
+		  		passedArg = argHash[key]
+		  		if passedArg.nil?
+		  			passedArg = value
+		  		end
+
+      			setterMethodName = "#{key}="
+				if( respond_to?( setterMethodName ) )
+					self.send( setterMethodName, passedArg );
+				else
+					instanceVarName = "@#{key}"
+					instance_variable_set( instanceVarName, passedArg );
+				end
+			end
+		end
+
         # er, this is sometimes overidden
 		def addSubView( aView )
 		    _addSubView( aView );

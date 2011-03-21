@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Unsorted
 	class HooLoremIpsumView < GUI::Core::HooView
 
 		def initialize

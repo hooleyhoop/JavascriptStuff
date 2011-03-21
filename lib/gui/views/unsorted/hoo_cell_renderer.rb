@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Unsorted
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=hoo_user_comment_cell
 	class HooCellRenderer < GUI::Core::HooView

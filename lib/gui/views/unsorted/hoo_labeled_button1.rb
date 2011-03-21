@@ -1,4 +1,6 @@
-module GUI::Views
+module GUI::Views::Unsorted
+
+	# http://0.0.0.0:3000/widgets/labeledButton
 	class HooLabeledButton1 < GUI::Core::HooView
 
 		attr_accessor :label;
