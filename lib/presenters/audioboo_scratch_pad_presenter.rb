@@ -90,25 +90,25 @@ module Presenters
 				userBubble.addSubView( userDetailsBanner );
 
                 #Main Boo Panel
-                #comeback mainBooPanel = slidingDoorsPanel.new();
-                #comeback mainBooPanel.style = 'inner'
-                #comeback outerPanel.addSubView( mainBooPanel );
+                mainBooPanel = slidingDoorsPanel.new();
+                mainBooPanel.style = 'inner'
+                outerPanel.addSubView( mainBooPanel );
 
                 # split 50% left right
-                #comeback divider = verticalSplitView.new();
-                #divider.setPercentage( 'left', 50 );
-                #comeback divider.setFixedColumn( 'right', 23*15 )
-                #comeback mainBooPanel.addSubView( divider );
+                divider = verticalSplitView.new();
+                divider.setPercentage( 'left', 50 );
+                divider.setFixedColumn( 'right', 23*15 )
+                mainBooPanel.addSubView( divider );
 
                 # LEFT SIDE
-				#comeback mainBooDetailsSpacer = spacerView.new( 0, 15, 0, 0 );
-                #comeback divider.addSubView( mainBooDetailsSpacer );
+				mainBooDetailsSpacer = spacerView.new( 0, 15, 0, 0 );
+                divider.addSubView( mainBooDetailsSpacer );
 
-                #comeback listView1 = spacedVerticalList.new();
-                #comeback mainBooDetailsSpacer.addSubView( listView1 );
+                listView1 = spacedVerticalList.new();
+                mainBooDetailsSpacer.addSubView( listView1 );
 
-                #comeback mainBooDetails = booMainDetails.new();
-                #comeback listView1.addSubView( mainBooDetails );
+                mainBooDetails = booMainDetails.new();
+                listView1.addSubView( mainBooDetails );
 
                 #comeback thePlayer = detailPlayer.new();
                 #comeback listView1.addSubView( thePlayer );

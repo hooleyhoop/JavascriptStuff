@@ -7,7 +7,7 @@ html, body, ul, ol, li, form, fieldset, legend {
   font-family: helvetica, arial, sans-serif; }
 
 h1, h2, h3, h4, h5, h6, p {
-  margin-top: 0; }
+  margin: 0; }
 
 fieldset, img {
   border: 0; }
@@ -45,28 +45,24 @@ abbr, acronym {
 body {
   width: 100%; }
 
-h1 {
-  margin: 0; }
-
-h2 {
-  padding: 0; }
+p {
+  margin-bottom: 15px; }
 
 a {
   color: #1389e5;
   text-decoration: none;
-  outline: none;
-  font-weight: bold; }
+  outline: none; }
 
-a:hover {
+#a:hover {
   color: #fff;
   text-decoration: none;
   background-color: #1389e5; }
 
-a:active {
+#a:active {
   color: #fff;
   background-color: #211922; }
 
-a:hover img {
+#a:hover img {
   opacity: .92;
   filter: alpha(opacity=92); }
 

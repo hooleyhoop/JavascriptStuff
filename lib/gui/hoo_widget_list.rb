@@ -103,6 +103,7 @@ module GUI
 			'mastHead'				=> GUI::Views::Audioboo::MastHead.name,
 
 			# for debugging
+			'textStyle'				=>	GUI::Views::Debug::HooTextStyle.name,
 			'flippyToggleThing'		=>	GUI::Views::Debug::FlippyToggleThing.name,
 			'testUploadForm'		=>	GUI::Views::Debug::TestUploadFormView.name,
 			'singleWidget'		    =>	GUI::Views::Debug::HooSingleWidgetView.name,

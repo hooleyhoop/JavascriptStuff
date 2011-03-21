@@ -14,7 +14,7 @@
 -# Easy enough to switch in different stuff depending on whether a size was specified
 -# But the whole point was that views should be logicless..? Better to make another button?
 
-- textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0; position:relative; top:15px; letter-spacing:0pc; word-spacing:-0.1pc;"
+- textStyle = "color:#{_.labelColor}; padding:0; position:relative; top:15px;"
 - button_attrs = { :style=>" text-align: center; padding:0; margin:10; border:none; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.initialState}px; width: #{_.size[0]}px; height:#{_.size[1]}px;" }
 
 - if(  _.initialState==0 )
@@ -26,6 +26,6 @@
 
 %div[_]{ :data=> {'jsclass'=>'HooDivButtonSimple'} }
 	%div{button_attrs}
-		%a.unselectable( href="#{_.action}" style="#{textStyle}" )
+		%a( class="unselectable sansSolidBold" href="#{_.action}" style="#{textStyle}" )
 			-# Insert the correct label for this initialState
 			#{_.labelStates[_.initialState]}

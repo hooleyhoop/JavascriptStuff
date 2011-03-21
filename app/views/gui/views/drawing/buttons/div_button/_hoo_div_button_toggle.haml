@@ -11,7 +11,7 @@
 -# ok, ok, these double and single action things are the same, different javascript, yeah?
 -#
 
-- textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0; position:relative; top:15px; letter-spacing:0pc; word-spacing:-0.1pc;"
+- textStyle = "color:#{_.labelColor}; line-height:15px; padding:0; position:relative; top:15px;"
 - button_attrs = { :style=>" text-align: center; padding:0; margin:0; border:none; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.initialState}px; width: #{_.size[0]}px; height:#{_.size[1]}px;" }
 - if(  _.initialState==0 )
 	- button_attrs.merge!( { :disabled=>"disabled" } )
@@ -22,7 +22,7 @@
 
 %div[_]{ :data=> {'jsclass'=>'HooDivButtonToggle'} }
 	%div{button_attrs}
-		%a.unselectable( href="#{_.action}" style="#{textStyle}" )
+		%a.unselectable.sansSolidBold( href="#{_.action}" style="#{textStyle}" )
 			-# Insert the correct label for this initialState
 			#{_.labelStates[_.initialState]}
 

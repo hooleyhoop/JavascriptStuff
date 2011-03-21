@@ -1,0 +1,46 @@
+- push( hoo_text_style )
+
+-# http://0.0.0.0:3000/widgets/textStyle
+%div.sansVSmallBold{ :style=>"opacity:0.75;" }
+
+	%p( style="background-color:red;" )
+		The chief of UK armed forces said attacks on Libya's leader were not allowed under a UN resolution calling for the protection of Libyan civilians.
+
+	%p( style="background-color:green;" )
+		And a French spokesman said that even if the Libyan leader's exact location was known, he would not be fired on. Col Gaddafi has been fighting a rebellion that broke out last month.
+
+	%p( style="background-color:red;" )
+		The chief of UK armed forces said attacks on Libya's leader were not allowed under a UN resolution calling for the protection of Libyan civilians.
+
+%div.sansSolid{ :style=>"opacity:0.75;" }
+
+	-# %p( style="background-color:red;" )
+	The chief of UK armed forces said attacks on Libya's leader were not allowed under a UN resolution calling for the protection of Libyan civilians.
+
+	-# %p( style="background-color:green;" )
+	And a French spokesman said that even if the Libyan leader's exact location was known, he would not be fired on. Col Gaddafi has been fighting a rebellion that broke out last month.
+
+	-# %p( style="background-color:red;" )
+	The chief of UK armed forces said attacks on Libya's leader were not allowed under a UN resolution calling for the protection of Libyan civilians.
+
+%div.sansVSmallBold{ :style=>"opacity:0.75;" }
+
+	-# %p( style="background-color:red;" )
+	The chief of UK armed forces said attacks on Libya's leader were not allowed under a UN resolution calling for the protection of Libyan civilians.
+
+	-# %p( style="background-color:green;" )
+	And a French spokesman said that even if the Libyan leader's exact location was known, he would not be fired on. Col Gaddafi has been fighting a rebellion that broke out last month.
+
+	-# %p( style="background-color:red;" )
+	The chief of UK armed forces said attacks on Libya's leader were not allowed under a UN resolution calling for the protection of Libyan civilians.
+
+- if( _.includeOnce? )
+	%style(type="text/css")
+		:sass
+			// So far so good for divs
+			.sansVBig
+				font: normal normal 28px/30px Georgia
+				text-decoration: none
+				padding-top: 4px
+				padding-bottom: 26px
+				word-spacing: -0.1pc

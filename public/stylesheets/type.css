@@ -6,6 +6,43 @@
  *
  * NO! measurments in CSS. NO! 12px. NO! 2em. NO! 25%
 */
+/* SET SOLID */
+.serifSolid {
+  font: normal normal 13px/15px Georgia;
+  text-decoration: none;
+  padding-top: 2px;
+  padding-bottom: 13px;
+  word-spacing: -0.1pc; }
+
+.sansSolid {
+  font: normal normal 13px/15px Helvetica;
+  text-decoration: none;
+  padding-top: 2px;
+  padding-bottom: 13px;
+  word-spacing: -0.1pc; }
+
+.sansSolidBold {
+  font: normal bold 13px/15px Helvetica;
+  text-decoration: none;
+  padding-top: 2px;
+  padding-bottom: 13px;
+  word-spacing: -0.1pc; }
+
+/* VERY SMALL */
+.sansVSmallBold {
+  font: normal bold 9px/15px Helvetica;
+  text-decoration: none;
+  padding-top: 4px;
+  padding-bottom: 11px; }
+
+/* VERY BIG */
+.sansVBig {
+  font: normal normal 28px/30px Georgia;
+  text-decoration: none;
+  padding-top: 4px;
+  padding-bottom: 26px;
+  word-spacing: -0.1pc; }
+
 /* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
 .smallType {
   font-size: 11px;

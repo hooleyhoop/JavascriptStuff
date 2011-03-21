@@ -10,7 +10,7 @@
 -# NB! This height isnt a multiple of 15, it has to be used in the menu to make it a multiple of 15
 %div[_]{ :data=>{'jsclass'=>_.jsClassName} }
 	-# zoom: 1; *display:inline; is needed inline-block hack for ie
-	%div{ _.div_attrs.merge( {:class=>"dynamicWidthButton", :style=>""} ){|k,v1,v2|v1+v2}}
+	%div.sansVSmallBold{ _.div_attrs.merge( {:class=>"dynamicWidthButton", :style=>""} ){|k,v1,v2|v1+v2}}
 		%a{_.anchor_attrs}
 			-# Insert the correct label for this initialState
 			#{_.labelStates[_.initialState]}

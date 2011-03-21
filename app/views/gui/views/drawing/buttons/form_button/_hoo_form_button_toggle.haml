@@ -16,7 +16,7 @@
 		-# If you center it in safari it will be to low in firefox, whichever way you tweak it it will be incorrect somewhere
 		-# We really should use links and javascript
 
-		- textStyle = "font:13px Verdana; color:#{_.labelColor}; line-height:15px; padding:0 0 0 15px; position:relative; top:0px; margin:0!important; letter-spacing:0pc; word-spacing:-0.1pc;"
+		- textStyle = "color:#{_.labelColor}; padding:0 0 0 15px; position:relative; top:0px; margin:0!important;"
 		- button_attrs = { :style=>"padding: 0; margin: 0; border: none; background: transparent url( #{_.img} ) 0 #{_.size[1]*-_.initialState}px; width: #{_.size[0]}px; height: #{_.size[1]}px;", :name=>"commit", :title=>"", :type=>"submit", :value=>"" }
 		- if(  _.initialState==0 )
 			- button_attrs.merge!( { :disabled=>"disabled" } )
@@ -25,7 +25,7 @@
 		- else
 			- textStyle += "text-shadow:0px -1px 0px #374683;"
 
-		%button{ button_attrs }
+		%button.sansSolidBold{ button_attrs }
 			%span.unselectable( style="#{textStyle}" )
 				-# Insert the correct label for this initialState
 				#{_.labelStates[_.initialState]}

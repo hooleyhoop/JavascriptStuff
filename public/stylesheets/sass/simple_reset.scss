@@ -11,7 +11,7 @@ html, body, ul, ol, li, form, fieldset, legend {
 	// Helvetica-Neue does very, very, very strange things
 	font-family: helvetica, arial, sans-serif;
 }
-h1, h2, h3, h4, h5, h6, p { margin-top: 0; }
+h1, h2, h3, h4, h5, h6, p { margin: 0; }
 fieldset,img { border: 0; }
 legend { color: #111; } /* never use black */
 li { list-style: none; }
@@ -39,15 +39,12 @@ abbr, acronym {
 }
 
 body {width:100%;}
-h1 {margin:0;}
-h2 {padding:0;}
-h1, h2 {}
-p {}
+p { margin-bottom: 15px; }
 
-a { color: #1389e5; text-decoration: none; outline: none; font-weight: bold;}
-a:hover {color: #fff; text-decoration: none; background-color: #1389e5;}
-a:active {color: #fff; background-color: #211922;}
-a:hover img {opacity: .92; filter: alpha(opacity=92);}
+a { color: #1389e5; text-decoration: none; outline: none; }
+#a:hover {color: #fff; text-decoration: none; background-color: #1389e5;}
+#a:active {color: #fff; background-color: #211922;}
+#a:hover img {opacity: .92; filter: alpha(opacity=92);}
 #noHover a:hover {color: #fff; background-color: none;}
 #noHover a:active {color: #fff; background-color: none;}
 input, textarea {color: #777;}

@@ -10,12 +10,12 @@
 -# adding the data-jsclass attribute means that a javascript instance will be created on-load
 -# Todo: I also need to have it created if it is inserted by ajax!
 
-- textStyle = "color:#{_.labelColor}; line-height:#{_.size[1]-_.border*2}px; padding:0; margin:0; position:relative; letter-spacing:0.0pc; word-spacing:-0.1pc;"
+- textStyle = "color:#{_.labelColor}; line-height:#{_.size[1]-_.border*2}px; padding:0; margin:0; position:relative;"
 
 -# Notice margin rounds up to the nearest fifteen. clever!
 -# zoom: 1; *display:inline; is needed inline-block hack for ie
 
-- div_attrs = { :class=>"dynamicWidthButton", :style=>"font:bold 10px Helvetica; overflow: auto; text-align: center; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.initialState}px; padding:0 1.5em 0 1.5em; margin:0 0 #{(_.size[1]) % 15}px 0; display:inline-block; height: #{_.size[1]-_.border*2}px; zoom: 1; *display:inline; -webkit-border-radius: #{_.cornerRad}px; -moz-border-radius: #{_.cornerRad}px; border: #{_.border}px solid #fff;" }
+- div_attrs = { :class=>"dynamicWidthButton", :style=>"overflow: auto; text-align: center; background:transparent url( #{_.img} ) 0 #{_.size[1]*-_.initialState}px; padding:0 1.5em 0 1.5em; margin:0 0 #{(_.size[1]) % 15}px 0; display:inline-block; height: #{_.size[1]-_.border*2}px; zoom: 1; *display:inline; -webkit-border-radius: #{_.cornerRad}px; -moz-border-radius: #{_.cornerRad}px; border: #{_.border}px solid #fff;" }
 - anchor_attrs = { :href=>"#{_.action}" }
 
 - if(  _.initialState==0 )
@@ -32,7 +32,7 @@
 
 %div[_]{ :data=> {'jsclass'=>'HooDivButtonToggleDynamicWidth'} }
 	%div{div_attrs}
-		%a.unselectable{anchor_attrs}
+		%a.unselectable.sansVSmallBold{anchor_attrs}
 			-# Insert the correct label for this initialState
 			#{_.labelStates[_.initialState]}
 
