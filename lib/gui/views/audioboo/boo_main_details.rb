@@ -1,13 +1,10 @@
 module GUI::Views::Audioboo
 
+	# http://0.0.0.0:3000/widgets/booMainDetails
 	class BooMainDetails < GUI::Core::HooView
 
         attr_accessor :img;
         attr_accessor :width, :height;
-
-		def initialize
-			super();
-		end
 
         # Mock Data
 		def setupDebugFixture

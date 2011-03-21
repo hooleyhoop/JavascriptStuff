@@ -2,6 +2,7 @@ module GUI::Views::Drawing::Buttons::DivButton
 
 	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth
 	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth?initialState=1
+	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth?initialState=1&cornerRad=20&border=1
 	class HooDivButtonToggleDynamicWidth < HooDivButtonToggle
 
 		attr_accessor :cornerRad;
@@ -9,12 +10,7 @@ module GUI::Views::Drawing::Buttons::DivButton
 
 		def initialize( args={} )
 			super(args);
-			if args[:cornerRad]
-				@cornerRad=args[:cornerRad].to_i();
-			end
-			if args[:border]
-				@border=args[:border].to_i();
-			end
+			extractArgs( args, {:cornerRad=>0, :border=>0} );
 		end
 
         # Mock Data

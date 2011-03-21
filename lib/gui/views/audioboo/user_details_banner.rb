@@ -9,10 +9,6 @@ module GUI::Views::Audioboo
 		attr_accessor :userHomePageURL;
 		attr_accessor :stats;
 
-		def initialize( args={} )
-			super(args);
-		end
-
         # Mock Data
 		def setupDebugFixture
 			super();

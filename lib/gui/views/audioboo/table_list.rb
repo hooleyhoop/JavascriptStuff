@@ -1,5 +1,6 @@
 module GUI::Views::Audioboo
 
+	# http://0.0.0.0:3000/widgets/tableList
 	class TableList < GUI::Core::HooView
 
         attr_accessor :content;

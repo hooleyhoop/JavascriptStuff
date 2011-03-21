@@ -1,9 +1,10 @@
 module GUI::Views::Audioboo
 
+    # http://0.0.0.0:3000/widgets/croppedImgWithHeader
 	class CroppedImgWithHeader < GUI::Core::HooView
 
-		def initialize
-			super();
+		def initialize( args={} )
+			super( args );
 
             tableHeaderClass = GUI::HooWidgetList.widgetClass('tableHeader');
             croppedImgClass = GUI::HooWidgetList.widgetClass('croppedImg');

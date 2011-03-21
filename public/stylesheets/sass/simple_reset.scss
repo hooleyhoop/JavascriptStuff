@@ -96,3 +96,11 @@ textarea, input[type="text"], input[type="password"] {background-color: #fff; bo
 .invisible {visibility: hidden !important;}
 .rule  { border-bottom-color:#DDDDDD; border-bottom-style:solid; border-bottom-width:1px; clear:both; height:0;
 margin:15px 0px; overflow: hidden;}
+
+*.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -o-user-select: none;
+   user-select: none;
+}

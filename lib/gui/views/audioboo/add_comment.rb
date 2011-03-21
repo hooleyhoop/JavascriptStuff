@@ -1,13 +1,10 @@
 module GUI::Views::Audioboo
 
+	# http://0.0.0.0:3000/widgets/addComment
 	class AddComment < GUI::Core::HooView
 
         attr_accessor :img, :postButtonImg;
         attr_accessor :width, :height;
-
-		def initialize( args={} )
-			super(args);
-		end
 
         # Mock Data
 		def setupDebugFixture

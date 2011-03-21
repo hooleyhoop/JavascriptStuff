@@ -28,6 +28,6 @@
 			- textStyle += "text-shadow:0px -1px 0px #374683;"
 
 		%button{ button_attrs }
-			%span( style="#{textStyle}" )
+			%span.unselectable( style="#{textStyle}" )
 				-# Insert the correct label for this initialState
 				#{_.labelStates[_.initialState]}

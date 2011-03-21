@@ -32,7 +32,7 @@
 
 %div[_]{ :data=> {'jsclass'=>'HooDivButtonSimpleDynamicWidth'} }
 	%div{div_attrs}
-		%a{anchor_attrs}
+		%a.unselectable{anchor_attrs}
 			-# Insert the correct label for this initialState
 			#{_.labelStates[_.initialState]}
 

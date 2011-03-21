@@ -33,5 +33,6 @@ module GUI::Views::Drawing::Buttons::DivButton
 			@action = '/widgets/_ajaxPostTest';
 
 		end
+
 	end
 end

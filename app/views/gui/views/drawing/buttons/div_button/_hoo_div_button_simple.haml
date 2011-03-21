@@ -26,6 +26,6 @@
 
 %div[_]{ :data=> {'jsclass'=>'HooDivButtonSimple'} }
 	%div{button_attrs}
-		%a( href="#{_.action}" style="#{textStyle}" )
+		%a.unselectable( href="#{_.action}" style="#{textStyle}" )
 			-# Insert the correct label for this initialState
 			#{_.labelStates[_.initialState]}

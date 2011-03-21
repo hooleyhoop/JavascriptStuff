@@ -1,5 +1,6 @@
 module GUI::Views::Audioboo
 
+	# http://0.0.0.0:3000/widgets/detailPlayer
 	class DetailPlayer < GUI::Core::HooView
 
 		attr_accessor :playerLeft, :playerRight, :playerMid, :playButton, :carat;
