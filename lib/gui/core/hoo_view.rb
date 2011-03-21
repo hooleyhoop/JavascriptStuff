@@ -24,7 +24,7 @@ module GUI::Core
 		def extractArgs( argHash, defaultValues )
 
     		defaultValues.each do |key, value|
-		  		passedArg = argHash[key]
+				passedArg = argHash[key]
 		  		if passedArg.nil?
 		  			passedArg = value
 		  		end

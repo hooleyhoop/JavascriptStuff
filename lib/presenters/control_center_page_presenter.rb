@@ -24,11 +24,9 @@ module Presenters
 
 				{ 'name'=>"headless player",		'url'=> controller.pages_headless_player_path },
 				{ 'name'=>"headless recorder",		'url'=> controller.pages_headless_recorder_path },
-
-
 			];
 
-			@importantMessage = widgetClass('bigWord').new( 'Views should be logic-less' );
+			@importantMessage = widgetClass('bigWord').new( {:text=>'Views should be logic-less'} );
 			@window.contentView.addSubView( @importantMessage );
 
 			@textList = widgetClass('textList1').new()

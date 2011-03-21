@@ -10,14 +10,14 @@ module Presenters
 			bigWordView 		= widgetClass('bigWord')
 			loremIpsumView 		= widgetClass('loremIpsum');
 
-			@window.contentView.addSubView( bigWordView.new( "Trumpety trump!" ) );
+			@window.contentView.addSubView( bigWordView.new( {:text=>'Trumpety trump!'} ) );
 			@window.contentView.addSubView( loremIpsumView.new() );
 
 			@colView = layoutClass('fixedWidthSingleCol').new( {:sideBarPxWidth=>200} );
 
 			@colView.header = loremIpsumView.new();
 			@colView.mainColumn = loremIpsumView.new();
-			@colView.footer = bigWordView.new( "I am the footers" );
+			@colView.footer = bigWordView.new( {:text=>'I am the footers'} );
 
 			@window.contentView.addSubView( @colView );
 
