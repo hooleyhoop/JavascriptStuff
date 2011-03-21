@@ -27,19 +27,6 @@
 
 -# Obviously we cannot leave this here as it is crazy to include it more than once
 - if( _.includeOnce? )
-	:javascript
-		// Lets kick it all off
-		$(document).ready( function(){
-
-			if (Modernizr.websockets) {
-				$("#result").html('Your browser has support for Web Sockets');
-			} else {
-				$("#result").html('Your browser does not support Web Sockets');
-			}
-
-		});
-
-
 	%style(type="text/css")
 		:sass
 

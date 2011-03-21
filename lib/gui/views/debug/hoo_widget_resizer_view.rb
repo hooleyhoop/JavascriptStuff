@@ -1,4 +1,4 @@
-module GUI::Views
+module GUI::Views::Debug
 	class HooWidgetResizerView < GUI::Core::HooView
 
     attr_accessor :dataSrc;
