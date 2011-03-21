@@ -9,7 +9,6 @@ module GUI::Views::Drawing::Buttons::FormButton
 
 	class HooFormButtonSimple < HooFormButtonAbstract
 
-
         # Mock Data
 		def setupDebugFixture
 			super();

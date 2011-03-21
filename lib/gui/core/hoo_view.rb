@@ -24,9 +24,16 @@ module GUI::Core
 		def extractArgs( argHash, defaultValues )
 
     		defaultValues.each do |key, value|
+
 				passedArg = argHash[key]
 		  		if passedArg.nil?
 		  			passedArg = value
+		  		else
+					#-- what is type of defaulty value
+					#-- cooerce to that type
+					if value.kind_of? Integer
+						passedArg = passedArg.to_i
+					end
 		  		end
 
       			setterMethodName = "#{key}="

@@ -21,9 +21,7 @@ module GUI::Views::Drawing::Buttons::DivButton
 
 		def initialize( args={} )
 			super(args);
-			if args[:initialState]
-				@initialState=args[:initialState].to_i();
-			end
+			extractArgs( args, {:initialState=>0} );
 		end
 
         # Mock Data

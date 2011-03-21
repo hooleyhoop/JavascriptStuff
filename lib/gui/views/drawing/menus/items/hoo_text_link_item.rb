@@ -1,9 +1,9 @@
 module GUI::Views::Drawing::Menus::Items
 
-	# http://0.0.0.0:3000/widgets/textLinkItem?initialState=1
-	class HooTextLinkItem < GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimpleDynamicWidth
+	# REMEMBER! THEY BOTH USE THE SAME partial
 
-		attr_accessor :position;
+	# http://0.0.0.0:3000/widgets/textLinkItem?initialState=1
+	class HooTextLinkItem < HooTextItemAbstract
 
         # Mock Data
 		def setupDebugFixture
