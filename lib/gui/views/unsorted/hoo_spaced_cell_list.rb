@@ -1,12 +1,10 @@
 module GUI::Views::Unsorted
+
+	# http://0.0.0.0:3000/widgets/spacedCellList
 	class HooSpacedCellList < GUI::Core::HooView
 
 		attr_accessor :cell;
     	attr_accessor :dataSrc;
-
-		def initialize()
-			super();
-		end
 
 		# Mock data
 		def setupDebugFixture

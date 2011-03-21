@@ -1,9 +1,7 @@
 module GUI::Views::Unsorted
-	class HooSpacedVerticalList < GUI::Core::HooView
 
-		def initialize()
-			super();
-		end
+	# http://0.0.0.0:3000/widgets/spacedVerticalList
+	class HooSpacedVerticalList < GUI::Core::HooView
 
 		# Mock data
 		def setupDebugFixture

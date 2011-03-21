@@ -1,14 +1,10 @@
 module GUI::Views::Unsorted
 
-    # Please fill me in
+    # http://0.0.0.0:3000/widgets/fixedSizeImage
 	class HooFixedSizeImg < GUI::Core::HooView
 
         attr_accessor :img;
         attr_accessor :label, :labelLink;
-
-		def initialize
-			super();
-		end
 
         # Mock Data
 		def setupDebugFixture

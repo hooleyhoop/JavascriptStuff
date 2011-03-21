@@ -1,6 +1,8 @@
 module GUI::Views::Positioning
 
     # First of all lets split left right
+
+	# http://0.0.0.0:3000/widgets/verticalSplitView
 	class HooVerticalSplitView < GUI::Core::HooView
 
         attr_accessor :fixedColSide;
@@ -9,8 +11,8 @@ module GUI::Views::Positioning
         attr_accessor :fixedColWidth;
         attr_accessor :fixedColPercent;
 
-		def initialize
-			super();
+		def initialize( args={} )
+			super(args);
 			@fixedColSide = ''
 			@fixedColPercent=0;
 		end

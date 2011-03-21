@@ -4,10 +4,6 @@ module GUI::Views::Positioning
     # http://0.0.0.0:3000/widgets/4col
 	class Hoo4ColView < GUI::Core::HooView
 
-		def initialize( args={} )
-			super();
-		end
-
 		def wasAddedToParentView
 		    super();
         end

@@ -1,4 +1,6 @@
 module GUI::Views::Positioning
+
+    # http://0.0.0.0:3000/widgets/relativeOffsetView
 	class HooRelativeOffsetView < GUI::Core::HooView
 
 		attr_accessor :top, :right, :bottom, :left

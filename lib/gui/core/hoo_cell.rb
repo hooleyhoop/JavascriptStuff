@@ -7,8 +7,8 @@ module GUI::Core
         # when rendering the cell (the cell is share between each item) dataSrc is the current item
         attr_accessor :dataSrc
 
-		def initialize
-			super();
+		def initialize( args={} )
+			super(args);
 			@currentIndex = 0;
 		end
 

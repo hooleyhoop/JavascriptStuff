@@ -1,12 +1,10 @@
 module GUI::Views::Unsorted
+
+	# http://0.0.0.0:3000/widgets/paddedHorizontal
 	class HooPaddedHorizontalList2View < GUI::Core::HooView
 
 		attr_accessor :content;
 		attr_accessor :cell;
-
-		def initialize()
-			super();
-		end
 
 		# Mock data
 		def setupDebugFixture

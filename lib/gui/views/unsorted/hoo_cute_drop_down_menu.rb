@@ -6,10 +6,6 @@ module GUI::Views::Unsorted
 		attr_accessor :content;
 		attr_accessor :cell;
 
-		def initialize( args={} )
-			super(args);
-		end
-
 		# Mock data
 		def setupDebugFixture
 			super();

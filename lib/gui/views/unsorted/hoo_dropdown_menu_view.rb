@@ -1,10 +1,12 @@
 module GUI::Views::Unsorted
+
+    # http://0.0.0.0:3000/widgets/dropdownMenuView
 	class HooDropdownMenuView < GUI::Core::HooView
 
     attr_accessor :menuTitle, :menuItems;
 
-		def initialize
-			super();
+		def initialize( args={} )
+			super(args);
 
 			@menuTitle = "Select a widget";
 			@menuItems = [	{ 'name'=>"item one", 'url'=>"/pages/_ajaxHTML"},

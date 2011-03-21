@@ -1,14 +1,11 @@
 module GUI::Views::Positioning
 
     # First of all lets split top / bottom
+	# http://0.0.0.0:3000/widgets/horizontalSplitView
 	class HooHorizontalSplitView < GUI::Core::HooView
 
         attr_accessor :fixedColWidth;
         attr_accessor :fixedColSide;
-
-		def initialize
-			super();
-		end
 
         # top / bottom
         def setFixedColumn( fixedColName, fixedColWidth );

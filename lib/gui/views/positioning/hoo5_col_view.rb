@@ -3,11 +3,8 @@ module GUI::Views::Positioning
     # PLEASE FILL ME IN
     # http://0.0.0.0:3000/widgets/5col
 
+	# http://0.0.0.0:3000/widgets/5col
 	class Hoo5ColView < GUI::Core::HooView
-
-		def initialize( args={} )
-			super();
-		end
 
 		def wasAddedToParentView
 		    super();

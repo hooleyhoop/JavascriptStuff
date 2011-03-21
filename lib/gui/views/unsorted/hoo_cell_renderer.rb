@@ -10,12 +10,7 @@ module GUI::Views::Unsorted
 		def initialize( args={} )
 			super(args);
 
-			if( args.has_key?(:cellName) )
-			    @cellName = args[:cellName]
-			else
-			    @cellName = 'horizontalList1'
-			end
-
+			extractArgs( args, {:cellName=>'horizontalList1'} );
 		end
 
 		def wasAddedToParentView

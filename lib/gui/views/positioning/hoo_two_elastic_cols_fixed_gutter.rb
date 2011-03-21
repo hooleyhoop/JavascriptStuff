@@ -1,15 +1,14 @@
 module GUI::Views::Positioning
 
-    # PLEASE FILL ME IN
+    # http://0.0.0.0:3000/widgets/twoElasticColsFixedGutter
 	class HooTwoElasticColsFixedGutter < GUI::Core::HooView
-
 
         # specify one or the other
         attr_accessor :fixedColWidth;
         attr_accessor :fixedColPercent;
 
-		def initialize
-			super();
+		def initialize( args={} )
+			super(args);
 			@fixedColSide = ''
 			@fixedColPercent=0;
 		end

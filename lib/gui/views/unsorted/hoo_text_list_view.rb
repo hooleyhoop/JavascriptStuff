@@ -1,13 +1,11 @@
 module GUI::Views::Unsorted
+
+    # http://0.0.0.0:3000/widgets/textList1
 	class HooTextListView < GUI::Core::HooView
 
     	attr_accessor :allItems;
     	attr_accessor :dataSrc;
         attr_accessor :size;
-
-		def initialize
-			super();
-		end
 
 		# Mock data
 		def setupDebugFixture

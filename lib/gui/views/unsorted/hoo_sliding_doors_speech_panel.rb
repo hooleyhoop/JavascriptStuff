@@ -8,10 +8,6 @@ module GUI::Views::Unsorted
 
         attr_accessor :speechPosition;
 
-		def initialize( args={} )
-			super();
-		end
-
         def constructSubViews
 
 			slidingDoorsPanel   = GUI::HooWidgetList.widgetClass('slidingDoorsPanel1');

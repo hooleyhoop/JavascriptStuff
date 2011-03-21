@@ -1,5 +1,7 @@
 module GUI::Views::Unsorted
-	class HooBlueView < GUI::Core::HooView
+
+	# http://0.0.0.0:3000/widgets/roundedPanelView
+	class HooRoundedPanelView < GUI::Core::HooView
 
 		def initialize
 			super();

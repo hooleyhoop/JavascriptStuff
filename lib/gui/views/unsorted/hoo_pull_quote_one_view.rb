@@ -1,11 +1,9 @@
 module GUI::Views::Unsorted
+
+	# http://0.0.0.0:3000/widgets/pullQuote1
 	class HooPullQuoteOneView < GUI::Core::HooView
 
     attr_accessor :text;
-
-		def initialize
-			super();
-		end
 
     def setupDebugFixture
       super();

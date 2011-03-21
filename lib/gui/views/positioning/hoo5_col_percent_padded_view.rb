@@ -1,13 +1,9 @@
 module GUI::Views::Positioning
 
     # PLEASE FILL ME IN
-    # http://0.0.0.0:3000/widgets/5col
+    # http://0.0.0.0:3000/widgets/5col_percent_padded
 
 	class Hoo5ColPercentPaddedView < GUI::Core::HooView
-
-		def initialize( args={} )
-			super();
-		end
 
 		def wasAddedToParentView
 		    super();

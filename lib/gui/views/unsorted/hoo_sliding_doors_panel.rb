@@ -2,6 +2,7 @@ module GUI::Views::Unsorted
 
     # Welcomen! There are 2 types at the moment. Outer and Inner
 
+    # http://0.0.0.0:3000/widgets/slidingDoorsPanel1
 	class HooSlidingDoorsPanel < GUI::Core::HooView
 
     	attr_accessor :cornerDim;
