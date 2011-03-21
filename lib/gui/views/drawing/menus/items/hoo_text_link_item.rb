@@ -5,7 +5,6 @@ module GUI::Views::Drawing::Menus::Items
 
 		attr_accessor :position;
 
-
         # Mock Data
 		def setupDebugFixture
 			super();
