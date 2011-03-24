@@ -19,9 +19,9 @@ HooStateMachine_event = HooStateMachine_abstractEvent.extend({
 
 HooStateMachine_state = SC.Object.extend({
 
-	name: undefined,
-	actions: undefined,
-	transitions: undefined,
+	name:			undefined,
+	actions:		undefined,
+	transitions:	undefined,
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
@@ -82,8 +82,8 @@ HooStateMachine_transition = SC.Object.extend({
 
 HooStateMachine = SC.Object.extend({
 
-	startState: undefined,
-	resetEvents: undefined,
+	startState:			undefined,
+	resetEvents:		undefined,
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
@@ -137,22 +137,32 @@ HooStateMachine_controller = SC.Object.extend({
 	machine: undefined,
 	commandsChannel: undefined,
 
-	handle: function( eventName ) {
+	handle: function( eventName, e, f ) {
 
-		if( this.currentState.hasTransition(eventName) )
-			this.transitionTo( this.currentState.targetState(eventName) );
+		var nextState = null;
 
-		else if( this.machine.isResetEvent(eventName) )
-			this.transitionTo( this.machine.startState );
+		// save a useful reference to the jquery event (for mouse pos and stuff)
+		if(e)
+		console.log("saving e "+eventName+" "+e.pageX); // buttonPressed buttonReleased
+		this.commandsChannel.lastWindowEvent = e;
+
+		if( this.currentState.hasTransition(eventName) ){
+			nextState = this.currentState.targetState(eventName)
+
+		} else if( this.machine.isResetEvent(eventName) ) {
+			nextState = this.machine.startState
 
 		// ignore unknown events
-		else {
+		} else {
 			// console.log("unknown event "+eventName );
+		}
+
+		if(nextState) {
+			this._transitionTo( nextState );
 		}
 	},
 
-	// private
-	transitionTo: function( targetState ) {
+	_transitionTo: function( targetState ) {
 		 this.currentState = targetState;
 		 targetState.executeActions( this.commandsChannel );
 	 }
@@ -248,6 +258,8 @@ HooThreeStateItem = SC.Object.extend({
 	_delegate:					undefined,
 	_initialState:				undefined,
 
+	lastWindowEvent:			undefined,
+
 	/* Overide this is more complex buttons */
 	_setupStateMachine: function( initialState ) {
 
@@ -298,12 +310,12 @@ HooThreeStateItem = SC.Object.extend({
 	},
 
 	showMouseDownState: function( state ) {
-		$('body').bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this._delegate.eventTrampoline )
+		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this._delegate.eventTrampoline );
 		this._delegate.showMouseDownState(state);
 	},
 
 	showMouseUpState: function( state ) {
-		$('body').unbind( 'mouseup' );
+		$(window).unbind( 'mouseup' );
 		this._delegate.showMouseUpState(state);
 	},
 
@@ -357,7 +369,6 @@ HooThreeStateItem = SC.Object.extend({
 			self._fsm_controller.handle( "clickActionCompleted" );
 			console.log("** Complete **");
 		};
-
 		var onCompleteStuffHash =  {onCompleteTarget: self, onCompleteAction: afterAction};
 		this._delegate.fireAction( nextState, onCompleteStuffHash );
 	},
@@ -430,4 +441,34 @@ HooFiveStateItem = HooThreeStateItem.extend({
 	fireButtonAction2: function() {
 		this.fireButtonAction(3);
 	}
+});
+
+
+HooSliderItem = HooThreeStateItem.extend({
+
+	// instead of aborting when drag outside..
+	enableButton: function( state ) {
+		arguments.callee.base.apply(this,arguments);
+		var button = this._delegate.getClickableItem();
+		if( button ) {
+			button.unbind( 'mouseleave');
+		}
+	},
+
+	showMouseDownState: function( state ) {
+		var self = this;
+		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this._delegate.eventTrampoline )
+		$(window).bind( 'mousemove', function(e){
+			self.lastWindowEvent = e;
+			self._delegate.mouseDragged(e);
+		})
+		this._delegate.showMouseDownState(state);
+	},
+
+	showMouseUpState: function( state ) {
+		$(window).unbind( 'mouseup' );
+		$(window).unbind( 'mousemove' );
+		this._delegate.showMouseUpState(state);
+	}
+
 });

@@ -6,9 +6,27 @@
  *
  * The Rules
  * -------------------------
- *
+ * 8, 13, 21
  * NO! measurments in CSS. NO! 12px. NO! 2em. NO! 25%
 */
+
+/* VERY SMALL */
+
+.serifVSmall {
+	font: normal normal 11px/15px Georgia;
+	text-decoration: none;
+	padding-top: 4px;
+	padding-bottom: 11px;
+	letter-spacing: 0.06pc;
+}
+
+.sansVSmallBold {
+	font: normal bold 9px/15px Helvetica;
+	text-decoration: none;
+	padding-top: 4px;
+	padding-bottom: 11px;
+	letter-spacing: 0.06pc;
+}
 
 /* SET SOLID */
 
@@ -36,22 +54,43 @@
 	word-spacing: -0.1pc;
 }
 
-/* VERY SMALL */
-
-.sansVSmallBold {
-	font: normal bold 9px/15px Helvetica;
+/* BIG */
+.serifBig {
+	font: normal normal 21px/30px Georgia;
 	text-decoration: none;
-	padding-top: 4px;
-	padding-bottom: 11px;
+	padding-top: 8px;
+	padding-bottom: 7px;
+	letter-spacing: -0.05pc;
+	word-spacing: -0.1pc;
 }
+
+.sansBigBold {
+	font: normal bold 21px/30px Helvetica;
+	text-decoration: none;
+	padding-top: 8px;
+	padding-bottom: 7px;
+	letter-spacing: -0.06pc;
+	word-spacing: -0.13pc;
+}
+
 
 /* VERY BIG */
 
-.sansVBig {
+.serifVBig {
 	font: normal normal 28px/30px Georgia;
 	text-decoration: none;
 	padding-top: 4px;
 	padding-bottom: 26px;
+	letter-spacing: -0.07pc;
+	word-spacing: -0.1pc;
+}
+
+.sansVBigBold {
+	font: normal bold 28px/30px Helvetica;
+	text-decoration: none;
+	padding-top: 4px;
+	padding-bottom: 26px;
+	letter-spacing: -0.07pc;
 	word-spacing: -0.1pc;
 }
 

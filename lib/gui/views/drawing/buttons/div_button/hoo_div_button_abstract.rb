@@ -6,6 +6,8 @@ module GUI::Views::Drawing::Buttons::DivButton
 
 	class HooDivButtonAbstract < GUI::Core::HooView
 
+		include GUI::Core::HooBindingsMixin
+
 		include Test::Unit::Assertions
 
 		attr_accessor :img;
@@ -43,21 +45,6 @@ module GUI::Views::Drawing::Buttons::DivButton
 			assert( @labelStates.count==@_states, "you need to have #{@_states} states" );
 		end
 
-		def addBinding( aHash )
-			if(@bindings==nil)
-				@bindings = {};
-			end
-			@bindings.merge!( aHash );
-		end
-
-#TODO: Still got to work out the bindings superclass
-
-		def addJavascriptAction( aHash )
-			if(@javascriptActions==nil)
-				@javascriptActions = {};
-			end
-			@javascriptActions.merge!( aHash );
-		end
 
 		# stuff to write into the page
 		def jsonProperties

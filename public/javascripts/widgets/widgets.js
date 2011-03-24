@@ -67,17 +67,19 @@ function createJSObjectsFromRubyObjects( rootElement ) {
  * set these values in Create( hash )
 */
 HooWidget = SC.Object.extend({
+
 	json: "undefined",
 	id: "undefined",
 
 	// forward events to 'this'
+	// i think we have a problem here, eventTrampoline is not called as an instance method (ie. 'this' is not what we think it is so dont assume you can use instance variables)
 	eventTrampoline: function(e,a) {
+
 		var target = e.data.target;
 		var action = e.data.action;
 		var arg = e.data.arg;
 		// target[action](arg, e);
 		target[action].call(target,arg, e);
-
 	},
 
 	parentDidResize: function() {

@@ -6,8 +6,6 @@ module GUI::Views::Drawing::Menus::Items
 	class HooTextToggleItem < GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggleDynamicWidth
 
 		include HooTextMenuItemMixin
-		include WidgetsHelper
-
 
 		attr_accessor :position;
 

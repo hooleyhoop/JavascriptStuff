@@ -10,7 +10,7 @@ module GUI::Views::Drawing::Menus
 		attr_accessor	:labelColor
 
 		def initialize( args={} )
-			@img = '../images/buttons/simple-button-dynamic-width/3-state-combine.png';
+			@img = '../images/buttons/simple-button-dynamic-width/3-state-combine-small.png';
 			super(args);
 		end
 
@@ -34,7 +34,7 @@ module GUI::Views::Drawing::Menus
 		def setupDebugFixture
 			super();
 
-			@height = 22; # Border will nesarily be applied ontop of this
+			@height = 15; # Border will nesarily be applied ontop of this
 			@labelColor = '#3171d7';
 
 			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new( :initialState=>1, :cornerRad=>10, :border=>0 );

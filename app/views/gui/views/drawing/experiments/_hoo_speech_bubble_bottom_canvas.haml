@@ -5,7 +5,7 @@
 
 -# Top Elastic Row
 %div[_]{ :class=>"speechBubble", :data=>{'jsclass'=>'HooSpeechBubbleBottomCanvas'}, :style =>"margin:auto; overflow:visible; width:100%" }
-	%canvas( width="100" height="100" style="border:0 solid white; z-index: -1; position: absolute; ")
+	%canvas( width="100" height="100" style="border:0 solid white; position: absolute; ")
 
 	%div( class="panel_style_inner" style="position: relative;" )
 
@@ -87,6 +87,7 @@
 					}, 70);
 				//}
 			},
+
 			parentDidResize: function() {
 				//if(Modernizr.canvas!==undefined)
 				if(this._started===true)
@@ -110,7 +111,6 @@
 			draw: function( ctx, width, height ) {
 
 				if( height%15!=0) console.error("why is this height fucked? "+height);
-				console.log("height is "+height);
 				var gradient;
 
 				var anticlockwise = true;
@@ -125,6 +125,8 @@
 
 				// layer1/Path
 				ctx.save();
+				ctx.globalAlpha = 1.0;
+				ctx.globalCompositeOperation = 'source-over';
 
 				ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
 				ctx.shadowOffsetX = 1;
@@ -188,18 +190,15 @@
 
 				ctx.closePath();
 
-				gradient = ctx.createLinearGradient(122.5, 1.1, 122.5, 201.3);
-				gradient.addColorStop(0.00, "rgba(255, 255, 255, 1)");
-				gradient.addColorStop(0.3, "rgba(255, 255, 255, 1)");
-				gradient.addColorStop(1.0, "rgba(125, 125, 200, 1)");
-
-				ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+				ctx.fillStyle = "rgba(250, 250, 250, 0.5)";
 				ctx.fill();
 
+				gradient = ctx.createLinearGradient(0, height, 0, 0);
+				gradient.addColorStop(1.0, "rgba(245, 242, 242, 1)");
+				gradient.addColorStop(0, "rgba(245, 237, 237, 1)");
 				ctx.fillStyle = gradient;
 				ctx.fill();
 
-				//ctx.stroke();
 				ctx.restore();
 			}
 		});

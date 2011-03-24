@@ -110,8 +110,8 @@ module Presenters
                 mainBooDetails = booMainDetails.new();
                 listView1.addSubView( mainBooDetails );
 
-                #comeback thePlayer = detailPlayer.new();
-                #comeback listView1.addSubView( thePlayer );
+                thePlayer = detailPlayer.new();
+                listView1.addSubView( thePlayer );
 
                 # LeftSide - description
                 #comeback booDescription = loremIpsumView.new();
@@ -130,30 +130,30 @@ module Presenters
 
                 # RIGHT SIDE - here's where we can really feel the power & speed of presenters
                 # TODO: Different layouts depending which elements are present
-                #comeback rightSideList = spacedVerticalList.new();
-                #comeback divider.addSubView( rightSideList );
+                rightSideList = spacedVerticalList.new();
+                divider.addSubView( rightSideList );
 
 				#right side - edit bar
-				#comeback editbar = editbarView.new();
-				#comeback rightSideList.addSubView( editbar );
+				#editbar = editbarView.new();
+				#rightSideList.addSubView( editbar );
 
                 # RIGHT SIDE - Images
-                #comeback divider2 = twoElasticColsFixedGutter.new();
-                #comeback rightSideList.addSubView( divider2 );
+                divider2 = twoElasticColsFixedGutter.new();
+                rightSideList.addSubView( divider2 );
 
-                #comeback booImage = croppedImgWithHeader.new();
-                #comeback booImage.label = 'Image'
-                #comeback booImage.color = 'lime';
-                #comeback booImage.path = '/images/boo/sampleImage5.jpg';
+                booImage = croppedImgWithHeader.new();
+                booImage.label = 'Image'
+                booImage.color = 'lime';
+                booImage.path = '/images/boo/sampleImage5.jpg';
                 #mapImg.labelLink = 'www.apple.com'
-    			#comeback divider2.addSubView( booImage );
+    			divider2.addSubView( booImage );
 
-                #comeback mapImg = croppedImgWithHeader.new();
-                #comeback mapImg.label = 'Location'
-                #comeback mapImg.color = 'orange';
-                #comeback mapImg.path = '../images/map/map_image.jpg';
+                mapImg = croppedImgWithHeader.new();
+                mapImg.label = 'Location'
+                mapImg.color = 'orange';
+                mapImg.path = '../images/map/map_image.jpg';
                 #mapImg.labelLink = 'www.apple.com'
-    			#comeback divider2.addSubView( mapImg );
+    			divider2.addSubView( mapImg );
 
                 # RIGHT SIDE - Tags
                 #comeback divider3 = twoElasticColsFixedGutter.new();

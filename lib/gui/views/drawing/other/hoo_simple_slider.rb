@@ -12,6 +12,11 @@ module GUI::Views::Drawing::Other
         # Mock Data
 		def setupDebugFixture
 			super();
+
+			#-- add a checkbox
+			chckBox = GUI::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} )
+			chckBox.addJavascriptAction( { :mouseClick=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock' }} );
+			self.addSubView( chckBox );
 		end
 
 		# stuff to write into the page

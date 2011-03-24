@@ -4,6 +4,7 @@ module GUI::Views::Drawing::Menus::Items::HooTextMenuItemMixin
 
 		# requires a position accessor
 
+		require 'gui/helpers/widgets_helper'
 
         # Mock Data
 		# def setupDebugFixture

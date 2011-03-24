@@ -3,32 +3,35 @@
 -# This is a none working player
 %div[_]{ :style=>"position: relative;" }
 
-    %div.player_left{ :style=>"position: absolute; height:105px; background: url( #{_.playerLeft} ) no-repeat left top; width: 105px;" }
-    %div.player_ermLeftAgain{ :style=>"height:105px; padding-left: 105px;" }
-        %div.player_right{ :style=>"height:100%; padding-right: 30px; background:  url( #{_.playerRight} ) no-repeat right top;" }
-            %div.player_inner{ :style=>"height:100%; background: url( #{_.playerMid} ) repeat-x left top; background-origin: border-box;" }
+	%div( style="font-size: 15px;")
+		Title goes here
 
-    %a( href='#' )
-        %div.playButton( style="display: inline-block; position: absolute; left: 0; top: 0; width:75px; height:75px; background-image: url( #{_.playButton}) ;")
+	%div.player_left{ :style=>"position: absolute; height:105px; background: url( #{_.playerLeft} ) no-repeat left top; width: 105px;" }
+	%div.player_ermLeftAgain{ :style=>"height:105px; padding-left: 105px;" }
+		%div.player_right{ :style=>"height:100%; padding-right: 30px; background:  url( #{_.playerRight} ) no-repeat right top;" }
+			%div.player_inner{ :style=>"height:100%; background: url( #{_.playerMid} ) repeat-x left top; background-origin: border-box;" }
 
-    %a( href='#' )
-        %div.carat( style="display: inline-block; position: absolute; left: 75px; top: 0px; width:60px; height:45px; background-image: url( #{_.carat}) ;")
-            %span( style="position: absolute; top:12px; left:17px; font-size:11px;") 00:33
+	%a( href='#' )
+		%div.playButton( style="display: inline-block; position: absolute; left: 0; top: 0; width:75px; height:75px; background-image: url( #{_.playButton}) ;")
+
+	%a( href='#' )
+		%div.carat( style="display: inline-block; position: absolute; left: 75px; top: 0px; width:60px; height:45px; background-image: url( #{_.carat}) ;")
+			%span( style="position: absolute; top:12px; left:17px; font-size:11px;") 00:33
 
 
-    %div( style="margin:0 15px 0 0; background-color: transparent; overflow: visible; height: 30px; border: 0px solid lightgray")
+	%div( style="margin:0 15px 0 0; background-color: transparent; overflow: visible; height: 30px; border: 0px solid lightgray")
 
-        %ul( style="padding-top: 4px;")
-            %li( style="display:inline-block; background-color: transparent; float: right;")
-            -#     <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="hooleyhoop">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-            -#
-            -# %li{ :style=>"display:inline-block; background-color: transparent; float: right" }
-            -# 	<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
-            -#
-            -# %li{ :style=>"display:inline-block; background-color: transparent; float: right" }
-            -# 	<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="hooleyhoop">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-            -#
-            -# %li{ :style=>"display:inline-block; background-color: transparent; float: right" }
-            -#    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+		%ul( style="padding-top: 4px;")
+			%li( style="display:inline-block; background-color: transparent; float: right;")
+			-#     <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="hooleyhoop">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			-#
+			-# %li{ :style=>"display:inline-block; background-color: transparent; float: right" }
+			-# 	<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+			-#
+			-# %li{ :style=>"display:inline-block; background-color: transparent; float: right" }
+			-# 	<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="hooleyhoop">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			-#
+			-# %li{ :style=>"display:inline-block; background-color: transparent; float: right" }
+			-#    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 
-    = insert( _.views, "" )
+	= insert( _.views, "" )

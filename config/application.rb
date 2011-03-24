@@ -32,12 +32,10 @@ module JavascriptStuff
     # config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
-    #<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
-
-    config.action_view.javascript_expansions[:defaults] = ['jquery/jquery-1.5.1.min.js', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js', 'jquery/jquery-tmpl/jquery.tmpl.js', 'jquery/jquery-tmpl/jquery.tmplPlus.js', 'jquery/jquery-ujs/src/rails.js', 'jquery/jquery-customdata/jquery.customdata.js', 'third_party/flash_detection.js', 'hoo/HooSC_min.js', 'hoo/browser_utilities.js', 'third_party/modernizr-1.7.min.js', 'widgets/widgets.js', 'hoo/simple-state-machine.js','widgets/buttons.js', 'widgets/headless_player.js']
+    config.action_view.javascript_expansions[:defaults] = ['jquery/jquery-1.5.1.min.js', 'jquery/jquery-tmpl/jquery.tmpl.js', 'jquery/jquery-tmpl/jquery.tmplPlus.js', 'jquery/jquery-ujs/src/rails.js', 'jquery/jquery-customdata/jquery.customdata.js', 'jquery/jquery-ui-1.8.11.custom.min', 'third_party/flash_detection.js', 'hoo/HooSC_min.js', 'hoo/browser_utilities.js', 'third_party/modernizr-1.7.min.js', 'widgets/widgets.js', 'hoo/simple-state-machine.js','widgets/buttons.js', 'widgets/headless_player.js']
 
 	#<link type="text/css" href="../stylesheets/Aristo/jquery-ui-1.8.7.custom.css" rel="stylesheet" />
-    config.action_view.stylesheet_expansions = { :app => ['simple_reset', 'Aristo/jquery-ui-1.8.7.custom', 'audioboo_theme', 'type', 'positioning', 'widget_specific'] }
+    config.action_view.stylesheet_expansions = { :app => ['simple_reset', 'audioboo_theme', 'type', 'positioning', 'widget_specific'] } # 'Aristo/jquery-ui-1.8.7.custom'
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"

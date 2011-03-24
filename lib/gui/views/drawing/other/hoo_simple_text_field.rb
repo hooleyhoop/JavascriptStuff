@@ -4,6 +4,8 @@ module GUI::Views::Drawing::Other
 	# http://0.0.0.0:3000/widgets/simpleTextField?prefix=Hello&text=World&postfix=Humpf
 	class HooSimpleTextField < GUI::Core::HooView
 
+		include GUI::Core::HooBindingsMixin
+
 		include Test::Unit::Assertions
 
 		attr_accessor :prefix, :text, :postfix
@@ -48,12 +50,6 @@ module GUI::Views::Drawing::Other
 			return allItems.to_json();
 		end
 
-		def addBinding( aHash )
-			if(@bindings==nil)
-				@bindings = {};
-			end
-			@bindings.merge!( aHash );
-		end
 
 	end
 end

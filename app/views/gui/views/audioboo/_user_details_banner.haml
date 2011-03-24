@@ -11,11 +11,11 @@
 
 	-# Overflow hidden makes sure the text doesn't wrap - is this reliable?
 	%div( class='sansSolid' style='overflow: hidden;' )
-		%div.sansVBig
+		%div.serifBig
 			-# crazy stuff happening here, dont try to set the font on an anchor
 			%a( href="#{_.userHomePageURL}" style="color: #be178b;") #{_.userName}
 
-		%div( style="margin-top: -15px;" )
+		%div( style="margin-top: 0px;" )
 			-# go thru stats hash
 			- sparator = ' / '
 			- first = true

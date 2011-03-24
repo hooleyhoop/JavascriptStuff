@@ -9,18 +9,267 @@
 
 -# adding the data-jsclass attribute means that a javascript instance will be created on-load
 -# Todo: I also need to have it created if it is inserted by ajax!
-%div[_]( data-jsclass='HooSimpleSlider' style="width:300px; height:50px; background-color:#ff0000;" )
-	.nubbin( style="width:20px; height:20px; background-color:#00ff00;" )
+%div[_]( data-jsclass='HooSimpleSlider' style="position:relative; height: 15px; background:transparent url(../images/player/timeline_background.png) no-repeat left top;" )
+
+	%div.slider
+		.slidingDoor_left( style="display:block; height: 15px; overflow: hidden;" )
+			.slidingDoor_right( style="display:inline-block; float: right; background:transparent url(../images/player/timeline_background.png) no-repeat right bottom; green; width: 15px; height: 15px; overflow: hidden;" )
+
+		%div.loadProgress( style="width:180px; height: 11px; background-color:#ededed; position: absolute; top: 0; margin: 2px; opacity:0.5;" )
+		%div.playProgress( style="width:180px; height: 11px; background-color:#ff005b; position: absolute; top: 0; margin: 2px;" )
+		%canvas( width="100" height="12" style="position:absolute; top:0; margin:2px;" )
+
+	-#.nubbin( style="width:20px; height:20px; background-color:#00ff00;" )
+
+	=  insert( _.views, "" )
 
 - if( _.includeOnce? )
 	:javascript
 
+		BusyFadeHelper = SC.Object.extend({
+
+			_busyAlpha:			0,
+			_busyFadeDirection:	false,
+			_showBusy: 			false,
+			_intervalId:		undefined,
+			_animFunction:		undefined,
+
+			begin: function( fps ) {
+				this._showBusy = true;
+				this._busyFadeDirection = true;
+				this._intervalId = setInterval( this._animFunction , fps );
+			},
+
+			step: function() {
+
+				if( this._busyFadeDirection===true && this._busyAlpha<10 ) {
+					this._busyAlpha = this._busyAlpha+1;
+				} else if( this._busyFadeDirection===false ) {
+					this._busyAlpha = this._busyAlpha-1;
+					if(this._busyAlpha==0) {
+						this.onFadeOutComplete();
+						this._busyAlpha = 0;
+					}
+				}
+			},
+
+			end: function() {
+				this._busyFadeDirection = false;
+			},
+
+			onFadeOutComplete: function() {
+				this._showBusy = false;
+				clearInterval(this._busyIntervalId);
+			}
+		});
+
+
 		/*
 		 *
 		*/
-		HooSimpleSlider = SC.Object.extend({
+		HooSimpleSlider = HooWidget.extend({
+
+			_$parentDiv:		undefined,
+			_$canvas:			undefined,
+			_started:			false,
+			_timeInterval:		undefined,
+			_t:					undefined,
+			_loadProgress:		undefined,
+			_playProgress:		undefined,
+			_loadedAmount:		0,
+			_playedAmount:		0,
+			_busyFadeHelper:	undefined,
+			_mouseStateMachine: undefined,
+
 			init: function( /* init never has args */ ) {
+
 				arguments.callee.base.apply(this,arguments);
-				// the nubbin needs to be draggable
+
+					this._$parentDiv = $( "#"+this.id );
+					this._$canvas = this._$parentDiv.find( "canvas:first" );
+					this._loadProgress = this._$parentDiv.find( ".loadProgress:first" );
+					this._playProgress = this._$parentDiv.find( ".playProgress:first" );
+					this._loadedAmount = 0.5;
+					this._playedAmount = 0.3;
+					this._timeInterval = 1000/15;
+					this._t = 0;
+
+					this._mouseStateMachine = HooSliderItem.create();
+					this._mouseStateMachine._delegate = this;
+					this._mouseStateMachine._setupStateMachine( 0 );
+					this._mouseStateMachine.setInitialState( 0 );
+
+					this._mouseStateMachine._fsm_controller.handle( "enable" );
+
+					var self = this;
+
+					// once mouse is down dragging left right,
+					// mouse up
+					// mouse drag
+					//this._$parentDiv.click(function(e) {
+					//	alert("cock");
+					//});
+					this._busyFadeHelper = BusyFadeHelper.create();
+
+					setTimeout( function(){
+						self.resizeAll();
+						self._started = true;
+					}, 70);
+			},
+
+			getClickableItem: function() {
+				return this._$parentDiv.find( ".slider" );
+			},
+
+			parentDidResize: function() {
+
+				//if(Modernizr.canvas!==undefined)
+				if(this._started===true)
+					this.resizeAll();
+				//}
+			},
+
+			resizeAll: function() {
+
+				var newWidth = this._$parentDiv.width();
+				var newHeight = this._$parentDiv.outerHeight();
+				var currentWidth = this._$canvas.width();
+				var currentHeight = this._$canvas.outerHeight();
+
+				if( newWidth!=currentWidth || newHeight!=currentHeight) {
+
+					// resize canvas
+					this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
+					var ctx = this._$canvas[0].getContext('2d');
+				    this.draw(ctx, newWidth, newHeight);
+
+				    this._loadProgress.width((newWidth-4)*this._loadedAmount);
+				    this._playProgress.width((newWidth-4)*this._playedAmount);
+				}
+			},
+
+			draw: function( ctx, width, height ) {
+
+				ctx.save();
+				ctx.clearRect(0,0,width,height);
+
+				ctx.globalAlpha = 1.0;
+				ctx.globalCompositeOperation = 'source-over';
+
+		        ctx.beginPath();
+				ctx.rect(0,0,width-4,height-4);
+				ctx.clip();
+
+				// draw the background
+				// ctx.fillStyle = "rgba(100,100,100,1)";
+				// ctx.fillRect(0,0,width-4,height-4);
+
+				// draw the slanty rects
+				if( this._busyFadeHelper._showBusy===true ) {
+
+					this._busyFadeHelper.step();
+
+					var busyAlpha = 0.4 * this._busyFadeHelper._busyAlpha/10.0;
+					ctx.fillStyle = "rgba(170,160,160,"+busyAlpha+")";
+
+					var percent = this._t/1000;
+					var barWidth = 5;
+					var barSpace = 10;
+					var numberOfBars = width/barSpace;
+
+					var maxOffset = 10;
+					var xDisplacement = maxOffset*percent;
+
+					var x = -barWidth;
+					for( var i=0; i<numberOfBars; i++ ) {
+
+						// offset each slanty rect
+						ctx.setTransform(1, 0, 0, 1, x, 0);
+						ctx.beginPath();
+
+						// draw a slanty recty
+						ctx.moveTo( xDisplacement, 0 );
+						ctx.lineTo( xDisplacement+barWidth, 0 );
+						ctx.lineTo( xDisplacement+barWidth-barWidth, height-4 );
+						ctx.lineTo( xDisplacement-barWidth, height-4 );
+						ctx.closePath();
+						ctx.fill();
+						x = x+barSpace;
+					}
+				}
+
+				// draw a grad over the top
+				ctx.setTransform(1, 0, 0, 1, 0, 0);
+		        ctx.beginPath();
+				ctx.rect(0,0,width-4,height-4);
+
+				ctx.globalCompositeOperation = 'lighter';
+				gradient = ctx.createLinearGradient(0, height, 0, 0);
+				gradient.addColorStop(1.0, "rgba(235, 235, 235, 0.3)");
+				gradient.addColorStop(0, "rgba(0, 0, 0, 0.1)");
+				ctx.fillStyle = gradient;
+				ctx.fill();
+
+				ctx.restore();
+			},
+
+			toggleBusy: function() {
+				if(this._busyFadeHelper._showBusy)
+					this.stopBusy();
+				else
+					this.startBusy();
+			},
+
+			startBusy: function() {
+
+				var self = this;
+				this._busyFadeHelper._animFunction = function() {
+					var ctx = self._$canvas[0].getContext('2d');
+				    self.draw(ctx, self._$parentDiv.width(), self._$parentDiv.outerHeight());
+					self._t = (self._t + self._timeInterval) % 1000;
+				}
+				this._busyFadeHelper.begin( self._timeInterval );
+			},
+
+			stopBusy: function() {
+				this._busyFadeHelper.end();
+			},
+
+			temporarySetEnabledState: function( stateIndex, enabled ) {},
+			enableButton: function( stateIndex ) {},
+			showMouseUpState: function( stateIndex ) {
+				console.log( "boo yah " + this.localXPosition() );
+			},
+
+			showMouseDownState: function( stateIndex ) {
+				console.log( "boo yah " + this.localXPosition() );
+			},
+
+			fireAction: function( nextState, argsHash ) {
+				argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+			},
+
+			mouseDragged: function(e){
+				console.log( "boo yah " +  this.localXPosition());
+			},
+
+			localXPosition: function(){
+
+				if(this._mouseStateMachine.lastWindowEvent) {
+					var x = this._mouseStateMachine.lastWindowEvent.pageX;
+					var y = this._mouseStateMachine.lastWindowEvent.pageY;
+					var pos = this._loadProgress.offset();
+					var xval;
+					var size = [this._loadProgress.width(), this._loadProgress.height()];
+					if( pos.left>x )
+						xval = 0;
+					else if((pos.left+size[0])<x)
+						xval = 1;
+					else
+						xval = (x-pos.left)/size[0];
+					return xval;
+				}
+				return -1;
 			}
+
 		});

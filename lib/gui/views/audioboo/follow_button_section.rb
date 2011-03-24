@@ -31,8 +31,8 @@ module GUI::Views::Audioboo
 			followButtonState = isFollowing ? 3 : 1;
 
 			@inLineMenu = GUI::HooWidgetList.widgetClass('miniInLineMenu').new();
-			@inLineMenu.height = 22;
-			@inLineMenu.labelColor = '#3171d7';
+			@inLineMenu.height = 15;
+			@inLineMenu.labelColor = '#3574d7';
 
 			item1 = GUI::HooWidgetList.widgetClass('textToggleItem').new(  :initialState=>1 );
 			item1.labelStates = ['follow', 'follow', 'follow', 'un-follow', 'un-follow'];

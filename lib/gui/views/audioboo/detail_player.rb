@@ -86,10 +86,10 @@ module GUI::Views::Audioboo
 			}.call
 
 			# A simple slider
-			#lambda {
-			#	@simpleSlider = slider_class.new();
-			#	addSubView( @simpleSlider );
-			#}.call
+			lambda {
+				@simpleSlider = slider_class.new();
+				addSubView( @simpleSlider );
+			}.call
 
 
 			# A simple spinner

@@ -55,7 +55,7 @@ HooAbstractButton = HooWidget.extend({
 		//		console.assert( height==this.positionBackground.previousHeight, "shit" );
 		}
 		this.positionBackground.previousHeight = height;
-		console.log("moving background "+offset);
+		// console.log("moving background "+offset);
 
 		$butt.css( "backgroundPosition", "0px -"+offset+"px" );
 	}
@@ -114,7 +114,7 @@ HooFormButtonSimple = HooAbstractButton.extend({
 				}
 			}
 
-			// set up actions as configured in the json
+			// set up actions as configured in the json - mixin?
 			if( this.json.javascriptActions )
 			{
 				if( this.json.javascriptActions.mouseClick )
