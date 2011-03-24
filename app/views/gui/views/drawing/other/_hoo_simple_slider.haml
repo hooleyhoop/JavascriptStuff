@@ -79,42 +79,96 @@
 			_loadedAmount:		0,
 			_playedAmount:		0,
 			_busyFadeHelper:	undefined,
-			_mouseStateMachine: undefined,
+			_stateMachine: 		undefined,
 
 			init: function( /* init never has args */ ) {
 
 				arguments.callee.base.apply(this,arguments);
 
-					this._$parentDiv = $( "#"+this.id );
-					this._$canvas = this._$parentDiv.find( "canvas:first" );
-					this._loadProgress = this._$parentDiv.find( ".loadProgress:first" );
-					this._playProgress = this._$parentDiv.find( ".playProgress:first" );
-					this._loadedAmount = 0.5;
-					this._playedAmount = 0.3;
-					this._timeInterval = 1000/15;
-					this._t = 0;
+				this._$parentDiv = $( "#"+this.id );
+				this._$canvas = this._$parentDiv.find( "canvas:first" );
+				this._loadProgress = this._$parentDiv.find( ".loadProgress:first" );
+				this._playProgress = this._$parentDiv.find( ".playProgress:first" );
+				this._loadedAmount = 0.5;
+				this._playedAmount = 0.3;
+				this._timeInterval = 1000/15;
+				this._t = 0;
 
-					this._mouseStateMachine = HooSliderItem.create();
-					this._mouseStateMachine._delegate = this;
-					this._mouseStateMachine._setupStateMachine( 0 );
-					this._mouseStateMachine.setInitialState( 0 );
+				this._stateMachine = HooSliderItem.create();
+				this._stateMachine._delegate = this;
+				this._stateMachine._setupStateMachine( 0 );
+				this._stateMachine.setInitialState( 0 );
 
-					this._mouseStateMachine._fsm_controller.handle( "enable" );
+				this._busyFadeHelper = BusyFadeHelper.create();
+			},
 
-					var self = this;
+			// extract bindings from json - move to widget
+			hoo_binding: function( binding, bindingTarget, bindingProperty, actionMethod ) {
 
-					// once mouse is down dragging left right,
-					// mouse up
-					// mouse drag
-					//this._$parentDiv.click(function(e) {
-					//	alert("cock");
-					//});
-					this._busyFadeHelper = BusyFadeHelper.create();
+				if( this.json.bindings && this.json.bindings[binding] ){
+					var b = this.json.bindings[binding];
+					var target = window[ b[bindingTarget] ];
+					if(target===undefined)
+						debugger;
+					var initialState = target.get( b[bindingProperty] );
+					this.readyDidChange( target, b[bindingProperty] );
+					target.addObserver( b[bindingProperty], this, this[ b[actionMethod] ] );
+					return true;
+				}
+				return false;
+			},
 
-					setTimeout( function(){
-						self.resizeAll();
-						self._started = true;
-					}, 70);
+			// extract actions from json - move to widget
+			hoo_action: function( action, actionTarget, actionEvent ) {
+
+				if( this.json.javascriptActions && this.json.javascriptActions[action] )
+				{
+					var a = this.json.javascriptActions[action];
+					var target	= window[ a[actionTarget] ];
+					var action	= target[ a[actionEvent] ];
+					var arg		= a['action_arg'];
+					return { t:target, a:action, w:arg };
+				}
+				return Null;
+			},
+
+			setupDidComplete: function() {
+
+				this.resizeAll();
+				this._started = true;
+
+				/* Redo Bindings */
+				var binding = 'enabledBinding';
+				var bindingTarget = 'enabled_taget';
+				var bindingProperty = 'enabled_property';
+				var actionMethod = 'enabled_action';
+
+				var hasBinding = this.hoo_binding( binding, bindingTarget, bindingProperty, actionMethod );
+
+				if( hasBinding==false && this.json.initialState>0 ) {
+					this._stateMachine._fsm_controller.handle( "enable" );
+				}
+
+				var action = 'mouseClick';
+				var actionTarget = 'action_taget';
+				var actionEvent = 'action_event';
+
+				this._mouseClickAction = this.hoo_action( action, actionTarget, actionEvent );
+				if(this._mouseClickAction) {
+					// self._checkbox.change(function(e) {
+					//	self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
+					// });
+				}
+			},
+
+			// we observed a change!
+			readyDidChange: function( target, property ) {
+
+				//pbtarget.removeObserver( property, this, this.readyDidChange );
+				if( target.get(property)) {
+					this._stateMachine._fsm_controller.handle( "enable" );
+				}
+				// handle disable as well as enable?
 			},
 
 			getClickableItem: function() {
@@ -238,26 +292,30 @@
 			temporarySetEnabledState: function( stateIndex, enabled ) {},
 			enableButton: function( stateIndex ) {},
 			showMouseUpState: function( stateIndex ) {
-				console.log( "boo yah " + this.localXPosition() );
 			},
 
 			showMouseDownState: function( stateIndex ) {
-				console.log( "boo yah " + this.localXPosition() );
+				if(this._mouseClickAction) {
+					this._mouseClickAction.a.call( this._mouseClickAction.t, this.localXPosition() );
+				}
+			},
+
+			mouseDragged: function(e){
+				if(this._mouseClickAction) {
+					this._mouseClickAction.a.call( this._mouseClickAction.t, this.localXPosition() );
+				}
 			},
 
 			fireAction: function( nextState, argsHash ) {
 				argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
 			},
 
-			mouseDragged: function(e){
-				console.log( "boo yah " +  this.localXPosition());
-			},
-
+			// convert mouse coord to slider position
 			localXPosition: function(){
 
-				if(this._mouseStateMachine.lastWindowEvent) {
-					var x = this._mouseStateMachine.lastWindowEvent.pageX;
-					var y = this._mouseStateMachine.lastWindowEvent.pageY;
+				if(this._stateMachine.lastWindowEvent) {
+					var x = this._stateMachine.lastWindowEvent.pageX;
+					var y = this._stateMachine.lastWindowEvent.pageY;
 					var pos = this._loadProgress.offset();
 					var xval;
 					var size = [this._loadProgress.width(), this._loadProgress.height()];

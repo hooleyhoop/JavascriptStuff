@@ -9,6 +9,11 @@ module GUI::Views::Drawing::Buttons::FormButton
 
 	class HooFormButtonSimple < HooFormButtonAbstract
 
+		def initialize( args={} )
+			@_states = 3
+			super(args);
+		end
+
         # Mock Data
 		def setupDebugFixture
 			super();

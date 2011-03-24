@@ -22,15 +22,14 @@ module Presenters
 				@simpleButton1.img = '../images/buttons/simple-button/3-state-combine.png';
 				@simpleButton1.size = [105,45];
 				@simpleButton1.labelStates = ['-- --', 'Submit', 'Pressed'];
-				#@simpleButton1.initialState = 1;
+				@simpleButton1.initialState = 1;
 				@simpleButton1.labelColor = '#fff'
 				@simpleButton1.action = '/widgets/_ajaxPostTest'
 				@simpleButton1.javascript = "this.hookupAction( function(){
-					alert('Holy Cock');
-				});";
+				#	alert('Holy Cock');
+				#});";
 				@window.contentView.addSubView( @simpleButton1 );
 			}.call
-
 
 			lambda {
 				@simpleButton2 = simpleButton.new( :initialState=>1 );
@@ -77,6 +76,8 @@ module Presenters
 				@largeButton1.action = '/widgets/_ajaxPostTest'
 				@window.contentView.addSubView( @largeButton1 );
 			}.call
+
+
 		end
 	end
 end

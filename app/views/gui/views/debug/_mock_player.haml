@@ -1,0 +1,36 @@
+- push( mock_player )
+
+%div[_]( data-jsclass='Mock_Player' style="font-size:15px; background-color: red;" )
+	%span Not ready
+
+-# Obviously we cannot leave this here as it is crazy to include it more than once
+- if( _.includeOnce? )
+	:javascript
+
+		// Obviously, we only do this if there is a bloomin canvas in the first place. Oh, hello ie
+		Mock_Player = HooWidget.extend({
+
+			_ready:		false,
+			_duration:	0,
+			textHolder: "span",
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+					var self = this;
+					setTimeout( function(){
+						self.set('_ready', true );
+						self.setContentText("I am now officially ready!");
+					}, 1000);
+				//}
+			},
+
+			setContentText:  function( arg ) {
+				var $span = $( "#"+this.id+" span:first" );
+				$span.text( arg );
+			},
+
+			setProgressPercent: function( arg ) {
+				console.log("oh my, "+ arg );
+			}
+		});
+

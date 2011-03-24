@@ -2,6 +2,8 @@ module GUI::Views::Drawing::Buttons::FormButton
 
 	class HooFormButtonAbstract < GUI::Core::HooView
 
+		include Test::Unit::Assertions
+
 		attr_accessor :img;
 		attr_accessor :size;
 		attr_accessor :labelStates
@@ -37,7 +39,7 @@ module GUI::Views::Drawing::Buttons::FormButton
 		def labelStates=(states)
 
 			# pad out if we only set 1 value.. pad out to 3 or 5 ?
-			if(states.count!=@_states)
+			if( states.count != @_states )
 				states.fill('--machine added--', states.count..@_states) # => ["b", "c", "a", "a"]
 			end
 			@labelStates = states;

@@ -104,6 +104,7 @@ module GUI
 			'mastHead'				=> GUI::Views::Audioboo::MastHead.name,
 
 			# for debugging
+			'mockPlayer'			=>	GUI::Views::Debug::MockPlayer.name,
 			'textStyle'				=>	GUI::Views::Debug::HooTextStyle.name,
 			'flippyToggleThing'		=>	GUI::Views::Debug::FlippyToggleThing.name,
 			'testUploadForm'		=>	GUI::Views::Debug::TestUploadFormView.name,

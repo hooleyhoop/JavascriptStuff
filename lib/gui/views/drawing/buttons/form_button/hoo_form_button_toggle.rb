@@ -8,6 +8,11 @@ module GUI::Views::Drawing::Buttons::FormButton
 	# http://0.0.0.0:3000/widgets/formButtonToggle?initialState=1
 	class HooFormButtonToggle < HooFormButtonAbstract
 
+		def initialize( args={} )
+			@_states = 5
+			super(args);
+		end
+
         # Mock Data
 		def setupDebugFixture
 			super();
