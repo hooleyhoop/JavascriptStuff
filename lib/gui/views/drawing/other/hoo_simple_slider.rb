@@ -20,13 +20,16 @@ module GUI::Views::Drawing::Other
 			#-- add a checkbox
 			mockPlayer = GUI::HooWidgetList.widgetClass('mockPlayer').new()
 			chckBox = GUI::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} )
-			chckBox.addJavascriptAction( { :mouseClick=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock' }} );
+			chckBox.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock' }} );
 
 			self.addSubView( mockPlayer );
 			self.addSubView( chckBox );
 
-			self.addBinding( { :enabledBinding=>{ :enabled_taget=>mockPlayer.varName, :enabled_property=>'_ready', :enabled_action=>'readyDidChange' } } );
-			self.addJavascriptAction( { :mouseClick=>{ :action_taget=>mockPlayer.varName, :action_event=>'setProgressPercent', :action_arg=>'Holy Cock' }} );
+			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>mockPlayer.varName, :action_event=>'setProgressPercent', :action_arg=>'Holy Cock' }} );
+
+			self.addBinding( { :enabledBinding		=>{ :to_taget=>mockPlayer.varName, :to_property=>'_ready', :do_action=>'readyDidChange' } } );
+			self.addBinding( { :loadedValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_loadedValue', :do_action=>'loadedDidChange' } } );
+			self.addBinding( { :playedValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_playedValue', :do_action=>'playedDidChange' } } );
 
 		end
 

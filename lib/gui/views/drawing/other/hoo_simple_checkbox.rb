@@ -16,7 +16,7 @@ module GUI::Views::Drawing::Other
         # Mock Data
 		def setupDebugFixture
 			super();
-			self.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
+			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 		end
 
 		# stuff to write into the page

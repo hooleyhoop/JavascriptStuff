@@ -17,19 +17,11 @@
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
-				if( this.json.bindings ) {
-					var b = this.json.bindings.textBinding;
-					var target = window[b.text_taget];
-					var property = b.text_property;
+			},
 
-					if(target==undefined)
-						debugger;
-					var self = this;
-					setTimeout( function(){
-						target.addObserver( property, self, self._textDidChange );
-					}, 10);
+			setupDidComplete: function() {
 
-				}
+				var hasBinding = this.setup_hoo_binding( 'textBinding' );
 			},
 
 			// Binding updated

@@ -58,8 +58,8 @@ module GUI::Views::Audioboo
 				#	alert('Holy Cock');
 				#});";
 
-				@simpleButton2.addBinding( { :enabledBinding=>{ :enabled_taget=>headlessPlayer1InstanceName, :enabled_property=>'ready' } } );
-				@simpleButton2.addJavascriptAction( { :mouseClick=>{ :action_taget=>headlessPlayer1InstanceName, :action_event=>'play' }} );
+				@simpleButton2.addBinding( { :enabledBinding=>{ :to_taget=>headlessPlayer1InstanceName, :to_property=>'ready', :do_action=>'readyDidChange' } } );
+				@simpleButton2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>headlessPlayer1InstanceName, :action_event=>'play' }} );
 
 				addSubView( @simpleButton2 );
 			}.call
@@ -67,21 +67,21 @@ module GUI::Views::Audioboo
 			# Duration
 			lambda {
 				@durationTextField = simpleTextFieldClass.new( {:prefix=>'Duration ',:text=>'0',:postfix=>' seconds'} );
-				@durationTextField.addBinding( { :textBinding=>{ :text_taget=>headlessPlayer1InstanceName, :text_property=>'duration' } } );
+				@durationTextField.addBinding( { :textBinding=>{ :to_taget=>headlessPlayer1InstanceName, :to_property=>'duration', :do_action=>'_textDidChange' } } );
 				addSubView( @durationTextField );
 			}.call
 
 			# Loaded Seconds
 			lambda {
 				@loadedSecondsTextField = simpleTextFieldClass.new( {:prefix=>'Loaded ',:text=>'0',:postfix=>' seconds'} );
-				@loadedSecondsTextField.addBinding( { :textBinding=>{ :text_taget=>headlessPlayer1InstanceName, :text_property=>'loadedSeconds' } } );
+				@loadedSecondsTextField.addBinding( { :textBinding=>{ :to_taget=>headlessPlayer1InstanceName, :to_property=>'loadedSeconds', :do_action=>'_textDidChange' } } );
 				addSubView( @loadedSecondsTextField );
 			}.call
 
 			# Current Seconds
 			lambda {
 				@positionSecondsTextField = simpleTextFieldClass.new( {:prefix=>'Position ',:text=>'0',:postfix=>' seconds'} );
-				@positionSecondsTextField.addBinding( { :textBinding=>{ :text_taget=>headlessPlayer1InstanceName, :text_property=>'playPosition' } } );
+				@positionSecondsTextField.addBinding( { :textBinding=>{ :to_taget=>headlessPlayer1InstanceName, :to_property=>'playPosition', :do_action=>'_textDidChange' } } );
 				addSubView( @positionSecondsTextField );
 			}.call
 

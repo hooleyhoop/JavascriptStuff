@@ -12,6 +12,8 @@
 
 			_ready:		false,
 			_duration:	0,
+			_loadedValue: 0,
+			_playedValue: 0,
 			textHolder: "span",
 
 			init: function( /* init never has args */ ) {
@@ -20,8 +22,31 @@
 					setTimeout( function(){
 						self.set('_ready', true );
 						self.setContentText("I am now officially ready!");
+
+						self.startLoading();
 					}, 1000);
 				//}
+			},
+
+			startLoading: function() {
+
+				var self = this;
+				setInterval( function() {
+					self.set('_loadedValue', self._loadedValue+1 );
+				},1000.0/25.0);
+
+				setTimeout( function() {
+					self.set('_duration', 120 );
+					self.startPlaying();
+				},1000.0);
+			},
+
+			startPlaying: function() {
+
+				var self = this;
+				setInterval( function() {
+					self.set('_playedValue', self._playedValue+1 );
+				},1000.0/25.0);
 			},
 
 			setContentText:  function( arg ) {

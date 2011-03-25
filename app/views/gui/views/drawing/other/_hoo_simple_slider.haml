@@ -102,63 +102,21 @@
 				this._busyFadeHelper = BusyFadeHelper.create();
 			},
 
-			// extract bindings from json - move to widget
-			hoo_binding: function( binding, bindingTarget, bindingProperty, actionMethod ) {
-
-				if( this.json.bindings && this.json.bindings[binding] ){
-					var b = this.json.bindings[binding];
-					var target = window[ b[bindingTarget] ];
-					if(target===undefined)
-						debugger;
-					var initialState = target.get( b[bindingProperty] );
-					this.readyDidChange( target, b[bindingProperty] );
-					target.addObserver( b[bindingProperty], this, this[ b[actionMethod] ] );
-					return true;
-				}
-				return false;
-			},
-
-			// extract actions from json - move to widget
-			hoo_action: function( action, actionTarget, actionEvent ) {
-
-				if( this.json.javascriptActions && this.json.javascriptActions[action] )
-				{
-					var a = this.json.javascriptActions[action];
-					var target	= window[ a[actionTarget] ];
-					var action	= target[ a[actionEvent] ];
-					var arg		= a['action_arg'];
-					return { t:target, a:action, w:arg };
-				}
-				return Null;
-			},
-
 			setupDidComplete: function() {
 
 				this.resizeAll();
 				this._started = true;
 
 				/* Redo Bindings */
-				var binding = 'enabledBinding';
-				var bindingTarget = 'enabled_taget';
-				var bindingProperty = 'enabled_property';
-				var actionMethod = 'enabled_action';
-
-				var hasBinding = this.hoo_binding( binding, bindingTarget, bindingProperty, actionMethod );
-
+				var hasBinding = this.setup_hoo_binding( 'enabledBinding' );
 				if( hasBinding==false && this.json.initialState>0 ) {
 					this._stateMachine._fsm_controller.handle( "enable" );
 				}
 
-				var action = 'mouseClick';
-				var actionTarget = 'action_taget';
-				var actionEvent = 'action_event';
+				hasBinding = this.setup_hoo_binding( 'loadedValueBinding' );
+				hasBinding = this.setup_hoo_binding( 'playedValueBinding' );
 
-				this._mouseClickAction = this.hoo_action( action, actionTarget, actionEvent );
-				if(this._mouseClickAction) {
-					// self._checkbox.change(function(e) {
-					//	self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
-					// });
-				}
+				this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
 			},
 
 			// we observed a change!
@@ -169,6 +127,14 @@
 					this._stateMachine._fsm_controller.handle( "enable" );
 				}
 				// handle disable as well as enable?
+			},
+
+			loadedDidChange:  function() {
+				// console.log("sweet");
+			},
+
+			playedDidChange: function() {
+				// console.log("sweet");
 			},
 
 			getClickableItem: function() {

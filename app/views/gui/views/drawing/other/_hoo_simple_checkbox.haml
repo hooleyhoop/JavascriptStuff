@@ -26,27 +26,18 @@
 				arguments.callee.base.apply(this,arguments);
 
 				this._checkbox = $( "#"+this.id+" form input:checkbox:first" );
+			},
+
+			setupDidComplete: function() {
 
 				var self = this;
 
 				// set up actions as configured in the json - mixin?
-				if( this.json.javascriptActions )
-				{
-					if( this.json.javascriptActions.mouseClick )
-					{
-						setTimeout( function(){
-							var target	= window[ self.json.javascriptActions.mouseClick.action_taget ];
-							var action	= target[ self.json.javascriptActions.mouseClick.action_event ];
-							var arg		= self.json.javascriptActions.mouseClick.action_arg;
-							self._mouseClickAction = { t:target, a:action, w:arg };
-
-							self._checkbox.change(function(e) {
-								self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
-							});
-
-						}, 10);
-					}
+				this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
+				if(this._mouseClickAction) {
+					this._checkbox.change(function(e) {
+						self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
+					});
 				}
 			}
-
 		});

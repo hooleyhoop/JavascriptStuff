@@ -33,7 +33,7 @@ module GUI::Views::Drawing::Buttons::DivButton
 			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
 			@action = '/widgets/_ajaxPostTest';
-			self.addJavascriptAction( { :mouseClick=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
+			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
 		end
 
 		def labelStates=(states)

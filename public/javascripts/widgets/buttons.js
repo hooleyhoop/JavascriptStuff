@@ -90,20 +90,6 @@ HooFormButtonSimple = HooAbstractButton.extend({
 			this._stateMachine._delegate = this;
 			this._stateMachine._setupStateMachine( this.json.initialState );
 
-			// set up actions as configured in the json - mixin?
-			if( this.json.javascriptActions )
-			{
-				if( this.json.javascriptActions.mouseClick )
-				{
-					setTimeout( function(){
-						var target	= window[ self.json.javascriptActions.mouseClick.action_taget ];
-						var action	= target[ self.json.javascriptActions.mouseClick.action_event ];
-						var arg		= self.json.javascriptActions.mouseClick.action_arg;
-						self._mouseClickAction = { t:target, a:action, w:arg };
-					}, 10);
-				}
-			}
-
 			// initial state depends on whether _enabled? has been bound or not.. if it is bound, then follow that property, if it isnt bound start in the on state
 			this._stateMachine.setInitialState( 0 );
 		}
@@ -122,25 +108,12 @@ HooFormButtonSimple = HooAbstractButton.extend({
 		// if there is no binding and the initial state isn't disabled, we need to call 'enable', right?
 
 		/* at the moment this only handles initial turn-on! you cannot observe a turn off */
-		if( this.json.bindings && this.json.bindings.enabledBinding )
-		{
-			var b = this.json.bindings.enabledBinding;
-			// begin disabled, wait for a short while, then inspect the targets state.
-			// If the target is already 'ready' - no need to bind!
-			// TODO! This kind of stuff needs sharing between classes
-			var target = window[b.enabled_taget];
-			if(target===undefined)
-				debugger;
-			var initialState = target.get( b.enabled_property );
-			// if(initialState) {
-				self.readyDidChange( target, b.enabled_property );
-			// } else {
-				target.addObserver( b.enabled_property, self, self.readyDidChange );
-			//}
-		} else if( this.json.initialState>0 ) {
+		var hasBinding = this.setup_hoo_binding( 'enabledBinding' );
+		if( hasBinding==false && this.json.initialState>0 )
 			this._stateMachine._fsm_controller.handle( "enable" );
-		}
 
+		// set up actions as configured in the json - mixin?
+		this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
 	},
 
 	// we observed a change!

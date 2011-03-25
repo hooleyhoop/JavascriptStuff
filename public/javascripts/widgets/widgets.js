@@ -83,6 +83,36 @@ HooWidget = SC.Object.extend({
 	},
 
 	parentDidResize: function() {
+	},
+
+	// extract bindings from json - move to widget
+	setup_hoo_binding: function( binding ) {
+
+		if( this.json.bindings && this.json.bindings[binding] ){
+			var b = this.json.bindings[binding];
+			var target = window[ b['to_taget'] ];
+			if(target===undefined)
+				debugger;
+			var initialState = target.get( b['to_property'] );
+			this.readyDidChange( target, b['to_property'] );
+			target.addObserver( b['to_property'], this, this[ b['do_action'] ] );
+			return true;
+		}
+		return false;
+	},
+
+	// extract actions from json - move to widget
+	setup_hoo_action: function( action ) {
+
+		if( this.json.javascriptActions && this.json.javascriptActions[action] )
+		{
+			var a = this.json.javascriptActions[action];
+			var target	= window[ a['action_taget'] ];
+			var action	= target[ a['action_event'] ];
+			var arg		= a['action_arg'];
+			return { t:target, a:action, w:arg };
+		}
+		return null;
 	}
 });
 
