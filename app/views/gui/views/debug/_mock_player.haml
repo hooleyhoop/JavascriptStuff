@@ -1,7 +1,7 @@
 - push( mock_player )
 
-%div[_]( data-jsclass='Mock_Player' style="font-size:15px; background-color: red;" )
-	%span Not ready
+%div[_]( data-jsclass='Mock_Player' style="font-size: 9px; background-color: red; margin: 1em;" )
+	%span(style="margin-left: 1em;") Not ready
 
 -# Obviously we cannot leave this here as it is crazy to include it more than once
 - if( _.includeOnce? )
@@ -30,13 +30,17 @@
 
 			startLoading: function() {
 
+				this.set('_duration', 120 );
+
 				var self = this;
-				setInterval( function() {
-					self.set('_loadedValue', self._loadedValue+1 );
+				var xx = setInterval( function() {
+					self.set('_loadedValue', self._loadedValue+0.1 );
+					if(self._loadedValue>self._duration){
+						clearInterval(xx);
+					}
 				},1000.0/25.0);
 
 				setTimeout( function() {
-					self.set('_duration', 120 );
 					self.startPlaying();
 				},1000.0);
 			},
@@ -44,8 +48,11 @@
 			startPlaying: function() {
 
 				var self = this;
-				setInterval( function() {
-					self.set('_playedValue', self._playedValue+1 );
+				var xx = setInterval( function() {
+					self.set('_playedValue', self._playedValue+.1 );
+					if(self._playedValue>self._duration){
+						clearInterval(xx);
+					}
 				},1000.0/25.0);
 			},
 
@@ -55,7 +62,7 @@
 			},
 
 			setProgressPercent: function( arg ) {
-				console.log("oh my, "+ arg );
+				this.set('_playedValue', this._duration * arg );
 			}
 		});
 

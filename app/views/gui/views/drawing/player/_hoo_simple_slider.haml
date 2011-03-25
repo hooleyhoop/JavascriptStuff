@@ -71,13 +71,20 @@
 
 			_$parentDiv:		undefined,
 			_$canvas:			undefined,
+			_loadProgressDiv:	undefined,
+			_playProgressDiv:	undefined,
+
 			_started:			false,
-			_timeInterval:		undefined,
-			_t:					undefined,
-			_loadProgress:		undefined,
-			_playProgress:		undefined,
+
+			_timeStep:			undefined,
+			_currentTime:		undefined,
+
 			_loadedAmount:		0,
 			_playedAmount:		0,
+
+			_maxAmount:			0,
+			_maxBarWidth:		0,
+
 			_busyFadeHelper:	undefined,
 			_stateMachine: 		undefined,
 
@@ -87,12 +94,12 @@
 
 				this._$parentDiv = $( "#"+this.id );
 				this._$canvas = this._$parentDiv.find( "canvas:first" );
-				this._loadProgress = this._$parentDiv.find( ".loadProgress:first" );
-				this._playProgress = this._$parentDiv.find( ".playProgress:first" );
-				this._loadedAmount = 0.5;
-				this._playedAmount = 0.3;
-				this._timeInterval = 1000/15;
-				this._t = 0;
+				this._loadProgressDiv = this._$parentDiv.find( ".loadProgress:first" );
+				this._playProgressDiv = this._$parentDiv.find( ".playProgress:first" );
+				this._loadedAmount = 0;
+				this._playedAmount = 0;
+				this._timeStep = 1000/15;
+				this._currentTime = 0;
 
 				this._stateMachine = HooSliderItem.create();
 				this._stateMachine._delegate = this;
@@ -113,6 +120,7 @@
 					this._stateMachine._fsm_controller.handle( "enable" );
 				}
 
+				hasBinding = this.setup_hoo_binding( 'maxAmountValueBinding' );
 				hasBinding = this.setup_hoo_binding( 'loadedValueBinding' );
 				hasBinding = this.setup_hoo_binding( 'playedValueBinding' );
 
@@ -129,12 +137,52 @@
 				// handle disable as well as enable?
 			},
 
-			loadedDidChange:  function() {
-				// console.log("sweet");
+			maxAmountDidChange:  function( target, property ) {
+				this.set( '_maxAmount', target[property] );
+				this.recalcLoadedAndPlayedAmounts();
 			},
 
-			playedDidChange: function() {
-				// console.log("sweet");
+			recalcLoadedAndPlayedAmounts: function() {
+				this.setPlayAmount(this._playedAmount);
+				this.setLoadAmount(this._loadedAmount);
+			},
+
+			/* get notification callback */
+			loadedDidChange: function( target, property ) {
+
+				if(this._maxAmount!=0) {
+					var percent = target[property]/this._maxAmount;
+					if(percent<0 || percent>1.1)
+						debugger;
+					else if(percent>1)
+						percent = 1;
+					else
+						this.setLoadAmount(percent);
+				}
+			},
+
+			/* get notification callback */
+			playedDidChange: function( target, property ) {
+
+				if(this._maxAmount!=0) {
+					var percent = target[property]/this._maxAmount;
+					if(percent<0 || percent>1.1)
+						debugger;
+					else if(percent>1)
+						percent = 1;
+					else
+						this.setPlayAmount(percent);
+				}
+			},
+
+			setPlayAmount: function( arg ) {
+				this._playedAmount = arg;
+			    this._playProgressDiv.width(this._maxBarWidth*this._playedAmount);
+			},
+
+			setLoadAmount: function( arg ) {
+				this._loadedAmount = arg;
+			    this._loadProgressDiv.width(this._maxBarWidth*this._loadedAmount);
 			},
 
 			getClickableItem: function() {
@@ -151,6 +199,7 @@
 
 			resizeAll: function() {
 
+				console.log("resize");
 				var newWidth = this._$parentDiv.width();
 				var newHeight = this._$parentDiv.outerHeight();
 				var currentWidth = this._$canvas.width();
@@ -161,38 +210,47 @@
 					// resize canvas
 					this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
 					var ctx = this._$canvas[0].getContext('2d');
-				    this.draw(ctx, newWidth, newHeight);
 
-				    this._loadProgress.width((newWidth-4)*this._loadedAmount);
-				    this._playProgress.width((newWidth-4)*this._playedAmount);
+					this._maxBarWidth = newWidth-4;
+					var maxBarHeight = newHeight-4;
+
+				    this.draw(ctx, this._maxBarWidth, maxBarHeight);
+
+					this.recalcLoadedAndPlayedAmounts();
 				}
 			},
 
 			draw: function( ctx, width, height ) {
 
 				ctx.save();
+
+				ctx.setTransform(1, 0, 0, 1, 0, 0);
+
 				ctx.clearRect(0,0,width,height);
 
 				ctx.globalAlpha = 1.0;
 				ctx.globalCompositeOperation = 'source-over';
 
-		        ctx.beginPath();
-				ctx.rect(0,0,width-4,height-4);
-				ctx.clip();
-
 				// draw the background
-				// ctx.fillStyle = "rgba(100,100,100,1)";
-				// ctx.fillRect(0,0,width-4,height-4);
+				//ctx.fillStyle = "rgba(100,100,100,1)";
+				//ctx.fillRect(0,0,width,height);
 
 				// draw the slanty rects
 				if( this._busyFadeHelper._showBusy===true ) {
+
+					ctx.save();
+
+		        ctx.beginPath();
+				ctx.rect(0, 0, width-4, height);
+				ctx.closePath();
+				ctx.clip();
 
 					this._busyFadeHelper.step();
 
 					var busyAlpha = 0.4 * this._busyFadeHelper._busyAlpha/10.0;
 					ctx.fillStyle = "rgba(170,160,160,"+busyAlpha+")";
 
-					var percent = this._t/1000;
+					var percent = this._currentTime/1000;
 					var barWidth = 5;
 					var barSpace = 10;
 					var numberOfBars = width/barSpace;
@@ -204,31 +262,33 @@
 					for( var i=0; i<numberOfBars; i++ ) {
 
 						// offset each slanty rect
-						ctx.setTransform(1, 0, 0, 1, x, 0);
+						// the transform seems to mess up the clip rect th ctx.setTransform(1, 0, 0, 1, x, 0);
 						ctx.beginPath();
 
 						// draw a slanty recty
-						ctx.moveTo( xDisplacement, 0 );
-						ctx.lineTo( xDisplacement+barWidth, 0 );
-						ctx.lineTo( xDisplacement+barWidth-barWidth, height-4 );
-						ctx.lineTo( xDisplacement-barWidth, height-4 );
+						ctx.moveTo( x+ xDisplacement, 0 );
+						ctx.lineTo( x+ xDisplacement+barWidth, 0 );
+						ctx.lineTo( x+ xDisplacement+barWidth-barWidth, height-4 );
+						ctx.lineTo( x+ xDisplacement-barWidth, height-4 );
 						ctx.closePath();
 						ctx.fill();
 						x = x+barSpace;
 					}
+
+					ctx.restore();
 				}
 
 				// draw a grad over the top
 				ctx.setTransform(1, 0, 0, 1, 0, 0);
 		        ctx.beginPath();
-				ctx.rect(0,0,width-4,height-4);
+				ctx.rect(0, 0, width, height);
 
 				ctx.globalCompositeOperation = 'lighter';
 				gradient = ctx.createLinearGradient(0, height, 0, 0);
 				gradient.addColorStop(1.0, "rgba(235, 235, 235, 0.3)");
 				gradient.addColorStop(0, "rgba(0, 0, 0, 0.1)");
 				ctx.fillStyle = gradient;
-				ctx.fill();
+				//ctx.fill();
 
 				ctx.restore();
 			},
@@ -246,9 +306,9 @@
 				this._busyFadeHelper._animFunction = function() {
 					var ctx = self._$canvas[0].getContext('2d');
 				    self.draw(ctx, self._$parentDiv.width(), self._$parentDiv.outerHeight());
-					self._t = (self._t + self._timeInterval) % 1000;
+					self._currentTime = (self._currentTime + self._timeStep) % 1000;
 				}
-				this._busyFadeHelper.begin( self._timeInterval );
+				this._busyFadeHelper.begin( self._timeStep );
 			},
 
 			stopBusy: function() {
@@ -262,7 +322,9 @@
 
 			showMouseDownState: function( stateIndex ) {
 				if(this._mouseClickAction) {
-					this._mouseClickAction.a.call( this._mouseClickAction.t, this.localXPosition() );
+					var newPos = this.localXPosition();
+					console.log("click at pos "+newPos);
+					this._mouseClickAction.a.call( this._mouseClickAction.t, newPos );
 				}
 			},
 
@@ -282,15 +344,18 @@
 				if(this._stateMachine.lastWindowEvent) {
 					var x = this._stateMachine.lastWindowEvent.pageX;
 					var y = this._stateMachine.lastWindowEvent.pageY;
-					var pos = this._loadProgress.offset();
+					var pos = this._loadProgressDiv.offset();
 					var xval;
-					var size = [this._loadProgress.width(), this._loadProgress.height()];
+					// var size = [this._loadProgressDiv.width(), this._loadProgressDiv.height()];
 					if( pos.left>x )
 						xval = 0;
-					else if((pos.left+size[0])<x)
+					else if((pos.left + this._maxBarWidth)<x)
 						xval = 1;
 					else
-						xval = (x-pos.left)/size[0];
+						xval = (x-pos.left)/this._maxBarWidth;
+
+					if(xval > this._loadedAmount)
+						xval  = this._loadedAmount
 					return xval;
 				}
 				return -1;

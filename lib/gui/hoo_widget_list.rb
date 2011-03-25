@@ -48,8 +48,8 @@ module GUI
 			'spacedCellList'				=>	GUI::Views::Unsorted::HooSpacedCellList.name,
 
 			# for drawing - forms
-			'formButtonSimple'				=> Views::Drawing::Buttons::FormButton::HooFormButtonSimple.name,
-			'formButtonToggle'				=> GUI::Views::Drawing::Buttons::FormButton::HooFormButtonToggle.name,
+			'formButtonSimple'				=>	GUI::Views::Drawing::Buttons::FormButton::HooFormButtonSimple.name,
+			'formButtonToggle'				=>	GUI::Views::Drawing::Buttons::FormButton::HooFormButtonToggle.name,
 
 			# for drawing - link buttons
 			'divButtonSimple'				=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimple.name,
@@ -58,10 +58,14 @@ module GUI
 			'divButtonToggle'				=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggle.name,
 			'divButtonToggleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggleDynamicWidth.name,
 
-			'jqueryTestButton'				=> GUI::Views::Drawing::Buttons::Jquery::JqueryButtonTest.name,
+			'jqueryTestButton'				=>	GUI::Views::Drawing::Buttons::Jquery::JqueryButtonTest.name,
 
 			# for Drawing - menus
 			'miniInLineMenu'				=> 	GUI::Views::Drawing::Menus::HooMiniInlineMenu.name,
+
+			# for Drawing - player
+			'simpleTimeDisplay'				=>	GUI::Views::Drawing::Player::HooSimpleTimeDisplay.name,
+			'simpleSlider'					=>	GUI::Views::Drawing::Player::HooSimpleSlider.name,
 
 			# for Drawing - menuItems
 			'textToggleItem'		=> 	GUI::Views::Drawing::Menus::Items::HooTextToggleItem.name,
@@ -69,7 +73,6 @@ module GUI
 
 			'simpleBusySpinner'		=>	GUI::Views::Drawing::Other::HooSimpleSpinner.name,
 			'simpleTextField'		=>	GUI::Views::Drawing::Other::HooSimpleTextField.name,
-			'simpleSlider'			=>	GUI::Views::Drawing::Other::HooSimpleSlider.name,
 			'simpleCheckbox'		=>	GUI::Views::Drawing::Other::HooSimpleCheckbox.name,
 
 			'speechBubbleBottomCanvas'	=>	GUI::Views::Drawing::Experiments::HooSpeechBubbleBottomCanvas.name,

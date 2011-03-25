@@ -259,11 +259,7 @@
 	var OldFlashError="boo.oldflasherror";
 	// console.error( "Please install <a href='http://get.adobe.com/flashplayer'>Flash 10</a> or above" );
 
-	function formatTime(time) {
-	  var minutes = Math.floor(time/60);
-	  var seconds = Math.floor(time)%60;
-	  return minutes + ':' + (seconds<10 ? '0'+seconds : seconds);
-	}
+
 	$.fn.mousedrag = function(callback) {
 	  this.mousedown(function(e) {
 		callback.apply(this,arguments);

@@ -1,7 +1,7 @@
-module GUI::Views::Drawing::Other
+module GUI::Views::Drawing::Player
 
-	# http://0.0.0.0:3000/widgets/simpleSlider
-	class HooSimpleSlider < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/simpleTimeDisplay
+	class HooSimpleTimeDisplay < GUI::Core::HooView
 
 		include Test::Unit::Assertions
 		include GUI::Core::HooBindingsMixin
@@ -9,26 +9,16 @@ module GUI::Views::Drawing::Other
 		attr_accessor :bindings;
 		attr_accessor :javascriptActions;
 
-		def initialize( args={} )
-			super(args);
-		end
-
         # Mock Data
 		def setupDebugFixture
 			super();
 
 			#-- add a checkbox
 			mockPlayer = GUI::HooWidgetList.widgetClass('mockPlayer').new()
-			chckBox = GUI::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} )
-			chckBox.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock' }} );
-
 			self.addSubView( mockPlayer );
-			self.addSubView( chckBox );
-
-			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>mockPlayer.varName, :action_event=>'setProgressPercent', :action_arg=>'Holy Cock' }} );
 
 			self.addBinding( { :enabledBinding		=>{ :to_taget=>mockPlayer.varName, :to_property=>'_ready', :do_action=>'readyDidChange' } } );
-			self.addBinding( { :loadedValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_loadedValue', :do_action=>'loadedDidChange' } } );
+			self.addBinding( { :maxAmountValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_duration', :do_action=>'maxAmountDidChange' } } );
 			self.addBinding( { :playedValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_playedValue', :do_action=>'playedDidChange' } } );
 
 		end
