@@ -54,12 +54,63 @@
 			},
 
 			setupDidComplete: function() {
-				// we should formalize this so it happens automagically
+				// way to hook up iVars from ruby
+				this.swapFindAndSwapInstanceVariableNamed( '_headlessAudioPlayer' );
+				this._headlessAudioPlayer.set('_controller', this );
+			},
 
-				var jsonProp = this.json._headlessAudioPlayer;
-				if( window[jsonProp] ) {
-					this._headlessAudioPlayer = window[jsonProp];
-				}
+			ready: function() {
+				alert("why are you never called my sweet ready functio?");
+			},
 
+			durationchange: function() {
+				console.log("yeah this is working");
+			},
+
+			timeupdate: function() {
+				console.log("yeah this is working");
+			},
+
+			progressupdate: function() {
+				console.log("yeah this is working");
+			},
+			showEmptyLoaderCmd: function(){
+				console.log("yeah this is working");
+			},
+			showStalledLoaderCmd: function(){
+				console.log("yeah this is working");
+			},
+			showLoadingLoaderCmd: function(){
+				console.log("yeah this is working");
+			},
+			showFinishedLoaderCmd: function(){
+				console.log("yeah this is working");
+			},
+			showResettingLoaderCmd: function(){
+
+			},
+			showErrorLoaderCmd: function(){
+				console.log("yeah this is working");
+			},
+			showEmptyPlayerCmd: function(){
+				console.log("yeah this is working");
+			},
+			showStoppedPlayerCmd: function(){
+				console.log("yeah this is working");
+			},
+			showWaitingPlayerCmd: function(){
+				console.log("yeah this is working");
+			},
+			hideWaitingPlayerCmd: function(){
+				console.log("yeah this is working");
+			},
+			showPlayingPlayerCmd: function(){
+				console.log("yeah this is working");
+			},
+			showFinishedPlayerCmd: function(){
+				console.log("yeah this is working");
+			},
+			showErrorPlayerCmd: function(){
+				console.log("yeah this is working");
 			}
 		});

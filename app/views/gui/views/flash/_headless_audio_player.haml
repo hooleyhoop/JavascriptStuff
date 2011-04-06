@@ -149,7 +149,18 @@
 			},
 
 			 send: function( command ) {
-				//this[command.name]();
+			 	var func = this._controller[command.name];
+			 	if(func) {
+					func.call(this._controller);
+				} else {
+					console.log("Didnt find function "+command.name);
+				}
+
+				if(command.name=="showResettingLoaderCmd") {
+					// -- this has to manually trigger complete
+					this._loadingController.handle( "resetComplete" );
+				}
+
 			},
 
 			processInputSignal: function( signal ) {
@@ -226,47 +237,6 @@
 					default:
 						throw("** Unknown Signal ** -"+signal);
 				}
-			},
-			showEmptyLoaderCmd: function(){
-				this._controller.showEmptyLoaderCmd();
-			},
-			showStalledLoaderCmd: function(){
-				this._controller.showStalledLoaderCmd();
-			},
-			showLoadingLoaderCmd: function(){
-				this._controller.showLoadingLoaderCmd();
-			},
-			showFinishedLoaderCmd: function(){
-				this._controller.showFinishedLoaderCmd();
-			},
-			showResettingLoaderCmd: function(){
-				this._controller.showResettingLoaderCmd();
-				// -- this has to manually trigger complete
-				this._loadingController.handle( "resetComplete" );
-			},
-			showErrorLoaderCmd: function(){
-				this._controller.showErrorLoaderCmd();
-			},
-			showEmptyPlayerCmd: function(){
-				this._controller.showEmptyPlayerCmd();
-			},
-			showStoppedPlayerCmd: function(){
-				this._controller.showStoppedPlayerCmd();
-			},
-			showWaitingPlayerCmd: function(){
-				this._controller.showWaitingPlayerCmd();
-			},
-			hideWaitingPlayerCmd: function(){
-				this._controller.hideWaitingPlayerCmd();
-			},
-			showPlayingPlayerCmd: function(){
-				this._controller.showPlayingPlayerCmd();
-			},
-			showFinishedPlayerCmd: function(){
-				this._controller.showFinishedPlayerCmd();
-			},
-			showErrorPlayerCmd: function(){
-				this._controller.showErrorPlayerCmd();
 			}
 		});
 
@@ -517,6 +487,7 @@
 				if(playerInstance!=this._activePlayer){
 					this.reset();
 					this.set('_activePlayer', playerInstance);
+					this.stateMachine._controller = playerInstance._controller;
 				}
 			},
 
@@ -598,12 +569,15 @@
 		*/
 		HeadlessAudioplayer = HooWidget.extend({
 
+			_controller:	undefined,
+
 			_src:			undefined,	// 2 players on the page with the same audioUrl could potentially cause a problem
 			ready:			undefined,
-			loadedSeconds:	undefined,
-			duration:		undefined, // duration may be NaN or Infinity
-			playPosition:	undefined,
 			_flashTimeout:	undefined,
+
+			// loadedSeconds:	undefined,
+			// duration:		undefined, // duration may be NaN or Infinity
+			// playPosition:	undefined,
 
 			init: function( /* init never has args */ ) {
 
@@ -625,6 +599,7 @@
 				if( this.json.mp3Url ) {
 					this._src = this.json.mp3Url;
 
+					// incase we fail to become ready
 					this._flashTimeout = setTimeout( function(){
 						self.didBecomeReadyTimeOut.apply(self);
 					}, 1000);

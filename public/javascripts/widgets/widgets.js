@@ -113,7 +113,19 @@ HooWidget = SC.Object.extend({
 			return { t:target, a:action, w:arg };
 		}
 		return null;
+	},
+
+	// given an instance variable that contains the name of an object, swap the content of the instance variable for the actual object
+	swapFindAndSwapInstanceVariableNamed: function( iVarName ) {
+
+		var jsonProp = this.json[iVarName];
+		var value = null;
+		if( window[jsonProp] ) {
+			value = window[jsonProp];
+		}
+		this.set( iVarName, value );
 	}
+
 });
 
 HooWindow = HooWidget.extend({
