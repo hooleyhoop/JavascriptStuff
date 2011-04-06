@@ -62,6 +62,7 @@ module GUI::Views::Flash
 				#	alert('Holy Cock');
 				#});";
 
+				#// DO WE REALLY REALLY WANT TO DO THIS HERE?
 				playButton.addBinding( { :enabledBinding=>{ :to_taget=>headlessPlayer1InstanceName, :to_property=>'ready', :do_action=>'readyDidChange' } } );
 				playButton.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>headlessPlayer1InstanceName, :action_event=>'play' }} );
 

@@ -156,11 +156,11 @@
 					console.log("Didnt find function "+command.name);
 				}
 
+				// tHere is one 'special' case
 				if(command.name=="showResettingLoaderCmd") {
 					// -- this has to manually trigger complete
 					this._loadingController.handle( "resetComplete" );
 				}
-
 			},
 
 			processInputSignal: function( signal ) {
@@ -247,6 +247,12 @@
 
 			_observablePlayer: undefined,
 			_commandablePlayer: undefined,
+			ready:				undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+				this.ready = false;
+			},
 
 			play: function(callback) {
 				this._commandablePlayer.setAttribute( 'autoplay', true );
@@ -303,12 +309,11 @@
 		FlashPlayerBackend = AbstractPlayerBackend.extend({
 
 			_swfSrc: 		'http://0.0.0.0:3000/flash/HeadlessPlayer/lib/Debug/HeadlessPlayer.swf',
-			ready:			undefined,
 			_embeddedSwf:	undefined,
+			type:			"Flash",
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
-				this.ready = false;
 				FlashPlayerBackend.sharedInstance = this;
 			},
 
@@ -346,24 +351,13 @@
 
 			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
 				return timeRanges[timeRangeIndex][1];
-			},
-
-			//TODO: what's this?
-			pause: function(callback) {
-			// if (callback)
-			// return $(this.observable).bind('pause',callback);
-			// if (this.playing) {
-			//   this.playing = false;
-			//   this.player._pause();
-			// }
-				return this;
 			}
 		});
 
 
 		HTMLPlayerBackend = AbstractPlayerBackend.extend({
 
-			ready:				undefined,
+			type:				"HTML5",
 			_audioElement:		undefined,
 
 			init: function( /* init never has args */ ) {
@@ -394,7 +388,6 @@
 
 		});
 
-		// HeadlessAudioplayer.sharedHeadlessPlayer._playerBackend._commandablePlayer
 
 		/*
 		 * we attach one swf/audio element to the page
@@ -480,7 +473,6 @@
 			},
 
 			reset: function() {
-
 			},
 
 			playerBecameCurrent: function( playerInstance ) {
@@ -493,52 +485,6 @@
 
 			handlePlayerEvent: function( eventName ) {
 				this.stateMachine.processInputSignal( eventName );
-
-				//putback				-- when busy do we disable clicking on the slider?
-
-
-				//putback				$actualPlayer.bind( 'error', function( e ) {
-				//putback					console.log("Event: error "+e); debugger; // Do something better on Error? Have an error state and bind the button to it?
-				//putback				});
-
-				// chrome only
-				//putback				$actualPlayer.bind( 'emptied', function() { console.log("Event: emptied"); });
-
-				/* Reset the loaded count */
-				//putback				$actualPlayer.bind( 'loadstart', function() { self._activePlayer.set( 'loadedSeconds', 0 ); });
-
-				/* Progress isnt always called, ie if src is a stream (or is interpreted as a stream) */
-				//putback				$actualPlayer.bind( 'progress', function() {
-				//putback					var loadedSecs = self._playerBackend.buffered();
-				//putback					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
-				//putback				});
-
-				//putback				$actualPlayer.bind( 'loadeddata', function() {
-				//putback					var loadedSecs = self._playerBackend.buffered();
-					// alert("loadedSecs "+loadedSecs);
-				//putback					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
-				//putback				});
-
-				//putback				$actualPlayer.bind( 'timeupdate', function() {
-				//putback					console.log("timeupdate");
-				//	var currentTimeSecs = self._playerBackend.currentTime;
-				//	self._activePlayer.set( 'playPosition', Math.floor(currentTime) );
-				//putback				});
-
-				//putback				$actualPlayer.bind( 'durationchange', function() {
-				//putback					var durationSecs = self._playerBackend.duration();
-				//putback					if( self._activePlayer.duration!=durationSecs) // Duration may have already been set on a previous play thru - preserve that value
-				//putback						self._activePlayer.set( 'duration', Math.floor(durationSecs) );
-				//putback				});
-
-				/* Dont count on the metadata */
-				// $actualPlayer.bind( 'loadedmetadata', function() {
-				//	var duration = self._playerBackend._observablePlayer.duration;
-				//	console.log("Event: durationchange "+duration);
-				//	if( self._activePlayer.duration!=duration)
-				//		self._activePlayer.set( 'duration', duration );
-				//});
-
 			},
 
 			play: function( mp3Url ) {
@@ -547,18 +493,17 @@
 				}
 				this._playerBackend.play();
 
-				var self = this;
 
 				// DEBUG
 				// DEBUG
 				// DEBUG THING TO FAKE EVENTS
 				// temp time test
+				var self = this;
 				var timerID = window.setTimeout( function(){
 					// self._playerBackend.setCurrentTime(0);
 					// self._playerBackend.setSrc("http://audioboo.fm/boos/305019-taking-frank-to-the-vet.mp3");
 				 }, 4000);
 			}
-
 		});
 
 
@@ -574,17 +519,16 @@
 			_src:			undefined,	// 2 players on the page with the same audioUrl could potentially cause a problem
 			ready:			undefined,
 			_flashTimeout:	undefined,
-
-			// loadedSeconds:	undefined,
-			// duration:		undefined, // duration may be NaN or Infinity
-			// playPosition:	undefined,
+			_playCount:		undefined,
 
 			init: function( /* init never has args */ ) {
 
 				arguments.callee.base.apply(this,arguments);
 				this.ready = false;
 				this.loadedSeconds = false;
+				this._playCount = 0;
 				var self = this;
+				HeadlessAudioplayer.players.push(this);
 
 				if( HeadlessAudioplayer.sharedHeadlessPlayer==undefined ){
 					try {
@@ -616,7 +560,7 @@
 			},
 
 			didBecomeReadyTimeOut: function(){
-				//alert("Flash timed out");
+				//alert("Flash loading timed out");
 				// replace each play button with a flash instance?
 			},
 
@@ -624,39 +568,38 @@
 				//TODO: Where do we check that the mp3 exits?
 				HeadlessAudioplayer.sharedHeadlessPlayer.playerBecameCurrent(this);
 				HeadlessAudioplayer.sharedHeadlessPlayer.play( this._src );
-			}
+				this._playCount++;
+			},
+
+			// Here is a custom accessor! yay
+			type: function( propKey, setterVal ) {
+				if(setterVal==undefined) // getter
+					return HeadlessAudioplayer.sharedHeadlessPlayer._playerBackend.type;
+				else {
+					// setter
+				}
+				return "wrong!";
+			}.property()
+
 		});
+		HeadlessAudioplayer.players = new Array();	// Class variable
 
-
+		/* UTILITY */
 
 		// make this a class method! on HeadlessAudioplayer
 		// woah trigger() is fucking cool man
 		// we should definitely, like, use it
 		function printPlayerInfos() {
-			$.each( HeadlessAudioplayer.players, function( index, value ){
-				console.log( "Player "+value+" :type "+value.type+
-					"url "+value.src+
-					"playCount "+value.playCount
+			if(HeadlessAudioplayer.sharedHeadlessPlayer===undefined) {
+				console.log("No players");
+				return;
+			}
+
+			$.each( HeadlessAudioplayer.players, function( player_index, player_value ){
+				player_value.set('type', "shit");
+				console.log( "Player "+player_value+" :type "+player_value.get('type')+
+					", url "+player_value._src+
+					", playCount "+player_value._playCount
 				);
 			});
 		}
-
-		$.fn.mousedrag = function(callback) {
-		  this.mousedown(function(e) {
-			callback.apply(this,arguments);
-			var activeElement=this;
-			var mousePos = [e.pageX, e.pageY];
-			$(document.body).bind('mousemove.booDrag', function(e){
-			  if ((mousePos[0] == e.pageX)&&(mousePos[1]==e.pageY)) // IE fires mouse events continuously even when it doesn't move more than 1 pixel
-				return;
-			  mousePos = [e.pageX, e.pageY];
-			  callback.apply(activeElement,arguments);
-			});
-			$(document.body).bind('mouseleave.booDrag mouseup.booDrag', function(){
-			  $(document.body).unbind('.booDrag');
-			});
-			return false; //prevent text selection
-		  });
-		  this.bind('selectstart', function(e){return false;}); //prevent text selection in IE
-		  return this;
-		};

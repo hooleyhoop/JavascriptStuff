@@ -49,9 +49,57 @@
 			_headlessAudioPlayer: undefined,
 			_sliderWidget: undefined,
 
-			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
-			},
+			// loadedSeconds:	undefined,
+			// duration:		undefined, // duration may be NaN or Infinity
+			// playPosition:	undefined,
+
+
+				//putback				-- when busy do we disable clicking on the slider?
+
+
+				//putback				$actualPlayer.bind( 'error', function( e ) {
+				//putback					console.log("Event: error "+e); debugger; // Do something better on Error? Have an error state and bind the button to it?
+				//putback				});
+
+				// chrome only
+				//putback				$actualPlayer.bind( 'emptied', function() { console.log("Event: emptied"); });
+
+				/* Reset the loaded count */
+				//putback				$actualPlayer.bind( 'loadstart', function() { self._activePlayer.set( 'loadedSeconds', 0 ); });
+
+				/* Progress isnt always called, ie if src is a stream (or is interpreted as a stream) */
+				//putback				$actualPlayer.bind( 'progress', function() {
+				//putback					var loadedSecs = self._playerBackend.buffered();
+				//putback					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
+				//putback				});
+
+				//putback				$actualPlayer.bind( 'loadeddata', function() {
+				//putback					var loadedSecs = self._playerBackend.buffered();
+					// alert("loadedSecs "+loadedSecs);
+				//putback					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
+				//putback				});
+
+				//putback				$actualPlayer.bind( 'timeupdate', function() {
+				//putback					console.log("timeupdate");
+				//	var currentTimeSecs = self._playerBackend.currentTime;
+				//	self._activePlayer.set( 'playPosition', Math.floor(currentTime) );
+				//putback				});
+
+				//putback				$actualPlayer.bind( 'durationchange', function() {
+				//putback					var durationSecs = self._playerBackend.duration();
+				//putback					if( self._activePlayer.duration!=durationSecs) // Duration may have already been set on a previous play thru - preserve that value
+				//putback						self._activePlayer.set( 'duration', Math.floor(durationSecs) );
+				//putback				});
+
+				/* Dont count on the metadata */
+				// $actualPlayer.bind( 'loadedmetadata', function() {
+				//	var duration = self._playerBackend._observablePlayer.duration;
+				//	console.log("Event: durationchange "+duration);
+				//	if( self._activePlayer.duration!=duration)
+				//		self._activePlayer.set( 'duration', duration );
+				//});
+
+
 
 			setupDidComplete: function() {
 				// way to hook up iVars from ruby
