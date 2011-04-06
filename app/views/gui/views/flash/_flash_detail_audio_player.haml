@@ -1,0 +1,27 @@
+- push( flash_detail_audio_player )
+
+-# http://0.0.0.0:3000/widgets/flashDetailPlayer?swf=http://0.0.0.0:3000/flash/DefaultPlayerV10/lib/Debug/default_player_10.swf&width=500&height=100
+
+%div[_]{ :data=>{'jsclass'=>'FlashDetailAudioplayer', 'autoplay'=>'false', 'preload'=>'true'} }
+	%object{ :data=>"#{_.swf}", :id=>'121', :type=>'application/x-shockwave-flash', :width=>"100%", :height=>"#{_.height}" }
+		%param{ :name=>'movie', :value=>"#{_.swf}" }/
+		%param{ :name=>"scale", :value=>"noscale" }/
+		%param{ :name=>"salign", :value=>"lt" }/
+		%param{ :name=>"bgColor", :value=>"#FFFFFF" }/
+		%param{ :name=>'allowScriptAccess', :value=>'always' }/
+		%param{ :name=>"wmode", :value=>"window" }/
+		%param{ :name=>'FlashVars', :value=>'rootID=121' }/
+
+-# http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html#event-media-emptied
+- if( _.includeOnce? )
+	:javascript
+
+		FlashDetailAudioplayer = HooWidget.extend({
+
+			/*
+				This is just to test the flash, not a player we would actually use
+			*/
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply( this, arguments );
+			}
+		})

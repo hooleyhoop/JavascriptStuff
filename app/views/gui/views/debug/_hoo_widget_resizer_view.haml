@@ -154,6 +154,7 @@
 
 					var idString = $(value).attr('id');
 					var instanceName = '_'+idString;
+					console.log("about to resize "+window[instanceName]);
 					window[instanceName].parentDidResize();
 				});
 			}

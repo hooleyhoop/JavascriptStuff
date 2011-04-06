@@ -323,6 +323,7 @@
 			showMouseDownState: function( stateIndex ) {
 				if(this._mouseClickAction) {
 					var newPos = this.localXPosition();
+					this._lastDragXAmount = newPos;
 					console.log("click at pos "+newPos);
 					this._mouseClickAction.a.call( this._mouseClickAction.t, newPos );
 				}
@@ -330,7 +331,12 @@
 
 			mouseDragged: function(e){
 				if(this._mouseClickAction) {
-					this._mouseClickAction.a.call( this._mouseClickAction.t, this.localXPosition() );
+
+					var xamount = this.localXPosition();  // IE fires mouse events continuously even when it doesn't move more than 1 pixel
+					if( xamount!=this._lastDragXAmount) {
+						this._mouseClickAction.a.call( this._mouseClickAction.t, xamount );
+						this._lastDragXAmount = xamount;
+					}
 				}
 			},
 

@@ -147,6 +147,8 @@ class PagesController < ApplicationController
 		render :text => partialAsString
 	end
 
+	# using the route that jon setup
+	# x.src = '/boos/asdfx'
 	def show_boo
 		headers['Content-Length'] = '3117539'
 		headers['Content-Type'] = 'audio/mpeg'

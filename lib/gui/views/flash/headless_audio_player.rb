@@ -1,5 +1,6 @@
 module GUI::Views::Flash
 
+	# http://0.0.0.0:3000/widgets/headlessPlayer
 	class HeadlessAudioPlayer < GUI::Core::HooView
 
 		attr_accessor :mp3Url;
@@ -16,6 +17,7 @@ module GUI::Views::Flash
 		def setupDebugFixture
 			super();
 			@mp3Url = 'http://0.0.0.0:3000/audio/test.mp3';
+
 		end
 
 		# stuff to write into the page

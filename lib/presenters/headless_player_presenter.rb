@@ -1,4 +1,6 @@
 module Presenters
+
+	# http://0.0.0.0:3000/pages/headless_player
 	class HeadlessPlayerPresenter < HooPresenter
 
 		def initialize( controller )

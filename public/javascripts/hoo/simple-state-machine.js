@@ -20,12 +20,14 @@ HooStateMachine_event = HooStateMachine_abstractEvent.extend({
 HooStateMachine_state = SC.Object.extend({
 
 	name:			undefined,
-	actions:		undefined,
+	entryActions:	undefined,
+	exitActions:	undefined,
 	transitions:	undefined,
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
-		this.actions = new Array();
+		this.entryActions = new Array();
+		this.exitActions = new Array();
 		this.transitions = new Object();
 	},
 
@@ -40,8 +42,11 @@ HooStateMachine_state = SC.Object.extend({
 		this.transitions = new Object();
 	},
 
-	addAction: function( cmd ) {
-		this.actions.push(cmd);
+	addEntryAction: function( cmd ) {
+		this.entryActions.push(cmd);
+	},
+	addExitAction: function( cmd ) {
+		this.exitActions.push(cmd);
 	},
 
 	getAllTargets: function() {
@@ -61,9 +66,16 @@ HooStateMachine_state = SC.Object.extend({
 		return this.transitions[eventName].target;
 	},
 
-	executeActions: function( commandsChannel ) {
+	executeEntryActions: function( commandsChannel ) {
 
-		$.each( this.actions, function(index, value) {
+		$.each( this.entryActions, function(index, value) {
+			commandsChannel.send( value );
+		});
+	},
+
+	executeExitActions: function( commandsChannel ) {
+
+		$.each( this.exitActions, function(index, value) {
 			commandsChannel.send( value );
 		});
 	}
@@ -142,9 +154,10 @@ HooStateMachine_controller = SC.Object.extend({
 		var nextState = null;
 
 		// save a useful reference to the jquery event (for mouse pos and stuff)
-		if(e)
-		console.log("saving e "+eventName+" "+e.pageX); // buttonPressed buttonReleased
-		this.commandsChannel.lastWindowEvent = e;
+		if(e){
+		//console.log("saving e "+eventName+" "+e.pageX); // buttonPressed buttonReleased
+			this.commandsChannel.lastWindowEvent = e;
+		}
 
 		if( this.currentState.hasTransition(eventName) ){
 			nextState = this.currentState.targetState(eventName)
@@ -164,7 +177,7 @@ HooStateMachine_controller = SC.Object.extend({
 
 	_transitionTo: function( targetState ) {
 		 this.currentState = targetState;
-		 targetState.executeActions( this.commandsChannel );
+		 targetState.executeEntryActions( this.commandsChannel );
 	 }
 });
 
@@ -196,8 +209,8 @@ function testFSM() {
 	var stateMachineInstance = HooStateMachine.create( {startState: idle_state} );
 
 	idle_state.addTransition( doorClosed_event, active_state );
-	idle_state.addAction( unlockDoorCmd );
-	idle_state.addAction( lockPanelCmd );
+	idle_state.addEntryAction( unlockDoorCmd );
+	idle_state.addEntryAction( lockPanelCmd );
 
 	active_state.addTransition( drawerOpened_event, waitingForLight_state );
 	active_state.addTransition( lightOn_event, waitingForDrawer_state );
@@ -206,8 +219,8 @@ function testFSM() {
 
 	waitingForDrawer_state.addTransition( drawerOpened_event, unlockedPanel_state );
 
-	unlockedPanel_state.addAction( unlockPanelCmd );
-	unlockedPanel_state.addAction( lockDoorCmd );
+	unlockedPanel_state.addEntryAction( unlockPanelCmd );
+	unlockedPanel_state.addEntryAction( lockDoorCmd );
 	unlockedPanel_state.addTransition( panelClosed_event, idle_state );
 
 	var resetEvents = new Array();
@@ -285,11 +298,11 @@ HooThreeStateItem = SC.Object.extend({
 		/* This needs overiding in button 2 - how to handle ? */
 		this._abortClick_state1.addTransition( this._clickAbortComplete_event, this._active_state1 );
 
-		this._enabled_state.addAction( this._enableButtonCmd );
-		this._active_state1.addAction( this._showMouseUpCmd1 );
-		this._active_down_state1.addAction( this._showMouseDownCmd1 );
-		this._clicked_state1.addAction( this._fireButtonActionCmd1 );
-		this._abortClick_state1.addAction( this._abortClickActionCmd );
+		this._enabled_state.addEntryAction( this._enableButtonCmd );
+		this._active_state1.addEntryAction( this._showMouseUpCmd1 );
+		this._active_down_state1.addEntryAction( this._showMouseDownCmd1 );
+		this._clicked_state1.addEntryAction( this._fireButtonActionCmd1 );
+		this._abortClick_state1.addEntryAction( this._abortClickActionCmd );
 
 		/* set up our button statemachine */
 		var stateMachineInstance = HooStateMachine.create( {startState: this._disabled_state} );
@@ -424,10 +437,10 @@ HooFiveStateItem = HooThreeStateItem.extend({
 			this._enabled_state.addTransition( this._enabledSuccessfully_event, this._active_state2 );
 		}
 
-		this._active_state2.addAction( this._showMouseUpCmd2 );
-		this._active_down_state2.addAction( this._showMouseDownCmd2 );
-		this._clicked_state2.addAction( this._fireButtonActionCmd2 );
-		this._abortClick_state2.addAction( this._abortClickActionCmd );
+		this._active_state2.addEntryAction( this._showMouseUpCmd2 );
+		this._active_down_state2.addEntryAction( this._showMouseDownCmd2 );
+		this._clicked_state2.addEntryAction( this._fireButtonActionCmd2 );
+		this._abortClick_state2.addEntryAction( this._abortClickActionCmd );
 	},
 
 	showMouseDown2: function() {

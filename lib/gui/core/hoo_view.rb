@@ -3,7 +3,6 @@ module GUI::Core
 
 		attr_accessor :parentView
 		attr_accessor :views
-		attr_accessor :width, :height
 
         @@_doOnceStuff = Array.new;
 

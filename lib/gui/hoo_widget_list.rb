@@ -89,14 +89,14 @@ module GUI
 			# Flash Stuff
 			'headlessPlayer'		=>	GUI::Views::Flash::HeadlessAudioPlayer.name,
 			'headlessRecorder'		=>	GUI::Views::Flash::HeadlessAudioRecorder.name,
+			'flashDetailPlayer'		=>	GUI::Views::Flash::FlashDetailAudioPlayer.name,
+			'detailPlayer'			=>	GUI::Views::Flash::DetailPlayer.name,
+			'adam_detailPlayer'		=>	GUI::Views::Flash::AdamDetailPlayer.name,
 
 			# Audioboo specific
 			'followButtonSection'	=>	GUI::Views::Audioboo::FollowButtonSection.name,
 			'userDetailsBanner'		=>	GUI::Views::Audioboo::UserDetailsBanner.name,
 			'booMainDetails'		=>	GUI::Views::Audioboo::BooMainDetails.name,
-			'detailPlayer'			=>	GUI::Views::Audioboo::DetailPlayer.name,
-			'adam_detailPlayer'		=>	GUI::Views::Audioboo::AdamDetailPlayer.name,
-
 			'tableHeader'			=> GUI::Views::Audioboo::TableHeader.name,
 			'croppedImgWithHeader'	=> GUI::Views::Audioboo::CroppedImgWithHeader.name,
 			'tableList'				=> GUI::Views::Audioboo::TableList.name,

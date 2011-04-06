@@ -1,18 +1,274 @@
 - push( headless_audio_player )
 
 -# This is a adapted from adam's player
+-# http://0.0.0.0:3000/widgets/headlessPlayer
+-# http://0.0.0.0:3000/widgets/detailPlayer?url=http://audioboo.fm/boos/313426-the-rose.mp3
+-# http://0.0.0.0:3000/widgets/detailPlayer?url=http://audioboo.fm/boos/305019-taking-frank-to-the-vet.mp3
+-# http://0.0.0.0:3000/widgets/detailPlayer?url=http://audioboo.fm/boos/197170.mp3
 %div[_]{ :data=>{'jsclass'=>'HeadlessAudioplayer', 'autoplay'=>'false', 'preload'=>'true'} }
 	.flash_holder( style="width:50px; height:50px; background-color:#00ffff;")
 
 	- link_to( _.mp3Url, {:style =>"position:absolute; left:-1000px;"} ) do
 		play
 
-
+-# http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html#event-media-emptied
 - if( _.includeOnce? )
 	:javascript
 
-		/* Flash Callback - no longer needed */
-		function BooFlashPlayerEvent( id, eventName, optionArg1 ) { /* FlashPlayerBackend.sharedInstance._flash_callBack( id, eventName, optionArg1 ) */}
+		AudioPlayerState = SC.Object.extend({
+
+			_loadingController: undefined,
+			_playingController: undefined,
+			_controller:undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply( this, arguments );
+
+				//set on init - this._controller = controller;
+
+				/* Loading States */
+				var l_empty_state			= HooStateMachine_state.create( {name: "empty"} );
+				var l_stalled_state			= HooStateMachine_state.create( {name: "stalled"} );
+				var l_loading_state			= HooStateMachine_state.create( {name: "loading"} );
+				var l_loaded_state			= HooStateMachine_state.create( {name: "loaded"} );
+				var l_resetting_state		= HooStateMachine_state.create( {name: "resseting"} );
+				var l_error_state			= HooStateMachine_state.create( {name: "error"} );
+
+				/* Shared input events */
+				var error_event				= HooStateMachine_event.create( {name: "error"} );
+				var reset_event				= HooStateMachine_event.create( {name: "reset"} );
+
+				/* Loading input events */
+				var load_event				= HooStateMachine_event.create( {name: "load"} );
+				var loadComplete_event		= HooStateMachine_event.create( {name: "loadComplete"} );
+				var resetComplete_event		= HooStateMachine_event.create( {name: "resetComplete"} );
+				var stall_event				= HooStateMachine_event.create( {name: "stall"} );
+
+				/* Loading transitions */
+				l_empty_state.addTransition( load_event, l_loading_state );
+
+				l_loading_state.addTransition( stall_event, l_stalled_state );
+				l_loading_state.addTransition( error_event, l_error_state );
+				l_loading_state.addTransition( loadComplete_event, l_loaded_state );
+				l_loading_state.addTransition( reset_event, l_resetting_state );
+
+				l_stalled_state.addTransition( load_event, l_loading_state );
+				l_stalled_state.addTransition( error_event, l_error_state );
+				l_stalled_state.addTransition( reset_event, l_resetting_state );
+
+				l_loaded_state.addTransition( reset_event, l_resetting_state );
+				l_empty_state.addTransition( reset_event, l_resetting_state );
+				l_error_state.addTransition( reset_event, l_resetting_state );
+
+				l_resetting_state.addTransition( resetComplete_event, l_empty_state );
+
+				/* Commands */
+				var showEmptyLoaderCmd	 			= HooStateMachine_command.create( {name: "showEmptyLoaderCmd"} );
+				var showStalledLoaderCmd	 		= HooStateMachine_command.create( {name: "showStalledLoaderCmd"} );
+				var showLoadingLoaderCmd	 		= HooStateMachine_command.create( {name: "showLoadingLoaderCmd"} );
+				var showFinishedLoaderCmd	 		= HooStateMachine_command.create( {name: "showFinishedLoaderCmd"} );
+				var showResettingLoaderCmd	 		= HooStateMachine_command.create( {name: "showResettingLoaderCmd"} );
+				var showErrorLoaderCmd	 			= HooStateMachine_command.create( {name: "showErrorLoaderCmd"} );
+
+				/* Loading actions */
+				l_empty_state.addEntryAction( showEmptyLoaderCmd );
+				l_stalled_state.addEntryAction( showStalledLoaderCmd );
+				l_loading_state.addEntryAction( showLoadingLoaderCmd );
+				l_loaded_state.addEntryAction( showFinishedLoaderCmd );
+				l_resetting_state.addEntryAction( showResettingLoaderCmd );
+				l_error_state.addEntryAction( showErrorLoaderCmd );
+
+				var loadingStateMachine = HooStateMachine.create( {startState: l_empty_state} );
+				this._loadingController = HooStateMachine_controller.create( { currentState: l_empty_state, machine: loadingStateMachine, commandsChannel: this } );
+
+
+				/* Playing States */
+				var p_empty_state				= HooStateMachine_state.create( {name: "empty"} );
+				var p_stopped_state				= HooStateMachine_state.create( {name: "stopped"} );
+				var p_waiting_state				= HooStateMachine_state.create( {name: "waiting"} );
+				var p_playing_state				= HooStateMachine_state.create( {name: "playing"} );
+				var p_finished_state			= HooStateMachine_state.create( {name: "finished"} );
+				var p_error_state				= HooStateMachine_state.create( {name: "error"} );
+
+				/* Playing input events */
+				var canPlay_event				= HooStateMachine_event.create( {name: "canPlay"} );
+				var play_event					= HooStateMachine_event.create( {name: "play"} );
+				var timeupdate_event			= HooStateMachine_event.create( {name: "timeupdate"} );
+				var wait_event					= HooStateMachine_event.create( {name: "wait"} );
+				var stop_event					= HooStateMachine_event.create( {name: "stop"} );
+				var ended_event					= HooStateMachine_event.create( {name: "ended"} );
+
+				/* Playing transitions */
+				p_empty_state.addTransition( canPlay_event, p_stopped_state );
+				p_empty_state.addTransition( error_event, p_error_state );
+				p_empty_state.addTransition( play_event, p_playing_state );
+
+				p_stopped_state.addTransition( play_event, p_playing_state );
+				p_stopped_state.addTransition( error_event, p_error_state );
+				p_stopped_state.addTransition( reset_event, p_empty_state );
+
+				p_playing_state.addTransition( error_event, p_error_state );
+				p_playing_state.addTransition( stop_event, p_stopped_state );
+				p_playing_state.addTransition( reset_event, p_empty_state );
+				p_playing_state.addTransition( wait_event, p_waiting_state );
+				p_playing_state.addTransition( ended_event, p_finished_state );
+
+				// so the idea of hierachical state machine is just that events bubble up the chain
+
+				p_waiting_state.addTransition( error_event, p_error_state );
+				p_waiting_state.addTransition( stop_event, p_stopped_state );
+				p_waiting_state.addTransition( timeupdate_event, p_playing_state );
+				p_waiting_state.addTransition( reset_event, p_empty_state );
+
+				p_finished_state.addTransition( stop_event, p_stopped_state );
+				p_error_state.addTransition( reset_event, p_empty_state );
+
+				/* Play commands */
+				var showEmptyPlayerCmd	 			= HooStateMachine_command.create( {name: "showEmptyPlayerCmd"} );
+				var showStoppedPlayerCmd	 		= HooStateMachine_command.create( {name: "showStoppedPlayerCmd"} );
+				var showWaitingPlayerCmd	 		= HooStateMachine_command.create( {name: "showWaitingPlayerCmd"} );
+				var hideWaitingPlayerCmd	 		= HooStateMachine_command.create( {name: "hideWaitingPlayerCmd"} );
+
+				var showPlayingPlayerCmd	 		= HooStateMachine_command.create( {name: "showPlayingPlayerCmd"} );
+				var showFinishedPlayerCmd	 		= HooStateMachine_command.create( {name: "showFinishedPlayerCmd"} );
+				var showErrorPlayerCmd	 			= HooStateMachine_command.create( {name: "showErrorPlayerCmd"} );
+
+				/* Playing actions */
+				p_empty_state.addEntryAction( showEmptyPlayerCmd );
+				p_stopped_state.addEntryAction( showStoppedPlayerCmd );
+				p_waiting_state.addEntryAction( showWaitingPlayerCmd );
+				p_waiting_state.addExitAction( hideWaitingPlayerCmd );
+
+				p_playing_state.addEntryAction( showPlayingPlayerCmd );
+				p_finished_state.addEntryAction( showFinishedPlayerCmd );
+				p_error_state.addEntryAction( showErrorPlayerCmd );
+
+
+				var playingStateMachine = HooStateMachine.create( {startState: p_empty_state} );
+				this._playingController = HooStateMachine_controller.create( { currentState: p_empty_state, machine: playingStateMachine, commandsChannel: this } );
+			},
+
+			 send: function( command ) {
+				//this[command.name]();
+			},
+
+			processInputSignal: function( signal ) {
+				// console.log("Incoming >> "+signal );
+				switch( signal ){
+					case "ready":
+						this._controller.ready();
+						break;
+
+					// not really sure of the purpose of abort
+					case "abort":
+						break;
+
+					case "error":
+					case "dataunavailable":
+					case "empty":
+						this._loadingController.handle( "error" );
+						this._playingController.handle( "error" );
+						break;
+
+					case "stalled":
+						this._loadingController.handle( "stall" );
+						break;
+
+					case "waiting":
+						this._playingController.handle( "wait" );
+						break;
+
+					case "loadstart":
+					case "loadedmetadata":
+						this._loadingController.handle( "load" );
+						break;
+					case "durationchange":
+						this._loadingController.handle( "load" );
+						this._controller.durationchange();
+						break;
+					case "progress":
+						this._loadingController.handle( "load" );
+						this._controller.progressupdate();
+						break;
+
+					case "canplay":
+					case "canplaythrough":
+						this._loadingController.handle( "load" );
+						this._playingController.handle( "canPlay" );
+						break;
+
+					case "loadeddata":
+						this._loadingController.handle( "loadComplete" );
+						break;
+
+					case "emptied":
+						this._loadingController.handle( "reset" );
+						this._playingController.handle( "reset" );
+						break;
+
+					case "timeupdate":
+						this._playingController.handle( "timeupdate" );
+						this._controller.timeupdate();
+						break;
+
+					case "play":
+						this._playingController.handle( "play" );
+						break;
+
+					case "ended":
+						this._playingController.handle( "ended" );
+						break;
+
+					case "pause":
+						this._playingController.handle( "stop" );
+						break;
+
+					default:
+						throw("** Unknown Signal ** -"+signal);
+				}
+			},
+			showEmptyLoaderCmd: function(){
+				this._controller.showEmptyLoaderCmd();
+			},
+			showStalledLoaderCmd: function(){
+				this._controller.showStalledLoaderCmd();
+			},
+			showLoadingLoaderCmd: function(){
+				this._controller.showLoadingLoaderCmd();
+			},
+			showFinishedLoaderCmd: function(){
+				this._controller.showFinishedLoaderCmd();
+			},
+			showResettingLoaderCmd: function(){
+				this._controller.showResettingLoaderCmd();
+				// -- this has to manually trigger complete
+				this._loadingController.handle( "resetComplete" );
+			},
+			showErrorLoaderCmd: function(){
+				this._controller.showErrorLoaderCmd();
+			},
+			showEmptyPlayerCmd: function(){
+				this._controller.showEmptyPlayerCmd();
+			},
+			showStoppedPlayerCmd: function(){
+				this._controller.showStoppedPlayerCmd();
+			},
+			showWaitingPlayerCmd: function(){
+				this._controller.showWaitingPlayerCmd();
+			},
+			hideWaitingPlayerCmd: function(){
+				this._controller.hideWaitingPlayerCmd();
+			},
+			showPlayingPlayerCmd: function(){
+				this._controller.showPlayingPlayerCmd();
+			},
+			showFinishedPlayerCmd: function(){
+				this._controller.showFinishedPlayerCmd();
+			},
+			showErrorPlayerCmd: function(){
+				this._controller.showErrorPlayerCmd();
+			}
+		});
 
 		/*
 		 *
@@ -41,6 +297,10 @@
 
 			duration: function() {
 			  	return this._commandablePlayer.getNodeProperty('duration');
+			},
+
+			setCurrentTime: function(value) {
+				this._commandablePlayer.setNodeProperty( 'currentTime', value );
 			},
 
 			// alert(video.networkState == video.NETWORK_EMPTY); // true
@@ -108,6 +368,7 @@
 
 				// Hack in some utility functions to make sure audio element has the same interface as the swf
 				this._commandablePlayer.getNodeProperty = function(propertyName){ return this[propertyName](); };
+				this._commandablePlayer.setNodeProperty = function(propertyName,value){ this['set'+propertyName](value); };
 
 				var self = this;
 				$wrapper.bind('ready', function(){ self.set('ready', YES); })
@@ -117,12 +378,7 @@
 				return timeRanges[timeRangeIndex][1];
 			},
 
-			setCurrentTime: function(value) {
-			// this.player._setCurrentTime(value);
-			// Immediately trigger a timeupdate event because flash is quite slow to fire this on its own
-			// $(this.observable).trigger('timeupdate');
-			},
-
+			//TODO: what's this?
 			pause: function(callback) {
 			// if (callback)
 			// return $(this.observable).bind('pause',callback);
@@ -159,6 +415,7 @@
 
 				// Hack in some utility functions to make sure audio element has the same interface as the swf
 				this._commandablePlayer.getNodeProperty = function(propertyName){ return this[propertyName] };
+				this._commandablePlayer.setNodeProperty = function(propertyName,value){ this[propertyName]=value };
 			},
 
 			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
@@ -167,26 +424,29 @@
 
 		});
 
+		// HeadlessAudioplayer.sharedHeadlessPlayer._playerBackend._commandablePlayer
 
 		/*
 		 * we attach one swf/audio element to the page
 		*/
 		HeadlessPlayerSingleton = SC.Object.extend({
 
-			_playerBackend: undefined,
-			_activePlayer:	undefined,
+			_playerBackend: undefined,	// flash or HTML5
+			_activePlayer: undefined,	// the current instance using the singleton
+			_stateMachine: undefined,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
-				this._attachWhicheverAudioPlayerToPage();
+				this.stateMachine = AudioPlayerState.create( {_controller: this} );
+				this._attachFlashOrHtml5AudioPlayerToPage();
 			},
 
-			_attachWhicheverAudioPlayerToPage: function() {
+			_attachFlashOrHtml5AudioPlayerToPage: function() {
 
 				var browserHasNativeMp3Support = browserCanPlayNativeMP3();
 				var browserHasFlash = hasMinimumFlash();
 
-				var shouldUseFlashInSafari = YES;
+				var shouldUseFlashInSafari = NO;
 				if(shouldUseFlashInSafari)
 					isSafari = browserIsSafari();
 				else
@@ -216,82 +476,38 @@
 
 			_createObservervations: function(){
 
-				// you can pass data into bind that you want your function to receive
-				// $('.booPlayerHolder').bind('foo', { 'bar' : 'bam' }, function(e) { alert(e.data.bar); });
+				/*
+				 * Example sequences of events
+				 * (bare in mind that this was done with local mp3 files, which is broken)
+				 */
 
 			  	// chrome
 			  	// emptied, loadstart, play, waiting, error
-			  	// emptied, loadstart, play, waiting, durationchange, loadedmetadat, timeupdate, loadeddata, canplay, canplaythru, timeupdate
+			  	// emptied, loadstart, play, waiting, durationchange, loadedmetadata, timeupdate, loadeddata, canplay, canplaythru, timeupdate, timeupdate, ended
 
 			  	// Safari
 			  	// loadstart, play, waiting, timeupdate, error
-			  	// loadstart, play, waiting, durationchange, loadedmetadata, loadeddata, canplay, canplaythrough
+			  	// loadstart, play, waiting, durationchange, loadedmetadata, loadeddata, canplay, canplaythrough, timeupdate, ended
+				// NB, safari doesn't send an emptied event if we swap out the url
+
+				// Firefox
+				// -- -- -- -- -- -- -- --
+				// TODO
+
+				// FlashPlayer
+				// -- -- -- -- -- -- -- --
+				// TODO
 
 			  	// http://www.w3schools.com/html5/html5_ref_eventattributes.asp
 			  	// https://developer.mozilla.org/En/Using_audio_and_video_in_Firefox
 			  	var self = this;
 				var $actualPlayer = $(this._playerBackend._observablePlayer);
 
-				$actualPlayer.bind( 'error', function( e ) {
-					console.log("Event: error "+e); debugger; // Do something better on Error? Have an error state and bind the button to it?
+				var watchableEvents = 'error emptied loadstart progress loadeddata loadedmetadata durationchange timeupdate canplay canplaythrough waiting play ended abort dataunavailable empty pause ratechange seeked seeking volumechange stalled';
+				$actualPlayer.bind( watchableEvents, function( e ) {
+					self.handlePlayerEvent(e.type);
 				});
-
-				/* Reset the loaded count */
-				$actualPlayer.bind( 'loadstart', function() { self._activePlayer.set( 'loadedSeconds', 0 ); });
-
-				/* Progress isnt always called, ie if src is a stream (or is interpreted as a stream) */
-				$actualPlayer.bind( 'progress', function() {
-					var loadedSecs = self._playerBackend.buffered();
-					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
-				});
-
-				$actualPlayer.bind( 'loadeddata', function() {
-					var loadedSecs = self._playerBackend.buffered();
-					// alert("loadedSecs "+loadedSecs);
-					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
-				});
-
-				/* Dont count on the metadata */
-				// $actualPlayer.bind( 'loadedmetadata', function() {
-				//	var duration = self._playerBackend._observablePlayer.duration;
-				//	console.log("Event: durationchange "+duration);
-				//	if( self._activePlayer.duration!=duration)
-				//		self._activePlayer.set( 'duration', duration );
-				//});
-
-				$actualPlayer.bind( 'durationchange', function() {
-					var durationSecs = self._playerBackend.duration();
-					if( self._activePlayer.duration!=durationSecs) // Duration may have already been set on a previous play thru - preserve that value
-						self._activePlayer.set( 'duration', Math.floor(durationSecs) );
-				});
-
-				$actualPlayer.bind( 'timeupdate', function() {
-					var currentTimeSecs = self._playerBackend.currentTime();
-					self._activePlayer.set( 'playPosition', Math.floor(currentTime) );
-				});
-
-
-
-				// can play thru is not the same as fully loaded
-				// $actualPlayer.bind( 'canplaythrough', function() {
-				//	console.log("Event: canplaythrough "+audioElem.duration);
-				// });
-
-				// $actualPlayer.bind( 'canplay', function() { 			console.log("Event: canplay"); });
-				// $actualPlayer.bind( 'abort', function() { 				console.log("Event: abort"); });
-				// $actualPlayer.bind( 'dataunavailable', function() { 	console.log("Event: dataunavailable"); });
-				// $actualPlayer.bind( 'emptied', function() { 			console.log("Event: emptied"); });
-				// $actualPlayer.bind( 'empty', function() { 				console.log("Event: empty"); });
-				// $actualPlayer.bind( 'ended', function() { 				console.log("Event: ended"); });
-				// $actualPlayer.bind( 'pause', function() { 				console.log("Event: pause"); });
-				// $actualPlayer.bind( 'play', function() { 				console.log("Event: play"); });
-				// $actualPlayer.bind( 'ratechange', function() { 		console.log("Event: ratechange"); });
-				// $actualPlayer.bind( 'seeked', function() { 			console.log("Event: seeked"); });
-				// $actualPlayer.bind( 'seeking', function() { 			console.log("Event: seeking"); });
-				// $actualPlayer.bind( 'volumechange', function() { 		console.log("Event: volumechange"); });
-				// $actualPlayer.bind( 'waiting', function() { 			console.log("Event: waiting"); });
 			},
-
 
 			reset: function() {
 
@@ -304,10 +520,72 @@
 				}
 			},
 
+			handlePlayerEvent: function( eventName ) {
+				this.stateMachine.processInputSignal( eventName );
+
+				//putback				-- when busy do we disable clicking on the slider?
+
+
+				//putback				$actualPlayer.bind( 'error', function( e ) {
+				//putback					console.log("Event: error "+e); debugger; // Do something better on Error? Have an error state and bind the button to it?
+				//putback				});
+
+				// chrome only
+				//putback				$actualPlayer.bind( 'emptied', function() { console.log("Event: emptied"); });
+
+				/* Reset the loaded count */
+				//putback				$actualPlayer.bind( 'loadstart', function() { self._activePlayer.set( 'loadedSeconds', 0 ); });
+
+				/* Progress isnt always called, ie if src is a stream (or is interpreted as a stream) */
+				//putback				$actualPlayer.bind( 'progress', function() {
+				//putback					var loadedSecs = self._playerBackend.buffered();
+				//putback					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
+				//putback				});
+
+				//putback				$actualPlayer.bind( 'loadeddata', function() {
+				//putback					var loadedSecs = self._playerBackend.buffered();
+					// alert("loadedSecs "+loadedSecs);
+				//putback					self._activePlayer.set( 'loadedSeconds', Math.floor(loadedSecs) );
+				//putback				});
+
+				//putback				$actualPlayer.bind( 'timeupdate', function() {
+				//putback					console.log("timeupdate");
+				//	var currentTimeSecs = self._playerBackend.currentTime;
+				//	self._activePlayer.set( 'playPosition', Math.floor(currentTime) );
+				//putback				});
+
+				//putback				$actualPlayer.bind( 'durationchange', function() {
+				//putback					var durationSecs = self._playerBackend.duration();
+				//putback					if( self._activePlayer.duration!=durationSecs) // Duration may have already been set on a previous play thru - preserve that value
+				//putback						self._activePlayer.set( 'duration', Math.floor(durationSecs) );
+				//putback				});
+
+				/* Dont count on the metadata */
+				// $actualPlayer.bind( 'loadedmetadata', function() {
+				//	var duration = self._playerBackend._observablePlayer.duration;
+				//	console.log("Event: durationchange "+duration);
+				//	if( self._activePlayer.duration!=duration)
+				//		self._activePlayer.set( 'duration', duration );
+				//});
+
+			},
+
 			play: function( mp3Url ) {
-				if( mp3Url!=this._playerBackend.src )
+				if( mp3Url!=this._playerBackend.src ) {
 					this._playerBackend.setSrc(mp3Url); // wait? for async callback?
+				}
 				this._playerBackend.play();
+
+				var self = this;
+
+				// DEBUG
+				// DEBUG
+				// DEBUG THING TO FAKE EVENTS
+				// temp time test
+				var timerID = window.setTimeout( function(){
+					// self._playerBackend.setCurrentTime(0);
+					// self._playerBackend.setSrc("http://audioboo.fm/boos/305019-taking-frank-to-the-vet.mp3");
+				 }, 4000);
 			}
 
 		});

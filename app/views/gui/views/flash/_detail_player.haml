@@ -1,7 +1,7 @@
 - push( detail_player )
 
--# This is a none working player
-%div[_]{ :style=>"position: relative;" }
+-# http://0.0.0.0:3000/widgets/detailPlayer?url=http://0.0.0.0:3000/audio/test.mp3
+%div[_]{ :style=>"position: relative;", :data=>{'jsclass'=>'HooDetailPagePlayer', 'autoplay'=>'false', 'preload'=>'true'} }
 
 	%div( style="font-size: 15px;")
 		Title goes here
@@ -35,3 +35,31 @@
 			-#    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 
 	= insert( _.views, "" )
+
+
+- if( _.includeOnce? )
+	:javascript
+		// I need to be able to set SC instance variables from Ruby
+
+		/*
+		 *
+		*/
+		HooDetailPagePlayer = HooWidget.extend({
+
+			_headlessAudioPlayer: undefined,
+			_sliderWidget: undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+			},
+
+			setupDidComplete: function() {
+				// we should formalize this so it happens automagically
+
+				var jsonProp = this.json._headlessAudioPlayer;
+				if( window[jsonProp] ) {
+					this._headlessAudioPlayer = window[jsonProp];
+				}
+
+			}
+		});

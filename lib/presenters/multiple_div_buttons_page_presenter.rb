@@ -23,7 +23,7 @@ module Presenters
 				@simpleButton1.img = '../images/buttons/simple-button/3-state-combine.png';
 				@simpleButton1.size = [105,45];
 				@simpleButton1.labelStates = ['-- --', 'Do Link', 'Pressed'];
-				@simpleButton1.initialState = 1;
+				#@simpleButton1.initialState = 1;
 				@simpleButton1.labelColor = '#fff';
 				@simpleButton1.action = 'http://audioboo.com';
 				@window.contentView.addSubView( @simpleButton1 );
@@ -34,7 +34,7 @@ module Presenters
 				@simpleButton2.img = '../images/buttons/simple-button/3-state-combine.png';
 				@simpleButton2.size = [105,45];
 				@simpleButton2.labelStates = ['-- --', 'Submit', 'Pressed'];
-				@simpleButton2.initialState = 1;
+				#@simpleButton2.initialState = 1;
 				@simpleButton2.labelColor = '#fff'
 				@simpleButton2.action = '#'
 				# This can only do actions with no args..
@@ -47,7 +47,7 @@ module Presenters
 				@largeButton2.img = '../images/buttons/follow_button/5-state-follow-button.png';
 				@largeButton2.size = [105,45];
 				@largeButton2.labelStates = ['-Off-', 'Do It', 'Do It-D', 'UnDoIt', 'UnDoIt-D'];
-				@largeButton2.initialState = 1;
+				#@largeButton2.initialState = 1;
 				@largeButton2.labelColor = '#fff'
 				@largeButton2.action = 'http://audioboo.com'
 				@largeButton2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock' }} );
