@@ -92,6 +92,78 @@ HooStateMachine_transition = SC.Object.extend({
 	}
 });
 
+HooStateMachineConfigurator = SC.Object.extend({
+
+	config: undefined,
+	_states: undefined,
+	_events: undefined,
+	_commands: undefined,
+
+	init: function( /* init never has args */ ) {
+		arguments.callee.base.apply( this, arguments );
+		this._states = new Object;
+		this._events = new Object;
+		this._commands = new Object;
+		this.parseStates();
+		this.parseEvents();
+		this.parseCommands();
+		this.parseTransitions();
+		this.parseActions();
+	},
+
+	parseStates: function() {
+		var self = this;
+		$.each( this.config['states'], function( index, value ){
+			var newState = HooStateMachine_state.create( {name: value} );
+			self._states[value] = newState;
+		});
+	},
+
+	parseEvents: function() {
+		var self = this;
+		$.each( this.config['events'], function( index, value ){
+			var newEvent = HooStateMachine_event.create( {name: value} );
+			self._events[value] = newEvent;
+		});
+	},
+
+	parseCommands: function() {
+		var self = this;
+		$.each( this.config['commands'], function( index, value ){
+			var newCommand = HooStateMachine_command.create( {name: value} );
+			self._commands[value] = newCommand;
+		});
+	},
+
+	parseTransitions: function() {
+		var self = this;
+		$.each( this.config['transitions'], function( index, value ){
+			var stateName = value['state'];
+			var eventName = value['event'];
+			var nextStateName = value['nextState'];
+			self._states[stateName].addTransition( self._events[eventName], self._states[nextStateName] );
+		});
+	},
+
+	parseActions: function() {
+		var self = this;
+		$.each( this.config['actions'], function( index, value ){
+			var stateName = value['state'];
+			var entryAction = value['entryAction'];
+			var exitAction = value['exitAction'];
+
+			if(entryAction!=null)
+				self._states[stateName].addEntryAction( self._commands[entryAction] );
+			if(exitAction!=null)
+				self._states[stateName].addExitAction( self._commands[exitAction] );
+		});
+	},
+
+	state: function( key ) {
+		return this._states[key];
+	}
+});
+
 HooStateMachine = SC.Object.extend({
 
 	startState:			undefined,

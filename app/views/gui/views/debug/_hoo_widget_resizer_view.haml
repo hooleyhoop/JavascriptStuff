@@ -236,7 +236,7 @@
 				url: '/pages/_singlePartialViaAjaxFromParam',
 				data:{"urlpath": arg},
 				success: function(data,textStatus,xmlhttprequestobject) {
-						var newEle = $(data).appendTo($( '#{_.uniqueSelector}' ).empty());
+					var newEle = $(data).appendTo($( '#{_.uniqueSelector}' ).empty());
 						// see if it has any javascript that needs running!
 
 						/* If the parent contains a data attribute need to make sure that this doesn't recreate the jscript instance */

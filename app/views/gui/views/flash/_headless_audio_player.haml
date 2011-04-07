@@ -26,126 +26,134 @@
 
 				//set on init - this._controller = controller;
 
-				/* Loading States */
-				var l_empty_state			= HooStateMachine_state.create( {name: "empty"} );
-				var l_stalled_state			= HooStateMachine_state.create( {name: "stalled"} );
-				var l_loading_state			= HooStateMachine_state.create( {name: "loading"} );
-				var l_loaded_state			= HooStateMachine_state.create( {name: "loaded"} );
-				var l_resetting_state		= HooStateMachine_state.create( {name: "resseting"} );
-				var l_error_state			= HooStateMachine_state.create( {name: "error"} );
+				var loadingStateMachine_config = {
+					"states": [
+						"st_empty",
+						"st_stalled",
+						"st_loading",
+						"st_loaded",
+						"st_resetting",
+						"st_error"
+					],
 
-				/* Shared input events */
-				var error_event				= HooStateMachine_event.create( {name: "error"} );
-				var reset_event				= HooStateMachine_event.create( {name: "reset"} );
+					"events": [
+						"ev_error",
+						"ev_reset",
+						"ev_load",
+						"ev_loadComplete",
+						"ev_resetComplete",
+						"ev_stall"
+					],
 
-				/* Loading input events */
-				var load_event				= HooStateMachine_event.create( {name: "load"} );
-				var loadComplete_event		= HooStateMachine_event.create( {name: "loadComplete"} );
-				var resetComplete_event		= HooStateMachine_event.create( {name: "resetComplete"} );
-				var stall_event				= HooStateMachine_event.create( {name: "stall"} );
+					"commands": [
+						"cmd_showEmptyLoader",
+						"cmd_showStalledLoader",
+						"cmd_showLoadingLoader",
+						"cmd_showFinishedLoader",
+						"cmd_showResettingLoader",
+						"cmd_showErrorLoader"
+					],
 
-				/* Loading transitions */
-				l_empty_state.addTransition( load_event, l_loading_state );
+					"transitions": [
+						{"state": "st_empty", "event": "ev_load", "nextState": "st_loading"},
 
-				l_loading_state.addTransition( stall_event, l_stalled_state );
-				l_loading_state.addTransition( error_event, l_error_state );
-				l_loading_state.addTransition( loadComplete_event, l_loaded_state );
-				l_loading_state.addTransition( reset_event, l_resetting_state );
+						{"state": "st_loading", "event": "ev_stall", "nextState": "st_stalled"},
+						{"state": "st_loading", "event": "ev_error", "nextState": "st_error"},
+						{"state": "st_loading", "event": "ev_loadComplete", "nextState": "st_loaded"},
+						{"state": "st_loading", "event": "ev_reset", "nextState": "st_resetting"},
 
-				l_stalled_state.addTransition( load_event, l_loading_state );
-				l_stalled_state.addTransition( error_event, l_error_state );
-				l_stalled_state.addTransition( reset_event, l_resetting_state );
+						{"state": "st_stalled", "event": "ev_load", "nextState": "st_loading"},
+						{"state": "st_stalled", "event": "ev_error", "nextState": "st_error"},
+						{"state": "st_stalled", "event": "ev_reset", "nextState": "st_resetting"},
 
-				l_loaded_state.addTransition( reset_event, l_resetting_state );
-				l_empty_state.addTransition( reset_event, l_resetting_state );
-				l_error_state.addTransition( reset_event, l_resetting_state );
+						{"state": "st_loaded", "event": "ev_reset", "nextState": "st_resetting"},
+						{"state": "st_empty", "event": "ev_reset", "nextState": "st_resetting"},
+						{"state": "st_error", "event": "ev_reset", "nextState": "st_resetting"},
+						{"state": "st_resetting", "event": "ev_resetComplete", "nextState": "st_empty"}
+					],
 
-				l_resetting_state.addTransition( resetComplete_event, l_empty_state );
+					"actions": [
+						{"state": "st_empty", "entryAction": "cmd_showEmptyLoader", "exitAction": null },
+						{"state": "st_stalled", "entryAction": "cmd_showStalledLoader", "exitAction": null },
+						{"state": "st_loading", "entryAction": "cmd_showLoadingLoader", "exitAction": null },
+						{"state": "st_loaded", "entryAction": "cmd_showFinishedLoader", "exitAction": null },
+						{"state": "st_resetting", "entryAction": "cmd_showResettingLoader", "exitAction": null },
+						{"state": "st_error", "entryAction": "cmd_showErrorLoader", "exitAction": null }
+					]
+				};
 
-				/* Commands */
-				var showEmptyLoaderCmd	 			= HooStateMachine_command.create( {name: "showEmptyLoaderCmd"} );
-				var showStalledLoaderCmd	 		= HooStateMachine_command.create( {name: "showStalledLoaderCmd"} );
-				var showLoadingLoaderCmd	 		= HooStateMachine_command.create( {name: "showLoadingLoaderCmd"} );
-				var showFinishedLoaderCmd	 		= HooStateMachine_command.create( {name: "showFinishedLoaderCmd"} );
-				var showResettingLoaderCmd	 		= HooStateMachine_command.create( {name: "showResettingLoaderCmd"} );
-				var showErrorLoaderCmd	 			= HooStateMachine_command.create( {name: "showErrorLoaderCmd"} );
+				playingStateMachine_config = {
+					"states": [
+						"st_empty",
+						"st_stopped",
+						"st_waiting",
+						"st_playing",
+						"st_finished",
+						"st_error"
+					],
 
-				/* Loading actions */
-				l_empty_state.addEntryAction( showEmptyLoaderCmd );
-				l_stalled_state.addEntryAction( showStalledLoaderCmd );
-				l_loading_state.addEntryAction( showLoadingLoaderCmd );
-				l_loaded_state.addEntryAction( showFinishedLoaderCmd );
-				l_resetting_state.addEntryAction( showResettingLoaderCmd );
-				l_error_state.addEntryAction( showErrorLoaderCmd );
+					"events": [
+						"ev_canPlay",
+						"ev_play",
+						"ev_timeupdate",
+						"ev_wait",
+						"ev_stop",
+						"ev_ended",
+						"ev_error",
+						"ev_reset"
+					],
 
-				var loadingStateMachine = HooStateMachine.create( {startState: l_empty_state} );
-				this._loadingController = HooStateMachine_controller.create( { currentState: l_empty_state, machine: loadingStateMachine, commandsChannel: this } );
+					"commands": [
+						"cmd_showEmptyPlayer",
+						"cmd_showStoppedPlayer",
+						"cmd_showWaitingPlayer",
+						"cmd_hideWaitingPlayer",
+						"cmd_showPlayingPlayer",
+						"cmd_showFinishedPlayer",
+						"cmd_showErrorPlayer"
+					],
 
+					"transitions": [
+						{"state": "st_empty", "event": "ev_canPlay", "nextState": "st_stopped"},
+						{"state": "st_empty", "event": "ev_error", "nextState": "st_error"},
+						{"state": "st_empty", "event": "ev_play", "nextState": "st_playing"},
 
-				/* Playing States */
-				var p_empty_state				= HooStateMachine_state.create( {name: "empty"} );
-				var p_stopped_state				= HooStateMachine_state.create( {name: "stopped"} );
-				var p_waiting_state				= HooStateMachine_state.create( {name: "waiting"} );
-				var p_playing_state				= HooStateMachine_state.create( {name: "playing"} );
-				var p_finished_state			= HooStateMachine_state.create( {name: "finished"} );
-				var p_error_state				= HooStateMachine_state.create( {name: "error"} );
+						{"state": "st_stopped", "event": "ev_play", "nextState": "st_playing"},
+						{"state": "st_stopped", "event": "ev_error", "nextState": "st_error"},
+						{"state": "st_stopped", "event": "ev_reset", "nextState": "st_empty"},
 
-				/* Playing input events */
-				var canPlay_event				= HooStateMachine_event.create( {name: "canPlay"} );
-				var play_event					= HooStateMachine_event.create( {name: "play"} );
-				var timeupdate_event			= HooStateMachine_event.create( {name: "timeupdate"} );
-				var wait_event					= HooStateMachine_event.create( {name: "wait"} );
-				var stop_event					= HooStateMachine_event.create( {name: "stop"} );
-				var ended_event					= HooStateMachine_event.create( {name: "ended"} );
+						{"state": "st_playing", "event": "ev_error", "nextState": "st_error"},
+						{"state": "st_playing", "event": "ev_stop", "nextState": "st_stopped"},
+						{"state": "st_playing", "event": "ev_reset", "nextState": "st_empty"},
+						{"state": "st_playing", "event": "ev_wait", "nextState": "st_waiting"},
+						{"state": "st_playing", "event": "ev_ended", "nextState": "st_finished"},
 
-				/* Playing transitions */
-				p_empty_state.addTransition( canPlay_event, p_stopped_state );
-				p_empty_state.addTransition( error_event, p_error_state );
-				p_empty_state.addTransition( play_event, p_playing_state );
+						{"state": "st_waiting", "event": "ev_error", "nextState": "st_error"},
+						{"state": "st_waiting", "event": "ev_stop", "nextState": "st_stopped"},
+						{"state": "st_waiting", "event": "ev_timeupdate", "nextState": "st_playing"},
+						{"state": "st_waiting", "event": "ev_reset", "nextState": "st_empty"},
 
-				p_stopped_state.addTransition( play_event, p_playing_state );
-				p_stopped_state.addTransition( error_event, p_error_state );
-				p_stopped_state.addTransition( reset_event, p_empty_state );
+						{"state": "st_finished", "event": "ev_stop", "nextState": "st_stopped"},
+						{"state": "st_error", "event": "ev_reset", "nextState": "st_empty"}
+					],
 
-				p_playing_state.addTransition( error_event, p_error_state );
-				p_playing_state.addTransition( stop_event, p_stopped_state );
-				p_playing_state.addTransition( reset_event, p_empty_state );
-				p_playing_state.addTransition( wait_event, p_waiting_state );
-				p_playing_state.addTransition( ended_event, p_finished_state );
+					"actions": [
+						{"state": "st_empty", "entryAction": "cmd_showEmptyPlayer", "exitAction": null },
+						{"state": "st_stopped", "entryAction": "cmd_showStoppedPlayer", "exitAction": null },
+						{"state": "st_waiting", "entryAction": "cmd_showWaitingPlayer", "exitAction": "cmd_hideWaitingPlayer" },
+						{"state": "st_playing", "entryAction": "cmd_showPlayingPlayer", "exitAction": null },
+						{"state": "st_finished", "entryAction": "cmd_showFinishedPlayer", "exitAction": null },
+						{"state": "st_error", "entryAction": "cmd_showErrorPlayer", "exitAction": null }
+					]
+				};
 
-				// so the idea of hierachical state machine is just that events bubble up the chain
+				var loadingStateMachineParser = HooStateMachineConfigurator.create({config: loadingStateMachine_config});
+				var loadingStateMachine = HooStateMachine.create( {startState: loadingStateMachineParser.state("st_empty") } );
+				this._loadingController = HooStateMachine_controller.create( { currentState: loadingStateMachineParser.state("st_empty"), machine: loadingStateMachine, commandsChannel: this } );
 
-				p_waiting_state.addTransition( error_event, p_error_state );
-				p_waiting_state.addTransition( stop_event, p_stopped_state );
-				p_waiting_state.addTransition( timeupdate_event, p_playing_state );
-				p_waiting_state.addTransition( reset_event, p_empty_state );
-
-				p_finished_state.addTransition( stop_event, p_stopped_state );
-				p_error_state.addTransition( reset_event, p_empty_state );
-
-				/* Play commands */
-				var showEmptyPlayerCmd	 			= HooStateMachine_command.create( {name: "showEmptyPlayerCmd"} );
-				var showStoppedPlayerCmd	 		= HooStateMachine_command.create( {name: "showStoppedPlayerCmd"} );
-				var showWaitingPlayerCmd	 		= HooStateMachine_command.create( {name: "showWaitingPlayerCmd"} );
-				var hideWaitingPlayerCmd	 		= HooStateMachine_command.create( {name: "hideWaitingPlayerCmd"} );
-
-				var showPlayingPlayerCmd	 		= HooStateMachine_command.create( {name: "showPlayingPlayerCmd"} );
-				var showFinishedPlayerCmd	 		= HooStateMachine_command.create( {name: "showFinishedPlayerCmd"} );
-				var showErrorPlayerCmd	 			= HooStateMachine_command.create( {name: "showErrorPlayerCmd"} );
-
-				/* Playing actions */
-				p_empty_state.addEntryAction( showEmptyPlayerCmd );
-				p_stopped_state.addEntryAction( showStoppedPlayerCmd );
-				p_waiting_state.addEntryAction( showWaitingPlayerCmd );
-				p_waiting_state.addExitAction( hideWaitingPlayerCmd );
-
-				p_playing_state.addEntryAction( showPlayingPlayerCmd );
-				p_finished_state.addEntryAction( showFinishedPlayerCmd );
-				p_error_state.addEntryAction( showErrorPlayerCmd );
-
-
-				var playingStateMachine = HooStateMachine.create( {startState: p_empty_state} );
-				this._playingController = HooStateMachine_controller.create( { currentState: p_empty_state, machine: playingStateMachine, commandsChannel: this } );
+				var playingStateMachineParser = HooStateMachineConfigurator.create({config: playingStateMachine_config});
+				var playingStateMachine = HooStateMachine.create( {startState: playingStateMachineParser.state("st_empty")} );
+				this._playingController = HooStateMachine_controller.create( { currentState: playingStateMachineParser.state("st_empty"), machine: playingStateMachine, commandsChannel: this } );
 			},
 
 			 send: function( command ) {
