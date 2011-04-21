@@ -24,3 +24,10 @@ function browserIsSafari() {
 	}
 	return false;
 }
+
+
+function browserSupportsCanvas() {
+
+	// if( Modernizr.canvas!==undefined || we are a browser supported by excanvas.js )
+	return true;
+}

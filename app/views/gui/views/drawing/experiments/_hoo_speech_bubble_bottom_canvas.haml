@@ -75,8 +75,9 @@
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
 
-				//if(Modernizr.canvas!==undefined)
-				//{
+				// the background has been removed if javascript is enabled!
+				if( browserSupportsCanvas() )
+				{
 					this._$parentDiv = $( "#"+this.id );
 					this._$canvas = this._$parentDiv.find( "canvas:first" );
 
@@ -85,14 +86,14 @@
 						self.resizeCanvas();
 						self._started = true;
 					}, 70);
-				//}
+				}
 			},
 
 			parentDidResize: function() {
-				//if(Modernizr.canvas!==undefined)
-				if(this._started===true)
-					this.resizeCanvas();
-				//}
+				if( browserSupportsCanvas() ){
+					if(this._started===true)
+						this.resizeCanvas();
+				}
 			},
 
 			resizeCanvas: function() {

@@ -23,6 +23,7 @@ HooStateMachine_state = SC.Object.extend({
 	entryActions:	undefined,
 	exitActions:	undefined,
 	transitions:	undefined,
+	_parent:		undefined,
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
@@ -49,6 +50,7 @@ HooStateMachine_state = SC.Object.extend({
 		this.exitActions.push(cmd);
 	},
 
+	// NOT yet updated for HSM
 	getAllTargets: function() {
 		var result = new Array();
 		$.each( transitions, function(index, value) {
@@ -58,12 +60,27 @@ HooStateMachine_state = SC.Object.extend({
 		return result;
 	},
 
+	//hsm
 	hasTransition: function( eventName ) {
-		return this.transitions.hasOwnProperty( eventName );
+		var hasT:Boolean = this.transitions.hasOwnProperty( eventName );
+		if( hasT==false && _parent!=null )
+			hasT = _parent.hasTransition(eventName);
+		return hasT;
 	},
 
+	// hsm
+	transitionForEvent( eventName ) {
+		var transition:HooStateMachine_transition = this.transitions[eventName];
+		if( transition==null && _parent!=null )
+			transition = _parent.transitionForEvent(eventName);
+		return transition;
+	},
+
+	// hsm
 	targetState: function( eventName ) {
-		return this.transitions[eventName].target;
+		var transition:HooStateMachine_transition = transitionForEvent(eventName);
+		var tState:HooStateMachine_state = transition.target;
+		return tState;
 	},
 
 	executeEntryActions: function( commandsChannel ) {
@@ -78,6 +95,16 @@ HooStateMachine_state = SC.Object.extend({
 		$.each( this.exitActions, function(index, value) {
 			commandsChannel.send( value );
 		});
+	},
+
+	hierachyList: function() {
+		var hierachy = new Array();
+		var head:HooStateMachine_state = this;
+		while( head != null ){
+			hierachy.unshift(head); // because insertAtBeginning would be too helpful
+			head = head._parent;
+		}
+		return hierachy;
 	}
 });
 
@@ -114,7 +141,16 @@ HooStateMachineConfigurator = SC.Object.extend({
 	parseStates: function() {
 		var self = this;
 		$.each( this.config['states'], function( index, value ){
-			var newState = HooStateMachine_state.create( {name: value} );
+			var stateName:String = value;
+			var parentState:HooStateMachine_state = null;
+			var xx = typeof(value);
+			if(xx == "object" ) {
+				stateName = value[0];
+				var parentStateName:String = value[1];
+				parentState = _states[parentStateName];
+				assert(parentState!=null, "Parent state doesnt exist");
+			}
+			var newState = HooStateMachine_state.create( {name: stateName, _parent: parentState} );
 			self._states[value] = newState;
 		});
 	},
@@ -248,8 +284,34 @@ HooStateMachine_controller = SC.Object.extend({
 	},
 
 	_transitionTo: function( targetState ) {
+
+		var thisParentList:Array = this.currentState.hierachyList();
+		var thatParentList:Array = targetState.hierachyList();
+
+		// eliminate shared parents from the front of the chain - the ones left in thisParentList are the ones we are exiting, the ones left in thatParentList are the ones we are entering
+		var shortestLength:int = thisParentList.length < thatParentList.length ? thisParentList.length : thatParentList.length;
+		var sharedparentsIndex:int = -1;
+		for( var i:int=0; i<shortestLength; i++ ) {
+			if(thisParentList[i]==thatParentList[i])
+				sharedparentsIndex = i;
+			else
+				break;
+		}
+		if(sharedparentsIndex > -1) {
+			thisParentList.splice(0,sharedparentsIndex+1);
+			thatParentList.splice(0,sharedparentsIndex+1);
+		}
+
+		thisParentList.reverse();
+		thisParentList.forEach( function(element:*, index:int, arr:Array):void {
+			element.executeExitActions( commandsChannel );
+		}, null);
+
 		 this.currentState = targetState;
-		 targetState.executeEntryActions( this.commandsChannel );
+
+		thatParentList.forEach( function(element:*, index:int, arr:Array):void {
+			element.executeEntryActions( this.commandsChannel );
+		}, null);
 	 }
 });
 

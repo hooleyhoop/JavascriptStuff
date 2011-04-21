@@ -65,11 +65,11 @@ HooAbstractButton = HooWidget.extend({
 
 /*
  * After spending considerable time on this i have come to the conclusion that you
- * SHOULD NOT be able to dragout of the button, then back over and have it recieve
+ * SHOULD NOT be able to drag out of the button, then back over and have it recieve
  * your mouse-up event. Although this seems desirable, it doesn't work if you mouse-up
  * outside of the window.
  * There are 2 options.. capture events for when the mouse rolls out of the window OR
- * just return the button to normal state when you rollout
+ * just return the button to normal state when you rollout. OK seems like catching mouseup outside of the window not such a big deal, need to rethink.
  *
  */
 

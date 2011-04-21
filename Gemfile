@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.5'
+gem 'rails', '3.0.7'
 gem 'mongrel', '1.2.0.pre2'
 gem 'jquery-rails', '0.2.7'
 gem 'haml', '3.0.25'
@@ -25,13 +25,15 @@ gem 'linecache19'
 # gem 'nokogiri'
 # gem 'aws-s3', :require => 'aws/s3'
 
+# coffeescript
+gem 'barista'
 
 # plugin test
 #gem "gui"
 
 group :development do
 	gem 'annotate-models', '1.0.4'
-	gem 'faker', '0.9.4'
+	gem 'faker', '0.9.5'
 	gem "rspec-rails", ">= 2.5.0"
 end
 
