@@ -149,7 +149,7 @@
 			// called too often - need to have the runloop shit
 			frameDidChange: function( rect ) {
 
-				var all_jsClass_objects = this._$div.find(":customdata(jsclass)");
+				var all_jsClass_objects = this._$div.find('[data-jsclass]');
 				all_jsClass_objects.each(function(index, value) {
 
 					var idString = $(value).attr('id');

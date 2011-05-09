@@ -21,9 +21,9 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 	var all_jsClass_objects;
 	if(rootElement===undefined) {
 		// -- get all objects with data-jsClass attribute ''
-		all_jsClass_objects = $(":customdata(jsclass)" );
+		all_jsClass_objects = $('[data-jsclass]');
 	} else {
-		all_jsClass_objects = rootElement.find(":customdata(jsclass)");
+		all_jsClass_objects = rootElement.find('[data-jsclass]');
 	}
 
 	// var anExperiment = $win.find(":nth-child(0)");
@@ -35,7 +35,8 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 		if(idString==="") {
 			alert("cunt data class without id");
 		}
-		var className = $(ob).customdata('jsclass');
+		var className = $(ob).data('jsclass');
+
 		var newInstanceName = '_'+idString;
 		var jsonName = newInstanceName+'_json';
 		var jsonOb =  window[jsonName];

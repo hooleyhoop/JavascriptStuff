@@ -4,8 +4,12 @@
 		%title hmmm
 		= stylesheet_link_tag 'qunit/qunit.css'
 		= javascript_include_tag :defaults
-		= javascript_include_tag 'qunit/qunit.js', 'jquery-1.4.2.min.js'
+		= javascript_include_tag 'third_party/qunit/qunit.js'
+		= javascript_include_tag 'third_party/qmock/qmock.js'
 
+		%script
+			QMock.config.compare = QUnit.equiv;
+			QMock.config.failslow = false;
 
 		-# Include each js file that we have passed in via 'jsFiles'
 		- jsFiles.each do |file|

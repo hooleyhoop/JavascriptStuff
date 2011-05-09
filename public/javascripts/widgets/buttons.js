@@ -1,3 +1,239 @@
+HooThreeStateItem = SC.Object.extend({
+
+	_threeButtonSM: undefined,
+	_graphic: undefined,
+	_clickableItem: undefined,
+
+//eh?	_delegate:					undefined,
+//eh?	_initialState:				undefined,
+//eh?	lastWindowEvent:			undefined,
+
+	init: function( /* _graphics */ ) {
+		arguments.callee.base.apply( this, arguments );
+		this._threeButtonSM = ThreeStateButtonStateMachine.create({ _controller: this });
+		this._graphic.showDisabledButton();
+		this._listenerDebugger = ActiveListenerDebugger.create();
+	},
+
+	// input
+	// - ev_showState1, ev_disable, ev_error
+	sendEvent: function( ev ) {
+		this._threeButtonSM.processInputSignal( ev );
+	},
+
+	// State machine callbacks
+	cmd_enableButton: function() {
+
+		if( this._clickableItem!=null ) {
+	//		this._listenerDebugger.addListener( this._clickableItem, 'mousedown', this._mouseDown );
+		}
+//eh?			button.bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this._delegate.eventTrampoline );
+//eh?			button.bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this._delegate.eventTrampoline );
+//eh?		}
+
+	},
+	cmd_disableButton: function() {
+		this._graphic.showDisabledButton();
+	},
+
+	cmd_showMouseUp1: function() {
+		this._graphic.showMouseUp1State();
+	},
+
+	cmd_showMouseDown1: function() {
+		this._graphic.showMouseDown1State();
+	},
+
+	cmd_showMouseDownOut1: function() {
+		this._graphic.showMouseUp1State();
+ 	},
+
+	cmd_fireButtonAction1: function() {
+	},
+
+	cmd_abortClickAction: function() {
+	},
+
+	/* Overide this is more complex buttons */
+//eh?	_setupStateMachine: function( initialState ) {
+//eh?	},
+
+	/* Incoming commands from the state machine */
+//eh?	send: function( command ) {
+//eh?		this[command.name](); // interpet the command as an instance method and call it
+//eh?	},
+
+//eh?	setInitialState: function( shouldStartActive ) {
+		// regardless, begin in the disabled state
+//eh?		this.temporarySetEnabledState( 0, false );
+		// if enabled? is not observing anything, assume we should advance to the enabled state automatically
+//eh?		if(shouldStartActive)
+//eh?			this._fsm_controller.handle( "enable" );
+//eh?	},
+
+//eh?	showMouseDownState: function( state ) {
+//eh?		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this._delegate.eventTrampoline );
+//eh?	},
+
+//eh?	showMouseUpState: function( state ) {
+//eh?		$(window).unbind( 'mouseup' );
+//eh?	},
+
+//eh?	showMouseDown1: function() {
+//eh?		this.showMouseDownState(2);
+//eh?	},
+
+//eh?	showMouseUp1: function() {
+//eh?		this.showMouseUpState(1);
+//eh?	},
+
+//eh?	abortClickAction: function() {
+//eh?		// on complete set the button state back to normal
+//eh?		this._fsm_controller.handle( "clickAbortCompleted" );
+//eh?	},
+
+	/* This should only be called once, when it enters the enabled state */
+//eh?	enableButton: function( state ) {
+
+
+//eh?		this._delegate.enableButton(state);
+
+		/* for a working button the state was set to either 1 or 3 */
+//eh?		this.temporarySetEnabledState( this._initialState, true );
+
+		// this could do anything..
+		// if( this.json.javascript )
+		//	eval( this.json.javascript );
+
+		// we dont rest in enabled state - move on to active state
+//eh?		this._fsm_controller.handle( "enabledSuccessfully" );
+//eh?	},
+
+//eh?	fireButtonAction: function( nextState ) {
+
+//eh?		var self = this;
+
+		// ensure we can't click again until we have received response
+//eh?		self.temporarySetEnabledState( 0, false );
+
+//eh?		var afterAction = function() {
+			//alert("success");
+			/* Move this back into the succeess function */
+//eh?			self.temporarySetEnabledState( nextState, true );
+			// on complete set the button state back to normal
+//eh?			self._fsm_controller.handle( "clickActionCompleted" );
+//eh?			console.log("** Complete **");
+//eh?		};
+//eh?		var onCompleteStuffHash =  {onCompleteTarget: self, onCompleteAction: afterAction};
+//eh?		this._delegate.fireAction( nextState, onCompleteStuffHash );
+//eh?	},
+
+//eh?	fireButtonAction1: function() {
+//eh?		this.fireButtonAction( 1 );
+//eh?	},
+
+//eh?	temporarySetEnabledState: function( state, enabled ) {
+//eh?		this._delegate.temporarySetEnabledState(state,enabled);
+//eh?	}
+});
+
+/*
+ * Append a couple of states to 3 state button
+*/
+HooFiveStateItem = HooThreeStateItem.extend({
+
+	/* States */
+	_active_state2:			undefined,
+	_active_down_state2:	undefined,
+	_clicked_state2:		undefined,
+	_abortClick_state2:		undefined,
+
+	/* Commands */
+	_showMouseDownCmd2:		HooStateMachine_command.create( {name: "showMouseDown2"} ),
+	_showMouseUpCmd2:		HooStateMachine_command.create( {name: "showMouseUp2"} ),
+	_fireButtonActionCmd2:	HooStateMachine_command.create( {name: "fireButtonAction2"} ),
+
+	/* Add some extra states and overide some */
+	_setupStateMachine: function() {
+		arguments.callee.base.apply(this,arguments);
+
+		this._active_state2			= HooStateMachine_state.create( {name: "active2" });
+		this._active_down_state2	= HooStateMachine_state.create( {name: "active_down2" });
+		this._clicked_state2		= HooStateMachine_state.create( {name: "clicked2" });
+		this._abortClick_state2		= HooStateMachine_state.create( {name: "abort-click2" });
+
+		/* Transitions */
+		this._active_state2.addTransition( this._buttonPressed_event, this._active_down_state2 );
+		this._active_down_state2.addTransition( this._buttonReleased_event, this._clicked_state2 );
+		this._active_down_state2.addTransition( this._mouseDraggedOut_event, this._abortClick_state2 );
+		this._abortClick_state2.addTransition( this._clickAbortComplete_event, this._active_state2 );
+
+		// these need to overide simple button ? How?
+		this._clicked_state1.removeAllTransitions();
+		this._clicked_state1.addTransition( this._clickComplete_event, this._active_state2 );
+		this._clicked_state2.addTransition( this._clickComplete_event, this._active_state1 );
+
+		// dont assume that when the button goes to 'enabled' this means state1
+		if( this._initialState==3 ) {
+			this._enabled_state.removeAllTransitions();
+			this._enabled_state.addTransition( this._enabledSuccessfully_event, this._active_state2 );
+		}
+
+		this._active_state2.addEntryAction( this._showMouseUpCmd2 );
+		this._active_down_state2.addEntryAction( this._showMouseDownCmd2 );
+		this._clicked_state2.addEntryAction( this._fireButtonActionCmd2 );
+		this._abortClick_state2.addEntryAction( this._abortClickActionCmd );
+	},
+
+	showMouseDown2: function() {
+		this.showMouseDownState(4);
+	},
+
+	showMouseUp2: function() {
+		this.showMouseUpState(3);
+	},
+
+	fireButtonAction2: function() {
+		this.fireButtonAction(3);
+	}
+});
+
+
+HooSliderItem = HooThreeStateItem.extend({
+
+	// instead of aborting when drag outside..
+	enableButton: function( state ) {
+		arguments.callee.base.apply(this,arguments);
+		var button = this._delegate.getClickableItem();
+		if( button ) {
+			button.unbind( 'mouseleave' );
+		}
+	},
+
+	showMouseDownState: function( state ) {
+		var self = this;
+		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this._delegate.eventTrampoline )
+		$(window).bind( 'mousemove', function(e){
+			self.lastWindowEvent = e;
+			self._delegate.mouseDragged(e);
+		})
+		this._delegate.showMouseDownState(state);
+	},
+
+	showMouseUpState: function( state ) {
+		$(window).unbind( 'mouseup' );
+		$(window).unbind( 'mousemove' );
+		this._delegate.showMouseUpState(state);
+	}
+
+});
+
+
+
+
+
+
+
 /* Abstract Button */
 // HooAbstractButton.mixin = HooWidget.extend({
 
@@ -63,15 +299,7 @@ HooAbstractButton = HooWidget.extend({
 
 
 
-/*
- * After spending considerable time on this i have come to the conclusion that you
- * SHOULD NOT be able to drag out of the button, then back over and have it recieve
- * your mouse-up event. Although this seems desirable, it doesn't work if you mouse-up
- * outside of the window.
- * There are 2 options.. capture events for when the mouse rolls out of the window OR
- * just return the button to normal state when you rollout. OK seems like catching mouseup outside of the window not such a big deal, need to rethink.
- *
- */
+
 
 /* Simple Form Button */
 HooFormButtonSimple = HooAbstractButton.extend({
@@ -81,11 +309,8 @@ HooFormButtonSimple = HooAbstractButton.extend({
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
-
 		if( this.json.initialState>0 ) {
-
 			var self = this;
-
 			this.createStatemachine();
 			this._stateMachine._delegate = this;
 			this._stateMachine._setupStateMachine( this.json.initialState );

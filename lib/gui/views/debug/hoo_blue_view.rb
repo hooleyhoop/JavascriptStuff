@@ -3,6 +3,8 @@ module GUI::Views::Debug
 	# http://0.0.0.0:3000/widgets/blueView
 	class HooBlueView < GUI::Core::HooView
 
+		attr_accessor :width, :height;
+
 		def initialize( args={} )
 			super(args);
 			@width = 90;
