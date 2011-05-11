@@ -224,6 +224,12 @@ test("ThreeStateButtonStateMachine", function() {
 	//equals( threeButtonSM.currentStateName(), "st_off", "!" );
 });
 
+test("FiveStateButtonStateMachine", function() {
+
+	var ninja = new Mock();
+
+	var fiveButtonSM = FiveStateButtonStateMachine.create({ _controller: ninja });
+});
 
 HooStateMachine_testCommandChannel = SC.Object.extend({
 	send: function( command ) {

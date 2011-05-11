@@ -24,9 +24,9 @@
 
 				this._$span = $( "#"+this.id+" span:first" );
 
-				var hasBinding = this.setup_hoo_binding( 'enabledBinding' );
-				hasBinding = this.setup_hoo_binding( 'maxAmountValueBinding' );
-				hasBinding = this.setup_hoo_binding( 'playedValueBinding' );
+				var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
+				hasBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
+				hasBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
 
 				this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
 			},

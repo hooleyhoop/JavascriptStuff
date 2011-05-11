@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class='no-js'>
+<head class='no-js' lang='en'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<title>jquery events tests</title>
+<meta name="csrf-param" content="authenticity_token"/>
+<meta name="csrf-token" content="A+cSA7LPnahs7iVbIu4vxml/hBqeKq8AvLrZUATefW8="/>
+
+<script src="/javascripts/jquery/jquery-1.6.js" type="text/javascript"></script>
+<script src="/javascripts/jquery/jquery-ujs/src/rails.js" type="text/javascript"></script>
+<script src="/javascripts/application.js" type="text/javascript"></script>
+
+</head>
+
+<div class='gui_views_drawing_hoo_simple_button' id='testButtonDiv' style="width:300px; height:200px; background-color: orange;">
+	jquery events tests
+</div>
+
+
+<script type='text/javascript'>
+
+	var _mouseOffStage;
+
+	$(document).ready(function() {
+		var button = $( "#testButtonDiv" );
+    	button.bind( 'mousedown', _mouseDown);
+	});
+
+	function _mouseDown(e) {
+
+		console.log("_mouseDown");
+
+		_mouseOffStage = false;
+		var button = $( "#testButtonDiv" );
+		var windot = $(window);
+		windot.bind( 'mouseup', _mouseStageUp );
+		//windot.bind( 'mouseleave', _mouseStageLeave );
+		// windot.bind( "mouseout", _mouseStageOut );
+		//windot.bind( "mouseenter", _mouseStageOver );
+		button.bind( 'mouseleave', _mouseRollOutHandler );
+		button.bind( 'mouseenter', _mouseRollOverHandler );
+	}
+
+	function _mouseStageUp(e) {
+		console.log("_mouseStageUp");
+
+		var button = $( "#testButtonDiv" );
+		var windot = $(window);
+		windot.unbind( 'mouseup', _mouseStageUp );
+		//windot.unbind( 'mouseleave', _mouseStageLeave );
+		//windot.unbind( "mouseout", _mouseStageOut );
+		//windot.unbind( "mouseenter", _mouseStageOver );
+		button.unbind( 'mouseleave', _mouseRollOutHandler );
+		button.unbind( 'mouseenter', _mouseRollOverHandler );
+	}
+
+	function _mouseRollOutHandler(e) {
+		console.log("_mouseRollOutHandler");
+	}
+
+	function _mouseRollOverHandler(e) {
+		console.log("_mouseRollOverHandler");
+	}
+
+	function _mouseStageLeave(e) {
+		console.log("_mouseStageLeave");
+		if( _mouseOffStage ){
+			console.log("mouse up and off stage");
+			//bonk.stopDrag();
+		}else{
+			console.log("mouse has left the stage");
+			//no reason to stop drag here as the user hasn't released the mouse yet
+		}
+	}
+
+	function _mouseStageOut(e) {
+		console.log("_mouseStageOut");
+	}
+
+	function _mouseStageOver(e) {
+		console.log("_mouseStageOver");
+	}
+
+</script>
+
+
+
+
+</body>
+</html>

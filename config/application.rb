@@ -34,9 +34,12 @@ module JavascriptStuff
     # JavaScript files you want as :defaults (application.js is always included).
     config.action_view.javascript_expansions[:defaults] = [
     'jquery/jquery-1.6', 'jquery/jquery-tmpl/jquery.tmpl.js', 'jquery/jquery-tmpl/jquery.tmplPlus.js', 'jquery/jquery-ujs/src/rails.js', 'jquery/jquery-ui-1.8.11.custom.min',
+
     'third_party/flash_detection.js', 'third_party/yepnope.js',
-    'hoo/HooSC_min.js', 'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js",
-    'widgets/widgets.js', 'widgets/buttons.js', 'widgets/headless_player.js',
+
+    'hoo/HooSC_min.js', 'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js", "hoo/sm_configurations/fiveStateButtonStateMachine.js",
+
+    'widgets/widgets.js', 'widgets/flipp_toggle_thing.js', 'widgets/buttons.js', 'widgets/headless_player.js',
 
 
     # coffeescripts

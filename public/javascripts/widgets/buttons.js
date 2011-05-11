@@ -2,13 +2,11 @@ HooThreeStateItem = SC.Object.extend({
 
 	_threeButtonSM: undefined,
 	_graphic: undefined,
-	_clickableItem: undefined,
+	_clickableItem$: undefined,
+//hmi suppose we need this	_target: undefined,
+//hmi suppose we need this	_action: undefined,
 
-//eh?	_delegate:					undefined,
-//eh?	_initialState:				undefined,
-//eh?	lastWindowEvent:			undefined,
-
-	init: function( /* _graphics */ ) {
+	init: function( /* _graphic, _clickableItem$ */ ) {
 		arguments.callee.base.apply( this, arguments );
 		this._threeButtonSM = ThreeStateButtonStateMachine.create({ _controller: this });
 		this._graphic.showDisabledButton();
@@ -21,18 +19,19 @@ HooThreeStateItem = SC.Object.extend({
 		this._threeButtonSM.processInputSignal( ev );
 	},
 
+	setButtonTarget: function( target, action ) {
+		this._target = target; this._action = action;
+	},
+
 	// State machine callbacks
 	cmd_enableButton: function() {
 
-		if( this._clickableItem!=null ) {
-	//		this._listenerDebugger.addListener( this._clickableItem, 'mousedown', this._mouseDown );
-		}
-//eh?			button.bind( 'mousedown', {target:this._fsm_controller, action:'handle', arg:"buttonPressed" }, this._delegate.eventTrampoline );
-//eh?			button.bind( 'mouseleave', {target:this._fsm_controller, action:'handle', arg:"mouseDraggedOutside" }, this._delegate.eventTrampoline );
-//eh?		}
-
+		this._listenerDebugger.addListener( this._clickableItem$, 'mousedown', this, this._mouseDown );
 	},
+
 	cmd_disableButton: function() {
+
+		this._listenerDebugger.removeListener( this._clickableItem$, 'mousedown', this, this._mouseDown );
 		this._graphic.showDisabledButton();
 	},
 
@@ -49,48 +48,46 @@ HooThreeStateItem = SC.Object.extend({
  	},
 
 	cmd_fireButtonAction1: function() {
+//hmi suppose we need this		var success = this._action.call( this._target );
 	},
 
 	cmd_abortClickAction: function() {
+		this.sendEvent( "ev_clickAbortCompleted" );
 	},
 
-	/* Overide this is more complex buttons */
-//eh?	_setupStateMachine: function( initialState ) {
-//eh?	},
+	_mouseDown: function( e ) {
 
-	/* Incoming commands from the state machine */
-//eh?	send: function( command ) {
-//eh?		this[command.name](); // interpet the command as an instance method and call it
-//eh?	},
+		this._listenerDebugger.addListener( $(window), 'mouseup', this, this._mouseStageUp );
+		this._listenerDebugger.addListener( this._clickableItem$, 'mouseleave', this, this._mouseRollOutHandler );
+		this._listenerDebugger.addListener( this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler );
 
-//eh?	setInitialState: function( shouldStartActive ) {
-		// regardless, begin in the disabled state
-//eh?		this.temporarySetEnabledState( 0, false );
-		// if enabled? is not observing anything, assume we should advance to the enabled state automatically
-//eh?		if(shouldStartActive)
-//eh?			this._fsm_controller.handle( "enable" );
-//eh?	},
+		this.sendEvent( "ev_buttonPressed" );
+	},
 
-//eh?	showMouseDownState: function( state ) {
-//eh?		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this._delegate.eventTrampoline );
-//eh?	},
+	_mouseStageUp: function(e) {
 
-//eh?	showMouseUpState: function( state ) {
-//eh?		$(window).unbind( 'mouseup' );
-//eh?	},
+		this._listenerDebugger.removeListener( $(window), 'mouseup', this, this._mouseStageUp );
+		this._listenerDebugger.removeListener( this._clickableItem$, 'mouseleave', this, this._mouseRollOutHandler );
+		this._listenerDebugger.removeListener( this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler );
 
-//eh?	showMouseDown1: function() {
-//eh?		this.showMouseDownState(2);
-//eh?	},
+		this.sendEvent("ev_buttonReleased");
+	},
 
-//eh?	showMouseUp1: function() {
-//eh?		this.showMouseUpState(1);
-//eh?	},
+	_mouseRollOutHandler: function(e) {
+		this.sendEvent("ev_mouseDraggedOutside");
+	},
 
-//eh?	abortClickAction: function() {
-//eh?		// on complete set the button state back to normal
-//eh?		this._fsm_controller.handle( "clickAbortCompleted" );
-//eh?	},
+	_mouseRollOverHandler: function(e) {
+		this.sendEvent("ev_mouseDraggedInside");
+	},
+
+	currentStateName: function() {
+		return this._threeButtonSM.currentStateName();
+	},
+
+	setCurrentStateName: function( arg ) {
+		return this._threeButtonSM.processInputSignal( arg );
+	}
 
 	/* This should only be called once, when it enters the enabled state */
 //eh?	enableButton: function( state ) {
@@ -136,6 +133,244 @@ HooThreeStateItem = SC.Object.extend({
 //eh?		this._delegate.temporarySetEnabledState(state,enabled);
 //eh?	}
 });
+
+
+/* Abstract Button */
+// HooAbstractButton.mixin = HooWidget.extend({
+
+HooAbstractButton = HooWidget.extend({
+
+	textHolder: "span",
+
+	/* JQuery helpers */
+	getForm: function() {
+		var formQuery = "#"+this.id+" form:first";
+		var $form = $( formQuery );
+		if( $form.length!=1 )
+			console.error("Could not find the form");
+		return $form;
+	},
+
+	getOuterWidth: function() {
+		var $butt = this.getClickableItem();
+		return $butt.outerWidth();
+	},
+
+	setOuterWidth: function( arg ) {
+		var $butt = this.getClickableItem();
+		$butt.width(arg);
+	},
+
+	getTextContent: function() {
+		var $butt = this.getClickableItem();
+		var $contents = $butt.find( this.textHolder );
+		return $contents.text();
+	}
+});
+
+
+HooThreeStateButtonGraphic = SC.Object.extend({
+
+	_labelStates: undefined,
+	_itemType: undefined,
+	_rootItemId: undefined,
+
+	getClickableItem: function() {
+		var buttonQuery = "#"+this._rootItemId+" "+this._itemType+":first";
+		var $button = $( buttonQuery );
+		if( $button.length!=1 )
+			console.error("Could not find the Button");
+		return $button;
+	},
+
+	showDisabledButton: function() {
+		this.setBackgroundAndTextState( 0 );
+	},
+	showMouseUp1State: function() {
+		this.setBackgroundAndTextState( 1 );
+	},
+	showMouseDown1State: function() {
+		this.setBackgroundAndTextState( 2 );
+	},
+
+	setBackgroundAndTextState: function( state ) {
+
+		var mouseDownText = this._labelStates[state];
+		this.setContentText( mouseDownText );
+		this.positionBackground(state);
+	},
+
+	// works for buttons and spans if textHolder is set correctly
+	setContentText:  function( arg ) {
+		var $butt = this.getClickableItem();
+		var $contents = $butt.find( this.textHolder );
+		$contents.text( arg );
+	},
+
+	positionBackground:function( state ) {
+		var $butt = this.getClickableItem();
+		var height = $butt.outerHeight();
+		var offset = state * height;
+		if ( typeof this.positionBackground.previousHeight!='undefined' ) {
+		//	if( typeof console.assert!==undefined )
+		//		console.assert( height==this.positionBackground.previousHeight, "shit" );
+		}
+		this.positionBackground.previousHeight = height;
+		// console.log("moving background "+offset);
+
+		$butt.css( "backgroundPosition", "0px -"+offset+"px" );
+	}
+});
+
+
+/* Simple Form Button */
+HooFormButtonSimple = HooWidget.extend({
+
+//hmm	_stateMachine:				undefined,
+//hmm	_mouseClickAction:			undefined,
+	_threeButtonSM: undefined,
+	_threeStateButtonGraphic: undefined,
+
+	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
+		arguments.callee.base.apply( this, arguments );
+
+		if(this._threeStateButtonGraphic==undefined)
+			this._createGraphic();
+
+		if(this._threeButtonSM==undefined)
+			this._threeButtonSM = HooThreeStateItem.create( { _graphic:this._threeStateButtonGraphic, _clickableItem$: this._threeStateButtonGraphic.getClickableItem() } );
+
+//presumably i need this		this._threeButtonSM.setButtonTarget( this, this._mouseDown );
+
+//hmm		if( this.json.initialState>0 ) {
+//hmm			var self = this;
+//hmm			this.createStatemachine();
+//hmm			this._stateMachine._delegate = this;
+//hmm			this._stateMachine._setupStateMachine( this.json.initialState );
+
+			// initial state depends on whether _enabled? has been bound or not.. if it is bound, then follow that property, if it isnt bound start in the on state
+//hmm			this._stateMachine.setInitialState( 0 );
+//hmm		}
+	},
+
+	_createGraphic: function() {
+		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _labelStates: this.json.labelStates } );
+	},
+
+//hmm	createStatemachine: function() {
+//hmm		this._stateMachine = HooThreeStateItem.create();
+//hmm	},
+
+	setupDidComplete: function() {
+
+//hmm		var self = this;
+
+		// Setup bindings as configured in the json
+
+		// if there is no binding and the initial state isn't disabled, we need to call 'enable', right?
+
+		/* at the moment this only handles initial turn-on! you cannot observe a turn off */
+		var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
+		if( hasBinding==false && this.json.initialState>0 ) {
+			this._threeButtonSM.sendEvent( "ev_showState1" );
+		}
+		// set up actions as configured in the json - mixin?
+//hmm		this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
+	},
+
+	// we observed a change in our enabled binding
+	enabledDidChange: function( target, property ) {
+
+		var observedVal = target[property];
+		// alert(observedVal);
+		if( observedVal==null || observedVal==undefined || observedVal==0 || observedVal==false )
+			this._threeButtonSM.setCurrentStateName( "ev_disable" );
+		else {
+			this._threeButtonSM.setCurrentStateName( "ev_showState1" );
+		}
+	},
+
+	currentStateName: function() {
+		return this._threeButtonSM.currentStateName();
+	}
+
+
+//hmm	showMouseDownState: function( state ) {
+//hmm		arguments.callee.base.apply(this,arguments);
+//hmm	},
+
+//hmm	showMouseUpState: function( state ) {
+//hmm		arguments.callee.base.apply(this,arguments);
+//hmm	},
+
+//hmm	fireAction: function( nextState, argsHash ) {
+
+//hmm		var self = this;
+
+//hmm		if( this._mouseClickAction!==undefined ){
+
+		/* Ignore the form action altogether and do a javascript action - cant be async at the mo */
+//hmm			self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
+
+			// -if we are in a form - stop the form doing it's thing
+//hmm			self.getForm().submit(function(e) { return false; });
+//hmm			self.getForm().submit();
+//hmm			argsHash.onComplete();
+
+//hmm		} else {
+			/* Submit the forms regular action using jquery */
+//hmm			var form = self.getForm();
+//hmm			form.submit(function(e) {
+				// alert('Handler for .submit() called.');
+
+				// this === form at this point
+//hmm				var hmm = $(this).serialize();
+
+//hmm				$.ajax({ url: this.action, type:'POST', data: hmm,
+//hmm					success: function(data) {
+//hmm						form.unbind('submit');
+
+						// of course, you remebered to pass in the callback..
+//hmm						argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+//hmm					}
+//hmm				});
+
+				// The next two lines are equivalent
+//hmm				e.preventDefault();
+//hmm				return false;
+//hmm			});
+//hmm			form.submit();
+//hmm		}
+
+//hmm	},
+
+	/* This should only be called once, when it enters the enabled state */
+//hmm	enableButton: function( state ) {
+//hmm	},
+
+	// this has somewhere to go..
+//hmm	temporarySetEnabledState: function( state, enabled ) {
+
+//hmm		var mouseDownText = "";
+//hmm		var button = this.getClickableItem();
+
+//hmm		if(enabled){
+//hmm			button.removeAttr("disabled");
+//hmm			button.css( "pointer-events", "auto" );
+//hmm		} else {
+//hmm			button.attr('disabled', 'disabled');
+//hmm			button.css( "pointer-events", "none" );
+//hmm		}
+		// this.getForm().unbind( "submit", this.onClick );
+		// button.unbind( "mousedown", this.mouseDown );
+
+//hmm		this.setBackgroundAndTextState( state );
+//hmm	}
+});
+
+
+
+
 
 /*
  * Append a couple of states to 3 state button
@@ -232,206 +467,6 @@ HooSliderItem = HooThreeStateItem.extend({
 
 
 
-
-
-/* Abstract Button */
-// HooAbstractButton.mixin = HooWidget.extend({
-
-HooAbstractButton = HooWidget.extend({
-
-	itemType: "button",
-	textHolder: "span",
-
-	/* JQuery helpers */
-	getClickableItem: function() {
-		var buttonQuery = "#"+this.id+" "+this.itemType+":first";
-		var $button = $( buttonQuery );
-		if( $button.length!=1 )
-			console.error("Could not find the Button");
-		return $button;
-	},
-
-	getForm: function() {
-		var formQuery = "#"+this.id+" form:first";
-		var $form = $( formQuery );
-		if( $form.length!=1 )
-			console.error("Could not find the form");
-		return $form;
-	},
-
-	getOuterWidth: function() {
-		var $butt = this.getClickableItem();
-		return $butt.outerWidth();
-	},
-
-	setOuterWidth: function( arg ) {
-		var $butt = this.getClickableItem();
-		$butt.width(arg);
-	},
-
-	getTextContent: function() {
-		var $butt = this.getClickableItem();
-		var $contents = $butt.find( this.textHolder );
-		return $contents.text();
-	},
-
-	// works for buttons and spans if textHolder is set correctly
-	setContentText:  function( arg ) {
-		var $butt = this.getClickableItem();
-		var $contents = $butt.find( this.textHolder );
-		$contents.text( arg );
-	},
-
-	positionBackground:function( state ) {
-		var $butt = this.getClickableItem();
-		var height = $butt.outerHeight();
-		var offset = state * height;
-		if ( typeof this.positionBackground.previousHeight!='undefined' ) {
-		//	if( typeof console.assert!==undefined )
-		//		console.assert( height==this.positionBackground.previousHeight, "shit" );
-		}
-		this.positionBackground.previousHeight = height;
-		// console.log("moving background "+offset);
-
-		$butt.css( "backgroundPosition", "0px -"+offset+"px" );
-	}
-});
-
-
-
-
-
-/* Simple Form Button */
-HooFormButtonSimple = HooAbstractButton.extend({
-
-	_stateMachine:				undefined,
-	_mouseClickAction:			undefined,
-
-	init: function( /* init never has args */ ) {
-		arguments.callee.base.apply( this, arguments );
-		if( this.json.initialState>0 ) {
-			var self = this;
-			this.createStatemachine();
-			this._stateMachine._delegate = this;
-			this._stateMachine._setupStateMachine( this.json.initialState );
-
-			// initial state depends on whether _enabled? has been bound or not.. if it is bound, then follow that property, if it isnt bound start in the on state
-			this._stateMachine.setInitialState( 0 );
-		}
-	},
-
-	createStatemachine: function() {
-		this._stateMachine = HooThreeStateItem.create();
-	},
-
-	setupDidComplete: function() {
-
-		var self = this;
-
-		// Setup bindings as configured in the json
-
-		// if there is no binding and the initial state isn't disabled, we need to call 'enable', right?
-
-		/* at the moment this only handles initial turn-on! you cannot observe a turn off */
-		var hasBinding = this.setup_hoo_binding( 'enabledBinding' );
-		if( hasBinding==false && this.json.initialState>0 )
-			this._stateMachine._fsm_controller.handle( "enable" );
-
-		// set up actions as configured in the json - mixin?
-		this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
-	},
-
-	// we observed a change!
-	readyDidChange: function( target, property ) {
-
-		//pbtarget.removeObserver( property, this, this.readyDidChange );
-		if( target.get(property))
-			this._stateMachine._fsm_controller.handle( "enable" );
-	},
-
-	setBackgroundAndTextState: function( state ) {
-
-		var mouseDownText = this.json.labelStates[state];
-		this.setContentText( mouseDownText );
-		this.positionBackground(state);
-	},
-
-	showMouseDownState: function( state ) {
-		arguments.callee.base.apply(this,arguments);
-		this.setBackgroundAndTextState( state );
-	},
-
-	showMouseUpState: function( state ) {
-		arguments.callee.base.apply(this,arguments);
-		this.setBackgroundAndTextState( state );
-	},
-
-	fireAction: function( nextState, argsHash ) {
-
-		var self = this;
-
-		if( this._mouseClickAction!==undefined ){
-
-		/* Ignore the form action altogether and do a javascript action - cant be async at the mo */
-			self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
-
-			// -if we are in a form - stop the form doing it's thing
-			self.getForm().submit(function(e) { return false; });
-			self.getForm().submit();
-			argsHash.onComplete();
-
-		} else {
-			/* Submit the forms regular action using jquery */
-			var form = self.getForm();
-			form.submit(function(e) {
-				// alert('Handler for .submit() called.');
-
-				// this === form at this point
-				var hmm = $(this).serialize();
-
-				$.ajax({ url: this.action, type:'POST', data: hmm,
-					success: function(data) {
-						form.unbind('submit');
-
-						// of course, you remebered to pass in the callback..
-						argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
-					}
-				});
-
-				// The next two lines are equivalent
-				e.preventDefault();
-				return false;
-			});
-			form.submit();
-		}
-
-	},
-
-	/* This should only be called once, when it enters the enabled state */
-	enableButton: function( state ) {
-	},
-
-	// this has somewhere to go..
-	temporarySetEnabledState: function( state, enabled ) {
-
-		var mouseDownText = "";
-		var button = this.getClickableItem();
-
-		if(enabled){
-			button.removeAttr("disabled");
-			button.css( "pointer-events", "auto" );
-		} else {
-			button.attr('disabled', 'disabled');
-			button.css( "pointer-events", "none" );
-		}
-		// this.getForm().unbind( "submit", this.onClick );
-		// button.unbind( "mousedown", this.mouseDown );
-
-		this.setBackgroundAndTextState( state );
-	}
-});
-
-
 /*
  * Extends the simpleButton 2 add another state, eg followed, unfollowed
  *
@@ -448,23 +483,27 @@ HooFormButtonToggle = HooFormButtonSimple.extend({
 /* 'Orrible Multiple Inheritance stuff */
 DivButtonMixin = {
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
-	itemType: "div",
-	textHolder: "a",
+
+//putback	textHolder: "a",
+
+	_createGraphic: function() {
+		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _labelStates: this.json.labelStates } );
+	},
 
 	// maybe make this async
 	fireAction: function( nextState, argsHash ) {
 
 		// we might want to make this async
-		if( this._mouseClickAction!==undefined )
-		{
+//putback		if( this._mouseClickAction!==undefined )
+//putback		{
 			// Doesnt work on ie
-			this._mouseClickAction.a.apply( this._mouseClickAction.t, [this._mouseClickAction.w] );
-		} else {
-			console.info("HooDivButtonSimple - button hasnt been given a javascript action");
-			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
-		}
+//putback			this._mouseClickAction.a.apply( this._mouseClickAction.t, [this._mouseClickAction.w] );
+//putback		} else {
+//putback			console.info("HooDivButtonSimple - button hasnt been given a javascript action");
+//putback			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
+//putback		}
 		// of course, you remebered to pass in the callback..
-		argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+//putback		argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
 	}
 };
 

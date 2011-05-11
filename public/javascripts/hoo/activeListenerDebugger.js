@@ -7,17 +7,23 @@ ActiveListenerDebugger = SC.Object.extend({
 		this._targets = new Object;
 	},
 
-	addListener: function( target, event, actionMethod ) {
+	addListener: function( item, event, targetOb, actionMethod ) {
 
-		if( this.alreadyContain( target, event, actionMethod ) )
+        if( item==null || targetOb==null || event==null || actionMethod==null || item==null || targetOb==undefined || event==undefined || actionMethod==undefined )
+			throw("NO! - cant add listener to Null");
+
+		if( this.alreadyContain( item, event, targetOb, actionMethod ) )
 			throw( "Doh, adding listener twice" );
-		target.bind( event, {arg1:null, arg2:'null'}, actionMethod );
-		this.storeEventListen( target, event, actionMethod );
+		item.bind( event, {target:targetOb, action:actionMethod, arg:null }, eventTrampoline );
+		this.storeEventListen( item, event, targetOb, actionMethod );
 	},
 
-	removeListener: function( target, event, actionMethod ) {
+	removeListener: function( item, event, targetOb, actionMethod ) {
 
-		var registeredHandlers = this._targets[target];
+        if( item==null || targetOb==null || event==null || actionMethod==null || item==null || targetOb==undefined || event==undefined || actionMethod==undefined )
+			throw("NO! cant remove Null listener");
+
+		var registeredHandlers = this._targets[item];
 		if(registeredHandlers==null) {
 			console.warn("Trying to remove a listener that isnt registered "+event );
 			return;
@@ -33,20 +39,20 @@ ActiveListenerDebugger = SC.Object.extend({
 
 		if(indexToRemove>-1) {
 			registeredHandlers.splice(indexToRemove,1);
-			this._targets[target] = registeredHandlers;
+			this._targets[item] = registeredHandlers;
 		}
-		target.unbind( event, actionMethod );
+		item.unbind( event, eventTrampoline );
 	},
 
-	alreadyContain: function( target, event, actionMethod ) {
+	alreadyContain: function( item, event, targetOb, actionMethod ) {
 
-		var registeredHandlers = this._targets[target];
+		var registeredHandlers = this._targets[item];
 		if(registeredHandlers==null)
 			return false;
 
 		var result = false;
 		$.each( registeredHandlers, function(index, element) {
-			if( element['type']==event && element['listener']==actionMethod ) {
+			if( element['type']==event && element['target']==targetOb && element['listener']==actionMethod ) {
 				result = true;
 				return false;
 			}
@@ -54,14 +60,14 @@ ActiveListenerDebugger = SC.Object.extend({
 		return result;
 	},
 
-	storeEventListen: function( target, event, actionMethod ) {
+	storeEventListen: function( item, event, targetOb, actionMethod ) {
 
-		var eventDetails = { type:event, listener:actionMethod };
-		var currentListenersForTarget = this._targets[target];
+		var eventDetails = { type:event, target:targetOb , listener:actionMethod };
+		var currentListenersForTarget = this._targets[item];
 		if(currentListenersForTarget==null)
 			currentListenersForTarget = new Array();
 		currentListenersForTarget.push( eventDetails );
-		this._targets[target] = currentListenersForTarget;
+		this._targets[item] = currentListenersForTarget;
 	}
 });
 

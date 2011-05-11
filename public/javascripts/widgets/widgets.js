@@ -7,6 +7,7 @@
  * ** TODO ** !: $.live() can bind an event handler to not just all objects that exist now but all objects in the future as well.
  * somehow we can use this to create new instances on ajax-ed html, no?
  */
+HOO_nameSpace = SC;
 
  // 1) Object is inserted into page
  // 2) bind somehow spots it, runs an event - probably not possible! whenever we load html by ajax we must check to see if it needs this running
@@ -39,17 +40,17 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 
 		var newInstanceName = '_'+idString;
 		var jsonName = newInstanceName+'_json';
-		var jsonOb =  window[jsonName];
+		var jsonOb = window[jsonName];
 		if( jsonOb===undefined )
 			console.info("cannot find json for "+className );
 
 		var hmm = eval(className);
 		var newInstance = hmm.create( {id: idString, json: jsonOb} );
 
-		if( window[newInstanceName]!==undefined ) {
+		if( HOO_nameSpace[newInstanceName]!==undefined ) {
 			console.error("That instance already exists! Cannot create instance of "+className );
 		}
-		window[newInstanceName] = newInstance;
+		HOO_nameSpace[newInstanceName] = newInstance;
 
 		// maybe should add to content view
 		_hooWindow.addSubView( newInstance );
@@ -58,6 +59,19 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 	});
 
 	_hooWindow.setupDidComplete();
+}
+
+
+// forward events to 'this'
+function eventTrampoline(e,a) {
+	var target = e.data.target;
+	var action = e.data.action;
+	var arg = e.data.arg;
+
+	if( typeof action === "string" )
+		target[action].call(target,arg, e);
+	else if( $.isFunction(action) )
+		action.call(target,arg, e);
 }
 
 /* W I D G E T S */
@@ -72,34 +86,45 @@ HooWidget = SC.Object.extend({
 	json: "undefined",
 	id: "undefined",
 
-	// forward events to 'this'
-	// i think we have a problem here, eventTrampoline is not called as an instance method (ie. 'this' is not what we think it is so dont assume you can use instance variables)
-	eventTrampoline: function(e,a) {
-
-		var target = e.data.target;
-		var action = e.data.action;
-		var arg = e.data.arg;
-		// target[action](arg, e);
-		target[action].call(target,arg, e);
-	},
-
 	parentDidResize: function() {
 	},
 
-	// extract bindings from json - move to widget
-	setup_hoo_binding: function( binding ) {
-
-		if( this.json.bindings && this.json.bindings[binding] ){
-			var b = this.json.bindings[binding];
-			var target = window[ b['to_taget'] ];
-			if(target===undefined)
-				debugger;
-			var initialState = target.get( b['to_property'] );
-			this.readyDidChange( target, b['to_property'] );
-			target.addObserver( b['to_property'], this, this[ b['do_action'] ] );
+	// extract bindings from json
+	setup_hoo_binding_from_json: function( bindingName ) {
+		if( this.json.bindings && this.json.bindings[bindingName] ){
+			var bindingConfig = this.json.bindings[bindingName];
+			this.bindToKeypath( bindingConfig['to_taget'], bindingConfig['to_property'], bindingConfig['do_action'] );
 			return true;
 		}
 		return false;
+	},
+
+	teardown_hoo_binding_from_json: function( bindingName ) {
+		if( this.json.bindings && this.json.bindings[bindingName] ){
+			var bindingConfig = this.json.bindings[bindingName];
+			this.unbindToKeypath( bindingConfig['to_taget'], bindingConfig['to_property'], bindingConfig['do_action'] );
+		}
+	},
+
+	bindToKeypath: function( targetName, propertyName, observerDidChangeMethod ) {
+		var target = HOO_nameSpace[targetName];
+		if(target===undefined)
+			debugger;
+		this.bindToTarget( target, propertyName, this, observerDidChangeMethod );
+	},
+
+	unbindToKeypath: function( targetName, propertyName, observerDidChangeMethod ) {
+		var target = HOO_nameSpace[targetName];
+		this.unbindToTarget( target, propertyName, this, observerDidChangeMethod );
+	},
+
+	bindToTarget: function( target, propertyName, observer, observerDidChangeMethod ) {
+		target.addObserver( propertyName, observer, observerDidChangeMethod );
+		observer[observerDidChangeMethod].call( observer, target, propertyName ); // sync initial value
+	},
+
+	unbindToTarget: function( target, propertyName, observer, observerDidChangeMethod ) {
+		target.removeObserver( propertyName, observer, observerDidChangeMethod );
 	},
 
 	// extract actions from json - move to widget
@@ -162,19 +187,5 @@ HooWindow = HooWidget.extend({
 HooContentView = HooWidget.extend({
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
-	}
-});
-
-/* Flippy Debug thing */
-
-Flippy_toggle_thing = HooWidget.extend({
-
-	flippyFlip: function() {
-		var queryString = "#"+this.id;
-		var $thisHTML = $( queryString );
-		if( $thisHTML.length!=1 )
-			console.error("Could not find the thisHTML");
-		$thisHTML.css( "background-color", "#000" );
-
 	}
 });

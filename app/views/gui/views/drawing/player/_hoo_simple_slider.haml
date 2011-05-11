@@ -115,14 +115,14 @@
 				this._started = true;
 
 				/* Redo Bindings */
-				var hasBinding = this.setup_hoo_binding( 'enabledBinding' );
+				var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
 				if( hasBinding==false && this.json.initialState>0 ) {
 					this._stateMachine._fsm_controller.handle( "enable" );
 				}
 
-				hasBinding = this.setup_hoo_binding( 'maxAmountValueBinding' );
-				hasBinding = this.setup_hoo_binding( 'loadedValueBinding' );
-				hasBinding = this.setup_hoo_binding( 'playedValueBinding' );
+				hasBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
+				hasBinding = this.setup_hoo_binding_from_json( 'loadedValueBinding' );
+				hasBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
 
 				// remember! the alert stuff doesnt work in ie
 				this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
