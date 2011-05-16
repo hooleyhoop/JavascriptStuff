@@ -3,8 +3,7 @@ HooThreeStateItem = SC.Object.extend({
 	_threeButtonSM: undefined,
 	_graphic: undefined,
 	_clickableItem$: undefined,
-//hmi suppose we need this	_target: undefined,
-//hmi suppose we need this	_action: undefined,
+	_delegate: undefined,
 
 	init: function( /* _graphic, _clickableItem$ */ ) {
 		arguments.callee.base.apply( this, arguments );
@@ -48,7 +47,8 @@ HooThreeStateItem = SC.Object.extend({
  	},
 
 	cmd_fireButtonAction1: function() {
-//hmi suppose we need this		var success = this._action.call( this._target );
+		if(this._delegate)
+			this._delegate.fireAction();
 	},
 
 	cmd_abortClickAction: function() {
@@ -88,63 +88,23 @@ HooThreeStateItem = SC.Object.extend({
 	setCurrentStateName: function( arg ) {
 		return this._threeButtonSM.processInputSignal( arg );
 	}
-
-	/* This should only be called once, when it enters the enabled state */
-//eh?	enableButton: function( state ) {
-
-
-//eh?		this._delegate.enableButton(state);
-
-		/* for a working button the state was set to either 1 or 3 */
-//eh?		this.temporarySetEnabledState( this._initialState, true );
-
-		// this could do anything..
-		// if( this.json.javascript )
-		//	eval( this.json.javascript );
-
-		// we dont rest in enabled state - move on to active state
-//eh?		this._fsm_controller.handle( "enabledSuccessfully" );
-//eh?	},
-
-//eh?	fireButtonAction: function( nextState ) {
-
-//eh?		var self = this;
-
-		// ensure we can't click again until we have received response
-//eh?		self.temporarySetEnabledState( 0, false );
-
-//eh?		var afterAction = function() {
-			//alert("success");
-			/* Move this back into the succeess function */
-//eh?			self.temporarySetEnabledState( nextState, true );
-			// on complete set the button state back to normal
-//eh?			self._fsm_controller.handle( "clickActionCompleted" );
-//eh?			console.log("** Complete **");
-//eh?		};
-//eh?		var onCompleteStuffHash =  {onCompleteTarget: self, onCompleteAction: afterAction};
-//eh?		this._delegate.fireAction( nextState, onCompleteStuffHash );
-//eh?	},
-
-//eh?	fireButtonAction1: function() {
-//eh?		this.fireButtonAction( 1 );
-//eh?	},
-
-//eh?	temporarySetEnabledState: function( state, enabled ) {
-//eh?		this._delegate.temporarySetEnabledState(state,enabled);
-//eh?	}
 });
 
 
 /* Abstract Button */
 // HooAbstractButton.mixin = HooWidget.extend({
 
-HooAbstractButton = HooWidget.extend({
+// When we need some different kinds of graphics start chopping up this heirarchy
+HooAbstractButtonGraphic = SC.Object.extend({
 
 	textHolder: "span",
+	_labelStates: undefined,
+	_itemType: undefined,
+	_rootItemId: undefined,
 
 	/* JQuery helpers */
 	getForm: function() {
-		var formQuery = "#"+this.id+" form:first";
+		var formQuery = "#" + this._rootItemId + " form:first";
 		var $form = $( formQuery );
 		if( $form.length!=1 )
 			console.error("Could not find the form");
@@ -169,11 +129,7 @@ HooAbstractButton = HooWidget.extend({
 });
 
 
-HooThreeStateButtonGraphic = SC.Object.extend({
-
-	_labelStates: undefined,
-	_itemType: undefined,
-	_rootItemId: undefined,
+HooThreeStateButtonGraphic = HooAbstractButtonGraphic.extend({
 
 	getClickableItem: function() {
 		var buttonQuery = "#"+this._rootItemId+" "+this._itemType+":first";
@@ -222,12 +178,48 @@ HooThreeStateButtonGraphic = SC.Object.extend({
 	}
 });
 
+FormSubmiter = SC.Object.extend({
+	_form: undefined,
+
+	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
+		arguments.callee.base.apply( this, arguments );
+	},
+
+	submit: function() {
+
+		var form = this._form;
+		form.submit( function(e) {
+			// alert('Handler for .submit() called.');
+
+			// this === form at this point
+			var hmm = $(this).serialize();
+			console.log( form.attr('action'));
+
+			$.ajax({ url: form.attr('action'), type:'POST', data: hmm,
+				success: function(data) {
+					form.unbind('submit');
+
+					console.log("c o m p l e t e");
+					// of course, you remebered to pass in the callback..
+					// argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log("bugger, that didnt quite work out: "+textStatus+" "+errorThrown);
+				}
+			});
+
+			// The next two lines are equivalent
+			e.preventDefault();
+			return false;
+		});
+		form.submit();
+	}
+});
 
 /* Simple Form Button */
 HooFormButtonSimple = HooWidget.extend({
 
-//hmm	_stateMachine:				undefined,
-//hmm	_mouseClickAction:			undefined,
+	_mouseClickAction: undefined,
 	_threeButtonSM: undefined,
 	_threeStateButtonGraphic: undefined,
 
@@ -238,35 +230,19 @@ HooFormButtonSimple = HooWidget.extend({
 			this._createGraphic();
 
 		if(this._threeButtonSM==undefined)
-			this._threeButtonSM = HooThreeStateItem.create( { _graphic:this._threeStateButtonGraphic, _clickableItem$: this._threeStateButtonGraphic.getClickableItem() } );
-
-//presumably i need this		this._threeButtonSM.setButtonTarget( this, this._mouseDown );
-
-//hmm		if( this.json.initialState>0 ) {
-//hmm			var self = this;
-//hmm			this.createStatemachine();
-//hmm			this._stateMachine._delegate = this;
-//hmm			this._stateMachine._setupStateMachine( this.json.initialState );
-
-			// initial state depends on whether _enabled? has been bound or not.. if it is bound, then follow that property, if it isnt bound start in the on state
-//hmm			this._stateMachine.setInitialState( 0 );
-//hmm		}
+			this._threeButtonSM = HooThreeStateItem.create( { 	_graphic:this._threeStateButtonGraphic,
+																_clickableItem$: this._threeStateButtonGraphic.getClickableItem(),
+																_delegate: this
+															} );
 	},
 
 	_createGraphic: function() {
 		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _labelStates: this.json.labelStates } );
 	},
 
-//hmm	createStatemachine: function() {
-//hmm		this._stateMachine = HooThreeStateItem.create();
-//hmm	},
-
 	setupDidComplete: function() {
 
-//hmm		var self = this;
-
 		// Setup bindings as configured in the json
-
 		// if there is no binding and the initial state isn't disabled, we need to call 'enable', right?
 
 		/* at the moment this only handles initial turn-on! you cannot observe a turn off */
@@ -275,7 +251,21 @@ HooFormButtonSimple = HooWidget.extend({
 			this._threeButtonSM.sendEvent( "ev_showState1" );
 		}
 		// set up actions as configured in the json - mixin?
-//hmm		this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
+		this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
+		if( this._mouseClickAction==null ) {
+			console.warn("No JSON Action - using form");
+			this._mouseClickAction = this.defaultAction();
+		}
+	},
+
+	// Maaan, this shouldn't really be here, but when i get the other buttons working again sort out the heirarchy
+	defaultAction: function() {
+
+		var form = this._threeStateButtonGraphic.getForm();
+		var target	= FormSubmiter.create( {_form: form} );
+		var action	= target.submit;
+		var arg		= null;
+		return { t:target, a:action, w:arg };
 	},
 
 	// we observed a change in our enabled binding
@@ -292,80 +282,16 @@ HooFormButtonSimple = HooWidget.extend({
 
 	currentStateName: function() {
 		return this._threeButtonSM.currentStateName();
+	},
+
+	fireAction: function( /* nextState, argsHash */ ) {
+
+		this._mouseClickAction.a.call( this._mouseClickAction.t, this._mouseClickAction.w );
+
+		// TODO:
+		// foregoing asynchronisity for now, just until we get back up to speed.
+		this._threeButtonSM.setCurrentStateName( "ev_showState1" );
 	}
-
-
-//hmm	showMouseDownState: function( state ) {
-//hmm		arguments.callee.base.apply(this,arguments);
-//hmm	},
-
-//hmm	showMouseUpState: function( state ) {
-//hmm		arguments.callee.base.apply(this,arguments);
-//hmm	},
-
-//hmm	fireAction: function( nextState, argsHash ) {
-
-//hmm		var self = this;
-
-//hmm		if( this._mouseClickAction!==undefined ){
-
-		/* Ignore the form action altogether and do a javascript action - cant be async at the mo */
-//hmm			self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
-
-			// -if we are in a form - stop the form doing it's thing
-//hmm			self.getForm().submit(function(e) { return false; });
-//hmm			self.getForm().submit();
-//hmm			argsHash.onComplete();
-
-//hmm		} else {
-			/* Submit the forms regular action using jquery */
-//hmm			var form = self.getForm();
-//hmm			form.submit(function(e) {
-				// alert('Handler for .submit() called.');
-
-				// this === form at this point
-//hmm				var hmm = $(this).serialize();
-
-//hmm				$.ajax({ url: this.action, type:'POST', data: hmm,
-//hmm					success: function(data) {
-//hmm						form.unbind('submit');
-
-						// of course, you remebered to pass in the callback..
-//hmm						argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
-//hmm					}
-//hmm				});
-
-				// The next two lines are equivalent
-//hmm				e.preventDefault();
-//hmm				return false;
-//hmm			});
-//hmm			form.submit();
-//hmm		}
-
-//hmm	},
-
-	/* This should only be called once, when it enters the enabled state */
-//hmm	enableButton: function( state ) {
-//hmm	},
-
-	// this has somewhere to go..
-//hmm	temporarySetEnabledState: function( state, enabled ) {
-
-//hmm		var mouseDownText = "";
-//hmm		var button = this.getClickableItem();
-
-//hmm		if(enabled){
-//hmm			button.removeAttr("disabled");
-//hmm			button.css( "pointer-events", "auto" );
-//hmm		} else {
-//hmm			button.attr('disabled', 'disabled');
-//hmm			button.css( "pointer-events", "none" );
-//hmm		}
-		// this.getForm().unbind( "submit", this.onClick );
-		// button.unbind( "mousedown", this.mouseDown );
-
-//hmm		this.setBackgroundAndTextState( state );
-//hmm	}
 });
 
 
@@ -447,7 +373,7 @@ HooSliderItem = HooThreeStateItem.extend({
 
 	showMouseDownState: function( state ) {
 		var self = this;
-		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, this._delegate.eventTrampoline )
+		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, eventTrampoline )
 		$(window).bind( 'mousemove', function(e){
 			self.lastWindowEvent = e;
 			self._delegate.mouseDragged(e);

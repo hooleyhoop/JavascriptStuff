@@ -12,7 +12,9 @@ module GUI::Views::Drawing::Buttons::FormButton
 
 		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
-		attr_accessor :javascript;
+		#attr_accessor :javascript;
+
+		include GUI::Core::HooBindingsMixin
 
 		def initialize( args={} )
 			super(args);
@@ -31,9 +33,9 @@ module GUI::Views::Drawing::Buttons::FormButton
 			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
 			@action = '/widgets/_ajaxPostTest';
-			@javascript = "this.hookupAction( function(){
-				alert('Holy Cock');
-			});";
+			#@javascript = "this.hookupAction( function(){
+			#	alert('Holy Cock');
+			#});";
 		end
 
 		def labelStates=(states)
@@ -51,9 +53,11 @@ module GUI::Views::Drawing::Buttons::FormButton
 			allItems = {
 				:labelStates	=> @labelStates,
 				:initialState	=> @initialState,
-				:size			=> @size,
-				:javascript		=> @javascript,
+				:size			=> @size
+				#:javascript		=> @javascript,
 			}
+			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
 			return allItems.to_json();
 		end
 

@@ -9,6 +9,7 @@
  */
 HOO_nameSpace = SC;
 
+
  // 1) Object is inserted into page
  // 2) bind somehow spots it, runs an event - probably not possible! whenever we load html by ajax we must check to see if it needs this running
  // 3) the inserted object has some javascript to run - it's instance is created.
@@ -127,13 +128,12 @@ HooWidget = SC.Object.extend({
 		target.removeObserver( propertyName, observer, observerDidChangeMethod );
 	},
 
-	// extract actions from json - move to widget
-	setup_hoo_action: function( action ) {
+	setup_hoo_action_from_json: function( action ) {
 
 		if( this.json.javascriptActions && this.json.javascriptActions[action] )
 		{
 			var a = this.json.javascriptActions[action];
-			var target	= window[ a['action_taget'] ];
+			var target	= HOO_nameSpace[ a['action_taget'] ];
 			var action	= target[ a['action_event'] ];
 			var arg		= a['action_arg'];
 			return { t:target, a:action, w:arg };
@@ -146,8 +146,8 @@ HooWidget = SC.Object.extend({
 
 		var jsonProp = this.json[iVarName];
 		var value = null;
-		if( window[jsonProp] ) {
-			value = window[jsonProp];
+		if( HOO_nameSpace[jsonProp] ) {
+			value = HOO_nameSpace[jsonProp];
 		}
 		this.set( iVarName, value );
 	}
@@ -160,7 +160,7 @@ HooWindow = HooWidget.extend({
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
 		this._allViews = new Array();
-		$(window).bind( 'resize', {target:this, action:'windowDidResize', arg:"" }, this.eventTrampoline );
+		$(window).bind( 'resize', {target:this, action:'windowDidResize', arg:"" }, eventTrampoline );
 	},
 	windowDidResize: function() {
 		$(this._allViews).each( function(i,ob){
@@ -183,9 +183,20 @@ HooWindow = HooWidget.extend({
 	}
 });
 
+
+HooWindow.hooAlert = function( arg ) {
+	alert(arg);
+};
+HooWindow.hooLog = function( arg ) {
+	console.log(arg);
+};
 // not using at the mo.. think might be useful tho
 HooContentView = HooWidget.extend({
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
 	}
 });
+
+HOO_nameSpace.HooWindow = HooWindow;
+HOO_nameSpace.HooContentView = HooContentView;
+

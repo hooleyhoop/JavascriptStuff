@@ -154,8 +154,8 @@
 
 					var idString = $(value).attr('id');
 					var instanceName = '_'+idString;
-					console.log("about to resize "+window[instanceName]);
-					window[instanceName].parentDidResize();
+					console.log("about to resize "+ HOO_nameSpace[instanceName]);
+					HOO_nameSpace[instanceName].parentDidResize();
 				});
 			}
 		});
@@ -181,15 +181,15 @@
 				// console.warn( "offset from centre = "+offsetFromCentrePt.x + ", "+offsetFromCentrePt.y );
 
 				var mouseUpData = { target:this, action:'mouseup' };
-				$('body').bind('mouseup', mouseUpData, this.eventTrampoline );
+				$('body').bind('mouseup', mouseUpData, eventTrampoline );
 
 				var mouseMoveData = { offset:offsetFromCentrePt, tcssProp:cssProp, target:this, action:'mousemove' };
-				$('body').bind( 'mousemove', mouseMoveData, this.eventTrampoline );
+				$('body').bind( 'mousemove', mouseMoveData, eventTrampoline );
 			},
 
 			mouseup: function( arg, $event ) {
-				$('body').unbind('mousemove', this.eventTrampoline); // is this right?
-				$('body').unbind('mouseup', this.eventTrampoline);
+				$('body').unbind('mousemove', eventTrampoline); // is this right?
+				$('body').unbind('mouseup', eventTrampoline);
 			},
 
 			mousemove: function( arg, $event ) {

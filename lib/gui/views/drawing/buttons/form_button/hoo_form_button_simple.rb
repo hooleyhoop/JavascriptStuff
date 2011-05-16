@@ -23,10 +23,10 @@ module GUI::Views::Drawing::Buttons::FormButton
 			@size = [105, 45];
 			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
-			@action = '/widgets/_ajaxPostTest';
-			@javascript = "this.hookupAction( function(){
-				alert('Holy Cock');
-			});";
+			#@action = '/widgets/_ajaxPostTest';
+			@action = 'http://apple.com';
+			#self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock' }} );
+
 		end
 
 

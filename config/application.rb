@@ -33,7 +33,7 @@ module JavascriptStuff
 
     # JavaScript files you want as :defaults (application.js is always included).
     config.action_view.javascript_expansions[:defaults] = [
-    'jquery/jquery-1.6', 'jquery/jquery-tmpl/jquery.tmpl.js', 'jquery/jquery-tmpl/jquery.tmplPlus.js', 'jquery/jquery-ujs/src/rails.js', 'jquery/jquery-ui-1.8.11.custom.min',
+    'jquery/jquery-1.6.1', 'jquery/jquery-tmpl/jquery.tmpl.js', 'jquery/jquery-tmpl/jquery.tmplPlus.js', 'jquery/jquery-ujs/src/rails.js', 'jquery/jquery-ui-1.8.11.custom.min',
 
     'third_party/flash_detection.js', 'third_party/yepnope.js',
 

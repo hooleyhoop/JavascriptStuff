@@ -184,3 +184,17 @@ test("test 3 state form button - binding with json", function() {
 		ok( butt.currentStateName()=="st_disabled", "wrong state" );
 	butt.teardown_hoo_binding_from_json( "testBinding" );
 });
+
+
+test("add an action", function() {
+
+	var jsonOb2 = {
+		"javascriptActions":
+		{ "mouseClickAction":
+			{ "action_taget": "HooWindow", "action_event": "hooAlert", "action_arg": "Holy Cock" }}
+	};
+
+	var butt = mockButton();
+	$.extend( butt.json, jsonOb2 );
+	var expandedDict = butt.setup_hoo_action_from_json( "mouseClickAction" );
+});

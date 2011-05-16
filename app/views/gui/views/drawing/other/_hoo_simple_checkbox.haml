@@ -33,7 +33,7 @@
 				var self = this;
 
 				// set up actions as configured in the json - mixin?
-				this._mouseClickAction = this.setup_hoo_action( 'mouseClickAction' );
+				this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
 				if(this._mouseClickAction) {
 					this._checkbox.change(function(e) {
 						self._mouseClickAction.a.call( self._mouseClickAction.t, self._mouseClickAction.w );
