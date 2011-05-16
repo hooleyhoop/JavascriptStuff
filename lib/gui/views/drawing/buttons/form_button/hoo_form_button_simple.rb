@@ -25,7 +25,7 @@ module GUI::Views::Drawing::Buttons::FormButton
 			@labelColor = '#eee';
 			#@action = '/widgets/_ajaxPostTest';
 			@action = 'http://apple.com';
-			#self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock' }} );
+			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock', :actionIsAsync=>false  }} );
 
 		end
 

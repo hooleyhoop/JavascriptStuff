@@ -43,7 +43,7 @@ test("test 3 state button", function() {
 	// trigger 'fire'
 	// mockgraphics.expects(1).method('showMouseUp1State');
 	testDiv.trigger('mouseup');
-//Putback when worked out actions	ok( mouseDownCount===1, "Didnt fire" );
+	ok( mouseDownCount===1, "Didnt fire" );
 
 	// trigger 'disable'
 	var mockgraphics = new Mock();
@@ -191,10 +191,26 @@ test("add an action", function() {
 	var jsonOb2 = {
 		"javascriptActions":
 		{ "mouseClickAction":
-			{ "action_taget": "HooWindow", "action_event": "hooAlert", "action_arg": "Holy Cock" }}
+			{ "action_taget": "HooWindow", "action_event": "hooAlert", "action_arg": "Holy Cock", "actionIsAsync": false }}
 	};
 
 	var butt = mockButton();
 	$.extend( butt.json, jsonOb2 );
 	var expandedDict = butt.setup_hoo_action_from_json( "mouseClickAction" );
+});
+
+test("5 state item stuff", function() {
+
+	var mockgraphics = new Mock();
+	var testDiv = $("<div>");
+
+	var mouseDownCount=0;
+	this._mouseDown = function() {
+		mouseDownCount++;
+	}
+
+	mockgraphics.expects(1).method('showDisabledButton');
+	var fiveButtonSM = HooFiveStateItem.create( {_graphic: mockgraphics, _clickableItem$:testDiv } );
+	fiveButtonSM.setButtonTarget( this, this._mouseDown );
+	ok( mockgraphics.verify(), "showDisabledButton not called" );
 });

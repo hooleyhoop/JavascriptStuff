@@ -136,7 +136,8 @@ HooWidget = SC.Object.extend({
 			var target	= HOO_nameSpace[ a['action_taget'] ];
 			var action	= target[ a['action_event'] ];
 			var arg		= a['action_arg'];
-			return { t:target, a:action, w:arg };
+			var isAsync = a['actionIsAsync'];
+			return { t:target, a:action, w:arg, actionIsAsync: isAsync };
 		}
 		return null;
 	},

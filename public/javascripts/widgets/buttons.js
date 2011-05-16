@@ -1,30 +1,43 @@
 HooThreeStateItem = SC.Object.extend({
 
-	_threeButtonSM: undefined,
+	_buttonSM: undefined,
 	_graphic: undefined,
 	_clickableItem$: undefined,
-	_delegate: undefined,
+	_target:undefined,
+	_action: undefined,
+	_actionArg: undefined,
+	_isAsync: undefined,
 
 	init: function( /* _graphic, _clickableItem$ */ ) {
 		arguments.callee.base.apply( this, arguments );
-		this._threeButtonSM = ThreeStateButtonStateMachine.create({ _controller: this });
+		this._createSM();
 		this._graphic.showDisabledButton();
 		this._listenerDebugger = ActiveListenerDebugger.create();
+	},
+
+	_createSM: function() {
+		this._buttonSM = ThreeStateButtonStateMachine.create({ _controller: this });
+	},
+
+	setButtonTarget: function( target, action, arg, isAsync ) {
+
+		arg = typeof(arg) != 'undefined' ? arg : null;
+		isAsync = typeof(isAsync) != 'undefined' ? isAsync : false;
+
+		this._target = target;
+		this._action = action;
+		this._actionArg = arg;
+		this._isAsync = isAsync;
 	},
 
 	// input
 	// - ev_showState1, ev_disable, ev_error
 	sendEvent: function( ev ) {
-		this._threeButtonSM.processInputSignal( ev );
-	},
-
-	setButtonTarget: function( target, action ) {
-		this._target = target; this._action = action;
+		this._buttonSM.processInputSignal( ev );
 	},
 
 	// State machine callbacks
 	cmd_enableButton: function() {
-
 		this._listenerDebugger.addListener( this._clickableItem$, 'mousedown', this, this._mouseDown );
 	},
 
@@ -47,8 +60,30 @@ HooThreeStateItem = SC.Object.extend({
  	},
 
 	cmd_fireButtonAction1: function() {
-		if(this._delegate)
-			this._delegate.fireAction();
+		this._fire("ev_showState1" );
+	},
+
+	_fire: function( nextState ) {
+
+		var self = this;
+
+		//TODO:
+		// how do we handle toggle button?
+		// how do we handle async actions?
+		// how do we go back to the correct state?
+
+		var completionCallback = function() {
+			self.sendEvent( nextState );
+		}
+		var onCompleteStuffHash =  {onCompleteTarget: self, onCompleteAction: completionCallback};
+
+		if(this._target) {
+			//this._delegate.fireAction();
+			this._action.call( this._target, this._actionArg, onCompleteStuffHash );
+		}
+		if(this._isAsync==false){
+			completionCallback();
+		}
 	},
 
 	cmd_abortClickAction: function() {
@@ -82,14 +117,44 @@ HooThreeStateItem = SC.Object.extend({
 	},
 
 	currentStateName: function() {
-		return this._threeButtonSM.currentStateName();
+		return this._buttonSM.currentStateName();
 	},
 
 	setCurrentStateName: function( arg ) {
-		return this._threeButtonSM.processInputSignal( arg );
+		return this._buttonSM.processInputSignal( arg );
 	}
 });
 
+/*
+ * Append a couple of states to 3 state button
+*/
+HooFiveStateItem = HooThreeStateItem.extend({
+
+	/* Add some extra states and overide some */
+	_createSM: function() {
+		this._buttonSM = FiveStateButtonStateMachine.create({ _controller: this });
+	},
+
+	cmd_showMouseDown2: function() {
+		this._graphic.showMouseDown2State();
+	},
+
+	cmd_showMouseUp2: function() {
+		this._graphic.showMouseUp2State();
+	},
+
+	cmd_showMouseDownOut2: function() {
+		this._graphic.showMouseDown2State();
+ 	},
+
+	cmd_fireButtonAction1: function() {
+		this._fire("ev_showState2" );
+	},
+
+	cmd_fireButtonAction2: function() {
+		this._fire("ev_showState1" );
+	}
+});
 
 /* Abstract Button */
 // HooAbstractButton.mixin = HooWidget.extend({
@@ -148,6 +213,12 @@ HooThreeStateButtonGraphic = HooAbstractButtonGraphic.extend({
 	showMouseDown1State: function() {
 		this.setBackgroundAndTextState( 2 );
 	},
+	showMouseUp2State: function() {
+		this.setBackgroundAndTextState( 3 );
+	},
+	showMouseDown2State: function() {
+		this.setBackgroundAndTextState( 4 );
+	},
 
 	setBackgroundAndTextState: function( state ) {
 
@@ -185,7 +256,7 @@ FormSubmiter = SC.Object.extend({
 		arguments.callee.base.apply( this, arguments );
 	},
 
-	submit: function() {
+	submit: function( arg, completionHash ) {
 
 		var form = this._form;
 		form.submit( function(e) {
@@ -201,10 +272,11 @@ FormSubmiter = SC.Object.extend({
 
 					console.log("c o m p l e t e");
 					// of course, you remebered to pass in the callback..
-					// argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+					completionHash.onCompleteAction.call( completionHash.onCompleteTarget );
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.log("bugger, that didnt quite work out: "+textStatus+" "+errorThrown);
+					completionHash.onCompleteAction.call( completionHash.onCompleteTarget );
 				}
 			});
 
@@ -226,18 +298,23 @@ HooFormButtonSimple = HooWidget.extend({
 	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
 
-		if(this._threeStateButtonGraphic==undefined)
+		if(this._threeStateButtonGraphic==undefined) {
 			this._createGraphic();
+		}
 
-		if(this._threeButtonSM==undefined)
-			this._threeButtonSM = HooThreeStateItem.create( { 	_graphic:this._threeStateButtonGraphic,
-																_clickableItem$: this._threeStateButtonGraphic.getClickableItem(),
-																_delegate: this
-															} );
+		if(this._threeButtonSM==undefined) {
+			this._createStateControl();
+		}
 	},
 
 	_createGraphic: function() {
 		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _labelStates: this.json.labelStates } );
+	},
+
+	_createStateControl: function() {
+		this._threeButtonSM = HooThreeStateItem.create( { 	_graphic:this._threeStateButtonGraphic,
+															_clickableItem$: this._threeStateButtonGraphic.getClickableItem()
+														} );
 	},
 
 	setupDidComplete: function() {
@@ -248,24 +325,33 @@ HooFormButtonSimple = HooWidget.extend({
 		/* at the moment this only handles initial turn-on! you cannot observe a turn off */
 		var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
 		if( hasBinding==false && this.json.initialState>0 ) {
-			this._threeButtonSM.sendEvent( "ev_showState1" );
+			if(this.json.initialState==1)
+				this._threeButtonSM.sendEvent( "ev_showState1" );
+			else if(this.json.initialState==3)
+				this._threeButtonSM.sendEvent( "ev_showState2" );
+			else
+				throw("Unknown initial state for button");
 		}
 		// set up actions as configured in the json - mixin?
 		this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
 		if( this._mouseClickAction==null ) {
-			console.warn("No JSON Action - using form");
+			console.info("No JSON Action - using form");
 			this._mouseClickAction = this.defaultAction();
 		}
+		this._threeButtonSM.setButtonTarget( this._mouseClickAction.t, this._mouseClickAction.a, this._mouseClickAction.w, this._mouseClickAction.actionIsAsync );
 	},
 
 	// Maaan, this shouldn't really be here, but when i get the other buttons working again sort out the heirarchy
 	defaultAction: function() {
 
-		var form = this._threeStateButtonGraphic.getForm();
-		var target	= FormSubmiter.create( {_form: form} );
-		var action	= target.submit;
-		var arg		= null;
-		return { t:target, a:action, w:arg };
+		if(this._threeStateButtonGraphic.getForm) {
+			var form = this._threeStateButtonGraphic.getForm();
+			var target	= FormSubmiter.create( {_form: form} );
+			var action	= target.submit;
+			var arg = null;
+			return { t:target, a:action, w:arg, actionIsAsync:true };
+		}
+		return null;
 	},
 
 	// we observed a change in our enabled binding
@@ -282,82 +368,25 @@ HooFormButtonSimple = HooWidget.extend({
 
 	currentStateName: function() {
 		return this._threeButtonSM.currentStateName();
-	},
-
-	fireAction: function( /* nextState, argsHash */ ) {
-
-		this._mouseClickAction.a.call( this._mouseClickAction.t, this._mouseClickAction.w );
-
-		// TODO:
-		// foregoing asynchronisity for now, just until we get back up to speed.
-		this._threeButtonSM.setCurrentStateName( "ev_showState1" );
 	}
 });
-
-
-
 
 
 /*
- * Append a couple of states to 3 state button
-*/
-HooFiveStateItem = HooThreeStateItem.extend({
+ * Extends the simpleButton 2 add another state, eg followed, unfollowed
+ *
+ */
+/* Toggle Form Button */
+HooFormButtonToggle = HooFormButtonSimple.extend({
 
-	/* States */
-	_active_state2:			undefined,
-	_active_down_state2:	undefined,
-	_clicked_state2:		undefined,
-	_abortClick_state2:		undefined,
-
-	/* Commands */
-	_showMouseDownCmd2:		HooStateMachine_command.create( {name: "showMouseDown2"} ),
-	_showMouseUpCmd2:		HooStateMachine_command.create( {name: "showMouseUp2"} ),
-	_fireButtonActionCmd2:	HooStateMachine_command.create( {name: "fireButtonAction2"} ),
-
-	/* Add some extra states and overide some */
-	_setupStateMachine: function() {
-		arguments.callee.base.apply(this,arguments);
-
-		this._active_state2			= HooStateMachine_state.create( {name: "active2" });
-		this._active_down_state2	= HooStateMachine_state.create( {name: "active_down2" });
-		this._clicked_state2		= HooStateMachine_state.create( {name: "clicked2" });
-		this._abortClick_state2		= HooStateMachine_state.create( {name: "abort-click2" });
-
-		/* Transitions */
-		this._active_state2.addTransition( this._buttonPressed_event, this._active_down_state2 );
-		this._active_down_state2.addTransition( this._buttonReleased_event, this._clicked_state2 );
-		this._active_down_state2.addTransition( this._mouseDraggedOut_event, this._abortClick_state2 );
-		this._abortClick_state2.addTransition( this._clickAbortComplete_event, this._active_state2 );
-
-		// these need to overide simple button ? How?
-		this._clicked_state1.removeAllTransitions();
-		this._clicked_state1.addTransition( this._clickComplete_event, this._active_state2 );
-		this._clicked_state2.addTransition( this._clickComplete_event, this._active_state1 );
-
-		// dont assume that when the button goes to 'enabled' this means state1
-		if( this._initialState==3 ) {
-			this._enabled_state.removeAllTransitions();
-			this._enabled_state.addTransition( this._enabledSuccessfully_event, this._active_state2 );
-		}
-
-		this._active_state2.addEntryAction( this._showMouseUpCmd2 );
-		this._active_down_state2.addEntryAction( this._showMouseDownCmd2 );
-		this._clicked_state2.addEntryAction( this._fireButtonActionCmd2 );
-		this._abortClick_state2.addEntryAction( this._abortClickActionCmd );
+	// we just use a different state machine than the three state button, everthing else is the same
+	_createStateControl: function() {
+		this._threeButtonSM = HooFiveStateItem.create( { 	_graphic:this._threeStateButtonGraphic,
+															_clickableItem$: this._threeStateButtonGraphic.getClickableItem()
+														} );
 	},
-
-	showMouseDown2: function() {
-		this.showMouseDownState(4);
-	},
-
-	showMouseUp2: function() {
-		this.showMouseUpState(3);
-	},
-
-	fireButtonAction2: function() {
-		this.fireButtonAction(3);
-	}
 });
+
 
 
 HooSliderItem = HooThreeStateItem.extend({
@@ -393,18 +422,7 @@ HooSliderItem = HooThreeStateItem.extend({
 
 
 
-/*
- * Extends the simpleButton 2 add another state, eg followed, unfollowed
- *
- */
-/* Toggle Form Button */
-HooFormButtonToggle = HooFormButtonSimple.extend({
 
-	// we just use a different state machine than the three state button, everthing else is the same
-	createStatemachine: function() {
-		this._stateMachine = HooFiveStateItem.create();
-	}
-});
 
 /* 'Orrible Multiple Inheritance stuff */
 DivButtonMixin = {

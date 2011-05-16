@@ -16,12 +16,12 @@ module GUI::Views::Drawing::Player
 			#-- add a checkbox
 			mockPlayer = GUI::HooWidgetList.widgetClass('mockPlayer').new()
 			chckBox = GUI::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} )
-			chckBox.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock' }} );
+			chckBox.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock', :actionIsAsync=>false }} );
 
 			self.addSubView( mockPlayer );
 			self.addSubView( chckBox );
 
-			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>mockPlayer.varName, :action_event=>'setProgressPercent', :action_arg=>'Holy Cock' }} );
+			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>mockPlayer.varName, :action_event=>'setProgressPercent', :action_arg=>'Holy Cock', :actionIsAsync=>false }} );
 
 			self.addBinding( { :enabledBinding		=>{ :to_taget=>mockPlayer.varName, :to_property=>'_ready', :do_action=>'readyDidChange' } } );
 			self.addBinding( { :maxAmountValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_duration', :do_action=>'maxAmountDidChange' } } );
