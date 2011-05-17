@@ -25,7 +25,7 @@ module Presenters
 				@simpleButton1.initialState = 1;
 				@simpleButton1.labelColor = '#fff'
 				@simpleButton1.action = '/widgets/_ajaxPostTest'
-				@simpleButton1.javascript = "this.hookupAction( function(){
+				#@simpleButton1.javascript = "this.hookupAction( function(){
 				#	alert('Holy Cock');
 				#});";
 				@window.contentView.addSubView( @simpleButton1 );

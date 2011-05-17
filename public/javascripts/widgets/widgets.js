@@ -68,11 +68,20 @@ function eventTrampoline(e,a) {
 	var target = e.data.target;
 	var action = e.data.action;
 	var arg = e.data.arg;
-
+	arg = typeof(arg) != 'undefined' ? arg : null;
+	a = typeof(a) != 'undefined' ? a : null;
+	e = typeof(e) != 'undefined' ? e : null;
+	var args = new Array();
+	if(arg)
+		args.push(arg);
+	if(e)
+		args.push(e);
+	if(a)
+		args.push(a);
 	if( typeof action === "string" )
-		target[action].call(target,arg, e);
+		target[action].apply( target, args );
 	else if( $.isFunction(action) )
-		action.call(target,arg, e);
+		action.apply( target, args );
 }
 
 /* W I D G E T S */
@@ -200,4 +209,15 @@ HooContentView = HooWidget.extend({
 
 HOO_nameSpace.HooWindow = HooWindow;
 HOO_nameSpace.HooContentView = HooContentView;
+HOO_nameSpace.assert = function( expr, msg ) {
+	//	if( typeof console.assert!==undefined )
+		//		console.assert( height==this.positionBackground.previousHeight, "shit" );
+	if (!expr) {
+	throw new AssertException(message);
+	}
+}
 
+function AssertException(message) { this.message = message; }
+AssertException.prototype.toString = function () {
+  return 'AssertException: ' + this.message;
+}

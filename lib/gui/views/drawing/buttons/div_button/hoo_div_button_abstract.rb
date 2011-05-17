@@ -32,8 +32,10 @@ module GUI::Views::Drawing::Buttons::DivButton
 			@size = [105, 45];
 			@initialState=0 if @initialState==nil
 			@labelColor = '#eee';
+
+			# div buttons still need to work without javascript!
 			@action = '/widgets/_ajaxPostTest';
-			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'window', :action_event=>'alert', :action_arg=>'Holy Cock', :actionIsAsync=>false }} );
+			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock', :actionIsAsync=>false }} );
 		end
 
 		def labelStates=(states)

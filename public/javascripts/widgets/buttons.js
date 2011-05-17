@@ -97,15 +97,17 @@ HooThreeStateItem = SC.Object.extend({
 		this._listenerDebugger.addListener( this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler );
 
 		this.sendEvent( "ev_buttonPressed" );
+		e.preventDefault();
 	},
 
-	_mouseStageUp: function(e) {
+	_mouseStageUp: function( e ) {
 
 		this._listenerDebugger.removeListener( $(window), 'mouseup', this, this._mouseStageUp );
 		this._listenerDebugger.removeListener( this._clickableItem$, 'mouseleave', this, this._mouseRollOutHandler );
 		this._listenerDebugger.removeListener( this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler );
 
 		this.sendEvent("ev_buttonReleased");
+		e.preventDefault();
 	},
 
 	_mouseRollOutHandler: function(e) {
@@ -162,12 +164,20 @@ HooFiveStateItem = HooThreeStateItem.extend({
 // When we need some different kinds of graphics start chopping up this heirarchy
 HooAbstractButtonGraphic = SC.Object.extend({
 
-	textHolder: "span",
+	_textHolder: undefined,
 	_labelStates: undefined,
 	_itemType: undefined,
 	_rootItemId: undefined,
 
 	/* JQuery helpers */
+	getClickableItem: function() {
+		var buttonQuery = "#"+this._rootItemId+" "+this._itemType+":first";
+		var $button = $( buttonQuery );
+		if( $button.length!=1 )
+			console.error("Could not find the Button");
+		return $button;
+	},
+
 	getForm: function() {
 		var formQuery = "#" + this._rootItemId + " form:first";
 		var $form = $( formQuery );
@@ -188,20 +198,14 @@ HooAbstractButtonGraphic = SC.Object.extend({
 
 	getTextContent: function() {
 		var $butt = this.getClickableItem();
-		var $contents = $butt.find( this.textHolder );
+		var $contents = $butt.find( this._textHolder );
 		return $contents.text();
-	}
-});
+	},
 
-
-HooThreeStateButtonGraphic = HooAbstractButtonGraphic.extend({
-
-	getClickableItem: function() {
-		var buttonQuery = "#"+this._rootItemId+" "+this._itemType+":first";
-		var $button = $( buttonQuery );
-		if( $button.length!=1 )
-			console.error("Could not find the Button");
-		return $button;
+	getHref: function() {
+		var href = this.getClickableItem().find( this._textHolder ).attr("href");
+		HOO_nameSpace.assert(href, "cant find href");
+		return href;
 	},
 
 	showDisabledButton: function() {
@@ -227,10 +231,10 @@ HooThreeStateButtonGraphic = HooAbstractButtonGraphic.extend({
 		this.positionBackground(state);
 	},
 
-	// works for buttons and spans if textHolder is set correctly
+	// works for buttons and spans if _textHolder is set correctly
 	setContentText:  function( arg ) {
 		var $butt = this.getClickableItem();
-		var $contents = $butt.find( this.textHolder );
+		var $contents = $butt.find( this._textHolder );
 		$contents.text( arg );
 	},
 
@@ -249,6 +253,17 @@ HooThreeStateButtonGraphic = HooAbstractButtonGraphic.extend({
 	}
 });
 
+
+HooThreeStateButtonGraphic = HooAbstractButtonGraphic.extend({
+});
+
+HrefLoader = SC.Object.extend({
+	_href: undefined,
+	submit: function( arg, completionHash ) {
+		window.location = this._href;
+	}
+});
+
 FormSubmiter = SC.Object.extend({
 	_form: undefined,
 
@@ -264,9 +279,10 @@ FormSubmiter = SC.Object.extend({
 
 			// this === form at this point
 			var hmm = $(this).serialize();
-			console.log( form.attr('action'));
+			var act = form.attr('action')
+			HOO_nameSpace.assert(act, "cant find href");
 
-			$.ajax({ url: form.attr('action'), type:'POST', data: hmm,
+			$.ajax({ url: act, type:'POST', data: hmm,
 				success: function(data) {
 					form.unbind('submit');
 
@@ -288,6 +304,7 @@ FormSubmiter = SC.Object.extend({
 	}
 });
 
+
 /* Simple Form Button */
 HooFormButtonSimple = HooWidget.extend({
 
@@ -308,7 +325,7 @@ HooFormButtonSimple = HooWidget.extend({
 	},
 
 	_createGraphic: function() {
-		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _labelStates: this.json.labelStates } );
+		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
 	},
 
 	_createStateControl: function() {
@@ -384,7 +401,7 @@ HooFormButtonToggle = HooFormButtonSimple.extend({
 		this._threeButtonSM = HooFiveStateItem.create( { 	_graphic:this._threeStateButtonGraphic,
 															_clickableItem$: this._threeStateButtonGraphic.getClickableItem()
 														} );
-	},
+	}
 });
 
 
@@ -420,34 +437,23 @@ HooSliderItem = HooThreeStateItem.extend({
 
 
 
-
-
-
-
 /* 'Orrible Multiple Inheritance stuff */
 DivButtonMixin = {
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 
-//putback	textHolder: "a",
-
 	_createGraphic: function() {
-		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _labelStates: this.json.labelStates } );
+		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
 	},
 
-	// maybe make this async
-	fireAction: function( nextState, argsHash ) {
-
-		// we might want to make this async
-//putback		if( this._mouseClickAction!==undefined )
-//putback		{
-			// Doesnt work on ie
-//putback			this._mouseClickAction.a.apply( this._mouseClickAction.t, [this._mouseClickAction.w] );
-//putback		} else {
-//putback			console.info("HooDivButtonSimple - button hasnt been given a javascript action");
-//putback			window.location = this.getClickableItem().find( this.textHolder ).attr("href");
-//putback		}
-		// of course, you remebered to pass in the callback..
-//putback		argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+	defaultAction: function() {
+		if( this._threeStateButtonGraphic.getHref ) {
+			var href = this._threeStateButtonGraphic.getHref();
+			var target	= HrefLoader.create( {_href: href} );
+			var action	= target.submit;
+			var arg = null;
+			return { t:target, a:action, w:arg, actionIsAsync:true };
+		}
+		return null;
 	}
 };
 
