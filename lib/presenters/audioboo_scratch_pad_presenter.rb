@@ -110,8 +110,8 @@ module Presenters
                 mainBooDetails = booMainDetails.new();
                 listView1.addSubView( mainBooDetails );
 
-                thePlayer = detailPlayer.new();
-                listView1.addSubView( thePlayer );
+                #derp thePlayer = detailPlayer.new();
+                #derp listView1.addSubView( thePlayer );
 
                 # LeftSide - description
                 #comeback booDescription = loremIpsumView.new();
@@ -138,22 +138,22 @@ module Presenters
 				#rightSideList.addSubView( editbar );
 
                 # RIGHT SIDE - Images
-                divider2 = twoElasticColsFixedGutter.new();
-                rightSideList.addSubView( divider2 );
+                #derp divider2 = twoElasticColsFixedGutter.new();
+                #derp rightSideList.addSubView( divider2 );
 
-                booImage = croppedImgWithHeader.new();
-                booImage.label = 'Image'
-                booImage.color = 'lime';
-                booImage.path = '/images/boo/sampleImage5.jpg';
+                #derp booImage = croppedImgWithHeader.new();
+                #derp booImage.label = 'Image'
+                #derp booImage.color = 'lime';
+                #derp booImage.path = '/images/boo/sampleImage5.jpg';
                 #mapImg.labelLink = 'www.apple.com'
-    			divider2.addSubView( booImage );
+    			#derp divider2.addSubView( booImage );
 
                 mapImg = croppedImgWithHeader.new();
                 mapImg.label = 'Location'
                 mapImg.color = 'orange';
                 mapImg.path = '../images/map/map_image.jpg';
                 #mapImg.labelLink = 'www.apple.com'
-    			divider2.addSubView( mapImg );
+    			rightSideList.addSubView( mapImg );
 
                 # RIGHT SIDE - Tags
                 #comeback divider3 = twoElasticColsFixedGutter.new();

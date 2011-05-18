@@ -76,6 +76,7 @@ module GUI
 			'simpleCheckbox'		=>	GUI::Views::Drawing::Other::HooSimpleCheckbox.name,
 
 			'speechBubbleBottomCanvas'	=>	GUI::Views::Drawing::Experiments::HooSpeechBubbleBottomCanvas.name,
+			'roundedTriangle'			=>	GUI::Views::Drawing::Experiments::RoundedTriangle.name,
 
 			'backgroundImage'		=>	GUI::Views::Unsorted::HooBackgroundImg.name,
 			'fixedSizeImage'		=>	GUI::Views::Unsorted::HooFixedSizeImg.name,

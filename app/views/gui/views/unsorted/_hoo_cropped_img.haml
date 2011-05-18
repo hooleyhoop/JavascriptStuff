@@ -1,49 +1,45 @@
 - push( hoo_cropped_img )
 
-%div[_](style="position: relative; width:100%; background-color: ; overflow: hidden;")
-    %img( src="#{_.path}" alt="accompanying image" style="position:absolute; display:block; width:100%; border: 0px solid lightgray; background-color: pink;" )
+%div[_]( style="position: relative; width:100%;")
+	%img( src="#{_.path}" alt="image" style="position:absolute; display:block; width:100%; border:0 solid lightgray;" )
 
-
--# Obviously we cannot leave this here as it is crazy to include it more than once
 -# make the div a square
 -# err, this doesn't really do what i think it does, it works one off - one time only on load, and doesn't mean that the layout is 'fluid'
-:javascript
+	//derp :javascript
+	//derp $(document).ready(function(){
+	//derp
+	//derp    // square off the container
+	//derp    var container = $( '#{_.uniqueSelector}' );
+	//derp    var containerDim = container.width();
+	//derp    container.height( containerDim );
+	//derp});
 
+	//derp$( '#{_.uniqueSelector}>img' ).load(function(){
+	//derp
+	//derp    var container = $( '#{_.uniqueSelector}' );
+	//derp    var containerDim = container.width();
+	//derp
+	//derp    // size the img to fill
+	//derp    var img = $( '#{_.uniqueSelector}>img' );
+	//derp    var imgWidth = img.width();
+	//derp    var imgHeight = img.height();
+	//derp    var ratio = imgWidth/imgHeight;
+	//derp
+	//derp    // tall image
+	//derp    if( ratio<1.0 ) {
+	//derp       img.width( containerDim );
+	//derp        var newHeight = containerDim*(1/ratio);
+	//derp        img.height( newHeight );
+	//derp        var yOffset = (newHeight-containerDim)/2.0;
+	//derp        img.css('top', -yOffset);
+	//derp
+	//derp   // wide image
+	//derp   } else {
+	//derp       img.height( containerDim );
+	//derp       var newWidth = containerDim*ratio;
+	//derp       img.width( newWidth );
+	//derp       var xOffset = (newWidth-containerDim)/2.0;
+	//derp       img.css('left', -xOffset);
+	//derp  }
 
-    $(document).ready(function(){
-
-        // square off the container
-        var container = $( '#{_.uniqueSelector}' );
-        var containerDim = container.width();
-        container.height( containerDim );
-    });
-
-    $( '#{_.uniqueSelector}>img' ).load(function(){
-
-        var container = $( '#{_.uniqueSelector}' );
-        var containerDim = container.width();
-
-        // size the img to fill
-        var img = $( '#{_.uniqueSelector}>img' );
-        var imgWidth = img.width();
-        var imgHeight = img.height();
-        var ratio = imgWidth/imgHeight;
-
-        // tall image
-        if( ratio<1.0 ) {
-            img.width( containerDim );
-            var newHeight = containerDim*(1/ratio);
-            img.height( newHeight );
-            var yOffset = (newHeight-containerDim)/2.0;
-            img.css('top', -yOffset);
-
-        // wide image
-        } else {
-            img.height( containerDim );
-            var newWidth = containerDim*ratio;
-            img.width( newWidth );
-            var xOffset = (newWidth-containerDim)/2.0;
-            img.css('left', -xOffset);
-        }
-
-    });
+	//derp});

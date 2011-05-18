@@ -187,12 +187,12 @@
 				$('body').bind( 'mousemove', mouseMoveData, eventTrampoline );
 			},
 
-			mouseup: function( arg, $event ) {
+			mouseup: function( $event ) {
 				$('body').unbind('mousemove', eventTrampoline); // is this right?
 				$('body').unbind('mouseup', eventTrampoline);
 			},
 
-			mousemove: function( arg, $event ) {
+			mousemove: function( $event ) {
 
 				var clickedPos = { x:$event.pageX, y:$event.pageY };
 				var newPos = { x:(clickedPos.x-this._$div.width()/2), y:(clickedPos.y-this._$div.height()/2) };

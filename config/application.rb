@@ -38,6 +38,7 @@ module JavascriptStuff
     'third_party/flash_detection.js', 'third_party/yepnope.js',
 
     'hoo/HooSC_min.js', 'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js", "hoo/sm_configurations/fiveStateButtonStateMachine.js",
+    "hoo/vector_math.js", "hoo/graphics.js",
 
     'widgets/widgets.js', 'widgets/flipp_toggle_thing.js', 'widgets/buttons.js', 'widgets/headless_player.js',
 

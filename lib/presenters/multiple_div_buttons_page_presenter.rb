@@ -38,7 +38,7 @@ module Presenters
 				@simpleButton2.labelColor = '#fff'
 				@simpleButton2.action = '#'
 				# This can only do actions with no args..
-				@simpleButton2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooAlert', :action_arg=>'Holy Cock', "actionIsAsync": false }} );
+				@simpleButton2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooAlert', :action_arg=>'Holy Cock', "actionIsAsync"=> false }} );
 				@window.contentView.addSubView( @simpleButton2 );
 			}.call
 
@@ -50,7 +50,7 @@ module Presenters
 				#@largeButton2.initialState = 1;
 				@largeButton2.labelColor = '#fff'
 				@largeButton2.action = 'http://audioboo.com'
-				@largeButton2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooAlert', :action_arg=>'Holy Cock', "actionIsAsync": false }} );
+				@largeButton2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooAlert', :action_arg=>'Holy Cock', "actionIsAsync"=> false }} );
 				@window.contentView.addSubView( @largeButton2 );
 			}.call
 
@@ -62,7 +62,7 @@ module Presenters
 				@largeButton3.img = '../images/buttons/follow_button/5-state-follow-button.png';
 				@largeButton3.labelColor = '#fff'
 				@largeButton3.action = 'http://audioboo.com'
-				@largeButton3.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooAlert', :action_arg=>'Holy Cock', "actionIsAsync": false }} );
+				@largeButton3.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooAlert', :action_arg=>'Holy Cock', "actionIsAsync"=> false }} );
 				@window.contentView.addSubView( @largeButton3 );
 			}.call
 

@@ -8,7 +8,7 @@ module GUI::Views::Unsorted
         # Mock Data
 		def setupDebugFixture
 			super();
-			@path = '../images/innerpanel/inner_panel_speech_right.png';
+			@path = '../images/boo/sampleImage1.jpg';
 		end
 
 

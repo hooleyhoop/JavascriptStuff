@@ -159,7 +159,6 @@ HooFiveStateItem = HooThreeStateItem.extend({
 });
 
 /* Abstract Button */
-// HooAbstractButton.mixin = HooWidget.extend({
 
 // When we need some different kinds of graphics start chopping up this heirarchy
 HooAbstractButtonGraphic = SC.Object.extend({
@@ -253,10 +252,6 @@ HooAbstractButtonGraphic = SC.Object.extend({
 	}
 });
 
-
-HooThreeStateButtonGraphic = HooAbstractButtonGraphic.extend({
-});
-
 HrefLoader = SC.Object.extend({
 	_href: undefined,
 	submit: function( arg, completionHash ) {
@@ -310,12 +305,12 @@ HooFormButtonSimple = HooWidget.extend({
 
 	_mouseClickAction: undefined,
 	_threeButtonSM: undefined,
-	_threeStateButtonGraphic: undefined,
+	_buttonGraphic: undefined,
 
 	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
 		arguments.callee.base.apply( this, arguments );
 
-		if(this._threeStateButtonGraphic==undefined) {
+		if(this._buttonGraphic==undefined) {
 			this._createGraphic();
 		}
 
@@ -325,12 +320,12 @@ HooFormButtonSimple = HooWidget.extend({
 	},
 
 	_createGraphic: function() {
-		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
+		this._buttonGraphic = HooAbstractButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
 	},
 
 	_createStateControl: function() {
-		this._threeButtonSM = HooThreeStateItem.create( { 	_graphic:this._threeStateButtonGraphic,
-															_clickableItem$: this._threeStateButtonGraphic.getClickableItem()
+		this._threeButtonSM = HooThreeStateItem.create( { 	_graphic:this._buttonGraphic,
+															_clickableItem$: this._buttonGraphic.getClickableItem()
 														} );
 	},
 
@@ -361,8 +356,8 @@ HooFormButtonSimple = HooWidget.extend({
 	// Maaan, this shouldn't really be here, but when i get the other buttons working again sort out the heirarchy
 	defaultAction: function() {
 
-		if(this._threeStateButtonGraphic.getForm) {
-			var form = this._threeStateButtonGraphic.getForm();
+		if(this._buttonGraphic.getForm) {
+			var form = this._buttonGraphic.getForm();
 			var target	= FormSubmiter.create( {_form: form} );
 			var action	= target.submit;
 			var arg = null;
@@ -398,8 +393,8 @@ HooFormButtonToggle = HooFormButtonSimple.extend({
 
 	// we just use a different state machine than the three state button, everthing else is the same
 	_createStateControl: function() {
-		this._threeButtonSM = HooFiveStateItem.create( { 	_graphic:this._threeStateButtonGraphic,
-															_clickableItem$: this._threeStateButtonGraphic.getClickableItem()
+		this._threeButtonSM = HooFiveStateItem.create( { 	_graphic:this._buttonGraphic,
+															_clickableItem$: this._buttonGraphic.getClickableItem()
 														} );
 	}
 });
@@ -442,12 +437,12 @@ DivButtonMixin = {
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 
 	_createGraphic: function() {
-		this._threeStateButtonGraphic = HooThreeStateButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
+		this._buttonGraphic = HooAbstractButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
 	},
 
 	defaultAction: function() {
-		if( this._threeStateButtonGraphic.getHref ) {
-			var href = this._threeStateButtonGraphic.getHref();
+		if( this._buttonGraphic.getHref ) {
+			var href = this._buttonGraphic.getHref();
 			var target	= HrefLoader.create( {_href: href} );
 			var action	= target.submit;
 			var arg = null;
@@ -467,22 +462,24 @@ HooDivButtonToggle = HooFormButtonToggle.extend( DivButtonMixin, {
 
 DynamicWidthButtonMixin = {
 
+	// TODO: more of a graphic thing?
 	initMixin: function( /* init never has args */ ) {
 		var maxWidth = this._calculateGreatestWidth();
-		this.setOuterWidth(maxWidth);
+		this._buttonGraphic.setOuterWidth(maxWidth);
 	},
 
+	// TODO: this should wbe in graphic?
 	// swap in each text label and measure
 	_calculateGreatestWidth: function() {
 		var self = this;
 		var maxWidth = 0;
-		var label = this.getTextContent();
+		var label = this._buttonGraphic.getTextContent();
 		$(this.json.labelStates).each(function(index,element) {
-			self.setContentText(element);
-			var widthForText = self.getOuterWidth();
+			self._buttonGraphic.setContentText(element);
+			var widthForText = self._buttonGraphic.getOuterWidth();
 			maxWidth = widthForText > maxWidth ? widthForText : maxWidth;
 		});
-		self.setContentText(label);
+		self._buttonGraphic.setContentText(label);
 		return maxWidth;
 	}
 }

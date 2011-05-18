@@ -1,0 +1,148 @@
+- push( rounded_triangle )
+
+-# http://0.0.0.0:3000/widgets/roundedTriangle
+
+%div[_]{ :data=>{'jsclass'=>'RoundedTriangle'}, :style=>"width:100%; height:100%;" }
+	%canvas( width="100" height="12" style="position:absolute; top:0; margin:2px;" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		PlayButtonGraphic = SC.Object.extend({
+			_isDisabled: true,
+			_isDown: false,
+
+			draw: function( ctx, width, height ) {
+
+				var graphicToDraw = "roundedTriangle";
+
+				ctx.save();
+
+					var innerCol, innerinnerCol, shadowCol, my_gradient;
+
+					if( this._isDisabled ) {
+						innerCol = "#88a380";
+						innerinnerCol = "#7d9876";
+						shadowCol = null;
+						my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+						my_gradient.addColorStop(0, "rgba(230,230,230,1)");
+						my_gradient.addColorStop(1, "rgba(230,230,230,0.5)");
+					} else if( this._isDown ) {
+						innerCol = "#4a6150";
+						innerinnerCol = "#248541";
+						shadowCol = null;
+						my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+						my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
+						my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
+						my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
+					} else {
+						innerCol = "#5EBB47";
+						innerinnerCol = "#39B54A";
+						shadowCol = "rgba(0,0,0,0.3)";
+						my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+						my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
+						my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
+						my_gradient.addColorStop(1, "rgba(0,0,0,0)");
+					}
+
+					ctx.setTransform(1, 0, 0, 1, 0, 0);
+					ctx.clearRect(0,0,width,height);
+					ctx.globalAlpha = 1.0;
+					ctx.globalCompositeOperation = 'source-over';
+
+					var tenPercentOfWidth = width / 10.0;
+					var tri3Rect = [0,0,width,height];
+					tri3Rect = VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
+					tri3Rect = VectorMath.offsetRect( tri3Rect, [tenPercentOfWidth, 0] );
+					var triangle3PtArray = VectorMath.trianglePtArrayFromRect( tri3Rect );
+
+					var triangle2PtArray = VectorMath.offsetPolygon( triangle3PtArray, tenPercentOfWidth );
+					var tri2Rect = [ triangle2PtArray[0][0], triangle2PtArray[0][1], triangle2PtArray[1][0]-triangle2PtArray[0][0], triangle2PtArray[2][1]-triangle2PtArray[0][1] ];
+
+					var triangle1PtArray = VectorMath.offsetPolygon( triangle2PtArray, tenPercentOfWidth );
+					var tri1Rect = [ triangle1PtArray[0][0], triangle1PtArray[0][1], triangle1PtArray[1][0]-triangle1PtArray[0][0], triangle1PtArray[2][1]-triangle1PtArray[0][1] ];
+
+					ctx.fillStyle = my_gradient;
+						Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], tenPercentOfWidth );
+					ctx.fill();
+					//ctx.strokeStyle = "#000";
+					//	Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], 0 );
+					//ctx.stroke();
+
+					ctx.shadowColor = shadowCol;
+					ctx.shadowBlur = 4;
+					ctx.shadowOffsetX = 0;
+					ctx.shadowOffsetY = tenPercentOfWidth/10;
+
+					ctx.fillStyle = innerCol;
+						Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], tenPercentOfWidth/2.0 );
+					ctx.fill();
+					//ctx.strokeStyle = "#000";
+					//	Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], 0 );
+					//ctx.stroke();
+
+					ctx.shadowColor= undefined;
+					ctx.shadowBlur = undefined;
+
+					ctx.fillStyle = innerinnerCol;
+						Graphics[graphicToDraw].draw( ctx, tri1Rect[0], tri1Rect[1], tri1Rect[2], tri1Rect[3], 0 );
+					ctx.fill();
+
+				ctx.restore();
+			}
+		});
+
+		RoundedTriangle = HooWidget.extend({
+
+			_$parentDiv: undefined,
+			_$canvas: undefined,
+			_started: false,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+				this._$parentDiv = $( "#"+this.id );
+				this._$canvas = this._$parentDiv.find( "canvas:first" );
+			},
+
+			setupDidComplete: function() {
+
+				this.resizeAll();
+				this._started = true;
+			},
+
+			parentDidResize: function() {
+
+				//if(Modernizr.canvas!==undefined)
+				if(this._started===true)
+					this.resizeAll();
+				//}
+			},
+
+			resizeAll: function() {
+
+				var newWidth = this._$parentDiv.width();
+				var newHeight = this._$parentDiv.outerHeight();
+				var currentWidth = this._$canvas.width();
+				var currentHeight = this._$canvas.outerHeight();
+				// resize canvas
+				if( newWidth!=currentWidth || newHeight!=currentHeight) {
+					console.log("resize");
+
+					this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
+					var ctx = this._$canvas[0].getContext('2d');
+				    this.draw( ctx, newWidth, newHeight );
+				}
+			},
+
+			draw: function( ctx, width, height ) {
+
+				ctx.save();
+
+					var buttonGraphic = PlayButtonGraphic.create();
+					buttonGraphic._isDisabled = false;
+					buttonGraphic._isDown = true;
+					buttonGraphic.draw( ctx, width, height );
+
+				ctx.restore();
+			}
+		});
