@@ -1,3 +1,64 @@
+SpeechBubbleBottom = SC.Object.extend({
+});
+SpeechBubbleBottom.mixin({
+	draw: function( ctx, x, y, width, height, cornerRad, nubbinWidth, nubbinHeight ) {
+
+		var anticlockwise = true;
+		var south = Math.PI/2;
+		var east = 0;
+		var west = Math.PI;
+		var north = Math.PI*3/2;
+
+		// antio- clockwise origin top left
+		var penx = x;
+		var peny = y+cornerRad;
+		ctx.moveTo( penx, peny );
+		peny += height-cornerRad-cornerRad-nubbinHeight;
+		ctx.lineTo( penx, peny );
+
+		// bottom left corner
+		ctx.arc( penx+cornerRad, peny, cornerRad, west, south, anticlockwise );
+
+		// to nubbin
+		penx += nubbinWidth;
+		peny += cornerRad;
+		ctx.lineTo(penx, peny);
+
+		// nubbin pt
+		penx += nubbinWidth/2;
+		peny += nubbinHeight;
+		ctx.lineTo(penx, peny);
+
+		penx += nubbinWidth/2;
+		peny -= nubbinHeight;
+		ctx.lineTo(penx, peny);
+
+		penx += width-cornerRad-nubbinWidth-nubbinWidth;
+		peny += 0;
+		ctx.lineTo(penx, peny);
+
+		// bottom right corner
+		peny -= cornerRad;
+		ctx.arc( penx, peny, cornerRad, south, east, anticlockwise );
+
+		penx += cornerRad;
+		peny -= height-cornerRad-cornerRad-nubbinHeight;
+		ctx.lineTo( penx, peny );
+
+		// top right
+		penx -= cornerRad;
+		ctx.arc( penx, peny, cornerRad, east, north, anticlockwise );
+
+		penx -= width-cornerRad-cornerRad;
+		peny -= cornerRad;
+		ctx.lineTo( penx, peny );
+
+		// top left
+		peny += cornerRad;
+		ctx.arc( penx, peny, cornerRad, north, west, anticlockwise );
+	}
+});
+
 RoundedRectangle = SC.Object.extend({
 });
 RoundedRectangle.mixin({
@@ -177,5 +238,6 @@ Graphics = SC.Object.extend({
 });
 Graphics.mixin({
 	roundedTriangle: RoundedTriangle,
-	roundedRect: RoundedRectangle
+	roundedRect: RoundedRectangle,
+	speechBubble_bottom: SpeechBubbleBottom
 });

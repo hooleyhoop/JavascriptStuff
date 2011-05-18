@@ -111,14 +111,10 @@
 
 			draw: function( ctx, width, height ) {
 
+				var graphicToDraw = "speechBubble_bottom";
+
 				if( height%15!=0) console.error("why is this height fucked? "+height);
 				var gradient;
-
-				var anticlockwise = true;
-				var south = Math.PI/2;
-				var east = 0;
-				var west = Math.PI;
-				var north = Math.PI*3/2;
 
 				var cornerRad = 12;	// make this dynamic?
 				var nubbinWidth = 30;
@@ -134,64 +130,12 @@
 				ctx.shadowOffsetY = 3.0;
 				ctx.shadowBlur = 3.0;
 
-				ctx.beginPath();
-
-				var startx = 1;
-				var starty = 1;
-				width = width-2;
-				height = height-2 - 3; // allow for shadow
-
-				// antio- clockwise origin top left
-				var penx = startx;
-				var peny = starty+cornerRad;
-				ctx.moveTo( penx, peny );
-				peny += height-cornerRad-cornerRad-nubbinHeight;
-				ctx.lineTo( penx, peny );
-
-				// bottom left corner
-				ctx.arc( penx+cornerRad, peny, cornerRad, west, south, anticlockwise );
-
-				// to nubbin
-				penx += nubbinWidth;
-				peny += cornerRad;
-				ctx.lineTo(penx, peny);
-
-				// nubbin pt
-				penx += nubbinWidth/2;
-				peny += nubbinHeight;
-				ctx.lineTo(penx, peny);
-
-				penx += nubbinWidth/2;
-				peny -= nubbinHeight;
-				ctx.lineTo(penx, peny);
-
-				penx += width-cornerRad-nubbinWidth-nubbinWidth;
-				peny += 0;
-				ctx.lineTo(penx, peny);
-
-				// bottom right corner
-				peny -= cornerRad;
-				ctx.arc( penx, peny, cornerRad, south, east, anticlockwise );
-
-				penx += cornerRad;
-				peny -= height-cornerRad-cornerRad-nubbinHeight;
-				ctx.lineTo( penx, peny );
-
-				// top right
-				penx -= cornerRad;
-				ctx.arc( penx, peny, cornerRad, east, north, anticlockwise );
-
-				penx -= width-cornerRad-cornerRad;
-				peny -= cornerRad;
-				ctx.lineTo( penx, peny );
-
-				// top left
-				peny += cornerRad;
-				ctx.arc( penx, peny, cornerRad, north, west, anticlockwise );
-
-				ctx.closePath();
-
+				//-- maybe inset rect?
+				var x = 1, y = 1, width = width-2, height = height-2 - 3; // allow for shadow
 				ctx.fillStyle = "rgba(250, 250, 250, 0.5)";
+				ctx.beginPath();
+					Graphics[graphicToDraw].draw( ctx, x, y, width, height, cornerRad, nubbinWidth, nubbinHeight );
+				ctx.closePath();
 				ctx.fill();
 
 				gradient = ctx.createLinearGradient(0, height, 0, 0);
@@ -203,4 +147,3 @@
 				ctx.restore();
 			}
 		});
-
