@@ -1,3 +1,70 @@
+RoundedRectangle = SC.Object.extend({
+});
+RoundedRectangle.mixin({
+	draw: function( ctx, x, y, width, height, r ) {
+
+		ctx.beginPath();
+
+		var p1 = [x,y];					// top left
+		var p2 = [x+width, y];			// top right
+		var p3 = [p2[0], y+height];		// bottom right
+		var p4 = [p1[0], p3[1]];		// bottom left
+
+		// anti-clockwise origin top left
+
+		if(r==0) {
+			ctx.moveTo( p1[0], p1[1] );
+			ctx.lineTo( p4[0], p4[1] );
+			ctx.lineTo( p3[0], p3[1] );
+			ctx.lineTo( p2[0], p2[1] );
+		} else {
+
+			var anticlockwise = true;
+			var south = Math.PI/2;
+			var east = 0;
+			var west = Math.PI;
+			var north = Math.PI*3/2;
+
+			var q1 = [ p1[0], p1[1]+r ];
+			var q2 = [ p4[0], p4[1]-r ];
+			var q3 = [ p4[0]+r, p4[1] ];
+			var q4 = [ p3[0]-r, p3[1] ];
+			var q5 = [ p3[0], p3[1]-r ];
+			var q6 = [ p2[0], p2[1]+r ];
+			var q7 = [ p2[0]-r, p2[1] ];
+			var q8 = [ p1[0]+r, p1[1] ];
+
+			ctx.moveTo( q1[0], q1[1] );
+			ctx.lineTo( q2[0], q2[1] );
+
+			// bottom left corner
+			ctx.arc( q2[0]+r, q2[1], r, west, south, anticlockwise );
+
+			ctx.lineTo( q3[0], q3[1] );
+			ctx.lineTo( q4[0], q4[1] );
+
+			// bottom right corner
+			ctx.arc( q4[0], q4[1]-r, r, south, east, anticlockwise );
+
+			ctx.lineTo( q5[0], q5[1] );
+			ctx.lineTo( q6[0], q6[1] );
+
+			// top right
+			ctx.arc( q6[0]-r, q6[1], r, east, north, anticlockwise );
+
+			ctx.lineTo( q7[0], q7[1] );
+			ctx.lineTo( q8[0], q8[1] );
+
+			// top left
+			ctx.arc( q8[0], q8[1]+r, r, north, west, anticlockwise );
+
+			ctx.lineTo( q1[0], q1[1] );
+		}
+		ctx.closePath();
+	}
+});
+
+
 RoundedTriangle = SC.Object.extend({
 });
 RoundedTriangle.mixin({
@@ -109,5 +176,6 @@ RoundedTriangle.mixin({
 Graphics = SC.Object.extend({
 });
 Graphics.mixin({
-	roundedTriangle: RoundedTriangle
+	roundedTriangle: RoundedTriangle,
+	roundedRect: RoundedRectangle
 });

@@ -8,6 +8,62 @@
 - if( _.includeOnce? )
 	:javascript
 
+		PauseButtonGraphic = SC.Object.extend({
+			_isDown: false,
+
+			draw: function( ctx, width, height ) {
+
+				var graphicToDraw = "roundedRect";
+
+				var scale = width/75.0; // design size was 75px
+				var insetRect3 = [0,0,width,height];
+				insetRect3 = VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
+
+				// construct 3 inset rectangles
+				var rect3PtArray = [[insetRect3[0],insetRect3[1]],[insetRect3[0]+insetRect3[2],insetRect3[1]],[insetRect3[0]+insetRect3[2], insetRect3[1]+insetRect3[3]], [insetRect3[0], insetRect3[1]+insetRect3[3]]];
+				var rect2PtArray = VectorMath.offsetPolygon( rect3PtArray, 5.0*scale );
+				var rect1PtArray = VectorMath.offsetPolygon( rect2PtArray, 5.0*scale );
+
+				var insetRect2 = [ rect2PtArray[0][0], rect2PtArray[0][1], rect2PtArray[1][0]-rect2PtArray[0][0], rect2PtArray[2][1]-rect2PtArray[0][1] ];
+				var insetRect1 = [ rect1PtArray[0][0], rect1PtArray[0][1], rect1PtArray[1][0]-rect1PtArray[0][0], rect1PtArray[2][1]-rect1PtArray[0][1] ];
+
+				var rects = this.splitRectInTwo( insetRect3, 2.0*scale );
+
+				ctx.save();
+					ctx.fillStyle = "#000";
+					Graphics[graphicToDraw].draw( ctx,  rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+					//Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+					ctx.fill();
+				ctx.restore();
+				ctx.save();
+					ctx.fillStyle = "#ff0000";
+					//Graphics[graphicToDraw].draw( ctx,  rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+					Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+					ctx.fill();
+				ctx.restore();
+
+			},
+
+			splitRectInTwo: function( rect, margin ) {
+
+				var x = rect[0];
+				var rightEdge = x + rect[2];
+				var midx = x + rect[2]/2.0;
+
+				var midLeftSide = midx - margin/2.0;
+				var leftSideWidth = midLeftSide - x;
+
+				var midRightSide = midx + margin/2.0;
+				var rightSideWidth = rect[2] - (midRightSide-x);
+
+				var newR1 = [ x, rect[1], leftSideWidth, rect[3] ];
+				var newR2 = [ midRightSide, rect[1], rightSideWidth, rect[3] ];
+				var newRects  = [newR1, newR2];
+				return newRects;
+			}
+
+		});
+
 		PlayButtonGraphic = SC.Object.extend({
 			_isDisabled: true,
 			_isDown: false,
@@ -44,11 +100,6 @@
 						my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
 						my_gradient.addColorStop(1, "rgba(0,0,0,0)");
 					}
-
-					ctx.setTransform(1, 0, 0, 1, 0, 0);
-					ctx.clearRect(0,0,width,height);
-					ctx.globalAlpha = 1.0;
-					ctx.globalCompositeOperation = 'source-over';
 
 					var tenPercentOfWidth = width / 10.0;
 					var tri3Rect = [0,0,width,height];
@@ -138,10 +189,18 @@
 
 				ctx.save();
 
-					var buttonGraphic = PlayButtonGraphic.create();
-					buttonGraphic._isDisabled = false;
-					buttonGraphic._isDown = true;
-					buttonGraphic.draw( ctx, width, height );
+					ctx.setTransform(1, 0, 0, 1, 0, 0);
+					ctx.clearRect(0,0,width,height);
+					ctx.globalAlpha = 1.0;
+					ctx.globalCompositeOperation = 'source-over';
+
+					// var buttonGraphic = PlayButtonGraphic.create();
+					// buttonGraphic._isDisabled = false;
+					// buttonGraphic._isDown = true;
+					// buttonGraphic.draw( ctx, width, height );
+
+					var pauseGraphic = PauseButtonGraphic.create();
+					pauseGraphic.draw( ctx, width, height );
 
 				ctx.restore();
 			}
