@@ -65,5 +65,23 @@ VectorMath.mixin({
 		midWayVector = this.ptNormalize( midWayVector );
 		var scaledMidwayPt =  [midWayVector[0]*newLength+pt2[0], midWayVector[1]*newLength+pt2[1] ];
 		return scaledMidwayPt;
+	},
+
+	splitRectInTwo: function( rect, margin ) {
+
+		var x = rect[0];
+		var rightEdge = x + rect[2];
+		var midx = x + rect[2]/2.0;
+
+		var midLeftSide = midx - margin/2.0;
+		var leftSideWidth = midLeftSide - x;
+
+		var midRightSide = midx + margin/2.0;
+		var rightSideWidth = rect[2] - (midRightSide-x);
+
+		var newR1 = [ x, rect[1], leftSideWidth, rect[3] ];
+		var newR2 = [ midRightSide, rect[1], rightSideWidth, rect[3] ];
+		var newRects  = [newR1, newR2];
+		return newRects;
 	}
 })
