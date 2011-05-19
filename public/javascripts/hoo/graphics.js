@@ -429,7 +429,7 @@ ShiteDisplayLink = SC.Object.extend({
 	_listeners: undefined,
 	_canvasElements: undefined,
 	_running: false,
-	_timer: null,
+	_timer: undefined,
 
 	init: function( /* init never has args */ ) {
 		arguments.callee.base.apply(this,arguments);
@@ -488,7 +488,7 @@ ShiteDisplayLink = SC.Object.extend({
 	}
 });
 ShiteDisplayLink.mixin({
-	sharedDisplayLink: null,
+	sharedDisplayLink: undefined
 });
 ShiteDisplayLink.sharedDisplayLink = ShiteDisplayLink.create();
 
@@ -544,7 +544,7 @@ HooCanvas = SC.Object.extend({
 	addSubview: function( child ) {
 		this._subViews.push( child );
 		child._parentCanvas = this;
-		this.setNeedsDisplay();
+		//this.setNeedsDisplay();
 	},
 
 	removeSubview: function( child ) {

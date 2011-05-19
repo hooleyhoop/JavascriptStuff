@@ -125,6 +125,7 @@ HooStateMachineConfigurator = SC.Object.extend({
 		this._events = new Object;
 		this._commands = new Object;
 		this._resetEvents = new Array();
+
 		this.parseStates();
 		this.parseEvents();
 		this.parseCommands();
@@ -187,16 +188,29 @@ HooStateMachineConfigurator = SC.Object.extend({
 	},
 
 	parseActions: function() {
+
 		var self = this;
 		$.each( this.config['actions'], function( index, value ){
+
+			if(!value)
+				return;
+
 			var stateName = value['state'];
 			var entryAction = value['entryAction'];
 			var exitAction = value['exitAction'];
+			var state = self._states[stateName];
 
-			if(entryAction!=null)
-				self._states[stateName].addEntryAction( self._commands[entryAction] );
-			if(exitAction!=null)
-				self._states[stateName].addExitAction( self._commands[exitAction] );
+			if(entryAction!=null) {
+				var entryCmd = self._commands[entryAction];
+				// alert("state > "+state+" entry cmd "+entryCmd);
+				state.addEntryAction( entryCmd );
+			}
+
+			if(exitAction!=null) {
+				var exitCmd = self._commands[exitAction];
+				// alert("state > "+state+" exit cmd "+entryCmd);
+				state.addExitAction( exitCmd );
+			}
 		});
 	},
 

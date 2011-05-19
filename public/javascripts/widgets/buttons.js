@@ -10,6 +10,7 @@ HooThreeStateItem = SC.Object.extend({
 
 	init: function( /* _graphic, _clickableItem$ */ ) {
 		arguments.callee.base.apply( this, arguments );
+
 		this._createSM();
 		this._graphic.showDisabledButton();
 		this._listenerDebugger = ActiveListenerDebugger.create();
@@ -318,15 +319,17 @@ HooFormButtonSimple = HooWidget.extend({
 		}
 
 		if(this._threeButtonSM==undefined) {
-			this._createStateControl();
+			this._createStateController();
 		}
 	},
 
 	_createGraphic: function() {
+
 		this._buttonGraphic = HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
 	},
 
-	_createStateControl: function() {
+	_createStateController: function() {
+
 		this._threeButtonSM = HooThreeStateItem.create( { 	_graphic:this._buttonGraphic,
 															_clickableItem$: this._buttonGraphic.getClickableItem()
 														} );
@@ -395,7 +398,8 @@ HooFormButtonSimple = HooWidget.extend({
 HooFormButtonToggle = HooFormButtonSimple.extend({
 
 	// we just use a different state machine than the three state button, everthing else is the same
-	_createStateControl: function() {
+	_createStateController: function() {
+
 		this._threeButtonSM = HooFiveStateItem.create( { 	_graphic:this._buttonGraphic,
 															_clickableItem$: this._buttonGraphic.getClickableItem()
 														} );

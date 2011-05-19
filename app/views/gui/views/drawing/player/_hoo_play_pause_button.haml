@@ -62,12 +62,16 @@
 			},
 
 			drawNow: function( ctx, width, height ) {
-
+				if(!this._currentSprite)
+					return;
 				ctx.save();
 					ctx.setTransform(1, 0, 0, 1, 0, 0);
 					ctx.clearRect(0,0,width,height);
 					ctx.globalAlpha = 1.0;
 					ctx.globalCompositeOperation = 'source-over';
+
+					//ctx.fillStyle = "rgba(100,100,100,1)";
+					//ctx.fillRect(0,0,width,height);
 
 					this._currentSprite.draw( ctx, width, height );
 
@@ -141,6 +145,7 @@
 		HooPlayPauseButton = HooFormButtonToggle.extend({
 
 			_$parentDiv: undefined,
+			_started: false,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
@@ -153,10 +158,15 @@
 
 			setupDidComplete: function() {
 
-				this.resizeAll();
 				arguments.callee.base.apply(this,arguments);
 
-				//this._started = true;
+				var self = this;
+				setTimeout( function(){
+					self.resizeAll();
+				}, 100);
+
+
+				this._started = true;
 				//ShiteDisplayLink.sharedDisplayLink.registerListener(this);
 			},
 

@@ -1,9 +1,9 @@
 
 FiveStateButtonStateMachine = AbstractConfiguration.extend({
 
-init: function( /* _controller */ ) {
-	arguments.callee.base.apply( this, arguments );
-},
+//init: function( /* _controller */ ) {
+//	arguments.callee.base.apply( this, arguments );
+//},
 
 sm_config: function() {
 
