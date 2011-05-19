@@ -241,3 +241,336 @@ Graphics.mixin({
 	roundedRect: RoundedRectangle,
 	speechBubble_bottom: SpeechBubbleBottom
 });
+
+HooSprite = SC.Object.extend({
+
+	setPropertiesOfSprite: function( propertyDict ) {
+		for (var key in propertyDict) {
+			var shouldBeValue = propertyDict[key];
+			this.set(key,shouldBeValue);
+		}
+	}
+});
+
+PlayButtonSprite = HooSprite.extend({
+	_isDisabled: true,
+	_isDown: false,
+
+	draw: function( ctx, width, height ) {
+
+		var graphicToDraw = "roundedTriangle";
+
+		ctx.save();
+
+			var innerCol, innerinnerCol, shadowCol, my_gradient;
+
+			if( this._isDisabled ) {
+				innerCol = "#88a380";
+				innerinnerCol = "#7d9876";
+				shadowCol = null;
+				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+				my_gradient.addColorStop(0, "rgba(230,230,230,1)");
+				my_gradient.addColorStop(1, "rgba(230,230,230,0.5)");
+			} else if( this._isDown ) {
+				innerCol = "#4a6150";
+				innerinnerCol = "#248541";
+				shadowCol = null;
+				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+				my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
+				my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
+				my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
+			} else {
+				innerCol = "#5EBB47";
+				innerinnerCol = "#39B54A";
+				shadowCol = "rgba(0,0,0,0.3)";
+				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+				my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
+				my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
+				my_gradient.addColorStop(1, "rgba(0,0,0,0)");
+			}
+
+			var tenPercentOfWidth = width / 10.0;
+			var tri3Rect = [0,0,width,height];
+			tri3Rect = VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
+			tri3Rect = VectorMath.offsetRect( tri3Rect, [tenPercentOfWidth, 0] );
+			var triangle3PtArray = VectorMath.trianglePtArrayFromRect( tri3Rect );
+
+			var triangle2PtArray = VectorMath.offsetPolygon( triangle3PtArray, tenPercentOfWidth );
+			var tri2Rect = [ triangle2PtArray[0][0], triangle2PtArray[0][1], triangle2PtArray[1][0]-triangle2PtArray[0][0], triangle2PtArray[2][1]-triangle2PtArray[0][1] ];
+
+			var triangle1PtArray = VectorMath.offsetPolygon( triangle2PtArray, tenPercentOfWidth );
+			var tri1Rect = [ triangle1PtArray[0][0], triangle1PtArray[0][1], triangle1PtArray[1][0]-triangle1PtArray[0][0], triangle1PtArray[2][1]-triangle1PtArray[0][1] ];
+
+			ctx.fillStyle = my_gradient;
+				Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], tenPercentOfWidth );
+			ctx.fill();
+			//ctx.strokeStyle = "#000";
+			//	Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], 0 );
+			//ctx.stroke();
+
+			ctx.shadowColor = shadowCol;
+			ctx.shadowBlur = 4;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = tenPercentOfWidth/10;
+
+			ctx.fillStyle = innerCol;
+				Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], tenPercentOfWidth/2.0 );
+			ctx.fill();
+			//ctx.strokeStyle = "#000";
+			//	Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], 0 );
+			//ctx.stroke();
+
+			ctx.shadowColor= undefined;
+			ctx.shadowBlur = undefined;
+
+			ctx.fillStyle = innerinnerCol;
+				Graphics[graphicToDraw].draw( ctx, tri1Rect[0], tri1Rect[1], tri1Rect[2], tri1Rect[3], 0 );
+			ctx.fill();
+
+		ctx.restore();
+	}
+});
+
+
+PauseButtonSprite = HooSprite.extend({
+	_isDown: false,
+
+	draw: function( ctx, width, height ) {
+
+		var graphicToDraw = "roundedRect";
+		var innerCol, innerinnerCol, shadowCol, my_gradient;
+
+		if( this._isDown ) {
+			innerCol = "#0f6391";
+			innerinnerCol = "#005FAE";
+			shadowCol = null;
+			my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
+			my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
+			my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
+		} else {
+			innerCol = "#0080C7";
+			innerinnerCol = "#005FAE";
+			shadowCol = "rgba(0,0,0,0.3)";
+			my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
+			my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
+			my_gradient.addColorStop(1, "rgba(0,0,0,0)");
+		}
+
+
+		var tenPercentOfWidth = width / 10.0;
+		var scale = width/75.0; // design size was 75px
+		var insetRect3 = [0,0,width,height];
+		insetRect3 = VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
+
+		// construct 3 inset rectangles
+		var rect3PtArray = [[insetRect3[0],insetRect3[1]],[insetRect3[0]+insetRect3[2],insetRect3[1]],[insetRect3[0]+insetRect3[2], insetRect3[1]+insetRect3[3]], [insetRect3[0], insetRect3[1]+insetRect3[3]]];
+		var rect2PtArray = VectorMath.offsetPolygon( rect3PtArray, 5.0*scale );
+		var rect1PtArray = VectorMath.offsetPolygon( rect2PtArray, 5.0*scale );
+
+		var insetRect2 = [ rect2PtArray[0][0], rect2PtArray[0][1], rect2PtArray[1][0]-rect2PtArray[0][0], rect2PtArray[2][1]-rect2PtArray[0][1] ];
+		var insetRect1 = [ rect1PtArray[0][0], rect1PtArray[0][1], rect1PtArray[1][0]-rect1PtArray[0][0], rect1PtArray[2][1]-rect1PtArray[0][1] ];
+
+		ctx.save();
+
+			// outer
+			var rects = VectorMath.splitRectInTwo( insetRect3, 2.0*scale );
+			ctx.fillStyle = my_gradient;
+			ctx.save();
+				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+			ctx.save();
+				Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+			// inner
+			ctx.shadowColor = shadowCol;
+			ctx.shadowBlur = 4;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = tenPercentOfWidth/10;
+
+			rects = VectorMath.splitRectInTwo( insetRect2, 9.0*scale );
+			ctx.fillStyle = innerCol;
+			ctx.save();
+				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+			ctx.save();
+				Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+			ctx.shadowColor= undefined;
+			ctx.shadowBlur = undefined;
+
+			// inner inner
+			rects = VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
+			ctx.fillStyle = innerinnerCol;
+			ctx.save();
+				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+			ctx.save();
+				Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+		ctx.restore();
+	}
+});
+
+
+ShiteDisplayLink = SC.Object.extend({
+
+	_listeners: undefined,
+	_canvasElements: undefined,
+	_running: false,
+	_timer: null,
+
+	init: function( /* init never has args */ ) {
+		arguments.callee.base.apply(this,arguments);
+		this._listeners = new Array();
+		this._canvasElements = new Array();
+	},
+
+	registerListener: function( listener ) {
+		this._listeners.push( listener );
+		if(this._running==false && this._listeners.length>0 )
+			this.start();
+	},
+	unregisterListener: function( listener ) {
+		var i = this._listeners.indexOf(listener);
+		if(i>-1)
+			this._listeners.splice(i,1);
+		if(this._running && this._canvasElements.length==0 && this._listeners.length==0 )
+			this.stop();
+	},
+
+	registerCanvas: function( canvas ) {
+		this._canvasElements.push( canvas );
+		if(this._running==false && this._canvasElements.length>0 )
+			this.start();
+	},
+	unregisterCanvas: function( canvas ) {
+		var i = this._canvasElements.indexOf(canvas);
+		if(i>-1)
+			this._canvasElements.splice(i,1);
+		if(this._running && this._canvasElements.length==0 && this._listeners.length==0 )
+			this.stop();
+	},
+
+	start: function() {
+		var self = this;
+		this._timer = setInterval(function(){self._callback.call(self);}, 33);
+		this._running = true;
+	},
+	stop: function() {
+        clearInterval(this._timer);
+        this._timer = null;
+		this._running = false;
+	},
+
+	_callback: function() {
+		HOO_nameSpace.assert( this._canvasElements.length>0 || this._listeners.length>0, "why am i drawing with no listeners or canvases?");
+
+		var time = (new Date()).getTime();
+
+		$.each( this._listeners, function(indexInArray, valueOfElement){
+			valueOfElement.timeUpdate( time );
+		});
+		$.each( this._canvasElements, function(indexInArray, valueOfElement){
+			valueOfElement.displayUpdate( time );
+		});
+	}
+});
+ShiteDisplayLink.mixin({
+	sharedDisplayLink: null,
+});
+ShiteDisplayLink.sharedDisplayLink = ShiteDisplayLink.create();
+
+HooCanvas = SC.Object.extend({
+
+	_$canvas: undefined,
+	_subViews: undefined,
+	_isDirty: false,
+	_isActive: false,
+	_lastDirtyTime: false,
+
+	init: function( /* init never has args */ ) {
+		arguments.callee.base.apply(this,arguments);
+		this._subViews = new Array();
+	},
+
+	setSize: function( width, height ) {
+
+		if( width!=this.width() || height!=this.height() ) {
+			this._$canvas.attr({ width:width, height:height }); // setting the size resets the canvas
+			this.setNeedsDisplay();
+		}
+	},
+
+	ctx: function() {
+		var ctx = this._$canvas[0].getContext('2d');
+		return ctx;
+	},
+
+	width: function() {
+		var a = this._$canvas.width();
+		var b = this._$canvas.outerWidth();
+		HOO_nameSpace.assert( a==b, "what really????");
+		return a;
+	},
+
+	height: function() {
+		var a = this._$canvas.height();
+		var b = this._$canvas.outerHeight();
+		HOO_nameSpace.assert( a==b, "what really????");
+		return a;
+	},
+
+	setNeedsDisplay: function() {
+		this._isDirty = true;
+		this._lastDirtyTime = (new Date()).getTime();
+		if(!this._isActive) {
+			ShiteDisplayLink.sharedDisplayLink.registerCanvas(this);
+			this._isActive = true;
+		}
+	},
+
+	addSubview: function( child ) {
+		this._subViews.push( child );
+		child._parentCanvas = this;
+		this.setNeedsDisplay();
+	},
+
+	removeSubview: function( child ) {
+		var i = this._subViews.indexOf(child);
+		if(i>-1) {
+			this._subViews.splice(i,1);
+			child._canvas = null;
+		}
+		if(this._subViews.length==0 && this._isActive) {
+			ShiteDisplayLink.sharedDisplayLink.unregisterCanvas(this);
+			this._isActive = false;
+		}
+	},
+
+	displayUpdate: function( time ) {
+		if( this._isDirty ) {
+			$.each( this._subViews, function(indexInArray, valueOfElement){
+				valueOfElement.drawInRect( time );
+			});
+			this._isDirty = false;
+		} else {
+			var timeSince = time - this._lastDirtyTime;
+			if( timeSince > 3000 ) {
+				ShiteDisplayLink.sharedDisplayLink.unregisterCanvas(this);
+				this._isActive = false;
+			}
+		}
+	}
+});

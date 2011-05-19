@@ -48,6 +48,8 @@
 			startPlaying: function() {
 
 				var self = this;
+
+				// TODO: replace with ShiteDisplayLink
 				var xx = setInterval( function() {
 					self.set('_playedValue', self._playedValue+.1 );
 					if(self._playedValue>self._duration){

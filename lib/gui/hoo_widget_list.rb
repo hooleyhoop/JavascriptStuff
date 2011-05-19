@@ -66,6 +66,7 @@ module GUI
 			# for Drawing - player
 			'simpleTimeDisplay'				=>	GUI::Views::Drawing::Player::HooSimpleTimeDisplay.name,
 			'simpleSlider'					=>	GUI::Views::Drawing::Player::HooSimpleSlider.name,
+			'playPauseButton'				=>	GUI::Views::Drawing::Player::HooPlayPauseButton.name,
 
 			# for Drawing - menuItems
 			'textToggleItem'		=> 	GUI::Views::Drawing::Menus::Items::HooTextToggleItem.name,

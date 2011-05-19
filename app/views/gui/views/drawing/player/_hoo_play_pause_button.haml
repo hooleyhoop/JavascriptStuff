@@ -1,0 +1,169 @@
+-# http://0.0.0.0:3000/widgets/playPauseButton
+-# http://0.0.0.0:3000/widgets/playPauseButton?initialState=1
+
+- push( hoo_play_pause_button )
+
+-# If no javascript, what would you expect? A link that sayts play
+%div[_]{ :data=> {'jsclass'=>'HooPlayPauseButton'}, :style=> "width:200px; height:200px;"}
+	= link_to "play mp3", "http://apple.com", {'data-jshide'=>'true'}
+	%canvas( width="1" height="1" style="position:absolute; top:0; margin:0;" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		// When we need some different kinds of graphics start chopping up this heirarchy
+		HooPlayPauseButtonGraphic = HooAbstractButtonGraphic.extend({
+
+			_hooCanvas: undefined,
+			_playButtonSprite: undefined,
+			_pauseButtonSprite: undefined,
+			_currentSpriteState: undefined,
+			_currentSprite: undefined,
+
+			_threeStateButtonStateMachine_config: {
+
+				"disabled": {
+					"movieclip": "_playButtonSprite",
+					"properties": { _isDisabled: true, _isDown: false }
+				},
+				"play": {
+					"movieclip": "_playButtonSprite",
+					"properties": { _isDisabled: false, _isDown: false }
+				},
+				"play_down": {
+					"movieclip": "_playButtonSprite",
+					"properties": { _isDisabled: false, _isDown: true }
+				},
+				"pause": {
+					"movieclip": "_pauseButtonSprite",
+					"properties": { _isDown: false }
+				},
+				"pause_down": {
+					"movieclip": "_pauseButtonSprite",
+					"properties": { _isDown: true }
+				}
+			},
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+				this._hooCanvas = HooCanvas.create({_$canvas:this.getClickableItem()});
+
+				this._playButtonSprite = PlayButtonSprite.create();
+				this._pauseButtonSprite = PauseButtonSprite.create();
+				this._hooCanvas.addSubview(this);
+			},
+
+			setSize: function( width, height ) {
+				this._hooCanvas.setSize(width,height);
+			},
+
+			drawInRect: function() {
+				this.drawNow( this._hooCanvas.ctx(), this._hooCanvas.width(), this._hooCanvas.height() );
+			},
+
+			drawNow: function( ctx, width, height ) {
+
+				ctx.save();
+					ctx.setTransform(1, 0, 0, 1, 0, 0);
+					ctx.clearRect(0,0,width,height);
+					ctx.globalAlpha = 1.0;
+					ctx.globalCompositeOperation = 'source-over';
+
+					this._currentSprite.draw( ctx, width, height );
+
+				ctx.restore();
+			},
+
+			showDisabledButton: function() {
+				this.transitionToSpriteState("disabled");
+			},
+			showMouseUp1State: function() {
+				this.transitionToSpriteState("play");
+			},
+			showMouseDown1State: function() {
+				this.transitionToSpriteState("play_down");
+			},
+			showMouseUp2State: function() {
+				this.transitionToSpriteState("pause");
+			},
+			showMouseDown2State: function() {
+				this.transitionToSpriteState("pause_down");
+			},
+
+			transitionToSpriteState: function( state ) {
+
+				if(state!=this._currentSpriteState) {
+					var stateDict = this._threeStateButtonStateMachine_config[state];
+					var shouldBeVisibleSpriteName = stateDict["movieclip"];
+					this._currentSprite = this.get(shouldBeVisibleSpriteName);
+
+					// make the current Sprite have the correct properties
+					var shouldBePropertyValuesDict = stateDict["properties"];
+					this._currentSprite.setPropertiesOfSprite( shouldBePropertyValuesDict );
+
+					this._currentSpriteState = state;
+					this._hooCanvas.setNeedsDisplay();
+				}
+			},
+
+
+
+			getOuterWidth: function() {
+				throw("wibblew wobble bobble");
+				return undefined;
+			},
+			setOuterWidth: function( arg ) {
+				throw("wibblew wobble bobble");
+				return undefined;
+			},
+			getTextContent: function() {
+				throw("wibblew wobble bobble");
+				return undefined;
+			},
+			getHref: function() {
+				throw("wibblew wobble bobble");
+				return undefined;
+			},
+			setBackgroundAndTextState: function( state ) {
+				throw("wibblew wobble bobble");
+				return undefined;
+			},
+			setContentText:  function( arg ) {
+				throw("wibblew wobble bobble");
+				return undefined;
+			},
+			positionBackground:function( state ) {
+				throw("wibblew wobble bobble");
+				return undefined;
+			}
+		});
+
+		HooPlayPauseButton = HooFormButtonToggle.extend({
+
+			_$parentDiv: undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+				this._$parentDiv = $( "#"+this.id );
+			},
+
+			_createGraphic: function() {
+				this._buttonGraphic = HooPlayPauseButtonGraphic.create( { _rootItemId:this.id, _itemType:"canvas" });
+			},
+
+			setupDidComplete: function() {
+
+				this.resizeAll();
+				arguments.callee.base.apply(this,arguments);
+
+				//this._started = true;
+				//ShiteDisplayLink.sharedDisplayLink.registerListener(this);
+			},
+
+			resizeAll: function() {
+
+				var newWidth = this._$parentDiv.width();
+				var newHeight = this._$parentDiv.outerHeight();
+				this._buttonGraphic.setSize( newWidth, newHeight );
+			}
+		});

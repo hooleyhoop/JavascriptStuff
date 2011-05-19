@@ -37,6 +37,8 @@
 			begin: function( fps ) {
 				this._showBusy = true;
 				this._busyFadeDirection = true;
+
+				// TODO: replace with ShiteDisplayLink
 				this._intervalId = setInterval( this._animFunction , fps );
 			},
 

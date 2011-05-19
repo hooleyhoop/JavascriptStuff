@@ -8,192 +8,103 @@
 - if( _.includeOnce? )
 	:javascript
 
-		PauseButtonGraphic = SC.Object.extend({
-			_isDown: false,
-
-			draw: function( ctx, width, height ) {
-
-				var graphicToDraw = "roundedRect";
-				var innerCol, innerinnerCol, shadowCol, my_gradient;
-
-				if( this._isDown ) {
-					innerCol = "#0f6391";
-					innerinnerCol = "#005FAE";
-					shadowCol = null;
-					my_gradient = ctx.createLinearGradient(0, 0, 0, height);
-					my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
-					my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
-					my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
-				} else {
-					innerCol = "#0080C7";
-					innerinnerCol = "#005FAE";
-					shadowCol = "rgba(0,0,0,0.3)";
-					my_gradient = ctx.createLinearGradient(0, 0, 0, height);
-					my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
-					my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
-					my_gradient.addColorStop(1, "rgba(0,0,0,0)");
-				}
-
-
-				var tenPercentOfWidth = width / 10.0;
-				var scale = width/75.0; // design size was 75px
-				var insetRect3 = [0,0,width,height];
-				insetRect3 = VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
-
-				// construct 3 inset rectangles
-				var rect3PtArray = [[insetRect3[0],insetRect3[1]],[insetRect3[0]+insetRect3[2],insetRect3[1]],[insetRect3[0]+insetRect3[2], insetRect3[1]+insetRect3[3]], [insetRect3[0], insetRect3[1]+insetRect3[3]]];
-				var rect2PtArray = VectorMath.offsetPolygon( rect3PtArray, 5.0*scale );
-				var rect1PtArray = VectorMath.offsetPolygon( rect2PtArray, 5.0*scale );
-
-				var insetRect2 = [ rect2PtArray[0][0], rect2PtArray[0][1], rect2PtArray[1][0]-rect2PtArray[0][0], rect2PtArray[2][1]-rect2PtArray[0][1] ];
-				var insetRect1 = [ rect1PtArray[0][0], rect1PtArray[0][1], rect1PtArray[1][0]-rect1PtArray[0][0], rect1PtArray[2][1]-rect1PtArray[0][1] ];
+		DonutTestSprite = HooSprite.extend({
+			draw: function( ctx, width, height, busyAngle ) {
 
 				ctx.save();
 
-					// outer
-					var rects = VectorMath.splitRectInTwo( insetRect3, 2.0*scale );
-					ctx.fillStyle = my_gradient;
-					ctx.save();
-						Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
-						ctx.fill();
-					ctx.restore();
-					ctx.save();
-						Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
-						ctx.fill();
-					ctx.restore();
+		   			// var newCanvas = $("<canvas></canvas>")[0];
+				    // var newContext = newCanvas.getContext('2d');
+					// newCanvas.width = width;
+					// newCanvas.height = height;
 
-					// inner
-					ctx.shadowColor = shadowCol;
-					ctx.shadowBlur = 4;
-					ctx.shadowOffsetX = 0;
-					ctx.shadowOffsetY = tenPercentOfWidth/10;
+					var loadingRotAmount = Math.PI;
+					var playingRotAmount = Math.PI*0.6;
+					var busySpinnerAngle = busyAngle % 360 * Math.PI/180.0;
+					HOO_nameSpace.assert( loadingRotAmount>=playingRotAmount, "Go on, explain to me how this happened.");
 
-					rects = VectorMath.splitRectInTwo( insetRect2, 9.0*scale );
-					ctx.fillStyle = innerCol;
-					ctx.save();
-						Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
-						ctx.fill();
-					ctx.restore();
+					var outerRadius = width/4;
+					var innerRadius = outerRadius*0.5;
 
-					ctx.save();
-						Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
-						ctx.fill();
-					ctx.restore();
+					var centrePt = [width/2.0, height/2.0];
+					var startAngle = -Math.PI/2.0;
+					var busySpinnerWidth = Math.PI/6.0;
 
-					ctx.shadowColor= undefined;
-					ctx.shadowBlur = undefined;
+					ctx.globalCompositeOperation = 'source-over';
 
-					// inner inner
-					rects = VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
-					ctx.fillStyle = innerinnerCol;
-					ctx.save();
-						Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
-						ctx.fill();
-					ctx.restore();
-					ctx.save();
-						Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
-						ctx.fill();
-					ctx.restore();
+					// loading amount
+					ctx.fillStyle = "#cccccc";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					var loadingEndAngle = startAngle+loadingRotAmount;
+					ctx.arc(centrePt[0], centrePt[1], outerRadius, startAngle, loadingEndAngle, false);
+					ctx.closePath();
+					ctx.fill();
+
+					// playing amount
+					ctx.fillStyle = "#00ff00";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					var playingEndAngle = startAngle+playingRotAmount;
+					ctx.arc(centrePt[0], centrePt[1], outerRadius, startAngle, playingEndAngle, false);
+					ctx.closePath();
+					ctx.fill();
+
+					// busy spinner
+					ctx.fillStyle = "#00ffff";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					var playingEndAngle = startAngle+playingRotAmount;
+					ctx.arc(centrePt[0], centrePt[1], outerRadius, busySpinnerAngle-busySpinnerWidth/2.0, busySpinnerAngle+busySpinnerWidth/2.0, false);
+					ctx.closePath();
+					ctx.fill();
+
+					// punch out the center hole
+					ctx.globalCompositeOperation = 'destination-out';
+
+					ctx.fillStyle = "#000";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					ctx.arc(centrePt[0], centrePt[1], innerRadius, 0, Math.PI*2, false);
+					ctx.closePath();
+					ctx.fill();
+
+
+
+					// ctx.drawImage(newCanvas, 0, 0);
 
 				ctx.restore();
 			}
 		});
 
-		PlayButtonGraphic = SC.Object.extend({
-			_isDisabled: true,
-			_isDown: false,
 
-			draw: function( ctx, width, height ) {
 
-				var graphicToDraw = "roundedTriangle";
 
-				ctx.save();
-
-					var innerCol, innerinnerCol, shadowCol, my_gradient;
-
-					if( this._isDisabled ) {
-						innerCol = "#88a380";
-						innerinnerCol = "#7d9876";
-						shadowCol = null;
-						my_gradient = ctx.createLinearGradient(0, 0, 0, height);
-						my_gradient.addColorStop(0, "rgba(230,230,230,1)");
-						my_gradient.addColorStop(1, "rgba(230,230,230,0.5)");
-					} else if( this._isDown ) {
-						innerCol = "#4a6150";
-						innerinnerCol = "#248541";
-						shadowCol = null;
-						my_gradient = ctx.createLinearGradient(0, 0, 0, height);
-						my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
-						my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
-						my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
-					} else {
-						innerCol = "#5EBB47";
-						innerinnerCol = "#39B54A";
-						shadowCol = "rgba(0,0,0,0.3)";
-						my_gradient = ctx.createLinearGradient(0, 0, 0, height);
-						my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
-						my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
-						my_gradient.addColorStop(1, "rgba(0,0,0,0)");
-					}
-
-					var tenPercentOfWidth = width / 10.0;
-					var tri3Rect = [0,0,width,height];
-					tri3Rect = VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
-					tri3Rect = VectorMath.offsetRect( tri3Rect, [tenPercentOfWidth, 0] );
-					var triangle3PtArray = VectorMath.trianglePtArrayFromRect( tri3Rect );
-
-					var triangle2PtArray = VectorMath.offsetPolygon( triangle3PtArray, tenPercentOfWidth );
-					var tri2Rect = [ triangle2PtArray[0][0], triangle2PtArray[0][1], triangle2PtArray[1][0]-triangle2PtArray[0][0], triangle2PtArray[2][1]-triangle2PtArray[0][1] ];
-
-					var triangle1PtArray = VectorMath.offsetPolygon( triangle2PtArray, tenPercentOfWidth );
-					var tri1Rect = [ triangle1PtArray[0][0], triangle1PtArray[0][1], triangle1PtArray[1][0]-triangle1PtArray[0][0], triangle1PtArray[2][1]-triangle1PtArray[0][1] ];
-
-					ctx.fillStyle = my_gradient;
-						Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], tenPercentOfWidth );
-					ctx.fill();
-					//ctx.strokeStyle = "#000";
-					//	Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], 0 );
-					//ctx.stroke();
-
-					ctx.shadowColor = shadowCol;
-					ctx.shadowBlur = 4;
-					ctx.shadowOffsetX = 0;
-					ctx.shadowOffsetY = tenPercentOfWidth/10;
-
-					ctx.fillStyle = innerCol;
-						Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], tenPercentOfWidth/2.0 );
-					ctx.fill();
-					//ctx.strokeStyle = "#000";
-					//	Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], 0 );
-					//ctx.stroke();
-
-					ctx.shadowColor= undefined;
-					ctx.shadowBlur = undefined;
-
-					ctx.fillStyle = innerinnerCol;
-						Graphics[graphicToDraw].draw( ctx, tri1Rect[0], tri1Rect[1], tri1Rect[2], tri1Rect[3], 0 );
-					ctx.fill();
-
-				ctx.restore();
-			}
-		});
-
-		RoundedTriangle = HooWidget.extend({
+		RoundedTriangle2 = HooWidget.extend({
 
 			_$parentDiv: undefined,
 			_$canvas: undefined,
+			_hooCanvas: undefined,
 			_started: false,
+
+			// stuff to go in Sprite
+			_parentCanvas: undefined,
+			_busyAngle: 0,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
 				this._$parentDiv = $( "#"+this.id );
 				this._$canvas = this._$parentDiv.find( "canvas:first" );
+				this._hooCanvas = HooCanvas.create({_$canvas:this._$canvas});
+				this._hooCanvas.addSubview(this);
 			},
 
 			setupDidComplete: function() {
 
 				this.resizeAll();
 				this._started = true;
+
+				ShiteDisplayLink.sharedDisplayLink.registerListener(this);
 			},
 
 			parentDidResize: function() {
@@ -212,16 +123,26 @@
 				var currentHeight = this._$canvas.outerHeight();
 				// resize canvas
 				if( newWidth!=currentWidth || newHeight!=currentHeight) {
-					console.log("resize");
+					//console.log("resize");
 
 					this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
-					var ctx = this._$canvas[0].getContext('2d');
-					this.draw( ctx, newWidth, newHeight );
+					this.drawNow( this._hooCanvas.ctx(), newWidth, newHeight );
 				}
 			},
 
-			draw: function( ctx, width, height ) {
+			timeUpdate: function( time ) {
+				this._busyAngle = this._busyAngle + 1;
+				this._hooCanvas.setNeedsDisplay();
+			},
 
+			//-- called from canvas Here!
+			drawInRect: function() {
+				this.drawNow( this._hooCanvas.ctx(), this._$parentDiv.width(), this._$parentDiv.outerHeight() );
+			},
+
+			drawNow: function( ctx, width, height ) {
+
+				try {
 				ctx.save();
 
 					ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -229,15 +150,22 @@
 					ctx.globalAlpha = 1.0;
 					ctx.globalCompositeOperation = 'source-over';
 
-					// var buttonGraphic = PlayButtonGraphic.create();
-					// buttonGraphic._isDisabled = false;
-					// buttonGraphic._isDown = true;
-					// buttonGraphic.draw( ctx, width, height );
+					// var buttonSprite = PlayButtonSprite.create();
+					// buttonSprite._isDisabled = false;
+					// buttonSprite._isDown = true;
+					// buttonSprite.draw( ctx, width, height );
 
-					var pauseGraphic = PauseButtonGraphic.create();
-					pauseGraphic._isDown = true;
-					pauseGraphic.draw( ctx, width, height );
+					// var pauseSprite = PauseButtonSprite.create();
+					// pauseSprite._isDown = true;
+					// pauseSprite.draw( ctx, width, height );
+
+					var donutTestSprite = DonutTestSprite.create();
+					donutTestSprite.draw( ctx, width, height, this._busyAngle );
 
 				ctx.restore();
+				} catch(err) {
+					alert(err);
+				}
 			}
 		});
+

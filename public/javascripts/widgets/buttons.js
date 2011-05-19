@@ -160,22 +160,25 @@ HooFiveStateItem = HooThreeStateItem.extend({
 
 /* Abstract Button */
 
-// When we need some different kinds of graphics start chopping up this heirarchy
 HooAbstractButtonGraphic = SC.Object.extend({
+
+	_rootItemId: undefined,
+	_itemType: undefined,
+
+	getClickableItem: function() {
+		var itemQuery = "#"+this._rootItemId+" "+this._itemType+":first";
+		var $item = $( itemQuery );
+		if( $item.length!=1 )
+			console.error("Could not find the clickable item");
+		return $item;
+	}
+})
+
+// When we need some different kinds of graphics start chopping up this heirarchy
+HooButtonGraphic = HooAbstractButtonGraphic.extend({
 
 	_textHolder: undefined,
 	_labelStates: undefined,
-	_itemType: undefined,
-	_rootItemId: undefined,
-
-	/* JQuery helpers */
-	getClickableItem: function() {
-		var buttonQuery = "#"+this._rootItemId+" "+this._itemType+":first";
-		var $button = $( buttonQuery );
-		if( $button.length!=1 )
-			console.error("Could not find the Button");
-		return $button;
-	},
 
 	getForm: function() {
 		var formQuery = "#" + this._rootItemId + " form:first";
@@ -320,7 +323,7 @@ HooFormButtonSimple = HooWidget.extend({
 	},
 
 	_createGraphic: function() {
-		this._buttonGraphic = HooAbstractButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
+		this._buttonGraphic = HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
 	},
 
 	_createStateControl: function() {
@@ -437,7 +440,7 @@ DivButtonMixin = {
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 
 	_createGraphic: function() {
-		this._buttonGraphic = HooAbstractButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
+		this._buttonGraphic = HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
 	},
 
 	defaultAction: function() {

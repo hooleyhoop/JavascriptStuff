@@ -16,6 +16,10 @@ HOO_nameSpace = SC;
  //	4) the element has a custom action, in the json
 function createJSObjectsFromRubyObjects( rootElement ) {
 
+	// remove all no-js stuff
+	var itemsToRemove = $('[data-jshide]');
+	itemsToRemove.remove();
+
 	// create the global window instance
 	var $win = $('hooWindow');
 	_hooWindow = HooWindow.create( {id: 'hooWindow'} );
@@ -213,7 +217,7 @@ HOO_nameSpace.assert = function( expr, msg ) {
 	//	if( typeof console.assert!==undefined )
 		//		console.assert( height==this.positionBackground.previousHeight, "shit" );
 	if (!expr) {
-	throw new AssertException(message);
+	throw new AssertException(msg);
 	}
 }
 
