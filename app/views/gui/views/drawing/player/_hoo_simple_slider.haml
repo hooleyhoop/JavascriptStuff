@@ -95,6 +95,7 @@
 				arguments.callee.base.apply(this,arguments);
 
 				this._$parentDiv = $( "#"+this.id );
+				debugger; //TODO: swap this this.div$
 				this._$canvas = this._$parentDiv.find( "canvas:first" );
 				this._loadProgressDiv = this._$parentDiv.find( ".loadProgress:first" );
 				this._playProgressDiv = this._$parentDiv.find( ".playProgress:first" );

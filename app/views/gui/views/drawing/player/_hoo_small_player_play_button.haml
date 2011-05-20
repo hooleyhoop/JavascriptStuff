@@ -1,0 +1,24 @@
+-# http://0.0.0.0:3000/widgets/smallPlayerPlayButton
+
+- push( hoo_small_player_play_button )
+
+%div[_]( data-jsclass='SmallPlayerPlayButton' style="width:200px; height:200px;" )
+	=  insert( _.views, "" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		SmallPlayerPlayButton = HooWidget.extend({
+
+			_radialProgress: undefined,
+			_playPauseButton: undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+			},
+
+			setupDidComplete: function() {
+
+			}
+
+		});

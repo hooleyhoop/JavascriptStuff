@@ -1,0 +1,141 @@
+-# http://0.0.0.0:3000/widgets/radialProgress
+
+- push( hoo_radial_progress )
+
+%div[_]( data-jsclass='HooRadialProgress' style="width:200px; height:200px;" )
+	=  insert( _.views, "" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		DonutTestSprite = HooSprite.extend({
+			draw: function( ctx, width, height, busyAngle ) {
+
+				ctx.save();
+
+		   			// var newCanvas = $("<canvas></canvas>")[0];
+				    // var newContext = newCanvas.getContext('2d');
+					// newCanvas.width = width;
+					// newCanvas.height = height;
+
+					var loadingRotAmount = Math.PI;
+					var playingRotAmount = Math.PI*0.6;
+					var busySpinnerAngle = busyAngle % 360 * Math.PI/180.0;
+					HOO_nameSpace.assert( loadingRotAmount>=playingRotAmount, "Go on, explain to me how this happened.");
+
+					var outerRadius = width/4;
+					var innerRadius = outerRadius*0.5;
+
+					var centrePt = [width/2.0, height/2.0];
+					var startAngle = -Math.PI/2.0;
+					var busySpinnerWidth = Math.PI/6.0;
+
+					ctx.globalCompositeOperation = 'source-over';
+
+					// loading amount
+					ctx.fillStyle = "#cccccc";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					var loadingEndAngle = startAngle+loadingRotAmount;
+					ctx.arc(centrePt[0], centrePt[1], outerRadius, startAngle, loadingEndAngle, false);
+					ctx.closePath();
+					ctx.fill();
+
+					// playing amount
+					ctx.fillStyle = "#00ff00";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					var playingEndAngle = startAngle+playingRotAmount;
+					ctx.arc(centrePt[0], centrePt[1], outerRadius, startAngle, playingEndAngle, false);
+					ctx.closePath();
+					ctx.fill();
+
+					// busy spinner
+					ctx.fillStyle = "#00ffff";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					var playingEndAngle = startAngle+playingRotAmount;
+					ctx.arc(centrePt[0], centrePt[1], outerRadius, busySpinnerAngle-busySpinnerWidth/2.0, busySpinnerAngle+busySpinnerWidth/2.0, false);
+					ctx.closePath();
+					ctx.fill();
+
+					// punch out the center hole
+					ctx.globalCompositeOperation = 'destination-out';
+
+					ctx.fillStyle = "#000";
+					ctx.beginPath();
+					ctx.moveTo(centrePt[0], centrePt[1]);
+					ctx.arc(centrePt[0], centrePt[1], innerRadius, 0, Math.PI*2, false);
+					ctx.closePath();
+					ctx.fill();
+
+
+
+					// ctx.drawImage(newCanvas, 0, 0);
+
+				ctx.restore();
+			}
+		});
+
+
+		HooRadialProgressGraphic = SC.Object.extend({
+
+			_busyAngle: 0,
+
+			//setSize: function( width, height ) {
+			//	this._parentCanvas.setSize(width,height);
+			//},
+			drawInRect: function() {
+				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
+			},
+			drawNow: function( ctx, width, height ) {
+				// if(!this._currentSprite)
+				//	return;
+				ctx.save();
+					// ctx.setTransform(1, 0, 0, 1, 0, 0);
+					// ctx.clearRect(0,0,width,height);
+					// ctx.globalAlpha = 1.0;
+					// ctx.globalCompositeOperation = 'source-over';
+
+					// ctx.fillStyle = "rgba(100,100,100,1)";
+					// ctx.fillRect(0,0,width,height);
+
+					var donutTestSprite = DonutTestSprite.create();
+					donutTestSprite.draw( ctx, width, height, this._busyAngle );
+
+					// this._currentSprite.draw( ctx, width, height );
+
+				ctx.restore();
+			}
+		});
+
+		HooRadialProgress = HooWidget.extend({
+
+			_hooCanvas: undefined,
+			_progressGraphic:undefined,
+
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+				this._progressGraphic = HooRadialProgressGraphic.create();
+			},
+
+			setupDidComplete: function() {
+
+				HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
+				this._hooCanvas.addSubview( this._progressGraphic );
+				arguments.callee.base.apply(this,arguments);
+
+				//var self = this;
+				//setTimeout( function(){
+				//	self.resizeAll();
+				//}, 100 );
+			},
+
+			// TODO! ok, i dont know which way round sizing should work - resize the canvas or the player? Or both?
+			//resizeAll: function() {
+
+			//	var newWidth = this.div$.width();
+			//	var newHeight = this.div$.outerHeight();
+			//	this._progressGraphic.setSize( newWidth, newHeight );
+			//}
+		});

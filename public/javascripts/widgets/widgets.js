@@ -99,15 +99,24 @@ function eventTrampoline(e,a) {
 */
 HooWidget = SC.Object.extend({
 
-	json: "undefined",
-	id: "undefined",
+	json: undefined,
+	id: undefined,
+	div$: undefined,
+
+	init: function( /* init never has args */ ) {
+		arguments.callee.base.apply(this,arguments);
+		this.div$ = typeof(this.div$) != 'undefined' ? this.div$ : $( "#"+this.id );
+	},
 
 	parentDidResize: function() {
 	},
 
 	getFirstDomItemOfType: function( type ) {
-		var itemQuery = "#"+this.id+" "+type+":first";
-		var $item = $( itemQuery );
+
+		var $item = this.div$.find(type+":first");
+		// debugger;
+		// var itemQuery = "#"+this.id+" "+type+":first";
+		// var $item = $( itemQuery );
 		if( $item.length!=1 )
 			console.error("Could not find the "+type+" dom item");
 		return $item;

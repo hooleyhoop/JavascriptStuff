@@ -56,9 +56,9 @@
 				return this._parentCanvas._$canvas;
 			},
 
-			setSize: function( width, height ) {
-				this._parentCanvas.setSize(width,height);
-			},
+			//setSize: function( width, height ) {
+				// this._parentCanvas.setSize(width,height);
+			//},
 
 			drawInRect: function() {
 				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
@@ -68,10 +68,10 @@
 				if(!this._currentSprite)
 					return;
 				ctx.save();
-					ctx.setTransform(1, 0, 0, 1, 0, 0);
-					ctx.clearRect(0,0,width,height);
-					ctx.globalAlpha = 1.0;
-					ctx.globalCompositeOperation = 'source-over';
+					// ctx.setTransform(1, 0, 0, 1, 0, 0);
+					// ctx.clearRect(0,0,width,height);
+					// ctx.globalAlpha = 1.0;
+					// ctx.globalCompositeOperation = 'source-over';
 
 					//ctx.fillStyle = "rgba(100,100,100,1)";
 					//ctx.fillRect(0,0,width,height);
@@ -148,14 +148,12 @@
 
 		HooPlayPauseButton = HooFormButtonToggle.extend({
 
-			_$parentDiv: undefined,
-			_started: false,
+			// _started: false,
 			_hooCanvas: undefined,
 
-			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
-				this._$parentDiv = $( "#"+this.id );
-			},
+			// init: function( /* init never has args */ ) {
+			//	arguments.callee.base.apply(this,arguments);
+			// },
 
 			_createGraphic: function() {
 				this._buttonGraphic = HooPlayPauseButtonGraphic.create( { _rootItemId:this.id });
@@ -169,10 +167,10 @@
 
 				arguments.callee.base.apply(this,arguments);
 
-				var self = this;
-				setTimeout( function(){
-					self.resizeAll();
-				}, 100 );
+				//var self = this;
+				//setTimeout( function(){
+					// self.resizeAll();
+				//}, 100 );
 
 
 				// this._started = true;
@@ -180,10 +178,10 @@
 			},
 
 			// TODO! ok, i dont know which way round sizing should work - resize the canvas or the player? Or both?
-			resizeAll: function() {
+			//resizeAll: function() {
 
-				var newWidth = this._$parentDiv.width();
-				var newHeight = this._$parentDiv.outerHeight();
-				this._buttonGraphic.setSize( newWidth, newHeight );
-			}
+			//	var newWidth = this.div$.width();
+			//	var newHeight = this.div$.outerHeight();
+			//	this._buttonGraphic.setSize( newWidth, newHeight );
+			//}
 		});

@@ -22,7 +22,7 @@
 
 			setupDidComplete: function() {
 
-				this._$span = $( "#"+this.id+" span:first" );
+				this._$span = $( "#"+this.id+" span:first" ); // TODO: swap this.div$.find()
 
 				var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
 				hasBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );

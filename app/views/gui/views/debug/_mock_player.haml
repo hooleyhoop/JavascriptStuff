@@ -59,7 +59,7 @@
 			},
 
 			setContentText:  function( arg ) {
-				var $span = $( "#"+this.id+" span:first" );
+				var $span = this.getFirstDomItemOfType("span");
 				$span.text( arg );
 			},
 

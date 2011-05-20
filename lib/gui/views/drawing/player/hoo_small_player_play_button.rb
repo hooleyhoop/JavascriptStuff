@@ -1,13 +1,11 @@
 module GUI::Views::Drawing::Player
 
-	# http://0.0.0.0:3000/widgets/playPauseButton
-	class HooPlayPauseButton <  GUI::Views::Drawing::Buttons::DivButton::HooDivButtonAbstract
+	# http://0.0.0.0:3000/widgets/smallPlayerPlayButton
+	class HooSmallPlayerPlayButton < GUI::Core::HooView
 
-		attr_accessor :parentCanvas
+		#attr_accessor :parentCanvas
 
 		def initialize( args={} )
-			@_states = 5
-			extractArgs( args, {:parentCanvas=>nil} );
 			super(args);
 		end
 
@@ -26,20 +24,25 @@ module GUI::Views::Drawing::Player
             @parentCanvas = GUI::HooWidgetList.widgetClass('canvas').new();
     	    addSubView( @parentCanvas );
 
-			@action = 'http://audioboo.fm';
-			self.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock', :actionIsAsync=>false  }} );
+	        @playPauseButton = GUI::HooWidgetList.widgetClass('playPauseButton').new( {:parentCanvas=>@parentCanvas} );
+    	    addSubView( @playPauseButton );
+
+			@playPauseButton.action = 'http://audioboo.fm';
+			@playPauseButton.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock', :actionIsAsync=>false  }} );
+
+            @radialProgress = GUI::HooWidgetList.widgetClass('radialProgress').new( {:parentCanvas=>@parentCanvas} );
+    	    addSubView( @radialProgress );
+
 
 		end
 
 		def jsonProperties
 
 			#TODO: This cannot stay here!
-			self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName });
+			self.addRuntimeObject({:_radialProgress => @radialProgress.varName });
+			self.addRuntimeObject({:_playPauseButton => @playPauseButton.varName });
 
-			# remember! if yopu put the varName of another HooObject you must manually swap it in
-			# ! Make this automatic !
 			allItems = {
-				:initialState		=> @initialState,
 			}
 
 			#TODO: This is all fucked! wshy do i have to duplicate this everywhere? Easy to sort out
@@ -47,8 +50,7 @@ module GUI::Views::Drawing::Player
 			# - conditionally merge bindings
 			# - conditionally merge actions
 			# - seperate out items that require swapping at runtime
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
+
 			allItems.merge!( { :runtimeObjects => @runtimeObjects } ) unless @runtimeObjects==nil;
 
 		end

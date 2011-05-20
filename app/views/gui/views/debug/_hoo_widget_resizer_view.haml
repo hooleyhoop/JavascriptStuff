@@ -34,19 +34,22 @@
 		// Basic Div Class - Renanme!
 		BasicDiv = HooWidget.extend({
 
-			_$div: undefined,
+			//_$div: undefined,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
 
-				if( this._$div!=undefined) {
-					//alert(this._$div instanceof jQuery);
-					// alert(this._$div.html())
-				}
+				//if( this.div$!=undefined) {
+					//alert(this.div$ instanceof jQuery);
+					// alert(this.div$.html())
+				//}
 			},
 
 			leftBounds: function() {
-				return this._$div.position().left;
+				var pos = this.div$.position();
+				if(!pos)
+					return 0;
+				return pos.left;
 			},
 
 			rightBounds: function() {
@@ -58,42 +61,45 @@
 			},
 
 			topBounds: function() {
-				return this._$div.position().top;
+				var pos = this.div$.position();
+				if(!pos)
+					return 0;
+				return pos.top;
 			},
 
 			width: function() {
-				return this._$div.width();
+				return this.div$.width();
 			},
 
 			height: function() {
-				return this._$div.height();
+				return this.div$.height();
 			},
 
 			setLeftBounds: function( leftVal ) {
 
 				var moveAmount = this.leftBounds() - leftVal;
-				this._$div.css( 'left', leftVal );
-				this._$div.css( 'width', this.width()+moveAmount );
+				this.div$.css( 'left', leftVal );
+				this.div$.css( 'width', this.width()+moveAmount );
 				this.frameDidChange();
 			},
 
 			setRightBounds: function( rightVal ) {
 
 				var newWidth = rightVal - this.leftBounds();
-				this._$div.css( 'width', newWidth );
+				this.div$.css( 'width', newWidth );
 				this.frameDidChange();
 			},
 
 			setBottomBounds: function( bottomBounds ) {
 				var newHeight = bottomBounds-this.topBounds();
-				this._$div.css( 'height', newHeight );
+				this.div$.css( 'height', newHeight );
 				this.frameDidChange();
 			},
 
 			setTopBounds: function( topBounds ) {
 				var newHeight = this.height()-(topBounds-this.topBounds());
-				this._$div.css( 'top', topBounds );
-				this._$div.css( 'height', newHeight );
+				this.div$.css( 'top', topBounds );
+				this.div$.css( 'height', newHeight );
 				this.frameDidChange();
 			},
 
@@ -103,7 +109,7 @@
 			},
 
 			html: function() {
-				return this._$div.html();
+				return this.div$.html();
 			}
 
 		});
@@ -120,15 +126,16 @@
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
 
-				if( this._$div===undefined) {
-					this._$div = $('#'+this.id);
+				if( this.div$===undefined) {
+					// this._$div = $('#'+this.id);
+					debugger; //TODO: swap this this.div$
 				}
 
 				// The id on these handles wont be set automagically - be careful not to use id
-				this._leftHandle	= Handle.create( {_$div: $('#left_handle')} );
-				this._rightHandle	= Handle.create( {_$div: $('#right_handle')} );
-				this._topHandle		= Handle.create( {_$div:  $('#top_handle')} );
-				this._bottomHandle	= Handle.create( {_$div: $('#bottom_handle')} );
+				this._leftHandle	= Handle.create( {div$: $('#left_handle')} );
+				this._rightHandle	= Handle.create( {div$: $('#right_handle')} );
+				this._topHandle		= Handle.create( {div$:  $('#top_handle')} );
+				this._bottomHandle	= Handle.create( {div$: $('#bottom_handle')} );
 			},
 
 			// nibDidLoad
@@ -149,7 +156,7 @@
 			// called too often - need to have the runloop shit
 			frameDidChange: function( rect ) {
 
-				var all_jsClass_objects = this._$div.find('[data-jsclass]');
+				var all_jsClass_objects = this.div$.find('[data-jsclass]');
 				all_jsClass_objects.each(function(index, value) {
 
 					var idString = $(value).attr('id');
@@ -169,15 +176,15 @@
 
 				this._boundToObject = resizeableDiv;
 				var self = this;
-				this._$div.mousedown( function($event){ return self.horizontalDrag( $event, self._boundToObject.html(), side ); } );
+				this.div$.mousedown( function($event){ return self.horizontalDrag( $event, self._boundToObject.html(), side ); } );
 			},
 
 			horizontalDrag: function( $event, $puppet, cssProp ) {
 
 				var $jqueryClickedObject = $($event.target); // notice how we wrap HTMLDivElement
-				var $clickedObjectPos = this._$div.offset();
+				var $clickedObjectPos = this.div$.offset();
 				var mouseDownPt = { x:$event.pageX, y:$event.pageY };
-				var offsetFromCentrePt = { x:(mouseDownPt.x-$clickedObjectPos.left-this._$div.width()/2), y:(mouseDownPt.y-$clickedObjectPos.top-this._$div.height()/2) };
+				var offsetFromCentrePt = { x:(mouseDownPt.x-$clickedObjectPos.left-this.div$.width()/2), y:(mouseDownPt.y-$clickedObjectPos.top-this.div$.height()/2) };
 				// console.warn( "offset from centre = "+offsetFromCentrePt.x + ", "+offsetFromCentrePt.y );
 
 				var mouseUpData = { target:this, action:'mouseup' };
@@ -195,30 +202,30 @@
 			mousemove: function( $event ) {
 
 				var clickedPos = { x:$event.pageX, y:$event.pageY };
-				var newPos = { x:(clickedPos.x-this._$div.width()/2), y:(clickedPos.y-this._$div.height()/2) };
+				var newPos = { x:(clickedPos.x-this.div$.width()/2), y:(clickedPos.y-this.div$.height()/2) };
 				var $objectToManipulate = this._boundToObject.html();
 				var cssProp = $event.data.tcssProp;
 
 				if( cssProp=='left' ) {
-					this._$div.css( 'left', newPos.x-$event.data.offset.x );
-					var newXPos = this._$div.offset().left+this._$div.width();
+					this.div$.css( 'left', newPos.x-$event.data.offset.x );
+					var newXPos = this.div$.offset().left+this.div$.width();
 					this._boundToObject.setLeftBounds( newXPos );
 
 				} else if( cssProp=='right') {
-					this._$div.css( 'left', newPos.x-$event.data.offset.x );
-					var newXPos = this._$div.offset().left;
+					this.div$.css( 'left', newPos.x-$event.data.offset.x );
+					var newXPos = this.div$.offset().left;
 					this._boundToObject.setRightBounds( newXPos );
 
 				} else if( cssProp=='top') {
 					var constrainedYpos = $event.data.offset.y;
-					this._$div.css( 'top', newPos.y-constrainedYpos );
-					var newYPos = this._$div.offset().top+this._$div.height();
+					this.div$.css( 'top', newPos.y-constrainedYpos );
+					var newYPos = this.div$.offset().top+this.div$.height();
 					newYPos = newYPos + (15-newYPos%15)
 					this._boundToObject.setTopBounds( newYPos );
 
 				} else if( cssProp=='bottom') {
-					this._$div.css( 'top', newPos.y-$event.data.offset.y );
-					var newYPos = this._$div.offset().top;
+					this.div$.css( 'top', newPos.y-$event.data.offset.y );
+					var newYPos = this.div$.offset().top;
 					this._boundToObject.setBottomBounds( newYPos );
 
 				} else {

@@ -170,8 +170,8 @@ HooAbstractButtonGraphic = SC.Object.extend({
 	_rootItemId: undefined,
 	_itemType: undefined,
 
-
 	getClickableItem: function() {
+
 		var itemQuery = "#"+this._rootItemId+" "+this._itemType+":first";
 		var $item = $( itemQuery );
 		if( $item.length!=1 )

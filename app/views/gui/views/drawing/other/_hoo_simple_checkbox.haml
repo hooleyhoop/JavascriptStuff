@@ -25,7 +25,8 @@
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
 
-				this._checkbox = $( "#"+this.id+" form input:checkbox:first" );
+				debugger; //TODO: swap this this.div$
+				this._checkbox = this.getFirstDomItemOfType("form input:checkbox");
 			},
 
 			setupDidComplete: function() {

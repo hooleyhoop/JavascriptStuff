@@ -11,6 +11,9 @@ Flippy_toggle_thing = HooWidget.extend({
 	},
 
 	setupDidComplete: function() {
+
+		this.div$; // TODO swap this
+		debugger;
 		var queryString = "#"+this.id;
 		var $thisHTML = $( queryString );
 		var self = this;

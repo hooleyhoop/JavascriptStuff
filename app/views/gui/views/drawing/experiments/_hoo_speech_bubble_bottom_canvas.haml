@@ -78,8 +78,7 @@
 				// the background has been removed if javascript is enabled!
 				if( browserSupportsCanvas() )
 				{
-					this._$parentDiv = $( "#"+this.id );
-					this._$canvas = this._$parentDiv.find( "canvas:first" );
+					this._$canvas = this.getFirstDomItemOfType("canvas");
 
 					var self = this;
 					setTimeout( function(){
@@ -96,9 +95,10 @@
 				}
 			},
 
+			// TODO: update this to use HooCanvas
 			resizeCanvas: function() {
-				var newWidth = this._$parentDiv.width();
-				var newHeight = this._$parentDiv.height();
+				var newWidth = this.div$.width();
+				var newHeight = this.div$.height();
 				var currentWidth = this._$canvas.width();
 				var currentHeight = this._$canvas.height();
 				if( newWidth!=currentWidth || newHeight!=currentHeight)
