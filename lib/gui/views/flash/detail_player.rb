@@ -120,10 +120,15 @@ module GUI::Views::Flash
 
 		# stuff to write into the page
 		def jsonProperties
+
+			# TODO! got to find a better way todo this!
+			self.addRuntimeObject({:_headlessAudioPlayer => @headlessPlayer1.varName });
+
 			allItems = {
-				:_headlessAudioPlayer	=> @headlessPlayer1.varName,
 			}
-			return allItems.to_json();
+
+			allItems.merge!( { :runtimeObjects => @runtimeObjects } ) unless @runtimeObjects==nil;
+
 		end
 
 

@@ -63,6 +63,8 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 		console.log( "Created "+newInstance +" > "+ newInstanceName );
 	});
 
+	// TODO: how about going thru the json and swapping objects in instead of swapFindAndSwapInstanceVariableNamed
+
 	_hooWindow.setupDidComplete();
 }
 
@@ -101,6 +103,14 @@ HooWidget = SC.Object.extend({
 	id: "undefined",
 
 	parentDidResize: function() {
+	},
+
+	getFirstDomItemOfType: function( type ) {
+		var itemQuery = "#"+this.id+" "+type+":first";
+		var $item = $( itemQuery );
+		if( $item.length!=1 )
+			console.error("Could not find the "+type+" dom item");
+		return $item;
 	},
 
 	// extract bindings from json
@@ -156,12 +166,13 @@ HooWidget = SC.Object.extend({
 	},
 
 	// given an instance variable that contains the name of an object, swap the content of the instance variable for the actual object
-	swapFindAndSwapInstanceVariableNamed: function( iVarName ) {
+	swapFindAndSwapInstanceVariableNamed: function( jsonProp, iVarName ) {
 
-		var jsonProp = this.json[iVarName];
 		var value = null;
 		if( HOO_nameSpace[jsonProp] ) {
 			value = HOO_nameSpace[jsonProp];
+		} else {
+			debugger;
 		}
 		this.set( iVarName, value );
 	}
@@ -190,6 +201,20 @@ HooWindow = HooWidget.extend({
 
 	/* all the child views were created */
 	setupDidComplete: function() {
+
+		// swap var names for runtime objects
+		$(this._allViews).each( function(i,ob){
+			if(ob.json && ob.json.runtimeObjects) {
+				var obToSwapJson = ob.json.runtimeObjects;
+				for( key in obToSwapJson) {
+					var jsonProp = obToSwapJson[key];
+					if(!jsonProp)
+						debugger;
+					ob.swapFindAndSwapInstanceVariableNamed( jsonProp, key );
+				}
+			}
+		});
+
 		$(this._allViews).each( function(i,ob){
 			if(ob.setupDidComplete!==undefined)
 				ob.setupDidComplete();
@@ -217,11 +242,6 @@ HOO_nameSpace.assert = function( expr, msg ) {
 	//	if( typeof console.assert!==undefined )
 		//		console.assert( height==this.positionBackground.previousHeight, "shit" );
 	if (!expr) {
-	throw new AssertException(msg);
+		debugger;
 	}
-}
-
-function AssertException(message) { this.message = message; }
-AssertException.prototype.toString = function () {
-  return 'AssertException: ' + this.message;
 }

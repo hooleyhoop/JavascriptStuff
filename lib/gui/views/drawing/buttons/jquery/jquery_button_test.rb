@@ -53,7 +53,6 @@ module GUI::Views::Drawing::Buttons::Jquery
 				:size			=> @size,
 				:javascript		=> @javascript,
 			}
-			return allItems.to_json();
 		end
 
 	end

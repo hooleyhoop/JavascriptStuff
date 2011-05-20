@@ -25,7 +25,6 @@ module GUI::Views::Flash
 				:width		=> @width,
 				:height		=> @height
 			}
-			return allItems.to_json();
 		end
 
 	end

@@ -36,8 +36,6 @@ module GUI::Views::Drawing::Player
 			}
 			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
 			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
-
-			return allItems.to_json();
 		end
 
 	end

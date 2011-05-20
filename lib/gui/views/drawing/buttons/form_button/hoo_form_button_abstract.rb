@@ -58,7 +58,6 @@ module GUI::Views::Drawing::Buttons::FormButton
 			}
 			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
 			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
-			return allItems.to_json();
 		end
 
 	end

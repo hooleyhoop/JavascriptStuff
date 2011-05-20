@@ -75,6 +75,7 @@ module GUI
 			'simpleBusySpinner'		=>	GUI::Views::Drawing::Other::HooSimpleSpinner.name,
 			'simpleTextField'		=>	GUI::Views::Drawing::Other::HooSimpleTextField.name,
 			'simpleCheckbox'		=>	GUI::Views::Drawing::Other::HooSimpleCheckbox.name,
+			'canvas'				=>	GUI::Views::Drawing::Other::HooCanvas.name,
 
 			'speechBubbleBottomCanvas'	=>	GUI::Views::Drawing::Experiments::HooSpeechBubbleBottomCanvas.name,
 			'roundedTriangle'			=>	GUI::Views::Drawing::Experiments::RoundedTriangle.name,

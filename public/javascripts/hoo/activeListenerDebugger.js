@@ -9,11 +9,14 @@ ActiveListenerDebugger = SC.Object.extend({
 
 	addListener: function( item, event, targetOb, actionMethod ) {
 
-        if( item==null || targetOb==null || event==null || actionMethod==null || item==null || targetOb==undefined || event==undefined || actionMethod==undefined )
-			throw("NO! - cant add listener to Null");
-
-		if( this.alreadyContain( item, event, targetOb, actionMethod ) )
-			throw( "Doh, adding listener twice" );
+        if( item==null || targetOb==null || event==null || actionMethod==null || item==null || targetOb==undefined || event==undefined || actionMethod==undefined ) {
+			//throw("NO! - cant add listener to Null");
+			debugger;
+		}
+		if( this.alreadyContain( item, event, targetOb, actionMethod ) ) {
+			// throw( "Doh, adding listener twice" );
+			debugger;
+		}
 		item.bind( event, {target:targetOb, action:actionMethod, arg:null }, eventTrampoline );
 		this.storeEventListen( item, event, targetOb, actionMethod );
 	},
@@ -21,7 +24,7 @@ ActiveListenerDebugger = SC.Object.extend({
 	removeListener: function( item, event, targetOb, actionMethod ) {
 
         if( item==null || targetOb==null || event==null || actionMethod==null || item==null || targetOb==undefined || event==undefined || actionMethod==undefined )
-			throw("NO! cant remove Null listener");
+			debugger;
 
 		var registeredHandlers = this._targets[item];
 		if(registeredHandlers==null) {

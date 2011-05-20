@@ -25,7 +25,6 @@ module GUI::Views::Flash
 			allItems = {
 				:mp3Url		=> @mp3Url,
 			}
-			return allItems.to_json();
 		end
 
 	end

@@ -47,7 +47,6 @@ module GUI::Views::Drawing::Other
 				:postfix			=> @postfix,
 			}
 			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			return allItems.to_json();
 		end
 
 

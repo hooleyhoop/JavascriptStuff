@@ -8,7 +8,7 @@ HooThreeStateItem = SC.Object.extend({
 	_actionArg: undefined,
 	_isAsync: undefined,
 
-	init: function( /* _graphic, _clickableItem$ */ ) {
+	init: function( /* _graphic */ ) {
 		arguments.callee.base.apply( this, arguments );
 
 		this._createSM();
@@ -93,7 +93,11 @@ HooThreeStateItem = SC.Object.extend({
 
 	_mouseDown: function( e ) {
 
-		this._listenerDebugger.addListener( $(window), 'mouseup', this, this._mouseStageUp );
+		// cant get $(window).mouseup to work on IE7 so using document instead
+		this._listenerDebugger.addListener( $(document), 'mouseup', this, this._mouseStageUp );
+		this._clickableItem$.unselectable = "on";
+		this._clickableItem$.onselectstart = function(){return false};
+
 		this._listenerDebugger.addListener( this._clickableItem$, 'mouseleave', this, this._mouseRollOutHandler );
 		this._listenerDebugger.addListener( this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler );
 
@@ -166,6 +170,7 @@ HooAbstractButtonGraphic = SC.Object.extend({
 	_rootItemId: undefined,
 	_itemType: undefined,
 
+
 	getClickableItem: function() {
 		var itemQuery = "#"+this._rootItemId+" "+this._itemType+":first";
 		var $item = $( itemQuery );
@@ -207,7 +212,7 @@ HooButtonGraphic = HooAbstractButtonGraphic.extend({
 
 	getHref: function() {
 		var href = this.getClickableItem().find( this._textHolder ).attr("href");
-		HOO_nameSpace.assert(href, "cant find href");
+		HOO_nameSpace.assert( href, "cant find href" );
 		return href;
 	},
 
@@ -308,7 +313,7 @@ FormSubmiter = SC.Object.extend({
 HooFormButtonSimple = HooWidget.extend({
 
 	_mouseClickAction: undefined,
-	_threeButtonSM: undefined,
+	_buttonSMControl: undefined,
 	_buttonGraphic: undefined,
 
 	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
@@ -318,7 +323,7 @@ HooFormButtonSimple = HooWidget.extend({
 			this._createGraphic();
 		}
 
-		if(this._threeButtonSM==undefined) {
+		if(this._buttonSMControl==undefined) {
 			this._createStateController();
 		}
 	},
@@ -330,9 +335,7 @@ HooFormButtonSimple = HooWidget.extend({
 
 	_createStateController: function() {
 
-		this._threeButtonSM = HooThreeStateItem.create( { 	_graphic:this._buttonGraphic,
-															_clickableItem$: this._buttonGraphic.getClickableItem()
-														} );
+		this._buttonSMControl = HooThreeStateItem.create( { _graphic:this._buttonGraphic } );
 	},
 
 	setupDidComplete: function() {
@@ -340,15 +343,21 @@ HooFormButtonSimple = HooWidget.extend({
 		// Setup bindings as configured in the json
 		// if there is no binding and the initial state isn't disabled, we need to call 'enable', right?
 
+		var clickable = this._buttonGraphic.getClickableItem();
+		if(!clickable)
+			debugger;
+
+		this._buttonSMControl._clickableItem$ = clickable;
+
 		/* at the moment this only handles initial turn-on! you cannot observe a turn off */
 		var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
 		if( hasBinding==false && this.json.initialState>0 ) {
 			if(this.json.initialState==1)
-				this._threeButtonSM.sendEvent( "ev_showState1" );
+				this._buttonSMControl.sendEvent( "ev_showState1" );
 			else if(this.json.initialState==3)
-				this._threeButtonSM.sendEvent( "ev_showState2" );
+				this._buttonSMControl.sendEvent( "ev_showState2" );
 			else
-				throw("Unknown initial state for button");
+				debugger;
 		}
 		// set up actions as configured in the json - mixin?
 		this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
@@ -356,7 +365,7 @@ HooFormButtonSimple = HooWidget.extend({
 			console.info("No JSON Action - using form");
 			this._mouseClickAction = this.defaultAction();
 		}
-		this._threeButtonSM.setButtonTarget( this._mouseClickAction.t, this._mouseClickAction.a, this._mouseClickAction.w, this._mouseClickAction.actionIsAsync );
+		this._buttonSMControl.setButtonTarget( this._mouseClickAction.t, this._mouseClickAction.a, this._mouseClickAction.w, this._mouseClickAction.actionIsAsync );
 	},
 
 	// Maaan, this shouldn't really be here, but when i get the other buttons working again sort out the heirarchy
@@ -378,14 +387,14 @@ HooFormButtonSimple = HooWidget.extend({
 		var observedVal = target[property];
 		// alert(observedVal);
 		if( observedVal==null || observedVal==undefined || observedVal==0 || observedVal==false )
-			this._threeButtonSM.setCurrentStateName( "ev_disable" );
+			this._buttonSMControl.setCurrentStateName( "ev_disable" );
 		else {
-			this._threeButtonSM.setCurrentStateName( "ev_showState1" );
+			this._buttonSMControl.setCurrentStateName( "ev_showState1" );
 		}
 	},
 
 	currentStateName: function() {
-		return this._threeButtonSM.currentStateName();
+		return this._buttonSMControl.currentStateName();
 	}
 });
 
@@ -400,9 +409,7 @@ HooFormButtonToggle = HooFormButtonSimple.extend({
 	// we just use a different state machine than the three state button, everthing else is the same
 	_createStateController: function() {
 
-		this._threeButtonSM = HooFiveStateItem.create( { 	_graphic:this._buttonGraphic,
-															_clickableItem$: this._buttonGraphic.getClickableItem()
-														} );
+		this._buttonSMControl = HooFiveStateItem.create( { 	_graphic:this._buttonGraphic } );
 	}
 });
 

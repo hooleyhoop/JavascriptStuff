@@ -37,7 +37,7 @@ AbstractConfiguration = SC.Object.extend({
 	},
 
 	sm_config: function() {
-		throw("I am an abstract method - dont call me");
+		debugger;
 		return null;
 	},
 

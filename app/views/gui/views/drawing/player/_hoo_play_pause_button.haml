@@ -5,8 +5,8 @@
 
 -# If no javascript, what would you expect? A link that sayts play
 %div[_]{ :data=> {'jsclass'=>'HooPlayPauseButton'}, :style=> "width:200px; height:200px;"}
-	= link_to "play mp3", "http://apple.com", {'data-jshide'=>'true'}
-	%canvas( width="1" height="1" style="position:absolute; top:0; margin:0;" )
+	= link_to "play mp3", "#{_.action}", {'data-jshide'=>'true'}
+	= insert( _.views, "" )
 
 - if( _.includeOnce? )
 	:javascript
@@ -14,7 +14,7 @@
 		// When we need some different kinds of graphics start chopping up this heirarchy
 		HooPlayPauseButtonGraphic = HooAbstractButtonGraphic.extend({
 
-			_hooCanvas: undefined,
+			_parentCanvas: undefined,
 			_playButtonSprite: undefined,
 			_pauseButtonSprite: undefined,
 			_currentSpriteState: undefined,
@@ -45,20 +45,23 @@
 			},
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
-				this._hooCanvas = HooCanvas.create({_$canvas:this.getClickableItem()});
 
+				arguments.callee.base.apply(this,arguments);
 				this._playButtonSprite = PlayButtonSprite.create();
 				this._pauseButtonSprite = PauseButtonSprite.create();
-				this._hooCanvas.addSubview(this);
+			},
+
+			getClickableItem: function() {
+				HOO_nameSpace.assert( this._parentCanvas, "this button must be added to a canvas to work" );
+				return this._parentCanvas._$canvas;
 			},
 
 			setSize: function( width, height ) {
-				this._hooCanvas.setSize(width,height);
+				this._parentCanvas.setSize(width,height);
 			},
 
 			drawInRect: function() {
-				this.drawNow( this._hooCanvas.ctx(), this._hooCanvas.width(), this._hooCanvas.height() );
+				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
 			},
 
 			drawNow: function( ctx, width, height ) {
@@ -106,38 +109,39 @@
 					this._currentSprite.setPropertiesOfSprite( shouldBePropertyValuesDict );
 
 					this._currentSpriteState = state;
-					this._hooCanvas.setNeedsDisplay();
+					if(this._parentCanvas)
+						this._parentCanvas.setNeedsDisplay();
 				}
 			},
 
 
 
 			getOuterWidth: function() {
-				throw("wibblew wobble bobble");
+				debugger;
 				return undefined;
 			},
 			setOuterWidth: function( arg ) {
-				throw("wibblew wobble bobble");
+				debugger;
 				return undefined;
 			},
 			getTextContent: function() {
-				throw("wibblew wobble bobble");
+				debugger;
 				return undefined;
 			},
 			getHref: function() {
-				throw("wibblew wobble bobble");
+				debugger;
 				return undefined;
 			},
 			setBackgroundAndTextState: function( state ) {
-				throw("wibblew wobble bobble");
+				debugger;
 				return undefined;
 			},
 			setContentText:  function( arg ) {
-				throw("wibblew wobble bobble");
+				debugger;
 				return undefined;
 			},
 			positionBackground:function( state ) {
-				throw("wibblew wobble bobble");
+				debugger;
 				return undefined;
 			}
 		});
@@ -146,6 +150,7 @@
 
 			_$parentDiv: undefined,
 			_started: false,
+			_hooCanvas: undefined,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
@@ -153,23 +158,28 @@
 			},
 
 			_createGraphic: function() {
-				this._buttonGraphic = HooPlayPauseButtonGraphic.create( { _rootItemId:this.id, _itemType:"canvas" });
+				this._buttonGraphic = HooPlayPauseButtonGraphic.create( { _rootItemId:this.id });
 			},
 
 			setupDidComplete: function() {
+
+				// this is a bit fucked because canvas becomes graphics clickable item
+				HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
+				this._hooCanvas.addSubview( this._buttonGraphic );
 
 				arguments.callee.base.apply(this,arguments);
 
 				var self = this;
 				setTimeout( function(){
 					self.resizeAll();
-				}, 100);
+				}, 100 );
 
 
-				this._started = true;
+				// this._started = true;
 				//ShiteDisplayLink.sharedDisplayLink.registerListener(this);
 			},
 
+			// TODO! ok, i dont know which way round sizing should work - resize the canvas or the player? Or both?
 			resizeAll: function() {
 
 				var newWidth = this._$parentDiv.width();

@@ -25,12 +25,9 @@ module GUI::Views::Drawing::Player
 
 		# stuff to write into the page
 		def jsonProperties
-			allItems = {
-			}
+			allItems = {}
 			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
 			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
-
-			return allItems.to_json();
 		end
 
 	end

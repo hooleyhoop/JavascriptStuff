@@ -336,7 +336,8 @@
 	  // Add a data attribute to map from the DOM player back to our AudioPlayer object
 	  // However, we can't use data() on <object> tags (see jQuery.noData), so it'll have to go on the parent wrapper
 	  if ($(this.player).parent().data('booPlayer'))
-		throw("Already added a player to wrapper node");
+	  	debugger;
+		// throw("Already added a player to wrapper node");
 	  $(this.player).parent().data('booPlayer', this);
 
 	  this.initialize();

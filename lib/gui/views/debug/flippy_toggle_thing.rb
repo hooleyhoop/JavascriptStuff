@@ -13,7 +13,6 @@ module GUI::Views::Debug
 			allItems = {
 				:justAnExample	=> 'grrr',
 			}
-			return allItems.to_json();
 		end
 
 	end

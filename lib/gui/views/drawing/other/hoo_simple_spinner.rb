@@ -16,9 +16,7 @@ module GUI::Views::Drawing::Other
 
 		# stuff to write into the page
 		def jsonProperties
-			allItems = {
-			}
-			return allItems.to_json();
+			allItems = {}
 		end
 
 	end

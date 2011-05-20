@@ -69,10 +69,13 @@ module HooGuiHelper
 	    	output = render view;
 	    	pop()
 		end
+
+		# Does this view want any json injecting into the page?
 		if view.class.method_defined? :jsonProperties
 
-			jsonProps = view.jsonProperties()
+			jsonProps = view.jsonProperties();
 			unless jsonProps.empty?
+				jsonProps = jsonProps.to_json();
 				instanceName = view.varName+'_json'
 
 				#j = ActiveSupport::JSON

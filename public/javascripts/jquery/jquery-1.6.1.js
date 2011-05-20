@@ -995,8 +995,6 @@ jQuery.extend({
 								callbacks.shift().apply( context, args );
 							}
 						}
-						catch(e) {
-						}
 						finally {
 							fired = [ context, args ];
 							firing = 0;
