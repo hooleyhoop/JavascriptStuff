@@ -7,8 +7,8 @@
  * ** TODO ** !: $.live() can bind an event handler to not just all objects that exist now but all objects in the future as well.
  * somehow we can use this to create new instances on ajax-ed html, no?
  */
-HOO_nameSpace = SC;
-
+ABoo = SC.Application.create();
+HOO_nameSpace = ABoo;
 
  // 1) Object is inserted into page
  // 2) bind somehow spots it, runs an event - probably not possible! whenever we load html by ajax we must check to see if it needs this running
@@ -104,7 +104,7 @@ HooWidget = SC.Object.extend({
 	div$: undefined,
 
 	init: function( /* init never has args */ ) {
-		arguments.callee.base.apply(this,arguments);
+	    this._super();
 		this.div$ = typeof(this.div$) != 'undefined' ? this.div$ : $( "#"+this.id );
 	},
 
@@ -192,7 +192,7 @@ HooWindow = HooWidget.extend({
 
 	_allViews: undefined, // maybe should go into content view? Just an unordered array of every view at the mo
 	init: function( /* init never has args */ ) {
-		arguments.callee.base.apply(this,arguments);
+	    this._super();
 		this._allViews = new Array();
 		$(window).bind( 'resize', {target:this, action:'windowDidResize', arg:"" }, eventTrampoline );
 	},
@@ -241,7 +241,7 @@ HooWindow.hooLog = function( arg ) {
 // not using at the mo.. think might be useful tho
 HooContentView = HooWidget.extend({
 	init: function( /* init never has args */ ) {
-		arguments.callee.base.apply(this,arguments);
+	    this._super();
 	}
 });
 

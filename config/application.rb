@@ -37,14 +37,16 @@ module JavascriptStuff
 
     'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore-2.0.a.2.js',
 
+
     'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js", "hoo/sm_configurations/fiveStateButtonStateMachine.js",
     "hoo/vector_math.js", "hoo/graphics.js",
 
     'widgets/widgets.js', 'widgets/flipp_toggle_thing.js', 'widgets/buttons.js', 'widgets/headless_player.js',
 
 
+	# order important here
     # coffeescripts
-    'shorty', 'hoo/todos', 'hoo/shit'
+    'shorty', 'hoo/shit'
     ]
 
 	# excanvas.js is included from window.haml because it has a conditional ie statement (that breaks in ie9 - fix) and i dont know how todo that here

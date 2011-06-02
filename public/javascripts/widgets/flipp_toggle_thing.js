@@ -6,7 +6,7 @@ Flippy_toggle_thing = HooWidget.extend({
 	_flippyState: undefined,
 
 	init: function( /* no args! */ ) {
-		arguments.callee.base.apply( this, arguments );
+	    this._super();
 		this._flippyState = false;
 	},
 

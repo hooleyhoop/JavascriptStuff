@@ -135,6 +135,13 @@ module GUI
 			'horizontalList1'	    =>	GUI::Views::Unsorted::HooHorizontalListOneView.name,
 			'textList1'			    =>	GUI::Views::Unsorted::HooTextListView.name,
 			'gridView'			    =>	GUI::Views::Unsorted::HooGridOneView.name,
+
+
+			# Sproutcore
+			'todos'					=> GUI::Views::Sproutcore::Todos.name,
+			'button'				=> GUI::Views::Sproutcore::Button.name,
+			'checkbox'				=> GUI::Views::Sproutcore::Checkbox.name,
+			'textfield'				=> GUI::Views::Sproutcore::Textfield.name,
 		}
 
 		def self.widgets

@@ -1,6 +1,13 @@
 VectorMath = SC.Object.extend({
 });
-VectorMath.mixin({
+
+//SC.mixin
+//SC.Enumerable = SC.Mixin.create
+//VectorMath.mixin({
+// Sowmehow...
+
+var VectorMathClassMethods = SC.Mixin.create({
+
 	trianglePtArrayFromRect: function( rectArray ) {
 		var pt1 = [rectArray[0],rectArray[1]];
 		var pt2 = [rectArray[0]+rectArray[2], rectArray[1]+rectArray[3]/2.0];
@@ -84,4 +91,4 @@ VectorMath.mixin({
 		var newRects  = [newR1, newR2];
 		return newRects;
 	}
-})
+});

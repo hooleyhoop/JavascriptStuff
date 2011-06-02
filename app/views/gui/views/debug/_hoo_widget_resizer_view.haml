@@ -20,7 +20,6 @@
 
 -# Obviously we cannot leave this here as it is crazy to include it more than once
 - if( _.includeOnce? )
-
 	:javascript
 
 		// Helpers
@@ -36,14 +35,13 @@
 
 			//_$div: undefined,
 
-			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
-
-				//if( this.div$!=undefined) {
-					//alert(this.div$ instanceof jQuery);
-					// alert(this.div$.html())
-				//}
-			},
+			//init: function( /* init never has args */ ) {
+			//	this._super();
+			//if( this.div$!=undefined) {
+			//alert(this.div$ instanceof jQuery);
+			// alert(this.div$.html())
+			//}
+			//},
 
 			leftBounds: function() {
 				var pos = this.div$.position();
@@ -124,7 +122,7 @@
 			_bottomHandle:		undefined,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+				this._super();
 
 				if( this.div$===undefined) {
 					// this._$div = $('#'+this.id);

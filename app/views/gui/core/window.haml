@@ -24,15 +24,20 @@
 		-# layout yields to the view
 		= yield
 
+		// TODO: review this
 		= insertJSONData()
 
 		:javascript
 
+			ABoo.main = function() {
+				createJSObjectsFromRubyObjects();
+			}
+
 			// Lets kick it all off
 			$(document).ready(function()
 			{
-				// I was thinking along the lines of looking in data- attributes for scripts to run
-				createJSObjectsFromRubyObjects();
+				ABoo.main();
+
 
 				// ERR: the problem with this is that views that do start-up scripts in this fashion
 				// cannot be loaded by ajax!

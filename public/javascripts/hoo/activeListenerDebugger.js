@@ -3,7 +3,7 @@ ActiveListenerDebugger = SC.Object.extend({
 	_targets:undefined,
 
 	init: function( /*  */ ) {
-		arguments.callee.base.apply( this, arguments );
+	    this._super();
 		this._targets = new Object;
 	},
 

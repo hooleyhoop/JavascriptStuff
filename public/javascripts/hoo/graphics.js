@@ -1,6 +1,9 @@
 SpeechBubbleBottom = SC.Object.extend({
 });
-SpeechBubbleBottom.mixin({
+
+// SpeechBubbleBottom.mixin({
+var SpeechBubbleBottomClassMethods = SC.Mixin.create({
+
 	draw: function( ctx, x, y, width, height, cornerRad, nubbinWidth, nubbinHeight ) {
 
 		var anticlockwise = true;
@@ -61,7 +64,10 @@ SpeechBubbleBottom.mixin({
 
 RoundedRectangle = SC.Object.extend({
 });
-RoundedRectangle.mixin({
+
+// RoundedRectangle.mixin({
+var RoundedRectangleClassMethods = SC.Mixin.create({
+
 	draw: function( ctx, x, y, width, height, r ) {
 
 		ctx.beginPath();
@@ -128,7 +134,11 @@ RoundedRectangle.mixin({
 
 RoundedTriangle = SC.Object.extend({
 });
-RoundedTriangle.mixin({
+
+// RoundedTriangle.mixin({
+
+var RoundedTriangleClassMethods = SC.Mixin.create({
+
 	draw: function( ctx, x, y, width, height, r ) {
 
 		var height_over_2 = height/2.0;
@@ -236,7 +246,10 @@ RoundedTriangle.mixin({
 
 Graphics = SC.Object.extend({
 });
-Graphics.mixin({
+
+// Graphics.mixin({
+var GraphicsClassMethods = SC.Mixin.create({
+
 	roundedTriangle: RoundedTriangle,
 	roundedRect: RoundedRectangle,
 	speechBubble_bottom: SpeechBubbleBottom
@@ -432,7 +445,8 @@ ShiteDisplayLink = SC.Object.extend({
 	_timer: undefined,
 
 	init: function( /* init never has args */ ) {
-		arguments.callee.base.apply(this,arguments);
+		//arguments.callee.base.apply(this,arguments);
+	    this._super();
 		this._listeners = new Array();
 		this._canvasElements = new Array();
 	},
@@ -487,8 +501,12 @@ ShiteDisplayLink = SC.Object.extend({
 		});
 	}
 });
-ShiteDisplayLink.mixin({
+
+// ShiteDisplayLink.mixin({
+var ShiteDisplayLinkClassMethods = SC.Mixin.create({
+
 	sharedDisplayLink: undefined
 });
+
 ShiteDisplayLink.sharedDisplayLink = ShiteDisplayLink.create();
 
