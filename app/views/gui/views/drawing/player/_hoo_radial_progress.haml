@@ -9,7 +9,18 @@
 	:javascript
 
 		DonutTestSprite = HooSprite.extend({
-			draw: function( ctx, width, height, busyAngle ) {
+
+
+			_loadColor:"rgba(170,170,170,0.8)",
+			_playColor:"rgba(247,163,0,1.0)",
+			_busyColor:"#FF00ff",
+
+			spriteDraw: function( ctx, x, y, width, height, busyAngle, outerRad, innerRad, loadAmt, playAmt ) {
+
+				outerRad = typeof(outerRad)!='undefined' ? outerRad : 1.0;
+				innerRad = typeof(innerRad)!='undefined' ? innerRad : 0.5;
+				loadAmt = typeof(loadAmt)!='undefined' ? loadAmt : 0;
+				playAmt = typeof(playAmt)!='undefined' ? playAmt : 0;
 
 				ctx.save();
 
@@ -18,22 +29,26 @@
 					// newCanvas.width = width;
 					// newCanvas.height = height;
 
-					var loadingRotAmount = Math.PI;
-					var playingRotAmount = Math.PI*0.6;
+					var loadingRotAmount = loadAmt/360.0 * Math.PI*2.0;
+					var playingRotAmount = playAmt/360.0 * Math.PI*2.0;
+
 					var busySpinnerAngle = busyAngle % 360 * Math.PI/180.0;
 					HOO_nameSpace.assert( loadingRotAmount>=playingRotAmount, "Go on, explain to me how this happened.");
 
-					var outerRadius = width/4;
-					var innerRadius = outerRadius*0.5;
+					var outerRadius = width/2.0 * outerRad;
+					var innerRadius = width/2.0 * innerRad;
 
 					var centrePt = [width/2.0, height/2.0];
 					var startAngle = -Math.PI/2.0;
 					var busySpinnerWidth = Math.PI/6.0;
+					var playingEndAngle = startAngle+playingRotAmount;
+					var busyStartAngle = busySpinnerAngle-busySpinnerWidth/2.0;
+					var busyEndAngle = busySpinnerAngle+busySpinnerWidth/2.0;
 
 					ctx.globalCompositeOperation = 'source-over';
 
 					// loading amount
-					ctx.fillStyle = "#cccccc";
+					ctx.fillStyle = this._loadColor;
 					ctx.beginPath();
 					ctx.moveTo(centrePt[0], centrePt[1]);
 					var loadingEndAngle = startAngle+loadingRotAmount;
@@ -42,7 +57,7 @@
 					ctx.fill();
 
 					// playing amount
-					ctx.fillStyle = "#00ff00";
+					ctx.fillStyle = this._playColor;
 					ctx.beginPath();
 					ctx.moveTo(centrePt[0], centrePt[1]);
 					var playingEndAngle = startAngle+playingRotAmount;
@@ -51,13 +66,28 @@
 					ctx.fill();
 
 					// busy spinner
-					ctx.fillStyle = "#00ffff";
-					ctx.beginPath();
-					ctx.moveTo(centrePt[0], centrePt[1]);
-					var playingEndAngle = startAngle+playingRotAmount;
-					ctx.arc(centrePt[0], centrePt[1], outerRadius, busySpinnerAngle-busySpinnerWidth/2.0, busySpinnerAngle+busySpinnerWidth/2.0, false);
-					ctx.closePath();
-					ctx.fill();
+					if(busyAngle!=-1)
+					{
+						var dist = (outerRadius-innerRadius);
+						var pt1 = [centrePt[0]+dist,centrePt[1]];
+						//var pt2 = [centrePt[0]+innerRadius,centrePt[1]];
+
+						var px1 = Math.cos(busyEndAngle)*(pt1[0]-centrePt[0]) - Math.sin(busyEndAngle) * (pt1[1]-centrePt[1]) + centrePt[0];
+						var py1 = Math.sin(busyEndAngle)*(pt1[0]-centrePt[0]) + Math.cos(busyEndAngle) * (pt1[1]-centrePt[1]) + centrePt[1];
+						var px2 = Math.cos(busyStartAngle)*(pt1[0]-centrePt[0]) - Math.sin(busyStartAngle) * (pt1[1]-centrePt[1]) + centrePt[0];
+						var py2 = Math.sin(busyStartAngle)*(pt1[0]-centrePt[0]) + Math.cos(busyStartAngle) * (pt1[1]-centrePt[1]) + centrePt[1];
+
+						var bufferingGradient = ctx.createLinearGradient( px1, py1, px2, py2 );
+						bufferingGradient.addColorStop(0, this._busyColor);
+						bufferingGradient.addColorStop(1, "rgba(255,255,0,0)");
+
+						ctx.fillStyle = bufferingGradient;
+						ctx.beginPath();
+						ctx.moveTo(centrePt[0], centrePt[1]);
+						ctx.arc(centrePt[0], centrePt[1], outerRadius, busyStartAngle, busyEndAngle, false);
+						ctx.closePath();
+						ctx.fill();
+					}
 
 					// punch out the center hole
 					ctx.globalCompositeOperation = 'destination-out';
@@ -69,43 +99,67 @@
 					ctx.closePath();
 					ctx.fill();
 
-
-
 					// ctx.drawImage(newCanvas, 0, 0);
 
 				ctx.restore();
 			}
 		});
 
-
 		HooRadialProgressGraphic = SC.Object.extend({
 
-			_busyAngle: 0,
+			_donutTestSprite: undefined,
+			_parentCanvas: undefined,
+			_busyAngle: -1,
+			_outerRad: 1.0,
+			_innerRad: 0.5,
+			_loadProgess: 0,
+			_playProgress: 0,
+			_isBusy: false,
+			_lastUpdateTime:undefined,
 
-			//setSize: function( width, height ) {
-			//	this._parentCanvas.setSize(width,height);
-			//},
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+				this._donutTestSprite = DonutTestSprite.create();
+			},
 			drawInRect: function() {
 				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
 			},
 			drawNow: function( ctx, width, height ) {
-				// if(!this._currentSprite)
-				//	return;
 				ctx.save();
-					// ctx.setTransform(1, 0, 0, 1, 0, 0);
-					// ctx.clearRect(0,0,width,height);
-					// ctx.globalAlpha = 1.0;
-					// ctx.globalCompositeOperation = 'source-over';
-
 					// ctx.fillStyle = "rgba(100,100,100,1)";
 					// ctx.fillRect(0,0,width,height);
-
-					var donutTestSprite = DonutTestSprite.create();
-					donutTestSprite.draw( ctx, width, height, this._busyAngle );
-
-					// this._currentSprite.draw( ctx, width, height );
+					this._donutTestSprite.spriteDraw( ctx, 0, 0, width, height, this._busyAngle, this._outerRad, this._innerRad, this._loadProgess, this._playProgress );
 
 				ctx.restore();
+			},
+			setLoadProgress: function( degrees ) {
+				this._loadProgess = degrees;
+				this._parentCanvas.setNeedsDisplay();
+			},
+			setPlayProgress: function( degrees ) {
+				this._playProgress = degrees;
+				this._parentCanvas.setNeedsDisplay();
+			},
+			toggleBusy: function() {
+				this._isBusy = !this._isBusy;
+				if(this._isBusy) {
+					this._busyAngle = 0;
+					this._lastUpdateTime = -1
+					ShiteDisplayLink.sharedDisplayLink.registerListener(this);
+				} else {
+					this._busyAngle = -1;
+					ShiteDisplayLink.sharedDisplayLink.unregisterListener(this);
+				}
+				this._parentCanvas.setNeedsDisplay();
+			},
+			timeUpdate: function( time ) {
+
+				if(this._lastUpdateTime!=-1) {
+					var dist = time-this._lastUpdateTime;
+					this._busyAngle = this._busyAngle + 360*0.7/1000*dist;
+					this._parentCanvas.setNeedsDisplay();
+				}
+				this._lastUpdateTime = time;
 			}
 		});
 
@@ -116,7 +170,7 @@
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
-				this._progressGraphic = HooRadialProgressGraphic.create();
+				this._progressGraphic = HooRadialProgressGraphic.create( {_outerRad:this.json.outerRad, _innerRad:this.json.innerRad} );
 			},
 
 			setupDidComplete: function() {
@@ -124,18 +178,18 @@
 				HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
 				this._hooCanvas.addSubview( this._progressGraphic );
 				arguments.callee.base.apply(this,arguments);
-
-				//var self = this;
-				//setTimeout( function(){
-				//	self.resizeAll();
-				//}, 100 );
 			},
 
-			// TODO! ok, i dont know which way round sizing should work - resize the canvas or the player? Or both?
-			//resizeAll: function() {
+			toggleBusy: function() {
+				this._progressGraphic.toggleBusy();
+			},
 
-			//	var newWidth = this.div$.width();
-			//	var newHeight = this.div$.outerHeight();
-			//	this._progressGraphic.setSize( newWidth, newHeight );
-			//}
+			setLoadProgress: function( degrees ) {
+				this._progressGraphic.setLoadProgress(parseFloat(degrees));
+			},
+
+			setPlayProgress: function( degrees ) {
+				this._progressGraphic.setPlayProgress(parseFloat(degrees));
+			}
 		});
+

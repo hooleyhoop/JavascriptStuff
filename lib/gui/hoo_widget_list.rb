@@ -122,6 +122,7 @@ module GUI
 			'redView'			    =>	GUI::Views::Debug::HooRedView.name,
 			'colorFill'			    =>	GUI::Views::Debug::HooColorFill.name,
 			'bigWord'			    =>	GUI::Views::Debug::HooBigWordView.name,
+			'debugTextInput'		=>	GUI::Views::Debug::HooDebugTextInput.name,
 
 			'cellRenderer'			=>	GUI::Views::Unsorted::HooCellRenderer.name,
 

@@ -8,6 +8,6 @@
 -#= form_for @person, :html => {:multipart => true} do |f| %>
 -#	= f.file_field :picture
 
-= form_tag( {:action=>:upload}, :multipart => true) do
+= form_tag( {:action=>:upload, :controller=>"spaceships"}, :multipart => true) do
 	= file_field_tag 'picture'
 	= submit_tag "Upload"

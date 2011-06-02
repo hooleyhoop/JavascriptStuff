@@ -5,26 +5,13 @@ module GUI::Views::Drawing::Other
 	class HooSimpleTextField < GUI::Core::HooView
 
 		include GUI::Core::HooBindingsMixin
-
 		include Test::Unit::Assertions
 
 		attr_accessor :prefix, :text, :postfix
-		attr_accessor :bindings
 
 		def initialize( args={} )
 			super(args);
-
-			# This must be automaticalable?
-			if args[:prefix]
-				@prefix=args[:prefix];
-			end
-			if args[:text]
-				@text=args[:text];
-			end
-			if args[:postfix]
-				@postfix=args[:postfix];
-			end
-
+			extractArgs( args, {:prefix=>'Duration: ', :text=>'13', :postfix=>' seconds'} );
 		end
 
 		def fullString
@@ -33,9 +20,6 @@ module GUI::Views::Drawing::Other
 
         # Mock Data
 		def setupDebugFixture
-			@prefix = 'Duration: ' unless @prefix;
-			@text = '13' unless @text;
-			@postfix = ' seconds' unless @postfix;
 			super();
 		end
 
@@ -46,7 +30,7 @@ module GUI::Views::Drawing::Other
 				:text				=> @text,
 				:postfix			=> @postfix,
 			}
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
+			# allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
 		end
 
 

@@ -1,13 +1,16 @@
 module GUI::Views::Drawing::Player
 
 	# http://0.0.0.0:3000/widgets/radialProgress
+	# http://0.0.0.0:3000/widgets/radialProgress?outerRad=0.99&innerRad=0.8
 	class HooRadialProgress <  GUI::Core::HooView
 
 		attr_accessor :parentCanvas
+		attr_accessor :outerRad
+		attr_accessor :innerRad
 
 		def initialize( args={} )
 			super(args);
-			extractArgs( args, {:parentCanvas=>nil} );
+			extractArgs( args, {:parentCanvas=>nil, :outerRad=>1.0, :innerRad=>0.5} );
 		end
 
 		def addRuntimeObject( aHash )
@@ -24,7 +27,20 @@ module GUI::Views::Drawing::Player
             # playPauseButton needs a canvas
             @parentCanvas = GUI::HooWidgetList.widgetClass('canvas').new();
     	    addSubView( @parentCanvas );
+
+    	    @chckbx1 = GUI::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} );
+    	    addSubView( @chckbx1 );
+			@chckbx1.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>nil, :actionIsAsync=>false  }} );
+
+    		@txtfield1 = GUI::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'loadProgress', :value=>'100'} );
+			@txtfield1.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'setLoadProgress', :action_arg=>nil, :actionIsAsync=>false  }} );
+    	    addSubView( @txtfield1 );
+
+    	   	@txtfield2 = GUI::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'playprogress', :value=>'130'} );
+			@txtfield2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'setPlayProgress', :action_arg=>nil, :actionIsAsync=>false  }} );
+    	    addSubView( @txtfield2 );
 		end
+
 
 		def jsonProperties
 
@@ -32,7 +48,8 @@ module GUI::Views::Drawing::Player
 			self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName });
 
 			allItems = {
-				:initialState		=> @initialState,
+				:outerRad => @outerRad,
+				:innerRad => @innerRad
 			}
 
 			#TODO: This is all fucked! wshy do i have to duplicate this everywhere? Easy to sort out

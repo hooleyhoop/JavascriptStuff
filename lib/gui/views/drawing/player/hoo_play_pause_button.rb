@@ -4,10 +4,11 @@ module GUI::Views::Drawing::Player
 	class HooPlayPauseButton <  GUI::Views::Drawing::Buttons::DivButton::HooDivButtonAbstract
 
 		attr_accessor :parentCanvas
+		attr_accessor :percentOfCanvas
 
 		def initialize( args={} )
 			@_states = 5
-			extractArgs( args, {:parentCanvas=>nil} );
+			extractArgs( args, {:parentCanvas=>nil, :percentOfCanvas=>0.6} );
 			super(args);
 		end
 
@@ -36,10 +37,9 @@ module GUI::Views::Drawing::Player
 			#TODO: This cannot stay here!
 			self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName });
 
-			# remember! if yopu put the varName of another HooObject you must manually swap it in
-			# ! Make this automatic !
 			allItems = {
-				:initialState		=> @initialState,
+				:initialState => @initialState,
+				:percentOfCanvas => @percentOfCanvas
 			}
 
 			#TODO: This is all fucked! wshy do i have to duplicate this everywhere? Easy to sort out

@@ -1,0 +1,33 @@
+- push( hoo_debug_text_input )
+
+-# http://0.0.0.0:3000/widgets/debugTextInput
+
+%div[_]{ :data=>{'jsclass'=>'DebugTextInput'}, :style=>"" }
+	= form_tag() do
+		= label_tag( 'name', _.label )
+		= text_field_tag( 'hello', _.value, :size=>75, :style=>"width:150px; font-size:12px;" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		DebugTextInput = HooWidget.extend({
+			_mouseClickAction: undefined,
+			_txtField: undefined,
+			init: function( /* init never has args */ ) {
+				arguments.callee.base.apply(this,arguments);
+				this._txtField = this.getFirstDomItemOfType("form input:text");
+			},
+			setupDidComplete: function() {
+				var self = this;
+				// set up actions as configured in the json - mixin?
+				this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
+				if(this._mouseClickAction) {
+					this._txtField.change(function(e) {
+						var args = new Array();
+						if(self._mouseClickAction.w) args.push(self._mouseClickAction.w);
+						if(e.target.value) args.push(e.target.value);
+						self._mouseClickAction.a.apply( self._mouseClickAction.t, args );
+					});
+				}
+			}
+		});

@@ -256,7 +256,7 @@ PlayButtonSprite = HooSprite.extend({
 	_isDisabled: true,
 	_isDown: false,
 
-	draw: function( ctx, width, height ) {
+	spriteDraw: function( ctx, x, y, width, height ) {
 
 		var graphicToDraw = "roundedTriangle";
 
@@ -290,7 +290,7 @@ PlayButtonSprite = HooSprite.extend({
 			}
 
 			var tenPercentOfWidth = width / 10.0;
-			var tri3Rect = [0,0,width,height];
+			var tri3Rect = [x,y,width,height];
 			tri3Rect = VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
 			tri3Rect = VectorMath.offsetRect( tri3Rect, [tenPercentOfWidth, 0] );
 			var triangle3PtArray = VectorMath.trianglePtArrayFromRect( tri3Rect );
@@ -335,7 +335,7 @@ PlayButtonSprite = HooSprite.extend({
 PauseButtonSprite = HooSprite.extend({
 	_isDown: false,
 
-	draw: function( ctx, width, height ) {
+	spriteDraw: function( ctx, x, y, width, height ) {
 
 		var graphicToDraw = "roundedRect";
 		var innerCol, innerinnerCol, shadowCol, my_gradient;
@@ -361,7 +361,7 @@ PauseButtonSprite = HooSprite.extend({
 
 		var tenPercentOfWidth = width / 10.0;
 		var scale = width/75.0; // design size was 75px
-		var insetRect3 = [0,0,width,height];
+		var insetRect3 = [x,y,width,height];
 		insetRect3 = VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
 
 		// construct 3 inset rectangles

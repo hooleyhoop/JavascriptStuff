@@ -33,18 +33,18 @@ module JavascriptStuff
 
     # JavaScript files you want as :defaults (application.js is always included).
     config.action_view.javascript_expansions[:defaults] = [
-    'jquery/jquery-1.6.1', 'jquery/jquery-tmpl/jquery.tmpl.js', 'jquery/jquery-tmpl/jquery.tmplPlus.js', 'jquery/jquery-ujs/src/rails.js', 'jquery/jquery-ui-1.8.11.custom.min',
+    'third_party/jquery/jquery-1.6.1', 'third_party/jquery/jquery-tmpl/jquery.tmpl.js', 'third_party/jquery/jquery-tmpl/jquery.tmplPlus.js', 'third_party/jquery/jquery-ujs/src/rails.js', 'third_party/jquery/jquery-ui-1.8.11.custom.min',
 
-    'third_party/flash_detection.js', 'third_party/yepnope.js',
+    'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore-2.0.a.2.js',
 
-    'hoo/HooSC_min.js', 'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js", "hoo/sm_configurations/fiveStateButtonStateMachine.js",
+    'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js", "hoo/sm_configurations/fiveStateButtonStateMachine.js",
     "hoo/vector_math.js", "hoo/graphics.js",
 
     'widgets/widgets.js', 'widgets/flipp_toggle_thing.js', 'widgets/buttons.js', 'widgets/headless_player.js',
 
 
     # coffeescripts
-    'shorty'
+    'shorty', 'hoo/todos', 'hoo/shit'
     ]
 
 	# excanvas.js is included from window.haml because it has a conditional ie statement (that breaks in ie9 - fix) and i dont know how todo that here
