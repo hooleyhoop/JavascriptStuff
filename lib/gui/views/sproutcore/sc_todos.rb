@@ -1,7 +1,7 @@
 module GUI::Views::Sproutcore
 
-	# http://0.0.0.0:3000/widgets/textfield
-	class Textfield < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/sc_todos
+	class ScTodos < GUI::Core::HooView
 
 		attr_accessor :width, :height;
 

@@ -1,4 +1,5 @@
 module GUI::Core
+
 	class HooView < Object
 
 		attr_accessor :parentView

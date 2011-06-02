@@ -29,8 +29,5 @@ module GUI::Views::Drawing::Buttons::FormButton
 
 		end
 
-
-
-
 	end
 end

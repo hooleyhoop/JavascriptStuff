@@ -1,0 +1,17 @@
+- push( sc_checkbox )
+-# http://0.0.0.0:3000/widgets/sc_checkbox
+
+%div[_]( style='font: normal 25px/30px Helvetica; background-color: red;' data-jsclass='ABoo.FirstGo' )
+	nananananan nananananan nananananan nananananan nananananan nananananan
+
+	= image_tag("rails.png")
+	= image_tag("rails.png")
+	= image_tag("rails.png")
+	= image_tag("rails.png")
+	= image_tag("rails.png")
+	= image_tag("rails.png")
+
+
+	-# here we put the template inline and the view is auto made for us. We could do our objects this way instead of using data-jsclass
+	%script( type="text/html" )
+		{{view ABoo.HooSCCheckBox class="mark-all-done" title="Mark All as Done" valueBinding="Todos.todosController.allAreDone"}}

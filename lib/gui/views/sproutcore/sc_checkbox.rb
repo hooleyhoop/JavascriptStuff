@@ -1,7 +1,7 @@
 module GUI::Views::Sproutcore
 
-	# http://0.0.0.0:3000/widgets/todos
-	class Todos < GUI::Core::HooView
+	# http://0.0.0.0:3000/widgets/sc_checkbox
+	class ScCheckbox < GUI::Core::HooView
 
 		attr_accessor :width, :height;
 

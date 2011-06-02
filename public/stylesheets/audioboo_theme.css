@@ -40,3 +40,19 @@ ul {
   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000'); }
 
 /* Some elements add extra space whatever you do */
+body .sc-view {
+  position: relative;
+  overflow: visible; }
+body input[type='text'] {
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 5px; }
+  body input[type='text']::-webkit-input-placeholder {
+    color: #aaa; }
+body .sc-button {
+  border: 1px solid #828282;
+  color: #000;
+  float: right;
+  padding: 5px; }
+body .sc-checkbox input[type="checkbox"] {
+  margin-right: 7px; }

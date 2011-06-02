@@ -51,3 +51,43 @@ filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Colo
 /* Some elements add extra space whatever you do */
 //img { display:block; }
 //li { display: block; }
+
+body {
+
+  .sc-view {
+    position: relative;
+    overflow: visible;
+  }
+
+  input[type='text'] {
+    color: #999;
+    background-color: rgb(240,240,240);
+    padding: 5px;
+
+    &::-webkit-input-placeholder {
+      color: #aaa;
+    }
+  }
+
+  .sc-button {
+    //@include background-image(linear-gradient(#F9F9F9 1%, #DDD, #F2F2F2, #F7F7F7));
+    border: 1px solid #828282;
+    color: #000;
+    float: right;
+    padding: 5px;
+
+    &:hover {
+      //@include background-image(linear-gradient(#FFF 1%, #E2E2E2, #F7F7F7, #FCFCFC));
+    }
+
+    &.is-active {
+      //@include background-image(linear-gradient(#EFEFEF 1%, #D3D3D3, #E8E8E8, #EDEDED));
+    }
+  }
+
+  .sc-checkbox {
+    input[type="checkbox"] {
+      margin-right: 7px;
+    }
+  }
+}

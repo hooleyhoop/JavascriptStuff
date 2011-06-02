@@ -1,3 +1,5 @@
+require 'test/unit'
+
 module GUI::Views::Drawing::Buttons::FormButton
 
 	class HooFormButtonAbstract < GUI::Core::HooView
@@ -12,7 +14,6 @@ module GUI::Views::Drawing::Buttons::FormButton
 
 		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
-		#attr_accessor :javascript;
 
 		include GUI::Core::HooBindingsMixin
 

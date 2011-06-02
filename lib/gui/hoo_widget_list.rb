@@ -138,10 +138,10 @@ module GUI
 
 
 			# Sproutcore
-			'todos'					=> GUI::Views::Sproutcore::Todos.name,
-			'button'				=> GUI::Views::Sproutcore::Button.name,
-			'checkbox'				=> GUI::Views::Sproutcore::Checkbox.name,
-			'textfield'				=> GUI::Views::Sproutcore::Textfield.name,
+			'sc_todos'				=> GUI::Views::Sproutcore::ScTodos.name,
+			'sc_button'				=> GUI::Views::Sproutcore::ScButton.name,
+			'sc_checkbox'			=> GUI::Views::Sproutcore::ScCheckbox.name,
+			'sc_textfield'			=> GUI::Views::Sproutcore::ScTextfield.name,
 		}
 
 		def self.widgets
