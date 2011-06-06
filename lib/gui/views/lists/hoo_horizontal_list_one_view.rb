@@ -1,4 +1,4 @@
-module GUI::Views::Unsorted
+module GUI::Views::Lists
 
     # http://0.0.0.0:3000/widgets/horizontalList1
 	class HooHorizontalListOneView < GUI::Core::HooView

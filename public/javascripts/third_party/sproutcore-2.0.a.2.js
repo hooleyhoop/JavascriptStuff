@@ -10078,7 +10078,9 @@ SC.View = SC.Object.extend(
   element: function(key, value) {
     // If the value of element is being set, just return it. SproutCore
     // will cache it for further `get` calls.
-    if (value !== undefined) { return value; }
+    if (value !== undefined) {
+    	return value;
+    }
 
     var parent = get(this, 'parentView');
     if (parent) { parent = get(parent, 'element'); }
@@ -10226,13 +10228,16 @@ SC.View = SC.Object.extend(
     @returns {SC.View} receiver
   */
   createElement: function() {
-    if (get(this, 'element')) { return this; }
+    if (get(this, 'element')) {
+    	return this; }
 
-    var buffer = this.renderBuffer(get(this, 'tagName'));
+	var wha = get(this, 'tagName'); 		// "div"
+    var buffer = this.renderBuffer(wha);
 
     // now prepare the content like normal.
     this.renderToBuffer(buffer);
-    set(this, 'element', buffer.element());
+    var mmm = buffer.element();
+    set(this, 'element', mmm);
 
     // now notify the view and its child views..
     this._notifyDidCreateElement();

@@ -36,6 +36,7 @@ JavascriptStuff::Application.routes.draw do
 
 
   get 'pages/test_audioboo_stuff'
+  get 'pages/flash_replace_test'
 
   # woo! a more complicated route. Lets try sending a variable
   match 'pages/sample_elastic_page/:id' => 'pages#sample_elastic_page'

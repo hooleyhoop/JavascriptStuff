@@ -1,4 +1,4 @@
-HooThreeStateItem = SC.Object.extend({
+ABoo.HooThreeStateItem = SC.Object.extend({
 
 	_buttonSM: undefined,
 	_graphic: undefined,
@@ -135,7 +135,7 @@ HooThreeStateItem = SC.Object.extend({
 /*
  * Append a couple of states to 3 state button
 */
-HooFiveStateItem = HooThreeStateItem.extend({
+ABoo.HooFiveStateItem = ABoo.HooThreeStateItem.extend({
 
 	/* Add some extra states and overide some */
 	_createSM: function() {
@@ -165,7 +165,7 @@ HooFiveStateItem = HooThreeStateItem.extend({
 
 /* Abstract Button */
 
-HooAbstractButtonGraphic = SC.Object.extend({
+ABoo.HooAbstractButtonGraphic = SC.Object.extend({
 
 	_rootItemId: undefined,
 	_itemType: undefined,
@@ -181,7 +181,7 @@ HooAbstractButtonGraphic = SC.Object.extend({
 })
 
 // When we need some different kinds of graphics start chopping up this heirarchy
-HooButtonGraphic = HooAbstractButtonGraphic.extend({
+ABoo.HooButtonGraphic = ABoo.HooAbstractButtonGraphic.extend({
 
 	_textHolder: undefined,
 	_labelStates: undefined,
@@ -310,7 +310,7 @@ FormSubmiter = SC.Object.extend({
 
 
 /* Simple Form Button */
-HooFormButtonSimple = HooWidget.extend({
+ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 
 	_mouseClickAction: undefined,
 	_buttonSMControl: undefined,
@@ -335,7 +335,7 @@ HooFormButtonSimple = HooWidget.extend({
 
 	_createStateController: function() {
 
-		this._buttonSMControl = HooThreeStateItem.create( { _graphic:this._buttonGraphic } );
+		this._buttonSMControl = ABoo.HooThreeStateItem.create( { _graphic:this._buttonGraphic } );
 	},
 
 	setupDidComplete: function() {
@@ -404,7 +404,7 @@ HooFormButtonSimple = HooWidget.extend({
  *
  */
 /* Toggle Form Button */
-HooFormButtonToggle = HooFormButtonSimple.extend({
+ABoo.HooFormButtonToggle = ABoo.HooFormButtonSimple.extend({
 
 	// we just use a different state machine than the three state button, everthing else is the same
 	_createStateController: function() {
@@ -415,7 +415,7 @@ HooFormButtonToggle = HooFormButtonSimple.extend({
 
 
 
-HooSliderItem = HooThreeStateItem.extend({
+ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend({
 
 	// instead of aborting when drag outside..
 	enableButton: function( state ) {
@@ -467,11 +467,11 @@ DivButtonMixin = {
 };
 
 /* Simple link button */
-HooDivButtonSimple = HooFormButtonSimple.extend( DivButtonMixin, {
+ABoo.HooDivButtonSimple = ABoo.HooFormButtonSimple.extend( DivButtonMixin, {
 });
 
 /* two state link button */
-HooDivButtonToggle = HooFormButtonToggle.extend( DivButtonMixin, {
+ABoo.HooDivButtonToggle = ABoo.HooFormButtonToggle.extend( DivButtonMixin, {
 });
 
 DynamicWidthButtonMixin = {
@@ -498,9 +498,9 @@ DynamicWidthButtonMixin = {
 	}
 }
 
-HooDivButtonSimpleDynamicWidth = HooDivButtonSimple.extend( DynamicWidthButtonMixin, {});
+ABoo.HooDivButtonSimpleDynamicWidth = ABoo.HooDivButtonSimple.extend( DynamicWidthButtonMixin, {});
 
-HooDivButtonToggleDynamicWidth = HooDivButtonToggle.extend( DynamicWidthButtonMixin, {});
+ABoo.HooDivButtonToggleDynamicWidth = ABoo.HooDivButtonToggle.extend( DynamicWidthButtonMixin, {});
 
-GUI_Views_Drawing_Menus_Items_HooTextLinkItem = HooDivButtonSimpleDynamicWidth.extend({});
-GUI_Views_Drawing_Menus_Items_HooTextToggleItem = HooDivButtonToggleDynamicWidth.extend({});
+GUI_Views_Drawing_Menus_Items_HooTextLinkItem = ABoo.HooDivButtonSimpleDynamicWidth.extend({});
+GUI_Views_Drawing_Menus_Items_HooTextToggleItem = ABoo.HooDivButtonToggleDynamicWidth.extend({});

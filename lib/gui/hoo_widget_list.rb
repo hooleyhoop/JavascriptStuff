@@ -42,11 +42,6 @@ module GUI
 			'4col'							=>	GUI::Views::Positioning::Hoo4ColView.name,
 			'5col'							=>	GUI::Views::Positioning::Hoo5ColView.name,
 
-			'paddedHorizontal'				=>	GUI::Views::Unsorted::HooPaddedHorizontalList2View.name,
-
-			'spacedVerticalList'			=>	GUI::Views::Unsorted::HooSpacedVerticalList.name,
-			'spacedCellList'				=>	GUI::Views::Unsorted::HooSpacedCellList.name,
-
 			# for drawing - forms
 			'formButtonSimple'				=>	GUI::Views::Drawing::Buttons::FormButton::HooFormButtonSimple.name,
 			'formButtonToggle'				=>	GUI::Views::Drawing::Buttons::FormButton::HooFormButtonToggle.name,
@@ -82,15 +77,6 @@ module GUI
 			'speechBubbleBottomCanvas'	=>	GUI::Views::Drawing::Experiments::HooSpeechBubbleBottomCanvas.name,
 			'roundedTriangle'			=>	GUI::Views::Drawing::Experiments::RoundedTriangle.name,
 
-			'backgroundImage'		=>	GUI::Views::Unsorted::HooBackgroundImg.name,
-			'fixedSizeImage'		=>	GUI::Views::Unsorted::HooFixedSizeImg.name,
-			'hoo100PercentImg'		=>	GUI::Views::Unsorted::HooOneHundredPercentImg.name,
-			'slidingDoorsPanel1'	=>	GUI::Views::Unsorted::HooSlidingDoorsPanel.name,
-			'speechBubblePane'		=>	GUI::Views::Unsorted::HooSlidingDoorsSpeechPanel.name,
-			'croppedImg'			=>	GUI::Views::Unsorted::HooCroppedImg.name,
-			'inlineTextList'		=>	GUI::Views::Unsorted::HooInlineTextList.name,
-			'cuteDropDownMenu'		=>	GUI::Views::Unsorted::HooCuteDropDownMenu.name,
-
 			# Flash Stuff
 			'headlessPlayer'		=>	GUI::Views::Flash::HeadlessAudioPlayer.name,
 			'headlessRecorder'		=>	GUI::Views::Flash::HeadlessAudioRecorder.name,
@@ -124,24 +110,37 @@ module GUI
 			'bigWord'			    =>	GUI::Views::Debug::HooBigWordView.name,
 			'debugTextInput'		=>	GUI::Views::Debug::HooDebugTextInput.name,
 
-			'cellRenderer'			=>	GUI::Views::Unsorted::HooCellRenderer.name,
-
-			'labeledButton'		    =>	GUI::Views::Unsorted::HooLabeledButton1.name,
-			'info1'				    =>	GUI::Views::Unsorted::HooInfoOneView.name,
-			'loremIpsum'		    =>	GUI::Views::Unsorted::HooLoremIpsumView.name,
-			'loremIpsumTitle'	    =>	GUI::Views::Unsorted::HooLoremIpsumTitleView.name,
-			'pullQuote1'		    =>	GUI::Views::Unsorted::HooPullQuoteOneView.name,
-			'list1'				    =>	GUI::Views::Unsorted::HooListOneView.name,
-			'horizontalList1'	    =>	GUI::Views::Unsorted::HooHorizontalListOneView.name,
-			'textList1'			    =>	GUI::Views::Unsorted::HooTextListView.name,
-			'gridView'			    =>	GUI::Views::Unsorted::HooGridOneView.name,
-
+			# Lists
+			'textList1'			    =>	GUI::Views::Lists::HooTextListView.name,
+			'spacedVerticalList'	=>	GUI::Views::Lists::HooSpacedVerticalList.name,
+			'list1'				    =>	GUI::Views::Lists::HooListOneView.name,
+			'inlineTextList'		=>	GUI::Views::Lists::HooInlineTextList.name,
+			'horizontalList1'	    =>	GUI::Views::Lists::HooHorizontalListOneView.name,
+			'spacedCellList'		=>	GUI::Views::Lists::HooSpacedCellList.name,
+			'paddedHorizontal'		=>	GUI::Views::Lists::HooPaddedHorizontalList2View.name,
 
 			# Sproutcore
 			'sc_todos'				=> GUI::Views::Sproutcore::ScTodos.name,
 			'sc_button'				=> GUI::Views::Sproutcore::ScButton.name,
 			'sc_checkbox'			=> GUI::Views::Sproutcore::ScCheckbox.name,
 			'sc_textfield'			=> GUI::Views::Sproutcore::ScTextfield.name,
+
+			# Unsorted
+			'cellRenderer'			=>	GUI::Views::Unsorted::HooCellRenderer.name,
+			'labeledButton'		    =>	GUI::Views::Unsorted::HooLabeledButton1.name,
+			'info1'				    =>	GUI::Views::Unsorted::HooInfoOneView.name,
+			'loremIpsum'		    =>	GUI::Views::Unsorted::HooLoremIpsumView.name,
+			'loremIpsumTitle'	    =>	GUI::Views::Unsorted::HooLoremIpsumTitleView.name,
+			'pullQuote1'		    =>	GUI::Views::Unsorted::HooPullQuoteOneView.name,
+			'gridView'			    =>	GUI::Views::Unsorted::HooGridOneView.name,
+			'backgroundImage'		=>	GUI::Views::Unsorted::HooBackgroundImg.name,
+			'fixedSizeImage'		=>	GUI::Views::Unsorted::HooFixedSizeImg.name,
+			'hoo100PercentImg'		=>	GUI::Views::Unsorted::HooOneHundredPercentImg.name,
+			'slidingDoorsPanel1'	=>	GUI::Views::Unsorted::HooSlidingDoorsPanel.name,
+			'speechBubblePane'		=>	GUI::Views::Unsorted::HooSlidingDoorsSpeechPanel.name,
+			'croppedImg'			=>	GUI::Views::Unsorted::HooCroppedImg.name,
+			'cuteDropDownMenu'		=>	GUI::Views::Unsorted::HooCuteDropDownMenu.name,
+
 		}
 
 		def self.widgets

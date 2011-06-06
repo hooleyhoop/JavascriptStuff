@@ -1,6 +1,6 @@
 - push( hoo_widget_resizer_view )
 
-%div[_]{ :style=>"width:400px;height:400px; position:absolute; left:50px; top:150px;", :data=> {'jsclass'=>'HooWidgetResizerView'}}
+%div[_]{ :style=>"width:400px;height:400px; position:absolute; left:50px; top:150px;", :data=> {'jsclass'=>'ABoo.HooWidgetResizerView'}}
 	- if _.views.count > 0
 		=  insert( _.views, "Please have a view to render!" )
 	- else
@@ -31,7 +31,7 @@
 		};
 
 		// Basic Div Class - Renanme!
-		BasicDiv = HooWidget.extend({
+		ABoo.BasicDiv = ABoo.HooWidget.extend({
 
 			//_$div: undefined,
 
@@ -113,7 +113,7 @@
 		});
 
 		// HooPage Class - change name
-		HooWidgetResizerView = BasicDiv.extend({
+		ABoo.HooWidgetResizerView = ABoo.BasicDiv.extend({
 
 			_resizeableDiv:		undefined,
 			_leftHandle:		undefined,
@@ -166,7 +166,7 @@
 		});
 
 		// Handle Class
-		Handle = BasicDiv.extend({
+		Handle = ABoo.BasicDiv.extend({
 
 			_boundToObject: undefined,
 

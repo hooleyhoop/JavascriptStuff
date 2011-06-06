@@ -2,7 +2,7 @@ SpeechBubbleBottom = SC.Object.extend({
 });
 
 // SpeechBubbleBottom.mixin({
-var SpeechBubbleBottomClassMethods = SC.Mixin.create({
+var SpeechBubbleBottomClassMethods = {
 
 	draw: function( ctx, x, y, width, height, cornerRad, nubbinWidth, nubbinHeight ) {
 
@@ -60,13 +60,15 @@ var SpeechBubbleBottomClassMethods = SC.Mixin.create({
 		peny += cornerRad;
 		ctx.arc( penx, peny, cornerRad, north, west, anticlockwise );
 	}
-});
+};
+
+SC.mixin( SpeechBubbleBottom, SpeechBubbleBottomClassMethods );
 
 RoundedRectangle = SC.Object.extend({
 });
 
 // RoundedRectangle.mixin({
-var RoundedRectangleClassMethods = SC.Mixin.create({
+var RoundedRectangleClassMethods = {
 
 	draw: function( ctx, x, y, width, height, r ) {
 
@@ -129,15 +131,14 @@ var RoundedRectangleClassMethods = SC.Mixin.create({
 		}
 		ctx.closePath();
 	}
-});
+};
+SC.mixin( RoundedRectangle, RoundedRectangleClassMethods );
 
 
 RoundedTriangle = SC.Object.extend({
 });
 
-// RoundedTriangle.mixin({
-
-var RoundedTriangleClassMethods = SC.Mixin.create({
+var RoundedTriangleClassMethods = {
 
 	draw: function( ctx, x, y, width, height, r ) {
 
@@ -242,18 +243,22 @@ var RoundedTriangleClassMethods = SC.Mixin.create({
 		}
 		ctx.closePath();
 	}
-});
+};
+SC.mixin( RoundedTriangle, RoundedTriangleClassMethods );
+
 
 Graphics = SC.Object.extend({
 });
 
 // Graphics.mixin({
-var GraphicsClassMethods = SC.Mixin.create({
+var GraphicsClassMethods = {
 
 	roundedTriangle: RoundedTriangle,
 	roundedRect: RoundedRectangle,
 	speechBubble_bottom: SpeechBubbleBottom
-});
+};
+SC.mixin( Graphics, GraphicsClassMethods );
+
 
 HooSprite = SC.Object.extend({
 
@@ -507,6 +512,7 @@ var ShiteDisplayLinkClassMethods = SC.Mixin.create({
 
 	sharedDisplayLink: undefined
 });
+SC.mixin( ShiteDisplayLink, ShiteDisplayLinkClassMethods );
 
 ShiteDisplayLink.sharedDisplayLink = ShiteDisplayLink.create();
 

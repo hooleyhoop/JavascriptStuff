@@ -9,7 +9,6 @@ module GUI::Views::Unsorted
         # will create it's own cell but you need to set the cell-name
 		def initialize( args={} )
 			super(args);
-
 			extractArgs( args, {:cellName=>'horizontalList1'} );
 		end
 

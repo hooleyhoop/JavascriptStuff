@@ -1,5 +1,5 @@
 # The HooWidget creates a View and sets the template
-ABoo.FirstGo = HooWidget.extend
+ABoo.FirstGo = ABoo.HooWidget.extend
 	_imgItems: undefined
 	_view: undefined
 	_count: 0
@@ -44,6 +44,9 @@ ABoo.FirstGo = HooWidget.extend
 # A different approach
 # Have the inline template construct our custom view
 ABoo.HooSCLargeTextField = SC.TextField.extend
+	init:() ->
+		@_super()
+
 	defaultTemplate: ( () ->
 		type = SC.get(this, 'type') #text
 		templateText = '<input type="%@" {{bindAttr value="value" placeholder="placeholder"}} width=100>'
@@ -51,7 +54,13 @@ ABoo.HooSCLargeTextField = SC.TextField.extend
 	).property()
 	
 ABoo.HooSCLargeButton = SC.Button.extend
-	_count: 0
+	init:() ->
+		@_super()
+		#ABoo.setupHandler('mouseDown', 'mouseDown');
+
+	#mouseDown:( er) ->
+	#	alert("get it on")
 
 ABoo.HooSCCheckBox = SC.Checkbox.extend
-	_count: 0
+	init:() ->
+		@_super()

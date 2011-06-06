@@ -22,7 +22,7 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 
 	// create the global window instance
 	var $win = $('hooWindow');
-	_hooWindow = HooWindow.create( {id: 'hooWindow'} );
+	_hooWindow = ABoo.HooWindow.create( {id: 'hooWindow'} );
 
 	var all_jsClass_objects;
 	if(rootElement===undefined) {
@@ -97,7 +97,7 @@ function eventTrampoline(e,a) {
  * page load because it was tagged with a jsclass attribute server side.
  * set these values in Create( hash )
 */
-HooWidget = SC.Object.extend({
+ABoo.HooWidget = SC.Object.extend({
 
 	json: undefined,
 	id: undefined,
@@ -188,7 +188,7 @@ HooWidget = SC.Object.extend({
 
 });
 
-HooWindow = HooWidget.extend({
+ABoo.HooWindow = ABoo.HooWidget.extend({
 
 	_allViews: undefined, // maybe should go into content view? Just an unordered array of every view at the mo
 	init: function( /* init never has args */ ) {
@@ -232,21 +232,21 @@ HooWindow = HooWidget.extend({
 });
 
 
-HooWindow.hooAlert = function( arg ) {
+ABoo.HooWindow.hooAlert = function( arg ) {
 	alert(arg);
 };
-HooWindow.hooLog = function( arg ) {
+ABoo.HooWindow.hooLog = function( arg ) {
 	console.log(arg);
 };
 // not using at the mo.. think might be useful tho
-HooContentView = HooWidget.extend({
+ABoo.HooContentView = ABoo.HooWidget.extend({
 	init: function( /* init never has args */ ) {
 	    this._super();
 	}
 });
 
-HOO_nameSpace.HooWindow = HooWindow;
-HOO_nameSpace.HooContentView = HooContentView;
+//HOO_nameSpace.HooWindow = HooWindow;
+//HOO_nameSpace.HooContentView = HooContentView;
 HOO_nameSpace.assert = function( expr, msg ) {
 	//	if( typeof console.assert!==undefined )
 		//		console.assert( height==this.positionBackground.previousHeight, "shit" );

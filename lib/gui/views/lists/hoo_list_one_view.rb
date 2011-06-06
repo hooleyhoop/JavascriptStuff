@@ -1,6 +1,6 @@
-module GUI::Views::Unsorted
+module GUI::Views::Lists
 
-	# http://0.0.0.0:3000/widgets/listOneView
+	# http://0.0.0.0:3000/widgets/list1
 	class HooListOneView < GUI::Core::HooView
 
 		attr_accessor :content;

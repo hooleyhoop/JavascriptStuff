@@ -24,8 +24,11 @@
 		-# layout yields to the view
 		= yield
 
-		// TODO: review this
 		= insertJSONData()
+
+		-# DEBUG MOUSE EVENTS
+		-# %script( type="text/html" )
+		-# 	{{#view ABoo.DebugView id="debug-view"}}<div style='background-color:green'>monkey monkey<div>{{/view}}
 
 		:javascript
 
@@ -38,6 +41,10 @@
 			{
 				ABoo.main();
 
+				//var scview = ABoo.DebugView.create();
+				//var template = SC.Handlebars.compile("<div style='background-color:orange'>monkey monkey<div>");
+				//scview.set( "template", template )
+				//scview.append();
 
 				// ERR: the problem with this is that views that do start-up scripts in this fashion
 				// cannot be loaded by ajax!

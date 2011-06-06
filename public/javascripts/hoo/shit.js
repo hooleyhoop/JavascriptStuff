@@ -1,9 +1,9 @@
-/* DO NOT MODIFY. This file was compiled Thu, 02 Jun 2011 18:00:53 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 06 Jun 2011 09:42:34 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/shit.coffee
  */
 
 (function() {
-  ABoo.FirstGo = HooWidget.extend({
+  ABoo.FirstGo = ABoo.HooWidget.extend({
     _imgItems: void 0,
     _view: void 0,
     _count: 0,
@@ -30,6 +30,9 @@
     }
   });
   ABoo.HooSCLargeTextField = SC.TextField.extend({
+    init: function() {
+      return this._super();
+    },
     defaultTemplate: (function() {
       var templateText, type;
       type = SC.get(this, 'type');
@@ -38,9 +41,13 @@
     }).property()
   });
   ABoo.HooSCLargeButton = SC.Button.extend({
-    _count: 0
+    init: function() {
+      return this._super();
+    }
   });
   ABoo.HooSCCheckBox = SC.Checkbox.extend({
-    _count: 0
+    init: function() {
+      return this._super();
+    }
   });
 }).call(this);

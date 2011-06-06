@@ -7,6 +7,8 @@ module GUI::Views::Unsorted
 
         attr_accessor :img;
         attr_accessor :customCSSAttributes;	# This might be a useful thing to add elsewhere, lets see
+		attr_accessor :width
+		attr_accessor :height
 
         # Mock Data
 		def setupDebugFixture

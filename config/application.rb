@@ -41,7 +41,9 @@ module JavascriptStuff
     'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js", "hoo/sm_configurations/fiveStateButtonStateMachine.js",
     "hoo/vector_math.js", "hoo/graphics.js",
 
-    'widgets/widgets.js', 'widgets/flipp_toggle_thing.js', 'widgets/buttons.js', 'widgets/headless_player.js',
+    'widgets/widgets.js', 'widgets/buttons.js', 'widgets/headless_player.js',
+
+	'hoo/widgets/flippy_toggle_thing.js',
 
 
 	# order important here
