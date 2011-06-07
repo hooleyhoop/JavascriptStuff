@@ -67,6 +67,7 @@ module GUI::Core
 		def setupDebugFixture
 		end
 
+		# 2168956940
 		def id
 		  self.object_id
 		end
@@ -81,9 +82,19 @@ module GUI::Core
 			'_' + self.jsClassName.underscore + '_'+ self.object_id.to_s
 		end
 
+		# GUI_Views_Debug_FlippyToggleThing
 		def jsClassName
 			className = self.class.to_s
 			className = className.gsub('::','_')
+		end
+
+		# gui_views_debug_flippy_toggle_thing
+		def CSSClassName
+			self.jsClassName.underscore
+		end
+
+		def HTMLIDName
+			self.CSSClassName + '_'+ self.object_id.to_s
 		end
 
 		def window

@@ -56,7 +56,7 @@ test("test 3 state button", function() {
 
 test("flippy toggle thing", function() {
 
-	var flippy = ABoo.Flippy_toggle_thing.create();
+	var flippy = ABoo.GUI_Views_Debug_FlippyToggleThing.create();
 	flippy.setupDidComplete();
 	ok( flippy._flippyState === false, "! "+flippy._flippyState);
 	flippy.flippyFlip();
@@ -123,7 +123,7 @@ test("test 3 state enabledDidChange", function() {
 test("test 3 state form button - basic observing", function() {
 
 	var butt = mockButton();
-	var flippy = ABoo.Flippy_toggle_thing.create();
+	var flippy = ABoo.GUI_Views_Debug_FlippyToggleThing.create();
 	flippy.setupDidComplete();
 
 	var count = 0;
@@ -143,7 +143,7 @@ test("test 3 state form button - basic observing", function() {
 test("test 3 state form button - binding primitive", function() {
 
 	var butt = mockButton();
-	var flippy = ABoo.Flippy_toggle_thing.create();
+	var flippy = ABoo.GUI_Views_Debug_FlippyToggleThing.create();
 	flippy.setupDidComplete();
 
 	ok( butt.currentStateName()=="st_disabled", "wrong state" );
@@ -158,7 +158,7 @@ test("test 3 state form button - binding primitive", function() {
 test("test 3 state form button - proper binding", function() {
 
 	var butt = mockButton();
-	var flippy = ABoo.Flippy_toggle_thing.create();
+	var flippy = ABoo.GUI_Views_Debug_FlippyToggleThing.create();
 	flippy.setupDidComplete();
 	HOO_nameSpace['snizzle123'] = flippy;
 
@@ -179,7 +179,7 @@ test("test 3 state form button - binding with json", function() {
 	};
 
 	var butt = mockButton();
-	var flippy = ABoo.Flippy_toggle_thing.create();
+	var flippy = ABoo.GUI_Views_Debug_FlippyToggleThing.create();
 	flippy.setupDidComplete();
 	HOO_nameSpace['snizzle123'] = flippy;
 

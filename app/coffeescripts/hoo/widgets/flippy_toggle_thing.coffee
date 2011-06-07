@@ -33,7 +33,7 @@ ABoo.HackedWidget = ABoo.HooWidget.extend
 		console.log("pfft! pffft! pffft! ..")
 
 	
-ABoo.Flippy_toggle_thing = ABoo.HackedWidget.extend
+ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.HackedWidget.extend
 	_flippyState: no
 
 	init:() ->

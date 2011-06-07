@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 07 Jun 2011 13:15:20 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 07 Jun 2011 14:30:30 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/flippy_toggle_thing.coffee
  */
 
@@ -30,7 +30,7 @@
       return console.log("pfft! pffft! pffft! ..");
     }
   });
-  ABoo.Flippy_toggle_thing = ABoo.HackedWidget.extend({
+  ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.HackedWidget.extend({
     _flippyState: false,
     init: function() {
       return this._super();

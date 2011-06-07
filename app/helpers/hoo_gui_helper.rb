@@ -1,5 +1,15 @@
 module HooGuiHelper
 
+	# autoName the data-jsClass
+	def wrapLiveObject( obj, atts )
+		# NB! haml_tag writes directly to the haml buffer, we dont return this then insert it in the page
+		attrs = {:class=>_.CSSClassName, :id=>_.HTMLIDName, :data=>{'jsclass'=>'ABoo.'+_.jsClassName}}
+		attrs.merge!(atts)
+		haml_tag :div, attrs do
+		  	yield
+		end
+	end
+
 	# add object to the viewstack
 	def push( obj )
 
