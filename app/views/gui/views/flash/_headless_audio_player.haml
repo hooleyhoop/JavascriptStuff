@@ -22,7 +22,7 @@
 			_controller:undefined,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply( this, arguments );
+	    		this._super();
 
 				//set on init - this._controller = controller;
 
@@ -258,7 +258,7 @@
 			ready:				undefined,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+	    		this._super();
 				this.ready = false;
 			},
 
@@ -321,7 +321,7 @@
 			type:			"Flash",
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+	   			this._super();
 				FlashPlayerBackend.sharedInstance = this;
 			},
 
@@ -369,7 +369,7 @@
 			_audioElement:		undefined,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+	    		this._super();
 				this.ready = false;
 			},
 
@@ -407,7 +407,7 @@
 			_stateMachine: undefined,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+				this._super();
 				this.stateMachine = ABoo.AudioPlayerState.create( {_controller: this} );
 				this._attachFlashOrHtml5AudioPlayerToPage();
 			},
@@ -530,8 +530,7 @@
 			_playCount:		undefined,
 
 			init: function( /* init never has args */ ) {
-
-				arguments.callee.base.apply(this,arguments);
+	    		this._super();
 				this.ready = false;
 				this.loadedSeconds = false;
 				this._playCount = 0;

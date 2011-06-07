@@ -4080,7 +4080,6 @@ classToString = function() {
     classToString.processed = true;
     processNames([], window, {});
   }
-  debugger
   return this[NAME_KEY] || "(unknown mixin)";
 };
 

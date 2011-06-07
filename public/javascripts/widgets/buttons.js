@@ -137,9 +137,9 @@ ABoo.HrefLoader = SC.Object.extend({
 ABoo.FormSubmiter = SC.Object.extend({
 	_form: undefined,
 
-	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
-		arguments.callee.base.apply( this, arguments );
-	},
+	//init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
+	//    this._super();
+	//},
 
 	submit: function( arg, completionHash ) {
 
@@ -183,7 +183,7 @@ ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 	_buttonGraphic: undefined,
 
 	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
-		arguments.callee.base.apply( this, arguments );
+	    this._super();
 
 		if(this._buttonGraphic==undefined) {
 			this._createGraphic();
@@ -285,7 +285,7 @@ ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend({
 
 	// instead of aborting when drag outside..
 	enableButton: function( state ) {
-		arguments.callee.base.apply(this,arguments);
+	    this._super();
 		var button = this._delegate.getClickableItem();
 		if( button ) {
 			button.unbind( 'mouseleave' );

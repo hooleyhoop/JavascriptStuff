@@ -450,7 +450,6 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 	_timer: undefined,
 
 	init: function( /* init never has args */ ) {
-		//arguments.callee.base.apply(this,arguments);
 	    this._super();
 		this._listeners = new Array();
 		this._canvasElements = new Array();

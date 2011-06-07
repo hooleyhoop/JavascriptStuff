@@ -73,7 +73,7 @@
 			_started:	false,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+				this._super();
 
 				// the background has been removed if javascript is enabled!
 				if( browserSupportsCanvas() )

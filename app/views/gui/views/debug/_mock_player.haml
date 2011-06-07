@@ -18,7 +18,7 @@
 			textHolder: "span",
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+	   			this._super();
 					var self = this;
 					setTimeout( function(){
 						self.set('_ready', true );

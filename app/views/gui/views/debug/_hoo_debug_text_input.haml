@@ -14,7 +14,7 @@
 			_mouseClickAction: undefined,
 			_txtField: undefined,
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+	    		this._super();
 				this._txtField = this.getFirstDomItemOfType("form input:text");
 			},
 			setupDidComplete: function() {

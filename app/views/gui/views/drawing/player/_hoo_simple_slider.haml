@@ -92,7 +92,7 @@
 
 			init: function( /* init never has args */ ) {
 
-				arguments.callee.base.apply(this,arguments);
+	    		this._super();
 
 				this._$parentDiv = $( "#"+this.id );
 				debugger; //TODO: swap this this.div$

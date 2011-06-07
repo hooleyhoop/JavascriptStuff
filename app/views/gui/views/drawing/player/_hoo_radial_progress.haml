@@ -118,7 +118,7 @@
 			_lastUpdateTime:undefined,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+	    		this._super();
 				this._donutTestSprite = ABoo.DonutTestSprite.create();
 			},
 			drawInRect: function() {
@@ -169,7 +169,7 @@
 			_progressGraphic:undefined,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+				this._super();
 				this._progressGraphic = ABoo.HooRadialProgressGraphic.create( {_outerRad:this.json.outerRad, _innerRad:this.json.innerRad} );
 			},
 
@@ -177,7 +177,7 @@
 
 				HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
 				this._hooCanvas.addSubview( this._progressGraphic );
-				arguments.callee.base.apply(this,arguments);
+				this._super();
 			},
 
 			toggleBusy: function() {

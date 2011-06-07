@@ -19,7 +19,7 @@
 			_busyAngle: 0,
 
 			init: function( /* init never has args */ ) {
-				arguments.callee.base.apply(this,arguments);
+	    		this._super();
 
 				this._$canvas = this.div$.find( "canvas:first" );
 				this._hooCanvas = ABoo.HooCanvas.create({_$canvas:this._$canvas});

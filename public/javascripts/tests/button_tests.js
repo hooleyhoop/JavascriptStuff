@@ -14,10 +14,8 @@ test("test 3 state button", function() {
 	}
 
 	mockgraphics.expects(1).method('showDisabledButton');
-	debugger;
-	var c = ABoo.HooThreeStateItem.create();
-	debugger
 	var threeButtonSM = ABoo.HooThreeStateItem.create( {_graphic: mockgraphics, _clickableItem$:testDiv } );
+
 	threeButtonSM.setButtonTarget( this, this._mouseDown );
 	ok( mockgraphics.verify(), "showDisabledButton not called" );
 
@@ -86,16 +84,25 @@ function mockGraphics() {
 	mockgraphics.expects(100).method('showMouseUp1State');
 	return mockgraphics;
 }
+
 function mockButton() {
 	var jsonOb = {
 		"labelStates": [ "disabled", "normal", "down" ],
 		"initialState": 0,
 	};
 
-	var butt = ABoo.HooFormButtonSimple.create( {id: "a_test_button", _threeStateButtonGraphic:mockGraphics(), json: jsonOb} );
+	var butt = ABoo.HooFormButtonSimple.create( {id:"a_test_button", _threeStateButtonGraphic:mockGraphics(), json: jsonOb} );
 	butt.setupDidComplete();
 	return butt;
 }
+
+test("create an empty button", function() {
+	var jsonOb = {
+		"labelStates": [ "disabled", "normal", "down" ],
+		"initialState": 0,
+	};
+	var butt = ABoo.HooFormButtonSimple.create( {id:"a_test_button", _threeStateButtonGraphic:mockGraphics(), json: jsonOb} );
+});
 
 test("test 3 state enabledDidChange", function() {
 
@@ -148,7 +155,6 @@ test("test 3 state form button - binding primitive", function() {
 	butt.unbindToTarget( flippy, "_flippyState", butt, 'enabledDidChange' );
 });
 
-
 test("test 3 state form button - proper binding", function() {
 
 	var butt = mockButton();
@@ -188,7 +194,6 @@ test("test 3 state form button - binding with json", function() {
 	butt.teardown_hoo_binding_from_json( "testBinding" );
 });
 
-
 test("add an action", function() {
 
 	var jsonOb2 = {
@@ -217,4 +222,3 @@ test("5 state item stuff", function() {
 	fiveButtonSM.setButtonTarget( this, this._mouseDown );
 	ok( mockgraphics.verify(), "showDisabledButton not called" );
 });
-

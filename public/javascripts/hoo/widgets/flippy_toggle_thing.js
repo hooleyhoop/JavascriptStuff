@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 06 Jun 2011 09:48:23 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 07 Jun 2011 13:15:20 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/flippy_toggle_thing.coffee
  */
 
@@ -40,7 +40,7 @@
     },
     flippyFlip: function() {
       SC.RunLoop.begin();
-      this._flippyState = !this._flippyState;
+      this.set('_flippyState', !this._flippyState);
       this.updateGraphics();
       return SC.RunLoop.end();
     },

@@ -46,7 +46,7 @@ ABoo.Flippy_toggle_thing = ABoo.HackedWidget.extend
 			
 	flippyFlip:() ->
 		SC.RunLoop.begin()
-		@_flippyState = !@_flippyState
+		@set( '_flippyState', !@_flippyState )
 		@updateGraphics()
 		SC.RunLoop.end()
 
