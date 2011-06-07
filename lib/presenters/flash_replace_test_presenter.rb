@@ -54,12 +54,12 @@ module Presenters
 
                 #promotionPlaceHolder2 = loremIpsumView.new();
 
-				table view
-				mock flash cell
+				#table view
+				#mock flash cell
 
-				addRw
-				addRw
-				addRw
+				#addRw
+				#addRw
+				#addRw
 
             else
 

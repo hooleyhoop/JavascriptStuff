@@ -1,137 +1,3 @@
-ABoo.HooThreeStateItem = SC.Object.extend({
-
-	_buttonSM: undefined,
-	_graphic: undefined,
-	_clickableItem$: undefined,
-	_target:undefined,
-	_action: undefined,
-	_actionArg: undefined,
-	_isAsync: undefined,
-
-	init: function( /* _graphic */ ) {
-		arguments.callee.base.apply( this, arguments );
-
-		this._createSM();
-		this._graphic.showDisabledButton();
-		this._listenerDebugger = ActiveListenerDebugger.create();
-	},
-
-	_createSM: function() {
-		this._buttonSM = ThreeStateButtonStateMachine.create({ _controller: this });
-	},
-
-	setButtonTarget: function( target, action, arg, isAsync ) {
-
-		arg = typeof(arg) != 'undefined' ? arg : null;
-		isAsync = typeof(isAsync) != 'undefined' ? isAsync : false;
-
-		this._target = target;
-		this._action = action;
-		this._actionArg = arg;
-		this._isAsync = isAsync;
-	},
-
-	// input
-	// - ev_showState1, ev_disable, ev_error
-	sendEvent: function( ev ) {
-		this._buttonSM.processInputSignal( ev );
-	},
-
-	// State machine callbacks
-	cmd_enableButton: function() {
-		this._listenerDebugger.addListener( this._clickableItem$, 'mousedown', this, this._mouseDown );
-	},
-
-	cmd_disableButton: function() {
-
-		this._listenerDebugger.removeListener( this._clickableItem$, 'mousedown', this, this._mouseDown );
-		this._graphic.showDisabledButton();
-	},
-
-	cmd_showMouseUp1: function() {
-		this._graphic.showMouseUp1State();
-	},
-
-	cmd_showMouseDown1: function() {
-		this._graphic.showMouseDown1State();
-	},
-
-	cmd_showMouseDownOut1: function() {
-		this._graphic.showMouseUp1State();
- 	},
-
-	cmd_fireButtonAction1: function() {
-		this._fire("ev_showState1" );
-	},
-
-	_fire: function( nextState ) {
-
-		var self = this;
-
-		//TODO:
-		// how do we handle toggle button?
-		// how do we handle async actions?
-		// how do we go back to the correct state?
-
-		var completionCallback = function() {
-			self.sendEvent( nextState );
-		}
-		var onCompleteStuffHash =  {onCompleteTarget: self, onCompleteAction: completionCallback};
-
-		if(this._target) {
-			//this._delegate.fireAction();
-			this._action.call( this._target, this._actionArg, onCompleteStuffHash );
-		}
-		if(this._isAsync==false){
-			completionCallback();
-		}
-	},
-
-	cmd_abortClickAction: function() {
-		this.sendEvent( "ev_clickAbortCompleted" );
-	},
-
-	_mouseDown: function( e ) {
-
-		// cant get $(window).mouseup to work on IE7 so using document instead
-		this._listenerDebugger.addListener( $(document), 'mouseup', this, this._mouseStageUp );
-		this._clickableItem$.unselectable = "on";
-		this._clickableItem$.onselectstart = function(){return false};
-
-		this._listenerDebugger.addListener( this._clickableItem$, 'mouseleave', this, this._mouseRollOutHandler );
-		this._listenerDebugger.addListener( this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler );
-
-		this.sendEvent( "ev_buttonPressed" );
-		e.preventDefault();
-	},
-
-	_mouseStageUp: function( e ) {
-
-		this._listenerDebugger.removeListener( $(window), 'mouseup', this, this._mouseStageUp );
-		this._listenerDebugger.removeListener( this._clickableItem$, 'mouseleave', this, this._mouseRollOutHandler );
-		this._listenerDebugger.removeListener( this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler );
-
-		this.sendEvent("ev_buttonReleased");
-		e.preventDefault();
-	},
-
-	_mouseRollOutHandler: function(e) {
-		this.sendEvent("ev_mouseDraggedOutside");
-	},
-
-	_mouseRollOverHandler: function(e) {
-		this.sendEvent("ev_mouseDraggedInside");
-	},
-
-	currentStateName: function() {
-		return this._buttonSM.currentStateName();
-	},
-
-	setCurrentStateName: function( arg ) {
-		return this._buttonSM.processInputSignal( arg );
-	}
-});
-
 /*
  * Append a couple of states to 3 state button
 */
@@ -139,7 +5,7 @@ ABoo.HooFiveStateItem = ABoo.HooThreeStateItem.extend({
 
 	/* Add some extra states and overide some */
 	_createSM: function() {
-		this._buttonSM = FiveStateButtonStateMachine.create({ _controller: this });
+		this._buttonSM = ABoo.FiveStateButtonStateMachine.create({ _controller: this });
 	},
 
 	cmd_showMouseDown2: function() {
@@ -261,14 +127,14 @@ ABoo.HooButtonGraphic = ABoo.HooAbstractButtonGraphic.extend({
 	}
 });
 
-HrefLoader = SC.Object.extend({
+ABoo.HrefLoader = SC.Object.extend({
 	_href: undefined,
 	submit: function( arg, completionHash ) {
 		window.location = this._href;
 	}
 });
 
-FormSubmiter = SC.Object.extend({
+ABoo.FormSubmiter = SC.Object.extend({
 	_form: undefined,
 
 	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
@@ -330,7 +196,7 @@ ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 
 	_createGraphic: function() {
 
-		this._buttonGraphic = HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
+		this._buttonGraphic = ABoo.HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
 	},
 
 	_createStateController: function() {
@@ -373,7 +239,7 @@ ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 
 		if(this._buttonGraphic.getForm) {
 			var form = this._buttonGraphic.getForm();
-			var target	= FormSubmiter.create( {_form: form} );
+			var target	= ABoo.FormSubmiter.create( {_form: form} );
 			var action	= target.submit;
 			var arg = null;
 			return { t:target, a:action, w:arg, actionIsAsync:true };
@@ -409,7 +275,7 @@ ABoo.HooFormButtonToggle = ABoo.HooFormButtonSimple.extend({
 	// we just use a different state machine than the three state button, everthing else is the same
 	_createStateController: function() {
 
-		this._buttonSMControl = HooFiveStateItem.create( { 	_graphic:this._buttonGraphic } );
+		this._buttonSMControl = ABoo.HooFiveStateItem.create( { 	_graphic:this._buttonGraphic } );
 	}
 });
 
@@ -447,17 +313,17 @@ ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend({
 
 
 /* 'Orrible Multiple Inheritance stuff */
-DivButtonMixin = {
+ABoo.DivButtonMixin = {
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 
 	_createGraphic: function() {
-		this._buttonGraphic = HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
+		this._buttonGraphic = ABoo.HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
 	},
 
 	defaultAction: function() {
 		if( this._buttonGraphic.getHref ) {
 			var href = this._buttonGraphic.getHref();
-			var target	= HrefLoader.create( {_href: href} );
+			var target	= ABoo.HrefLoader.create( {_href: href} );
 			var action	= target.submit;
 			var arg = null;
 			return { t:target, a:action, w:arg, actionIsAsync:true };
@@ -467,14 +333,14 @@ DivButtonMixin = {
 };
 
 /* Simple link button */
-ABoo.HooDivButtonSimple = ABoo.HooFormButtonSimple.extend( DivButtonMixin, {
+ABoo.HooDivButtonSimple = ABoo.HooFormButtonSimple.extend( ABoo.DivButtonMixin, {
 });
 
 /* two state link button */
-ABoo.HooDivButtonToggle = ABoo.HooFormButtonToggle.extend( DivButtonMixin, {
+ABoo.HooDivButtonToggle = ABoo.HooFormButtonToggle.extend( ABoo.DivButtonMixin, {
 });
 
-DynamicWidthButtonMixin = {
+ ABoo.DynamicWidthButtonMixin = {
 
 	// TODO: more of a graphic thing?
 	initMixin: function( /* init never has args */ ) {
@@ -498,9 +364,9 @@ DynamicWidthButtonMixin = {
 	}
 }
 
-ABoo.HooDivButtonSimpleDynamicWidth = ABoo.HooDivButtonSimple.extend( DynamicWidthButtonMixin, {});
+ABoo.HooDivButtonSimpleDynamicWidth = ABoo.HooDivButtonSimple.extend( ABoo.DynamicWidthButtonMixin, {});
 
-ABoo.HooDivButtonToggleDynamicWidth = ABoo.HooDivButtonToggle.extend( DynamicWidthButtonMixin, {});
+ABoo.HooDivButtonToggleDynamicWidth = ABoo.HooDivButtonToggle.extend( ABoo.DynamicWidthButtonMixin, {});
 
 GUI_Views_Drawing_Menus_Items_HooTextLinkItem = ABoo.HooDivButtonSimpleDynamicWidth.extend({});
 GUI_Views_Drawing_Menus_Items_HooTextToggleItem = ABoo.HooDivButtonToggleDynamicWidth.extend({});

@@ -1,4 +1,5 @@
 module GUI::Cells
+
 	class HooCellProxy < GUI::Core::HooView
 
         attr_accessor :cell

@@ -1,0 +1,53 @@
+- _.dataSrc = flash_replace_test_cell
+
+-# http://0.0.0.0:3000/widgets/cellRenderer?cellName=flashReplaceTestCell
+
+-# NB the overflow:auto is needed to stop the margins collapsing
+-# This tells you everything you need to know about CSS separating form and content
+-# Also, hunt around for a class called 'sparse_boo_cell' :- it has the rubbish gradient in it
+%div.sparse_boo_cell{ :style=>"border: 0px solid red; overflow: auto;" }
+    %a( href="http://apple.com" )
+        %img( src='#{ _['imgPath'] }' width='43' height='43' style='float: left; margin:0 5px 10px 0; border:1px solid lightgray' )
+    %div( style="" )
+        %div.smallType{ :style=>"position: relative; top: -3px; margin:0 0 -15px 0; overflow:auto;" }
+            %a( style="font: normal bold 11px/15px Helvetica; color: #3574d7;" ) #{ _['heading' ]}
+        %div.mediumType{ :style=>"float: none; width: auto; margin-top: 0px; overflow:hidden;" }
+            %a( style="font: normal 13px/15px Helvetica; color: #2d3747;" ) #{ _['subHeading'] }
+
+
+-#	|	Javascript	|	Flash	|	flash-blocker	|	Canvas	|	html5-audio	|
+-#	–––––––––––––––––––––––––––––––––––––––––------------------------------------
+-#
+-#	|		X		|		X	|			•		|		•	|		•		|		no player - link
+-#	|		√		|		x	|			•		|		•	|		X		|		no player - link
+-#
+-#	|		√		|		•	|			•		|		√	|		√		|		html5 - audio player
+-#
+-#	|		√		|		√	|			X		|		√	|		X		|		canvas front end / headless flash back end
+-#	|		√		|		√	|			√		|		√	|		X		|		canvas front end / headless flash - blocked (swap in flash for canvas)
+-#	|		√		|		√	|			X		|		X	|		X		|		flash player
+-#	|		√		|		√	|			√		|		X	|		X		|		flash - blocked
+-#
+
+-# Show link to mp3
+-#
+-# If have javascript -
+-#
+-# have (canvas & htmlAudio) **(!safari)** ?
+-#		--------------------------- html5 player
+-# else
+-#	does not have flash ?
+-#		--------------------------- show link
+-#	else
+-#		has canvas ?
+-#		--------------------------- canvas front end / headless flash back end
+-#										|_ if it turns out to be blocked, swap in the flash
+-#		else
+-#		--------------------------- flash player
+-#
+
+-# Possible Player Types
+-# ---------------------
+-# Link, HTML5Audio, Headless flash, flash
+
+-# var playerType = whichPlayer?({ hasHTML5Audio: , hasFlash: , hasCanvas:  , isSafari: });

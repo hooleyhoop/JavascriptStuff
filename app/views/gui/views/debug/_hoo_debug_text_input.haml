@@ -2,7 +2,7 @@
 
 -# http://0.0.0.0:3000/widgets/debugTextInput
 
-%div[_]{ :data=>{'jsclass'=>'DebugTextInput'}, :style=>"" }
+%div[_]{ :data=>{'jsclass'=>'ABoo.DebugTextInput'}, :style=>"" }
 	= form_tag() do
 		= label_tag( 'name', _.label )
 		= text_field_tag( 'hello', _.value, :size=>75, :style=>"width:150px; font-size:12px;" )
@@ -10,7 +10,7 @@
 - if( _.includeOnce? )
 	:javascript
 
-		DebugTextInput = HooWidget.extend({
+		ABoo.DebugTextInput = HooWidget.extend({
 			_mouseClickAction: undefined,
 			_txtField: undefined,
 			init: function( /* init never has args */ ) {

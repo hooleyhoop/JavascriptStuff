@@ -1,4 +1,6 @@
 module GUI::Cells
+
+    # http://0.0.0.0:3000/widgets/cellRenderer?cellName=horizontalList1
 	class HooHorizontalListOneCell < GUI::Core::HooCell
 
         attr_accessor :heading, :subHeading;

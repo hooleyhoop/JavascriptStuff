@@ -1,4 +1,4 @@
-SpeechBubbleBottom = SC.Object.extend({
+ABoo.SpeechBubbleBottom = SC.Object.extend({
 });
 
 // SpeechBubbleBottom.mixin({
@@ -62,9 +62,9 @@ var SpeechBubbleBottomClassMethods = {
 	}
 };
 
-SC.mixin( SpeechBubbleBottom, SpeechBubbleBottomClassMethods );
+SC.mixin( ABoo.SpeechBubbleBottom, SpeechBubbleBottomClassMethods );
 
-RoundedRectangle = SC.Object.extend({
+ABoo.RoundedRectangle = SC.Object.extend({
 });
 
 // RoundedRectangle.mixin({
@@ -132,10 +132,10 @@ var RoundedRectangleClassMethods = {
 		ctx.closePath();
 	}
 };
-SC.mixin( RoundedRectangle, RoundedRectangleClassMethods );
+SC.mixin( ABoo.RoundedRectangle, RoundedRectangleClassMethods );
 
 
-RoundedTriangle = SC.Object.extend({
+ABoo.RoundedTriangle = SC.Object.extend({
 });
 
 var RoundedTriangleClassMethods = {
@@ -244,23 +244,23 @@ var RoundedTriangleClassMethods = {
 		ctx.closePath();
 	}
 };
-SC.mixin( RoundedTriangle, RoundedTriangleClassMethods );
+SC.mixin( ABoo.RoundedTriangle, RoundedTriangleClassMethods );
 
 
-Graphics = SC.Object.extend({
+ABoo.Graphics = SC.Object.extend({
 });
 
 // Graphics.mixin({
 var GraphicsClassMethods = {
 
-	roundedTriangle: RoundedTriangle,
-	roundedRect: RoundedRectangle,
-	speechBubble_bottom: SpeechBubbleBottom
+	roundedTriangle: ABoo.RoundedTriangle,
+	roundedRect: ABoo.RoundedRectangle,
+	speechBubble_bottom: ABoo.SpeechBubbleBottom
 };
-SC.mixin( Graphics, GraphicsClassMethods );
+SC.mixin( ABoo.Graphics, GraphicsClassMethods );
 
 
-HooSprite = SC.Object.extend({
+ABoo.HooSprite = SC.Object.extend({
 
 	setPropertiesOfSprite: function( propertyDict ) {
 		for (var key in propertyDict) {
@@ -270,7 +270,7 @@ HooSprite = SC.Object.extend({
 	}
 });
 
-PlayButtonSprite = HooSprite.extend({
+ABoo.PlayButtonSprite = ABoo.HooSprite.extend({
 	_isDisabled: true,
 	_isDown: false,
 
@@ -309,14 +309,14 @@ PlayButtonSprite = HooSprite.extend({
 
 			var tenPercentOfWidth = width / 10.0;
 			var tri3Rect = [x,y,width,height];
-			tri3Rect = VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
-			tri3Rect = VectorMath.offsetRect( tri3Rect, [tenPercentOfWidth, 0] );
-			var triangle3PtArray = VectorMath.trianglePtArrayFromRect( tri3Rect );
+			tri3Rect = ABoo.VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
+			tri3Rect = ABoo.VectorMath.offsetRect( tri3Rect, [tenPercentOfWidth, 0] );
+			var triangle3PtArray = ABoo.VectorMath.trianglePtArrayFromRect( tri3Rect );
 
-			var triangle2PtArray = VectorMath.offsetPolygon( triangle3PtArray, tenPercentOfWidth );
+			var triangle2PtArray = ABoo.VectorMath.offsetPolygon( triangle3PtArray, tenPercentOfWidth );
 			var tri2Rect = [ triangle2PtArray[0][0], triangle2PtArray[0][1], triangle2PtArray[1][0]-triangle2PtArray[0][0], triangle2PtArray[2][1]-triangle2PtArray[0][1] ];
 
-			var triangle1PtArray = VectorMath.offsetPolygon( triangle2PtArray, tenPercentOfWidth );
+			var triangle1PtArray = ABoo.VectorMath.offsetPolygon( triangle2PtArray, tenPercentOfWidth );
 			var tri1Rect = [ triangle1PtArray[0][0], triangle1PtArray[0][1], triangle1PtArray[1][0]-triangle1PtArray[0][0], triangle1PtArray[2][1]-triangle1PtArray[0][1] ];
 
 			ctx.fillStyle = my_gradient;
@@ -350,7 +350,7 @@ PlayButtonSprite = HooSprite.extend({
 });
 
 
-PauseButtonSprite = HooSprite.extend({
+ABoo.PauseButtonSprite = ABoo.HooSprite.extend({
 	_isDown: false,
 
 	spriteDraw: function( ctx, x, y, width, height ) {
@@ -380,12 +380,12 @@ PauseButtonSprite = HooSprite.extend({
 		var tenPercentOfWidth = width / 10.0;
 		var scale = width/75.0; // design size was 75px
 		var insetRect3 = [x,y,width,height];
-		insetRect3 = VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
+		insetRect3 = ABoo.VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
 
 		// construct 3 inset rectangles
 		var rect3PtArray = [[insetRect3[0],insetRect3[1]],[insetRect3[0]+insetRect3[2],insetRect3[1]],[insetRect3[0]+insetRect3[2], insetRect3[1]+insetRect3[3]], [insetRect3[0], insetRect3[1]+insetRect3[3]]];
-		var rect2PtArray = VectorMath.offsetPolygon( rect3PtArray, 5.0*scale );
-		var rect1PtArray = VectorMath.offsetPolygon( rect2PtArray, 5.0*scale );
+		var rect2PtArray = ABoo.VectorMath.offsetPolygon( rect3PtArray, 5.0*scale );
+		var rect1PtArray = ABoo.VectorMath.offsetPolygon( rect2PtArray, 5.0*scale );
 
 		var insetRect2 = [ rect2PtArray[0][0], rect2PtArray[0][1], rect2PtArray[1][0]-rect2PtArray[0][0], rect2PtArray[2][1]-rect2PtArray[0][1] ];
 		var insetRect1 = [ rect1PtArray[0][0], rect1PtArray[0][1], rect1PtArray[1][0]-rect1PtArray[0][0], rect1PtArray[2][1]-rect1PtArray[0][1] ];
@@ -393,7 +393,7 @@ PauseButtonSprite = HooSprite.extend({
 		ctx.save();
 
 			// outer
-			var rects = VectorMath.splitRectInTwo( insetRect3, 2.0*scale );
+			var rects = ABoo.VectorMath.splitRectInTwo( insetRect3, 2.0*scale );
 			ctx.fillStyle = my_gradient;
 			ctx.save();
 				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
@@ -410,7 +410,7 @@ PauseButtonSprite = HooSprite.extend({
 			ctx.shadowOffsetX = 0;
 			ctx.shadowOffsetY = tenPercentOfWidth/10;
 
-			rects = VectorMath.splitRectInTwo( insetRect2, 9.0*scale );
+			rects = ABoo.VectorMath.splitRectInTwo( insetRect2, 9.0*scale );
 			ctx.fillStyle = innerCol;
 			ctx.save();
 				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
@@ -426,7 +426,7 @@ PauseButtonSprite = HooSprite.extend({
 			ctx.shadowBlur = undefined;
 
 			// inner inner
-			rects = VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
+			rects = ABoo.VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
 			ctx.fillStyle = innerinnerCol;
 			ctx.save();
 				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
@@ -442,7 +442,7 @@ PauseButtonSprite = HooSprite.extend({
 });
 
 
-ShiteDisplayLink = SC.Object.extend({
+ABoo.ShiteDisplayLink = SC.Object.extend({
 
 	_listeners: undefined,
 	_canvasElements: undefined,
@@ -512,7 +512,7 @@ var ShiteDisplayLinkClassMethods = SC.Mixin.create({
 
 	sharedDisplayLink: undefined
 });
-SC.mixin( ShiteDisplayLink, ShiteDisplayLinkClassMethods );
+SC.mixin( ABoo.ShiteDisplayLink, ShiteDisplayLinkClassMethods );
 
-ShiteDisplayLink.sharedDisplayLink = ShiteDisplayLink.create();
+ABoo.ShiteDisplayLink.sharedDisplayLink = ABoo.ShiteDisplayLink.create();
 

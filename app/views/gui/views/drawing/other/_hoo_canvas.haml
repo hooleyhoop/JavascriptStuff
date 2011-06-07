@@ -10,7 +10,7 @@
 - if( _.includeOnce? )
 	:javascript
 
-		HooCanvas = HooWidget.extend({
+		ABoo.HooCanvas = ABoo.HooWidget.extend({
 
 			_$canvas: undefined,
 			_subViews: undefined,
@@ -65,7 +65,7 @@
 				this._isDirty = true;
 				this._lastDirtyTime = (new Date()).getTime();
 				if(!this._isActive) {
-					ShiteDisplayLink.sharedDisplayLink.registerCanvas(this);
+					ABoo.ShiteDisplayLink.sharedDisplayLink.registerCanvas(this);
 					this._isActive = true;
 				}
 			},
@@ -83,7 +83,7 @@
 					child._canvas = null;
 				}
 				if(this._subViews.length==0 && this._isActive) {
-					ShiteDisplayLink.sharedDisplayLink.unregisterCanvas(this);
+					ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterCanvas(this);
 					this._isActive = false;
 				}
 			},
@@ -107,7 +107,7 @@
 				} else {
 					var timeSince = time - this._lastDirtyTime;
 					if( timeSince > 3000 ) {
-						ShiteDisplayLink.sharedDisplayLink.unregisterCanvas(this);
+						ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterCanvas(this);
 						this._isActive = false;
 					}
 				}

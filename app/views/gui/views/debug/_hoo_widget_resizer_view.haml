@@ -130,10 +130,10 @@
 				}
 
 				// The id on these handles wont be set automagically - be careful not to use id
-				this._leftHandle	= Handle.create( {div$: $('#left_handle')} );
-				this._rightHandle	= Handle.create( {div$: $('#right_handle')} );
-				this._topHandle		= Handle.create( {div$:  $('#top_handle')} );
-				this._bottomHandle	= Handle.create( {div$: $('#bottom_handle')} );
+				this._leftHandle	= ABoo.Handle.create( {div$: $('#left_handle')} );
+				this._rightHandle	= ABoo.Handle.create( {div$: $('#right_handle')} );
+				this._topHandle		= ABoo.Handle.create( {div$:  $('#top_handle')} );
+				this._bottomHandle	= ABoo.Handle.create( {div$: $('#bottom_handle')} );
 			},
 
 			// nibDidLoad
@@ -166,7 +166,7 @@
 		});
 
 		// Handle Class
-		Handle = ABoo.BasicDiv.extend({
+		ABoo.Handle = ABoo.BasicDiv.extend({
 
 			_boundToObject: undefined,
 

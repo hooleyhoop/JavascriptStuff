@@ -1,6 +1,8 @@
-module GUI::Views::Unsorted
+module GUI::Views::Debug
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=hoo_user_comment_cell
+
+    # Useful for debugging cells
 	class HooCellRenderer < GUI::Core::HooView
 
 		attr_accessor :cell, :cellName;

@@ -12,7 +12,7 @@
 	:javascript
 
 		// When we need some different kinds of graphics start chopping up this heirarchy
-		HooPlayPauseButtonGraphic = HooAbstractButtonGraphic.extend({
+		ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend({
 
 			_parentCanvas: undefined,
 			_playButtonSprite: undefined,
@@ -48,8 +48,8 @@
 			init: function( /* _percentOfCanvas */ ) {
 
 				arguments.callee.base.apply(this,arguments);
-				this._playButtonSprite = PlayButtonSprite.create();
-				this._pauseButtonSprite = PauseButtonSprite.create();
+				this._playButtonSprite = ABoo.PlayButtonSprite.create();
+				this._pauseButtonSprite = ABoo.PauseButtonSprite.create();
 			},
 
 			getClickableItem: function() {
@@ -145,7 +145,7 @@
 			}
 		});
 
-		HooPlayPauseButton = HooFormButtonToggle.extend({
+		ABoo.HooPlayPauseButton = ABoo.HooFormButtonToggle.extend({
 
 			// _started: false,
 			_hooCanvas: undefined,
@@ -155,7 +155,7 @@
 			// },
 
 			_createGraphic: function() {
-				this._buttonGraphic = HooPlayPauseButtonGraphic.create( { _rootItemId:this.id, _percentOfCanvas:this.json.percentOfCanvas });
+				this._buttonGraphic = ABoo.HooPlayPauseButtonGraphic.create( { _rootItemId:this.id, _percentOfCanvas:this.json.percentOfCanvas });
 			},
 
 			setupDidComplete: function() {

@@ -98,6 +98,7 @@ module GUI
 			'mastHead'				=> GUI::Views::Audioboo::MastHead.name,
 
 			# for debugging
+			'cellRenderer'			=>	GUI::Views::Debug::HooCellRenderer.name,
 			'mockPlayer'			=>	GUI::Views::Debug::MockPlayer.name,
 			'textStyle'				=>	GUI::Views::Debug::HooTextStyle.name,
 			'flippyToggleThing'		=>	GUI::Views::Debug::FlippyToggleThing.name,
@@ -126,7 +127,6 @@ module GUI
 			'sc_textfield'			=> GUI::Views::Sproutcore::ScTextfield.name,
 
 			# Unsorted
-			'cellRenderer'			=>	GUI::Views::Unsorted::HooCellRenderer.name,
 			'labeledButton'		    =>	GUI::Views::Unsorted::HooLabeledButton1.name,
 			'info1'				    =>	GUI::Views::Unsorted::HooInfoOneView.name,
 			'loremIpsum'		    =>	GUI::Views::Unsorted::HooLoremIpsumView.name,
@@ -171,6 +171,8 @@ module GUI
 			'sparseBooCell'	    =>	GUI::Cells::HooSparseBooCell.name,
 			'hoo_user_comment_cell' => GUI::Cells::HooUserCommentCell.name,
 			'actionButton1' 	=> GUI::Cells::HooActionButton1Cell.name,
+
+			'flashReplaceTestCell' 	=> GUI::Cells::FlashReplaceTestCell.name,
 		}
 
 		def self.cellClass( name )

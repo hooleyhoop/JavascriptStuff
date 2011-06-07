@@ -15,7 +15,7 @@
 - if( _.includeOnce? )
 	:javascript
 
-		AudioPlayerState = SC.Object.extend({
+		ABoo.AudioPlayerState = SC.Object.extend({
 
 			_loadingController: undefined,
 			_playingController: undefined,
@@ -147,13 +147,13 @@
 					]
 				};
 
-				var loadingStateMachineParser = HooStateMachineConfigurator.create({config: loadingStateMachine_config});
-				var loadingStateMachine = HooStateMachine.create( {startState: loadingStateMachineParser.state("st_empty") } );
-				this._loadingController = HooStateMachine_controller.create( { currentState: loadingStateMachineParser.state("st_empty"), machine: loadingStateMachine, commandsChannel: this } );
+				var loadingStateMachineParser = ABoo.HooStateMachineConfigurator.create({config: loadingStateMachine_config});
+				var loadingStateMachine = ABoo.HooStateMachine.create( {startState: loadingStateMachineParser.state("st_empty") } );
+				this._loadingController = ABoo.HooStateMachine_controller.create( { currentState: loadingStateMachineParser.state("st_empty"), machine: loadingStateMachine, commandsChannel: this } );
 
-				var playingStateMachineParser = HooStateMachineConfigurator.create({config: playingStateMachine_config});
-				var playingStateMachine = HooStateMachine.create( {startState: playingStateMachineParser.state("st_empty")} );
-				this._playingController = HooStateMachine_controller.create( { currentState: playingStateMachineParser.state("st_empty"), machine: playingStateMachine, commandsChannel: this } );
+				var playingStateMachineParser = ABoo.HooStateMachineConfigurator.create({config: playingStateMachine_config});
+				var playingStateMachine = ABoo.HooStateMachine.create( {startState: playingStateMachineParser.state("st_empty")} );
+				this._playingController = ABoo.HooStateMachine_controller.create( { currentState: playingStateMachineParser.state("st_empty"), machine: playingStateMachine, commandsChannel: this } );
 			},
 
 			 send: function( command ) {
@@ -251,7 +251,7 @@
 		/*
 		 *
 		*/
-		AbstractPlayerBackend = SC.Object.extend({
+		ABoo.AbstractPlayerBackend = SC.Object.extend({
 
 			_observablePlayer: undefined,
 			_commandablePlayer: undefined,
@@ -314,7 +314,7 @@
 		/*
 		 *
 		*/
-		FlashPlayerBackend = AbstractPlayerBackend.extend({
+		ABoo.FlashPlayerBackend = ABoo.AbstractPlayerBackend.extend({
 
 			_swfSrc: 		'http://0.0.0.0:3000/flash/HeadlessPlayer/lib/Debug/HeadlessPlayer.swf',
 			_embeddedSwf:	undefined,
@@ -363,7 +363,7 @@
 		});
 
 
-		HTMLPlayerBackend = AbstractPlayerBackend.extend({
+		ABoo.HTMLPlayerBackend = ABoo.AbstractPlayerBackend.extend({
 
 			type:				"HTML5",
 			_audioElement:		undefined,
@@ -400,7 +400,7 @@
 		/*
 		 * we attach one swf/audio element to the page
 		*/
-		HeadlessPlayerSingleton = SC.Object.extend({
+		ABoo.HeadlessPlayerSingleton = SC.Object.extend({
 
 			_playerBackend: undefined,	// flash or HTML5
 			_activePlayer: undefined,	// the current instance using the singleton
@@ -408,7 +408,7 @@
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
-				this.stateMachine = AudioPlayerState.create( {_controller: this} );
+				this.stateMachine = ABoo.AudioPlayerState.create( {_controller: this} );
 				this._attachFlashOrHtml5AudioPlayerToPage();
 			},
 
@@ -428,7 +428,7 @@
 				if( !useNativePlayback && !browserHasFlash )
 					throw("boo.oldflasherror");
 
-				this._playerBackend = useNativePlayback ? HTMLPlayerBackend.create() : FlashPlayerBackend.create();
+				this._playerBackend = useNativePlayback ? ABoo.HTMLPlayerBackend.create() : ABoo.FlashPlayerBackend.create();
 				this._playerBackend._attachToPage();
 
 				/* obviously temporary - get it to work with html player first */
@@ -520,7 +520,7 @@
 		 * We need to bind the spinners and progress to this, not the singleton
 		 * If we had 100 in a page when would we set up bindings?
 		*/
-		HeadlessAudioplayer = HooWidget.extend({
+		ABoo.HeadlessAudioplayer = ABoo.HooWidget.extend({
 
 			_controller:	undefined,
 
@@ -540,7 +540,7 @@
 
 				if( HeadlessAudioplayer.sharedHeadlessPlayer==undefined ){
 					try {
-						HeadlessAudioplayer.sharedHeadlessPlayer = HeadlessPlayerSingleton.create();
+						HeadlessAudioplayer.sharedHeadlessPlayer = ABoo.HeadlessPlayerSingleton.create();
 					} catch(err) {
 			 			 $(this).trigger('booError', err);
 			  			alert("NO! "+err);

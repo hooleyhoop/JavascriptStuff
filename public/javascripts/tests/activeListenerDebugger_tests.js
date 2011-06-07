@@ -19,7 +19,7 @@ test("test listener debugger", function() {
 	}
 
 	var testDiv = $("<div>");
-	var _listenerDebugger = ActiveListenerDebugger.create();
+	var _listenerDebugger = ABoo.ActiveListenerDebugger.create();
 	_listenerDebugger.addListener( testDiv, 'mousedown', this, this._mouseDown );
 
 	testDiv.trigger('mousedown');
@@ -53,3 +53,4 @@ test("test listener debugger", function() {
 });
 
 // raises()
+

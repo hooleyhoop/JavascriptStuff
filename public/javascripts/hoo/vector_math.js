@@ -1,4 +1,4 @@
-VectorMath = SC.Object.extend({
+ABoo.VectorMath = SC.Object.extend({
 });
 
 //SC.mixin
@@ -92,4 +92,4 @@ var VectorMathClassMethods = {
 		return newRects;
 	}
 };
-SC.mixin( VectorMath, VectorMathClassMethods );
+SC.mixin( ABoo.VectorMath, VectorMathClassMethods );

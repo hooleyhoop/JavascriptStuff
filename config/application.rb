@@ -37,11 +37,15 @@ module JavascriptStuff
 
     'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore-2.0.a.2.js',
 
+	'hoo/setup_app.js',
+    'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js',
 
-    'hoo/browser_utilities.js', 'hoo/activeListenerDebugger.js', 'hoo/simple-state-machine.js', "hoo/sm_configurations/abstractConfiguration.js", "hoo/sm_configurations/threeStateButtonStateMachine.js", "hoo/sm_configurations/fiveStateButtonStateMachine.js",
+    'hoo/infrastructure/simple-state-machine.js',
+    "hoo/infrastructure/sm_configurations/abstractConfiguration.js", "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine.js", "hoo/infrastructure/sm_configurations/fiveStateButtonStateMachine.js",
+
     "hoo/vector_math.js", "hoo/graphics.js",
 
-    'widgets/widgets.js', 'widgets/buttons.js', 'widgets/headless_player.js',
+    'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'widgets/headless_player.js',
 
 	'hoo/widgets/flippy_toggle_thing.js',
 

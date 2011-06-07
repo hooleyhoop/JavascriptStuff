@@ -8,7 +8,7 @@
 - if( _.includeOnce? )
 	:javascript
 
-		DonutTestSprite = HooSprite.extend({
+		ABoo.DonutTestSprite = ABoo.HooSprite.extend({
 
 
 			_loadColor:"rgba(170,170,170,0.8)",
@@ -105,7 +105,7 @@
 			}
 		});
 
-		HooRadialProgressGraphic = SC.Object.extend({
+		ABoo.HooRadialProgressGraphic = SC.Object.extend({
 
 			_donutTestSprite: undefined,
 			_parentCanvas: undefined,
@@ -119,7 +119,7 @@
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
-				this._donutTestSprite = DonutTestSprite.create();
+				this._donutTestSprite = ABoo.DonutTestSprite.create();
 			},
 			drawInRect: function() {
 				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
@@ -145,10 +145,10 @@
 				if(this._isBusy) {
 					this._busyAngle = 0;
 					this._lastUpdateTime = -1
-					ShiteDisplayLink.sharedDisplayLink.registerListener(this);
+					ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener(this);
 				} else {
 					this._busyAngle = -1;
-					ShiteDisplayLink.sharedDisplayLink.unregisterListener(this);
+					ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener(this);
 				}
 				this._parentCanvas.setNeedsDisplay();
 			},
@@ -163,14 +163,14 @@
 			}
 		});
 
-		HooRadialProgress = HooWidget.extend({
+		ABoo.HooRadialProgress = ABoo.HooWidget.extend({
 
 			_hooCanvas: undefined,
 			_progressGraphic:undefined,
 
 			init: function( /* init never has args */ ) {
 				arguments.callee.base.apply(this,arguments);
-				this._progressGraphic = HooRadialProgressGraphic.create( {_outerRad:this.json.outerRad, _innerRad:this.json.innerRad} );
+				this._progressGraphic = ABoo.HooRadialProgressGraphic.create( {_outerRad:this.json.outerRad, _innerRad:this.json.innerRad} );
 			},
 
 			setupDidComplete: function() {

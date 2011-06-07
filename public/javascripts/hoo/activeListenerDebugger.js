@@ -1,4 +1,4 @@
-ActiveListenerDebugger = SC.Object.extend({
+ABoo.ActiveListenerDebugger = SC.Object.extend({
 
 	_targets:undefined,
 

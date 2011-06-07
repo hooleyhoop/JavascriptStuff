@@ -7,8 +7,6 @@
  * ** TODO ** !: $.live() can bind an event handler to not just all objects that exist now but all objects in the future as well.
  * somehow we can use this to create new instances on ajax-ed html, no?
  */
-ABoo = SC.Application.create();
-HOO_nameSpace = ABoo;
 
  // 1) Object is inserted into page
  // 2) bind somehow spots it, runs an event - probably not possible! whenever we load html by ajax we must check to see if it needs this running

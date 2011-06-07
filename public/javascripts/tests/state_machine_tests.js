@@ -1,4 +1,37 @@
+module( "State Machine", {
+  setup: function() {
+    ok( true, "once extra assert per test" );
+  }
+});
+
+ABoo.HooStateMachine_testCommandChannel = SC.Object.extend({
+	send: function( command ) {
+		//alert( command.name );
+	}
+});
+
 // Lets kick off state machine tests
+test("state machine fundamentals", function() {
+
+	var anEvent	= ABoo.HooStateMachine_event.create( {_name: "doorClosed"} );
+	var aComand = ABoo.HooStateMachine_command.create( {_name: "unlockPanel"} );
+	var aState = ABoo.HooStateMachine_state.create( {_name: "idle" });
+
+	equals( anEvent._name, "doorClosed", "!" );
+	equals( aComand._name, "unlockPanel", "!" );
+	equals( aState._name, "idle", "!" );
+});
+
+test("add transition", function() {
+
+	var idle_state = ABoo.HooStateMachine_state.create( {_name: "idle" });
+	var active_state = ABoo.HooStateMachine_state.create( {_name: "active" });
+	var doorClosed_event = ABoo.HooStateMachine_event.create( {_name: "doorClosed"} );
+	idle_state.addTransition( doorClosed_event, active_state );
+
+	equals( idle_state.hasTransition("doorClosed"), true, "!" );
+});
+
 test("the simplest state machine example", function() {
 
 	// She has a secret compartment in her bedroom that is normally locked and concealed.
@@ -6,25 +39,24 @@ test("the simplest state machine example", function() {
 	// Once these are done, the secret panel is unlocked for her to open.
 	// The controller Communicates with devices by receiving event messages and sending command messages.
 	// These are both four-letter codes sent through the communication channels.
+	var doorClosed_event		= ABoo.HooStateMachine_event.create( {_name: "doorClosed"} );
+	var drawerOpened_event		= ABoo.HooStateMachine_event.create( {_name: "drawerOpened"} );
+	var lightOn_event			= ABoo.HooStateMachine_event.create( {_name: "lightOn"} );
+	var doorOpened_event		= ABoo.HooStateMachine_event.create( {_name: "doorOpened"} );
+	var panelClosed_event		= ABoo.HooStateMachine_event.create( {_name: "panelClosed"} );
 
-	var doorClosed_event		= HooStateMachine_event.create( {name: "doorClosed"} );
-	var drawerOpened_event		= HooStateMachine_event.create( {name: "drawerOpened"} );
-	var lightOn_event			= HooStateMachine_event.create( {name: "lightOn"} );
-	var doorOpened_event		= HooStateMachine_event.create( {name: "doorOpened"} );
-	var panelClosed_event		= HooStateMachine_event.create( {name: "panelClosed"} );
+	var unlockPanelCmd 			= ABoo.HooStateMachine_command.create( {_name: "unlockPanel"} );
+	var lockPanelCmd 			= ABoo.HooStateMachine_command.create( {_name: "lockPanel"} );
+	var lockDoorCmd 			= ABoo.HooStateMachine_command.create( {_name: "lockDoor"} );
+	var unlockDoorCmd 			= ABoo.HooStateMachine_command.create( {_name: "unlockDoor"} );
 
-	var unlockPanelCmd 			= HooStateMachine_command.create( {name: "unlockPanel"} );
-	var lockPanelCmd 			= HooStateMachine_command.create( {name: "lockPanel"} );
-	var lockDoorCmd 			= HooStateMachine_command.create( {name: "lockDoor"} );
-	var unlockDoorCmd 			= HooStateMachine_command.create( {name: "unlockDoor"} );
+	var idle_state				= ABoo.HooStateMachine_state.create( {_name: "idle" });
+	var active_state			= ABoo.HooStateMachine_state.create( {_name: "active" });
+	var waitingForLight_state	= ABoo.HooStateMachine_state.create( {_name: "waitingForLight" });
+	var waitingForDrawer_state	= ABoo.HooStateMachine_state.create( {_name: "waitingForDrawer" });
+	var unlockedPanel_state		= ABoo.HooStateMachine_state.create( {_name: "unlockedPanel" });
 
-	var idle_state				= HooStateMachine_state.create( {name: "idle" });
-	var active_state			= HooStateMachine_state.create( {name: "active" });
-	var waitingForLight_state	= HooStateMachine_state.create( {name: "waitingForLight" });
-	var waitingForDrawer_state	= HooStateMachine_state.create( {name: "waitingForDrawer" });
-	var unlockedPanel_state		= HooStateMachine_state.create( {name: "unlockedPanel" });
-
-	var stateMachineInstance = HooStateMachine.create( {startState: idle_state} );
+	var stateMachineInstance = ABoo.HooStateMachine.create( {_startState: idle_state} );
 
 	idle_state.addTransition( doorClosed_event, active_state );
 	idle_state.addEntryAction( unlockDoorCmd );
@@ -45,20 +77,21 @@ test("the simplest state machine example", function() {
 	resetEvents.push( doorOpened_event );
 	stateMachineInstance.addResetEvents( resetEvents );
 
-	var testReciever = HooStateMachine_testCommandChannel.create();
-	var controller = HooStateMachine_controller.create( { currentState: idle_state, machine: stateMachineInstance, commandsChannel: testReciever } );
+	var testReciever = ABoo.HooStateMachine_testCommandChannel.create();
+	var controller = ABoo.HooStateMachine_controller.create( { _currentState: idle_state, _machine: stateMachineInstance, _commandsChannel: testReciever } );
 
-	equals( controller.currentState.name, "idle", "!" );
+	equals( controller._currentState._name, "idle", "!" );
 
 	controller.handle( "doorClosed" );
-	equals( controller.currentState.name, "active", "!" );
+	equals( controller._currentState._name, "active", "!" );
 
 	controller.handle( "drawerOpened" );
-	equals( controller.currentState.name, "waitingForLight", "!" );
+	equals( controller._currentState._name, "waitingForLight", "!" );
 
 	controller.handle( "lightOn" );
-	equals( controller.currentState.name, "unlockedPanel", "!" );
+	equals( controller._currentState._name, "unlockedPanel", "!" );
 });
+
 
 test("the simplest state machine example with json", function() {
 
@@ -98,25 +131,25 @@ test("the simplest state machine example with json", function() {
 			{"state": "st_unlockedPanel", 	"entryAction": "cmd_lockDoor",		"exitAction": null }
 		],
 		"resetEvents": [
-			"doorOpened_event"
+			"ev_doorOpened"
 		]
 	};
 
-	var simpleStateMachineParser = HooStateMachineConfigurator.create({config: simplestSM_config });
-	var stateMachineInstance = HooStateMachine.create( {startState: simpleStateMachineParser.state("st_idle") } );
-	var testReciever = HooStateMachine_testCommandChannel.create();
-	var controller = HooStateMachine_controller.create( { currentState: simpleStateMachineParser.state("st_idle"), machine: stateMachineInstance, commandsChannel: testReciever } );
+	var simpleStateMachineParser = ABoo.HooStateMachineConfigurator.create({_config: simplestSM_config });
+	var stateMachineInstance = ABoo.HooStateMachine.create( {_startState: simpleStateMachineParser.state("st_idle") } );
+	var testReciever = ABoo.HooStateMachine_testCommandChannel.create();
+	var controller = ABoo.HooStateMachine_controller.create( { _currentState: simpleStateMachineParser.state("st_idle"), _machine: stateMachineInstance, _commandsChannel: testReciever } );
 
-	equals( controller.currentState.name, "st_idle", "!" );
+	equals( controller._currentState._name, "st_idle", "!" );
 
 	controller.handle( "ev_doorClosed" );
-	equals( controller.currentState.name, "st_active", "!" );
+	equals( controller._currentState._name, "st_active", "!" );
 
 	controller.handle( "ev_drawerOpened" );
-	equals( controller.currentState.name, "st_waitingForLight", "!" );
+	equals( controller._currentState._name, "st_waitingForLight", "!" );
 
 	controller.handle( "ev_lightOn" );
-	equals( controller.currentState.name, "st_unlockedPanel", "!" );
+	equals( controller._currentState._name, "st_unlockedPanel", "!" );
 });
 
 test("a hierarchical state machine example", function() {
@@ -161,27 +194,28 @@ test("a hierarchical state machine example", function() {
 	});
 
 	var cmdChl = TestCommandChannel.create();
-	var hierarchicalStateMachineParser = HooStateMachineConfigurator.create({ config: hierarchicalSM_config });
-	var stateMachineInstance = HooStateMachine.create( { startState: hierarchicalStateMachineParser.state("st_off"), resetEvents: hierarchicalStateMachineParser._resetEvents } );
-	var controller = HooStateMachine_controller.create( { currentState: hierarchicalStateMachineParser.state("st_off"), machine: stateMachineInstance, commandsChannel: cmdChl } );
+	var hierarchicalStateMachineParser = ABoo.HooStateMachineConfigurator.create({ _config: hierarchicalSM_config });
+	var stateMachineInstance = ABoo.HooStateMachine.create( { _startState: hierarchicalStateMachineParser.state("st_off"), _resetEvents: hierarchicalStateMachineParser._resetEvents } );
+	var controller = ABoo.HooStateMachine_controller.create( { _currentState: hierarchicalStateMachineParser.state("st_off"), _machine: stateMachineInstance, _commandsChannel: cmdChl } );
 
-	equals( controller.currentState.name, "st_off", "!" );
+	equals( controller._currentState._name, "st_off", "!" );
 	controller.handle( "ev_load" );
-	equals( controller.currentState.name, "st_loading", "!" );
+	equals( controller._currentState._name, "st_loading", "!" );
 	controller.handle( "ev_play" );
-	equals( controller.currentState.name, "st_playing", "!" );
+	equals( controller._currentState._name, "st_playing", "!" );
 	controller.handle( "ev_turnOff" );
-	equals( controller.currentState.name, "st_off", "!" );
+	equals( controller._currentState._name, "st_off", "!" );
 
 	// -- test result commands
 
 });
 
+
 test("ThreeStateButtonStateMachine", function() {
 
 	var ninja = new Mock();
 
-	var threeButtonSM = ThreeStateButtonStateMachine.create({ _controller: ninja });
+	var threeButtonSM = ABoo.ThreeStateButtonStateMachine.create({ _controller: ninja });
 	equals( threeButtonSM.currentStateName(), "st_disabled", "!" );
 
 	ninja.expects(1).method('cmd_enableButton');
@@ -228,18 +262,12 @@ test("FiveStateButtonStateMachine", function() {
 
 	var ninja = new Mock();
 
-	var fiveButtonSM = FiveStateButtonStateMachine.create({ _controller: ninja });
+	var fiveButtonSM = ABoo.FiveStateButtonStateMachine.create({ _controller: ninja });
 });
 
-HooStateMachine_testCommandChannel = SC.Object.extend({
-	send: function( command ) {
-		//alert( command.name );
-	}
-});
+
 
 	// ok( true, "this test is fine" );
 	// var value = "hello";
 	// equals( "hello", value, "We expect value to be hello" );
-
-
 

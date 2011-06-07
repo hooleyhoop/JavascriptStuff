@@ -26,7 +26,7 @@
 - if( _.includeOnce? )
 	:javascript
 
-		BusyFadeHelper = SC.Object.extend({
+		ABoo.BusyFadeHelper = SC.Object.extend({
 
 			_busyAlpha:			0,
 			_busyFadeDirection:	false,
@@ -69,7 +69,7 @@
 		/*
 		 *
 		*/
-		HooSimpleSlider = HooWidget.extend({
+		ABoo.HooSimpleSlider = ABoo.HooWidget.extend({
 
 			_$parentDiv:		undefined,
 			_$canvas:			undefined,
@@ -104,12 +104,12 @@
 				this._timeStep = 1000/15;
 				this._currentTime = 0;
 
-				this._stateMachine = HooSliderItem.create();
+				this._stateMachine = ABoo.HooSliderItem.create();
 				this._stateMachine._delegate = this;
 				this._stateMachine._setupStateMachine( 0 );
 				this._stateMachine.setInitialState( 0 );
 
-				this._busyFadeHelper = BusyFadeHelper.create();
+				this._busyFadeHelper = ABoo.BusyFadeHelper.create();
 			},
 
 			setupDidComplete: function() {
