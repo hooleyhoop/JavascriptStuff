@@ -506,7 +506,6 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 	}
 });
 
-// ShiteDisplayLink.mixin({
 var ShiteDisplayLinkClassMethods = SC.Mixin.create({
 
 	sharedDisplayLink: undefined

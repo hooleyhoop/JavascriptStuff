@@ -2545,8 +2545,10 @@ SC.defineProperty = function(obj, keyName, desc, val) {
 */
 SC.create = function(obj, props) {
   var ret = o_create(obj, props);
-  if (GUID_KEY in ret) SC.generateGuid(ret, 'sc');
-  if (META_KEY in ret) SC.rewatch(ret); // setup watch chains if needed.
+  if (GUID_KEY in ret)
+  	SC.generateGuid(ret, 'sc');
+  if (META_KEY in ret)
+  	SC.rewatch(ret); // setup watch chains if needed.
   return ret;
 };
 
@@ -9679,8 +9681,11 @@ SC.EventDispatcher = SC.Object.extend(
     var rootElement = get(this, 'rootElement');
 
     SC.$(rootElement).delegate('.sc-view', event + '.sproutcore', function(evt) {
-      var view = SC.View.views[this.id],
-          result = true, handler;
+
+		var wha= SC.View.views;
+		//debugger;
+      var view = SC.View.views[this.id];
+		var result = true, handler;
 
       SC.run(function() {
         while (result !== false && view) {
@@ -10512,12 +10517,14 @@ SC.View = SC.Object.extend(
   */
   init: function() {
     var parentView = get(this, 'parentView');
-
     this._super();
 
     // Register the view for event handling. This hash is used by
     // SC.RootResponder to dispatch incoming events.
-    SC.View.views[get(this, 'elementId')] = this;
+    var wha = get(this, 'elementId');
+  	//alert("Init "+this.id+" "+wha+" "+parentView);
+
+    SC.View.views[wha] = this;
 
     // setup child views. be sure to clone the child views array first
     this.childViews = get(this, 'childViews').slice();

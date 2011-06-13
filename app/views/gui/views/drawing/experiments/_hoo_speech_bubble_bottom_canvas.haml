@@ -76,7 +76,7 @@
 				this._super();
 
 				// the background has been removed if javascript is enabled!
-				if( browserSupportsCanvas() )
+				if( ABoo.browserSupportsCanvas() )
 				{
 					this._$canvas = this.getFirstDomItemOfType("canvas");
 
@@ -89,7 +89,7 @@
 			},
 
 			parentDidResize: function() {
-				if( browserSupportsCanvas() ){
+				if( ABoo.browserSupportsCanvas() ){
 					if(this._started===true)
 						this.resizeCanvas();
 				}

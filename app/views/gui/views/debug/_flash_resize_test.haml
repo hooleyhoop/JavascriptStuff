@@ -1,0 +1,21 @@
+- push( flash_resize_test )
+
+-# http://0.0.0.0:3000/widgets/flashresizetest
+
+- wrapLiveObject( _, :style=>'' ) do
+	- embedSwf( _.flashUrl, 121, "100%", "100%", "#ffffff", {imgURL:"http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg"} )
+
+
+- if( _.includeOnce? )
+	:javascript
+
+		ABoo.GUI_Views_Debug_FlashResizeTest = ABoo.HooWidget.extend({
+			setupDidComplete: function() {
+
+				var flashURL = ABoo.FlashObject.uRLForSwf( "ImgResizer/ImgResizer" );
+				var flashOb = ABoo.FlashObject.newSwfForURL( flashURL, "100%", "100%", {imgURL:"http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg"} );
+				flashOb.appendToDiv( this.div$ );
+
+			}
+		});
+

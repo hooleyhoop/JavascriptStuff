@@ -48,17 +48,21 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 			console.info("cannot find json for "+className );
 
 		var hmm = eval(className);
-		var newInstance = hmm.create( {id: idString, json: jsonOb} );
+		if(hmm!==undefined) {
+			var newInstance = hmm.create( {id: idString, json: jsonOb} );
 
-		if( HOO_nameSpace[newInstanceName]!==undefined ) {
-			console.error("That instance already exists! Cannot create instance of "+className );
+			if( HOO_nameSpace[newInstanceName]!==undefined ) {
+				console.error("That instance already exists! Cannot create instance of "+className );
+			}
+			HOO_nameSpace[newInstanceName] = newInstance;
+
+			// maybe should add to content view
+			_hooWindow.addSubView( newInstance );
+
+			console.log( "Created "+newInstance +" > "+ newInstanceName );
+		} else {
+			console.log( "No js called "+className );
 		}
-		HOO_nameSpace[newInstanceName] = newInstance;
-
-		// maybe should add to content view
-		_hooWindow.addSubView( newInstance );
-
-		console.log( "Created "+newInstance +" > "+ newInstanceName );
 	});
 
 	// TODO: how about going thru the json and swapping objects in instead of swapFindAndSwapInstanceVariableNamed
@@ -95,30 +99,11 @@ function eventTrampoline(e,a) {
  * page load because it was tagged with a jsclass attribute server side.
  * set these values in Create( hash )
 */
-ABoo.HooWidget = SC.Object.extend({
+ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 
-	json: undefined,
-	id: undefined,
-	div$: undefined,
-
-	init: function( /* init never has args */ ) {
-	    this._super();
-		this.div$ = typeof(this.div$) != 'undefined' ? this.div$ : $( "#"+this.id );
-	},
-
-	parentDidResize: function() {
-	},
-
-	getFirstDomItemOfType: function( type ) {
-
-		var $item = this.div$.find(type+":first");
-		// debugger;
-		// var itemQuery = "#"+this.id+" "+type+":first";
-		// var $item = $( itemQuery );
-		if( $item.length!=1 )
-			console.error("Could not find the "+type+" dom item");
-		return $item;
-	},
+	//init: function( /* init never has args */ ) {
+	//    this._super();
+	//},
 
 	// extract bindings from json
 	setup_hoo_binding_from_json: function( bindingName ) {
@@ -149,15 +134,6 @@ ABoo.HooWidget = SC.Object.extend({
 		this.unbindToTarget( target, propertyName, this, observerDidChangeMethod );
 	},
 
-	bindToTarget: function( target, propertyName, observer, observerDidChangeMethod ) {
-		target.addObserver( propertyName, observer, observerDidChangeMethod );
-		observer[observerDidChangeMethod].call( observer, target, propertyName ); // sync initial value
-	},
-
-	unbindToTarget: function( target, propertyName, observer, observerDidChangeMethod ) {
-		target.removeObserver( propertyName, observer, observerDidChangeMethod );
-	},
-
 	setup_hoo_action_from_json: function( action ) {
 
 		if( this.json.javascriptActions && this.json.javascriptActions[action] )
@@ -170,19 +146,9 @@ ABoo.HooWidget = SC.Object.extend({
 			return { t:target, a:action, w:arg, actionIsAsync: isAsync };
 		}
 		return null;
-	},
-
-	// given an instance variable that contains the name of an object, swap the content of the instance variable for the actual object
-	swapFindAndSwapInstanceVariableNamed: function( jsonProp, iVarName ) {
-
-		var value = null;
-		if( HOO_nameSpace[jsonProp] ) {
-			value = HOO_nameSpace[jsonProp];
-		} else {
-			debugger;
-		}
-		this.set( iVarName, value );
 	}
+
+
 
 });
 

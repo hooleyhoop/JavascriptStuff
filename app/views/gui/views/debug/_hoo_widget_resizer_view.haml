@@ -156,11 +156,13 @@
 
 				var all_jsClass_objects = this.div$.find('[data-jsclass]');
 				all_jsClass_objects.each(function(index, value) {
-
 					var idString = $(value).attr('id');
 					var instanceName = '_'+idString;
 					//console.log("about to resize "+ HOO_nameSpace[instanceName]);
-					HOO_nameSpace[instanceName].parentDidResize();
+					var ob = HOO_nameSpace[instanceName];
+					/* It is sometimes valid (when debugging) that there is no instance */
+					if(ob)
+						ob.parentDidResize();
 				});
 			}
 		});

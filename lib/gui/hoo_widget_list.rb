@@ -110,6 +110,9 @@ module GUI
 			'colorFill'			    =>	GUI::Views::Debug::HooColorFill.name,
 			'bigWord'			    =>	GUI::Views::Debug::HooBigWordView.name,
 			'debugTextInput'		=>	GUI::Views::Debug::HooDebugTextInput.name,
+			'flashresizetest'		=>	GUI::Views::Debug::FlashResizeTest.name,
+			'flashsharedelementtest'	=> GUI::Views::Debug::FlashSharedElementTest.name,
+			'flashsharedelement'	=> GUI::Views::Debug::FlashSharedElement.name,
 
 			# Lists
 			'textList1'			    =>	GUI::Views::Lists::HooTextListView.name,

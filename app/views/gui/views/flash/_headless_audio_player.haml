@@ -414,12 +414,12 @@
 
 			_attachFlashOrHtml5AudioPlayerToPage: function() {
 
-				var browserHasNativeMp3Support = browserCanPlayNativeMP3();
+				var browserHasNativeMp3Support = ABoo.browserCanPlayNativeMP3();
 				var browserHasFlash = hasMinimumFlash();
 
 				var shouldUseFlashInSafari = NO;
 				if(shouldUseFlashInSafari)
-					isSafari = browserIsSafari();
+					isSafari = ABoo.browserIsSafari();
 				else
 					isSafari = false;
 

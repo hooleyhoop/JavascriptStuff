@@ -1,15 +1,5 @@
 module HooGuiHelper
 
-	# autoName the data-jsClass
-	def wrapLiveObject( obj, atts )
-		# NB! haml_tag writes directly to the haml buffer, we dont return this then insert it in the page
-		attrs = {:class=>_.CSSClassName, :id=>_.HTMLIDName, :data=>{'jsclass'=>'ABoo.'+_.jsClassName}}
-		attrs.merge!(atts)
-		haml_tag :div, attrs do
-		  	yield
-		end
-	end
-
 	# add object to the viewstack
 	def push( obj )
 
@@ -175,6 +165,35 @@ module HooGuiHelper
 END
 		return  tt.html_safe()
 	end
+
+	# autoName the data-jsClass
+	def wrapLiveObject( obj, attrs={} )
+		# NB! haml_tag writes directly to the haml buffer, we dont return this then insert it in the page
+		stdAttrs = {:class=>_.CSSClassName, :id=>_.HTMLIDName, :data=>{'jsclass'=>'ABoo.'+_.jsClassName}}
+		stdAttrs.merge!(attrs)
+		haml_tag :div, stdAttrs do
+		  	yield
+		end
+	end
+
+	# i am not sure if these stags should be self closed or not (param tags are wierd? Not sure i can do with haml)
+	def embedSwf( swfURL, idNum, widthStr, heiStr, colStr, attrs=nil )
+		haml_tag :object, { :data=>swfURL, :id=>idNum, :type=>'application/x-shockwave-flash', :width=>widthStr, :height=>heiStr } do
+
+			stdAttrs = {:rootID=>idNum}
+			stdAttrs.merge!(attrs)
+			attrsAsString = stdAttrs.collect { |k, v| "#{k}=#{v}" }.join('&')
+
+			haml_tag :param, { :name=>'movie', :value=>swfURL }
+			haml_tag :param, { :name=>"scale", :value=>"noscale" }
+			haml_tag :param, { :name=>"salign", :value=>"lt" }
+			haml_tag :param, { :name=>"bgColor", :value=>colStr }
+			haml_tag :param, { :name=>'allowScriptAccess', :value=>'always' }
+			haml_tag :param, { :name=>"wmode", :value=>"window" }
+			haml_tag :param, { :name=>'FlashVars', :value=>attrsAsString }
+		end
+	end
+
 
 end
 

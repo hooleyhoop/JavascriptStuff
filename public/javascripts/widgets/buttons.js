@@ -41,7 +41,7 @@ ABoo.HooAbstractButtonGraphic = SC.Object.extend({
 		var itemQuery = "#"+this._rootItemId+" "+this._itemType+":first";
 		var $item = $( itemQuery );
 		if( $item.length!=1 )
-			console.error("Could not find the clickable item");
+			console.warn("Could not find the clickable item");
 		return $item;
 	}
 })
@@ -56,7 +56,7 @@ ABoo.HooButtonGraphic = ABoo.HooAbstractButtonGraphic.extend({
 		var formQuery = "#" + this._rootItemId + " form:first";
 		var $form = $( formQuery );
 		if( $form.length!=1 )
-			console.error("Could not find the form");
+			console.warn("Could not find the form");
 		return $form;
 	},
 

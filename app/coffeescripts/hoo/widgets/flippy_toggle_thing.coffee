@@ -2,13 +2,15 @@ ABoo.DebugView = SC.View.extend
 	mouseDown: () ->
 		console.log("!!clicky clicky doHicky!!!..")
 
-ABoo.HackedWidget = ABoo.HooWidget.extend
+ABoo.HackedWidget = SC.View.extend
 	json: undefined
 	id: undefined
 	div$: undefined
 
 	init:() ->
+		this[SC.GUID_KEY] = @id
 		@_super()
+		
 		if not @div$
 			@div$ = $( "#"+@id )
 		#@div$.remove();
@@ -21,6 +23,8 @@ ABoo.HackedWidget = ABoo.HooWidget.extend
 		#¢@set( 'element', @div$.clone().wrap('<div></div>').parent().html() ) #.clone().wrap('<div></div>').parent().html()
 		#@append()
 		
+		# Thinking, ids must match (div and ob)
+		# div class must be sc-view
 		view2 = ABoo.DebugView.create()
 		template = SC.Handlebars.compile("<div style='font-size:21px; background-color:orange'>why why why??????<div>");
 		view2.set( "template", template )

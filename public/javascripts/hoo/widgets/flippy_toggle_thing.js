@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 07 Jun 2011 14:30:30 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 13 Jun 2011 13:19:39 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/flippy_toggle_thing.coffee
  */
 
@@ -8,12 +8,13 @@
       return console.log("!!clicky clicky doHicky!!!..");
     }
   });
-  ABoo.HackedWidget = ABoo.HooWidget.extend({
+  ABoo.HackedWidget = SC.View.extend({
     json: void 0,
     id: void 0,
     div$: void 0,
     init: function() {
       var template, view2;
+      this[SC.GUID_KEY] = this.id;
       this._super();
       if (!this.div$) {
         this.div$ = $("#" + this.id);
