@@ -1,4 +1,4 @@
-module GUI::Views::Unsorted
+module GUI::Views::Drawing::Images
 
     # http://0.0.0.0:3000/widgets/hoo100PercentImg
 	class HooOneHundredPercentImg < GUI::Core::HooView

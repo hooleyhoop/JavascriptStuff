@@ -1,8 +1,9 @@
-/* DO NOT MODIFY. This file was compiled Mon, 13 Jun 2011 15:31:53 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 14 Jun 2011 10:04:27 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/tests/flash_object_tests.coffee
  */
 
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   module("Flash Object", {
     setup: function() {}
   });
@@ -56,5 +57,43 @@
     equals(flashOb1._swfID !== flashOb2._swfID, true, "!");
     equals(flashOb3 === flashOb4, true, "!");
     return equals(flashOb3._swfID === flashOb4._swfID, true, "!");
+  });
+  test("ready is called on simple image", function() {
+    var flashOb3, flashOb4, flashURL, imgURL;
+    this.flashDidLoad = __bind(function(swf) {
+      equals(flashOb3._ready, true, "!");
+      flashOb3.remove();
+      return start();
+    }, this);
+    expect(3);
+    flashURL = ABoo.FlashObject.uRLForSwf("ImgResizer/ImgResizer");
+    imgURL = "http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg";
+    flashOb3 = ABoo.SharedFlashObject.sharedSwfForURL(flashURL, "100%", "100%", {
+      imgURL: imgURL
+    });
+    flashOb3._delegate = this;
+    flashOb3.appendToDiv($('body'));
+    stop(2000);
+    flashOb4 = ABoo.SharedFlashObject.sharedSwfForURL(flashURL, "100%", "100%", {
+      imgURL: imgURL
+    });
+    flashOb4.appendToDiv($('body'));
+    return stop(2000);
+  });
+  test("ready is called on headless player", function() {
+    var flashOb3, flashOb4, flashURL;
+    this.flashDidLoad = __bind(function(swf) {
+      equals(flashOb3._ready, true, "!");
+      flashOb3.remove();
+      return start();
+    }, this);
+    flashURL = ABoo.FlashObject.uRLForSwf("HeadlessPlayer/lib/Debug/HeadlessPlayer");
+    flashOb3 = ABoo.SharedFlashObject.sharedSwfForURL(flashURL, "100%", "100%");
+    flashOb3._delegate = this;
+    flashOb3.appendToDiv($('body'));
+    stop(2000);
+    flashOb4 = ABoo.SharedFlashObject.sharedSwfForURL(flashURL, "100%", "100%");
+    flashOb4.appendToDiv($('body'));
+    return stop(2000);
   });
 }).call(this);

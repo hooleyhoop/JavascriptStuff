@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 13 Jun 2011 17:24:14 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 14 Jun 2011 09:33:48 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/flash_object.coffee
  */
 
@@ -15,6 +15,8 @@
     _swfID: void 0,
     _commandableSwf: void 0,
     _observableSwf: void 0,
+    _delegate: void 0,
+    _ready: void 0,
     init: function() {
       var $wrapper;
       this._super();
@@ -30,19 +32,27 @@
         $wrapper.append(this._objectTagString);
       }
       this._observableSwf = $wrapper;
-      return this._commandableSwf = $wrapper.find('object')[0];
+      this._commandableSwf = $wrapper.find('object')[0];
+      return this._ready = false;
     },
     /*
     		!important: everytime you move the swf it creates a new instance?
     	*/
     appendToDiv: function(div$) {
-      $wrapper.bind('ready', __bind(function() {
+      HOO_nameSpace.assert(this._ready === false, "ready called twice?");
+      this._observableSwf.bind('ready', __bind(function() {
         return this.flashDidLoad();
       }, this));
       return this._observableSwf.appendTo(div$);
     },
+    remove: function() {
+      this._observableSwf.remove();
+      return this._ready = false;
+    },
     flashDidLoad: function() {
-      return alert("ooh ya bugger");
+      HOO_nameSpace.assert(this._ready === false, "ready called twice?");
+      this._ready = true;
+      return this._delegate.flashDidLoad(this);
     }
   });
   ABoo.FlashObjectClassMethods = SC.Mixin.create({
@@ -89,7 +99,7 @@
     swapInForItem: function(item$) {
       if (this._currentPlaceHolder != null) {
         this._observableSwf.after(this._currentPlaceHolder);
-        this._observableSwf.remove();
+        this.remove();
       }
       this._observableSwf.bind('ready', __bind(function() {
         return this.flashDidLoad();

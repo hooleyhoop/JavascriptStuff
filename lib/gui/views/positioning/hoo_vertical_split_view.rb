@@ -12,7 +12,7 @@ module GUI::Views::Positioning
         attr_accessor :fixedColPercent;
 
 		def initialize( args={} )
-			super(args);
+			super(args)
 			@fixedColSide = ''
 			@fixedColPercent=0;
 		end
@@ -41,13 +41,13 @@ module GUI::Views::Positioning
         # Mock Data
 		def setupDebugFixture
 			super();
-            setFixedColumn('right', 45 )
+            setFixedColumn('left', 60 )
 
 			placeholderView1 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView1 );
 
-			placeholderView2 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
-			self.addSubView( placeholderView2 );
+			placeHolderView2 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			self.addSubView( placeHolderView2 );
 		end
 
 	end

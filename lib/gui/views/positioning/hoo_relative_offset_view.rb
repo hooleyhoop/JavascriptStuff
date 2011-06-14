@@ -13,5 +13,13 @@ module GUI::Views::Positioning
 			@left = left
 		end
 
+        # Mock Data
+		def setupDebugFixture
+			super();
+
+			placeholderView1 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			self.addSubView( placeholderView1 )
+		end
+
 	end
 end

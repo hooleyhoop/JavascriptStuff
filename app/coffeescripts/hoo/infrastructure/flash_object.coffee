@@ -10,6 +10,8 @@ ABoo.FlashObject = SC.Object.extend
 	_swfID: undefined
 	_commandableSwf:undefined
 	_observableSwf: undefined
+	_delegate: undefined
+	_ready: undefined
 	
 	init: () -> # _url, _width, _height, _flashVarDict
 		@_super()
@@ -27,6 +29,8 @@ ABoo.FlashObject = SC.Object.extend
 		@_observableSwf = $wrapper;
 		@_commandableSwf = $wrapper.find('object')[0]
 		
+		@_ready = false
+		
 		# Hack in some utility functions to make sure audio element has the same interface as the swf
 		#@_commandableSwf.getNodeProperty = function(propertyName){ return this[propertyName](); };
 		#@_commandableSwf.setNodeProperty = function(propertyName,value){ this['set'+propertyName](value); };
@@ -37,15 +41,21 @@ ABoo.FlashObject = SC.Object.extend
 	###
 		!important: everytime you move the swf it creates a new instance?
 	###
-	appendToDiv: ( div$ ) -> 
-		$wrapper.bind 'ready', () =>
+	appendToDiv: ( div$ ) ->
+		HOO_nameSpace.assert( @_ready==false, "ready called twice?" );				
+		@_observableSwf.bind 'ready', () =>
 			@flashDidLoad();
 
 		@_observableSwf.appendTo( div$ )
 
-!! V E R Y M U C H N E E D T O T E S T T H I S !!
+	remove: () ->
+		@_observableSwf.remove()
+		@_ready = false
+
 	flashDidLoad: () ->
-		alert("ooh ya bugger")
+		HOO_nameSpace.assert( @_ready==false, "ready called twice?" );		
+		@_ready = true
+		@_delegate.flashDidLoad( this )
 		
 ABoo.FlashObjectClassMethods = SC.Mixin.create
 	_id: 0
@@ -87,8 +97,8 @@ ABoo.SharedFlashObject = ABoo.FlashObject.extend
 	swapInForItem: ( item$ ) ->
 		if @_currentPlaceHolder?
 			@_observableSwf.after( @_currentPlaceHolder )
-			@_observableSwf.remove()
-			
+			@remove()
+
 		@_observableSwf.bind 'ready', () =>
 			@flashDidLoad();
 	

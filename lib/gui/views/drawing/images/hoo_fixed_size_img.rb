@@ -1,10 +1,11 @@
-module GUI::Views::Unsorted
+module GUI::Views::Drawing::Images
 
     # http://0.0.0.0:3000/widgets/fixedSizeImage
 	class HooFixedSizeImg < GUI::Core::HooView
 
-        attr_accessor :img;
-        attr_accessor :label, :labelLink;
+		attr_accessor :width, :height
+        attr_accessor :img
+        attr_accessor :label, :labelLink
 
         # Mock Data
 		def setupDebugFixture

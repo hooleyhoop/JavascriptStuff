@@ -50,7 +50,50 @@ test( "new flash object", () ->
 	
 	equals( flashOb3 == flashOb4, true, "!" )
 	equals( flashOb3._swfID == flashOb4._swfID, true, "!" )	
-	
 )
 
 
+test( "ready is called on simple image", () ->
+
+	this.flashDidLoad = (swf) =>
+		equals( flashOb3._ready, true, "!" )
+		flashOb3.remove()
+		start()
+	
+	#Tell QUnit that you expect three assertions to run  
+	expect(3);
+	
+	flashURL = ABoo.FlashObject.uRLForSwf("ImgResizer/ImgResizer")
+	imgURL = "http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg"
+	flashOb3 = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, "100%", "100%", {imgURL:imgURL} )
+	flashOb3._delegate = this
+	flashOb3.appendToDiv($('body'))
+	
+	stop(2000)
+	
+	flashOb4 = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, "100%", "100%", {imgURL:imgURL} )
+	flashOb4.appendToDiv($('body'))
+	
+	stop(2000)
+)
+
+test( "ready is called on headless player", () ->
+
+	this.flashDidLoad = (swf) =>
+		equals( flashOb3._ready, true, "!" )
+		flashOb3.remove()
+		start()
+
+	# The test is automatically paused
+	flashURL = ABoo.FlashObject.uRLForSwf("HeadlessPlayer/lib/Debug/HeadlessPlayer")
+	flashOb3 = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, "100%", "100%" )
+	flashOb3._delegate = this
+	flashOb3.appendToDiv($('body'))
+
+	stop(2000)
+
+	flashOb4 = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, "100%", "100%" )
+	flashOb4.appendToDiv($('body'))
+
+	stop(2000)
+)
