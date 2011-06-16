@@ -161,8 +161,10 @@
 					//console.log("about to resize "+ HOO_nameSpace[instanceName]);
 					var ob = HOO_nameSpace[instanceName];
 					/* It is sometimes valid (when debugging) that there is no instance */
-					if(ob)
+					if(ob && ob.parentDidResize)
 						ob.parentDidResize();
+					else
+						debugger;
 				});
 			}
 		});

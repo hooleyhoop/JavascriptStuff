@@ -10,11 +10,11 @@
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.DebugTextInput = HooWidget.extend({
+		ABoo.DebugTextInput = ABoo.HooWidget.extend({
 			_mouseClickAction: undefined,
 			_txtField: undefined,
 			init: function( /* init never has args */ ) {
-	    		this._super();
+				this._super();
 				this._txtField = this.getFirstDomItemOfType("form input:text");
 			},
 			setupDidComplete: function() {

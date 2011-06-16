@@ -3,6 +3,8 @@ module GUI::Views::Drawing::Player
 	# http://0.0.0.0:3000/widgets/playPauseButton
 	class HooPlayPauseButton <  GUI::Views::Drawing::Buttons::DivButton::HooDivButtonAbstract
 
+		include GUI::Core::HooBindingsMixin
+
 		attr_accessor :parentCanvas
 		attr_accessor :percentOfCanvas
 
@@ -10,13 +12,6 @@ module GUI::Views::Drawing::Player
 			@_states = 5
 			extractArgs( args, {:parentCanvas=>nil, :percentOfCanvas=>0.6} );
 			super(args);
-		end
-
-		def addRuntimeObject( aHash )
-			if(@runtimeObjects==nil)
-				@runtimeObjects = {};
-			end
-			@runtimeObjects.merge!( aHash );
 		end
 
         # Mock Data

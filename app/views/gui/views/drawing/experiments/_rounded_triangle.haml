@@ -8,7 +8,8 @@
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.RoundedTriangle2 = ABoo.HooWidget.extend({
+		// This is old.. extracted canvas to its own class
+		ABoo.RoundedTriangle2 = ABoo.HooWidget.extend( {
 
 			_$canvas: undefined,
 			_hooCanvas: undefined,
@@ -19,7 +20,7 @@
 			_busyAngle: 0,
 
 			init: function( /* init never has args */ ) {
-	    		this._super();
+				this._super();
 
 				this._$canvas = this.div$.find( "canvas:first" );
 				this._hooCanvas = ABoo.HooCanvas.create({_$canvas:this._$canvas});

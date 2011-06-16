@@ -2,7 +2,7 @@ module GUI::Views::Drawing::Buttons::Jquery
 
 	# 3 state Simple button
 	# 0) Disabled 1)state1 2)state1Pressed
-    # Height is just the height of one state
+	# Height is just the height of one state
 
 	# http://0.0.0.0:3000/widgets/jqueryTestButton
 
@@ -25,7 +25,7 @@ module GUI::Views::Drawing::Buttons::Jquery
 			end
 		end
 
-        # Mock Data
+		# Mock Data
 		def setupDebugFixture
 			super();
 

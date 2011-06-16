@@ -47,16 +47,16 @@ module GUI
 			'formButtonToggle'				=>	GUI::Views::Drawing::Buttons::FormButton::HooFormButtonToggle.name,
 
 			# for drawing - link buttons
-			'divButtonSimple'				=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimple.name,
-			'divButtonSimpleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimpleDynamicWidth.name,
+			'divButtonSimple'				=>	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimple.name,
+			'divButtonSimpleDynamicWidth'	=>	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonSimpleDynamicWidth.name,
 
-			'divButtonToggle'				=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggle.name,
-			'divButtonToggleDynamicWidth'	=> 	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggleDynamicWidth.name,
+			'divButtonToggle'				=>	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggle.name,
+			'divButtonToggleDynamicWidth'	=>	GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggleDynamicWidth.name,
 
 			'jqueryTestButton'				=>	GUI::Views::Drawing::Buttons::Jquery::JqueryButtonTest.name,
 
 			# for Drawing - menus
-			'miniInLineMenu'				=> 	GUI::Views::Drawing::Menus::HooMiniInlineMenu.name,
+			'miniInLineMenu'				=>	GUI::Views::Drawing::Menus::HooMiniInlineMenu.name,
 
 			# for Drawing - player
 			'simpleTimeDisplay'				=>	GUI::Views::Drawing::Player::HooSimpleTimeDisplay.name,
@@ -66,8 +66,8 @@ module GUI
 			'smallPlayerPlayButton'			=>	GUI::Views::Drawing::Player::HooSmallPlayerPlayButton.name,
 
 			# for Drawing - menuItems
-			'textToggleItem'				=> 	GUI::Views::Drawing::Menus::Items::HooTextToggleItem.name,
-			'textLinkItem'					=> 	GUI::Views::Drawing::Menus::Items::HooTextLinkItem.name,
+			'textToggleItem'				=>	GUI::Views::Drawing::Menus::Items::HooTextToggleItem.name,
+			'textLinkItem'					=>	GUI::Views::Drawing::Menus::Items::HooTextLinkItem.name,
 
 			'simpleBusySpinner'				=>	GUI::Views::Drawing::Other::HooSimpleSpinner.name,
 			'simpleTextField'				=>	GUI::Views::Drawing::Other::HooSimpleTextField.name,
@@ -94,32 +94,47 @@ module GUI
 			'followButtonSection'			=>	GUI::Views::Audioboo::FollowButtonSection.name,
 			'userDetailsBanner'				=>	GUI::Views::Audioboo::UserDetailsBanner.name,
 			'booMainDetails'				=>	GUI::Views::Audioboo::BooMainDetails.name,
-			'tableHeader'					=> GUI::Views::Audioboo::TableHeader.name,
-			'croppedImgWithHeader'			=> GUI::Views::Audioboo::CroppedImgWithHeader.name,
-			'tableList'						=> GUI::Views::Audioboo::TableList.name,
-			'addComment'					=> GUI::Views::Audioboo::AddComment.name,
-			'all_user_comments'				=> GUI::Views::Audioboo::AllUserComments.name,
-			'footer'						=> GUI::Views::Audioboo::Footer.name,
-			'editBar'						=> GUI::Views::Audioboo::EditBar.name,
-			'mastHead'						=> GUI::Views::Audioboo::MastHead.name,
+			'tableHeader'					=>	GUI::Views::Audioboo::TableHeader.name,
+			'croppedImgWithHeader'			=>	GUI::Views::Audioboo::CroppedImgWithHeader.name,
+			'tableList'						=>	GUI::Views::Audioboo::TableList.name,
+			'addComment'					=>	GUI::Views::Audioboo::AddComment.name,
+			'all_user_comments'				=>	GUI::Views::Audioboo::AllUserComments.name,
+			'footer'						=>	GUI::Views::Audioboo::Footer.name,
+			'editBar'						=>	GUI::Views::Audioboo::EditBar.name,
+			'mastHead'						=>	GUI::Views::Audioboo::MastHead.name,
 
 			# for debugging
 			'cellRenderer'					=>	GUI::Views::Debug::HooCellRenderer.name,
 			'mockPlayer'					=>	GUI::Views::Debug::MockPlayer.name,
-			'textStyle'						=>	GUI::Views::Debug::HooTextStyle.name,
 			'flippyToggleThing'				=>	GUI::Views::Debug::FlippyToggleThing.name,
 			'testUploadForm'				=>	GUI::Views::Debug::TestUploadFormView.name,
-			'singleWidget'		   			=>	GUI::Views::Debug::HooSingleWidgetView.name,
-			'widgetResizer'		    		=>	GUI::Views::Debug::HooWidgetResizerView.name,
-			'blueView'			    		=>	GUI::Views::Debug::HooBlueView.name,
-			'redView'			    		=>	GUI::Views::Debug::HooRedView.name,
-			'colorFill'			    		=>	GUI::Views::Debug::HooColorFill.name,
-			'bigWord'			    		=>	GUI::Views::Debug::HooBigWordView.name,
 			'debugTextInput'				=>	GUI::Views::Debug::HooDebugTextInput.name,
-			'flashresizetest'				=>	GUI::Views::Debug::FlashResizeTest.name,
-			'flashsharedelementtest'		=> GUI::Views::Debug::FlashSharedElementTest.name,
-			'flashsharedelement'			=> GUI::Views::Debug::FlashSharedElement.name,
-			'canvasimgresizetest'			=> GUI::Views::Debug::CanvasImgResizeTest.name,
+
+			# basic
+			'blueView'			    		=>	GUI::Views::Debug::Basic::HooBlueView.name,
+			'redView'			    		=>	GUI::Views::Debug::Basic::HooRedView.name,
+			'colorFill'			    		=>	GUI::Views::Debug::Basic::HooColorFill.name,
+			'textStyle'						=>	GUI::Views::Debug::Basic::HooTextStyle.name,
+
+			# widget_preview
+			'singleWidget'		   			=>	GUI::Views::Debug::WidgetPreview::HooSingleWidgetView.name,
+			'widgetResizer'		    		=>	GUI::Views::Debug::WidgetPreview::HooWidgetResizerView.name,
+
+			# cropped_image
+			'canvasimgresizetest'			=>	GUI::Views::Debug::CroppedImage::CanvasImgResizeTest.name,
+			'flashresizetest'				=>	GUI::Views::Debug::CroppedImage::FlashResizeTest.name,
+
+			# moving_a_shared_flash
+			'flashsharedelementtest'		=>	GUI::Views::Debug::MovingASharedFlash::FlashSharedElementTest.name,
+			'flashsharedelement'			=>	GUI::Views::Debug::MovingASharedFlash::FlashSharedElement.name,
+
+			# moving_a_shared_headless_flash
+			'beepertest'					=>	GUI::Views::Debug::MovingASharedHeadlessFlash::BeeperTest.name,
+			'multiplebeepertest'			=>	GUI::Views::Debug::MovingASharedHeadlessFlash::MultipleBeeperTest.name,
+
+			# unused
+			'bigWord'			    		=>	GUI::Views::Debug::Unused::HooBigWordView.name,
+
 
 			# Lists
 			'textList1'			    		=>	GUI::Views::Lists::HooTextListView.name,
@@ -131,10 +146,10 @@ module GUI
 			'paddedHorizontal'				=>	GUI::Views::Lists::HooPaddedHorizontalList2View.name,
 
 			# Sproutcore
-			'sc_todos'						=> GUI::Views::Sproutcore::ScTodos.name,
-			'sc_button'						=> GUI::Views::Sproutcore::ScButton.name,
-			'sc_checkbox'					=> GUI::Views::Sproutcore::ScCheckbox.name,
-			'sc_textfield'					=> GUI::Views::Sproutcore::ScTextfield.name,
+			'sc_todos'						=>	GUI::Views::Sproutcore::ScTodos.name,
+			'sc_button'						=>	GUI::Views::Sproutcore::ScButton.name,
+			'sc_checkbox'					=>	GUI::Views::Sproutcore::ScCheckbox.name,
+			'sc_textfield'					=>	GUI::Views::Sproutcore::ScTextfield.name,
 
 			# Unsorted
 			'labeledButton'		    		=>	GUI::Views::Unsorted::HooLabeledButton1.name,
@@ -176,10 +191,10 @@ module GUI
 			'list1'				=>	GUI::Cells::HooListOneCell.name,
 			'horizontalList1'	=>	GUI::Cells::HooHorizontalListOneCell.name,
 			'sparseBooCell'	    =>	GUI::Cells::HooSparseBooCell.name,
-			'hoo_user_comment_cell' => GUI::Cells::HooUserCommentCell.name,
-			'actionButton1' 	=> GUI::Cells::HooActionButton1Cell.name,
+			'hoo_user_comment_cell' =>	GUI::Cells::HooUserCommentCell.name,
+			'actionButton1' 	=>	GUI::Cells::HooActionButton1Cell.name,
 
-			'flashReplaceTestCell' 	=> GUI::Cells::FlashReplaceTestCell.name,
+			'flashReplaceTestCell' 	=>	GUI::Cells::FlashReplaceTestCell.name,
 		}
 
 		def self.cellClass( name )

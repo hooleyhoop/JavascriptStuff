@@ -9,7 +9,7 @@
 	:javascript
 
 		// Obviously, we only do this if there is a bloomin canvas in the first place. Oh, hello ie
-		ABoo.Mock_Player = HooWidget.extend({
+		ABoo.Mock_Player = ABoo.HooWidget.extend({
 
 			_ready:		false,
 			_duration:	0,
@@ -18,7 +18,7 @@
 			textHolder: "span",
 
 			init: function( /* init never has args */ ) {
-	   			this._super();
+				this._super();
 					var self = this;
 					setTimeout( function(){
 						self.set('_ready', true );

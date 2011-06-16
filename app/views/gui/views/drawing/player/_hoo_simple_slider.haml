@@ -9,7 +9,7 @@
 
 -# adding the data-jsclass attribute means that a javascript instance will be created on-load
 -# Todo: I also need to have it created if it is inserted by ajax!
-%div[_]( data-jsclass='HooSimpleSlider' style="position:relative; height: 15px; background:transparent url(../images/player/timeline_background.png) no-repeat left top;" )
+%div[_]( data-jsclass='ABoo.HooSimpleSlider' style="position:relative; height: 15px; background:transparent url(../images/player/timeline_background.png) no-repeat left top;" )
 
 	%div.slider
 		.slidingDoor_left( style="display:block; height: 15px; overflow: hidden;" )
@@ -92,7 +92,7 @@
 
 			init: function( /* init never has args */ ) {
 
-	    		this._super();
+				this._super();
 
 				this._$parentDiv = $( "#"+this.id );
 				debugger; //TODO: swap this this.div$

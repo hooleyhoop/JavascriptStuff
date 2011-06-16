@@ -1,4 +1,4 @@
-module GUI::Views::Debug
+module GUI::Views::Debug::Unused
 
 	# http://0.0.0.0:3000/widgets/bigWord?text=hello_world
 	class HooBigWordView < GUI::Core::HooView

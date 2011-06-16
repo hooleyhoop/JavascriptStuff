@@ -3,17 +3,12 @@ module GUI::Views::Drawing::Player
 	# http://0.0.0.0:3000/widgets/smallPlayerPlayButton
 	class HooSmallPlayerPlayButton < GUI::Core::HooView
 
+		include GUI::Core::HooBindingsMixin
+
 		#attr_accessor :parentCanvas
 
 		def initialize( args={} )
 			super(args);
-		end
-
-		def addRuntimeObject( aHash )
-			if(@runtimeObjects==nil)
-				@runtimeObjects = {};
-			end
-			@runtimeObjects.merge!( aHash );
 		end
 
         # Mock Data

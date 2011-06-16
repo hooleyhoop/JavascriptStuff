@@ -1,0 +1,38 @@
+-# http://0.0.0.0:3000/widgets/multiplebeepertest
+
+- push( multiple_beeper_test )
+
+- wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;', :class=>'sc-view' ) do
+	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		ABoo.GUI_Views_Debug_MovingASharedHeadlessFlash_BeeperTest = ABoo.SCView.extend({
+
+			_state: undefined,
+
+			didCreateElement: function() {
+				this._super();
+				this._state = false;
+			},
+
+			mouseUp: function(ev$) {
+
+				if( this._state==false ) {
+					var img = this.getFirstDomItemOfType("img");
+				//-- make sure this only works once fuckwit
+					if(img) {
+						var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( "beeper/Beeper" );
+						var headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {} );
+						// NB, it only swaps in when fails to load due to flash blocker
+						headlessFlashOb.swapInForItem(img);
+					}
+					this._state = true;
+				}
+
+			}
+
+		});
+
+

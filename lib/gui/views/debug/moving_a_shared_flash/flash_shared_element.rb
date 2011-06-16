@@ -1,4 +1,4 @@
-module GUI::Views::Debug
+module GUI::Views::Debug::MovingASharedFlash
 
     # http://0.0.0.0:3000/widgets/flashsharedelement
 

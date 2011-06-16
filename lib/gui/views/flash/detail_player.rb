@@ -3,6 +3,8 @@ module GUI::Views::Flash
 	# http://0.0.0.0:3000/widgets/detailPlayer?url=http://boos.audioboo.fm/attachments/733544/Recording.mp3?audio_clip_id=213134
 	class DetailPlayer < GUI::Core::HooView
 
+		include GUI::Core::HooBindingsMixin
+
 		attr_accessor :playerLeft, :playerRight, :playerMid, :playButton, :carat;
 		attr_accessor :playerLeft2, :playerRight2, :playerMid2
 

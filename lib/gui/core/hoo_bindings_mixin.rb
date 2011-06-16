@@ -14,4 +14,11 @@ module GUI::Core::HooBindingsMixin
 		@javascriptActions.merge!( aHash );
 	end
 
+	def addRuntimeObject( aHash )
+		if(@runtimeObjects==nil)
+			@runtimeObjects = {};
+		end
+		@runtimeObjects.merge!( aHash );
+	end
+
 end

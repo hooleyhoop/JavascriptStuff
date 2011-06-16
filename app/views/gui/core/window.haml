@@ -17,7 +17,19 @@
 			yepnope('ielt9!/javascripts/third_party/excanvas.js');
 
 		= javascript_include_tag 'third_party/modernizr-2.0.js'
+
+		-# EXPERIMENT With Compass
+		= stylesheet_link_tag 'screen.css', :media => 'screen, projection'
+		= stylesheet_link_tag 'print.css', :media => 'print'
+		/[if lt IE 8]
+			= stylesheet_link_tag 'ie.css', :media => 'screen, projection'
+
+		-# Compass seems to include a reset by default, i wish it wouldn't
+		-# I may still need/not need this, it may need to go before/after Compass reset i may need to refactor
+		= stylesheet_link_tag 'simple_reset.css'
+
 		= stylesheet_link_tag :app, :cache=>'base'
+
 		= insertHeaderAdditions()
 
 	%body( id="hooWindow" class="#{@window.style}" )

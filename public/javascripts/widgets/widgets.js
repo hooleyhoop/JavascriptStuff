@@ -218,3 +218,15 @@ HOO_nameSpace.assert = function( expr, msg ) {
 		debugger;
 	}
 }
+
+ABoo.SCView = SC.View.extend( ABoo.RootObject, {
+
+	setupDidComplete: function() {
+		this.createElement_hack();
+	},
+	createElement_hack: function() {
+		this.set( 'element', this.div$.html() );
+		this._notifyDidCreateElement();
+		return this;
+	}
+});

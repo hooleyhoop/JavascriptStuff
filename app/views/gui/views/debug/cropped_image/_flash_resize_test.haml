@@ -9,9 +9,10 @@
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.GUI_Views_Debug_FlashResizeTest = ABoo.HooWidget.extend({
+		ABoo.GUI_Views_Debug_CroppedImage_FlashResizeTest = ABoo.HooWidget.extend({
 			setupDidComplete: function() {
 
+				// lets dynamically append another, just because we can
 				var flashURL = ABoo.FlashObject.uRLForSwf( "ImgResizer/ImgResizer" );
 				var flashOb = ABoo.FlashObject.newSwfForURL( flashURL, "100%", "100%", {imgURL:"http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg"} );
 				flashOb.appendToDiv( this.div$ );

@@ -1,8 +1,16 @@
 // http://www.alistapart.com/articles/howtosizetextincss/
-
 // http://www.alistapart.com/articles/settingtypeontheweb
+@import "compass/css3";
 
-/* simple reset */
+/*
+	simple reset
+
+	RULES
+	-----
+
+	ALL Selectors must have easy searchable names. No 'left' or 'fixed' or 'small'
+
+*/
 html, body, ul, ol, li, form, fieldset, legend {
 	margin: 0;
 	padding: 0;
@@ -29,7 +37,7 @@ caption, th, td {
 }
 
 input, textarea, select {
-	font-size: 0%;
+	font-size: 0;
 	line-height: 15px;
 }
 
@@ -38,62 +46,68 @@ abbr, acronym {
 	cursor: help;
 }
 
-body {width:100%;}
+//body {width:100%;}
 p { margin-bottom: 15px; }
 
 a { color: #3574d7; text-decoration: none; outline: none; }
-#a:hover {color: #fff; text-decoration: none; background-color: #1389e5;}
-#a:active {color: #fff; background-color: #211922;}
-#a:hover img {opacity: .92; filter: alpha(opacity=92);}
-#noHover a:hover {color: #fff; background-color: none;}
-#noHover a:active {color: #fff; background-color: none;}
+// a:hover {color: #fff; text-decoration: none; background-color: #1389e5;}
+// a:active {color: #fff; background-color: #211922;}
+// a:hover img {opacity: .92; filter: alpha(opacity=92);}
+// noHover a:hover {color: #fff; background-color: none;}
+// noHover a:active {color: #fff; background-color: none;}
 input, textarea {color: #777;}
 input:focus, textarea:focus {color: #211922 !important;}
-textarea, input[type="text"], input[type="password"] {background-color: #fff; border: 1px solid; border-color: #ccc #bbb #aaa; -moz-box-shadow: 0 1px #e7e7e7; -webkit-box-shadow: 0 1px #e7e7e7;}
+textarea, input[type="text"], input[type="password"] {
+	background-color: #fff;
+	border: 1px solid;
+	border-color: #ccc #bbb #aaa;
+	@include single-box-shadow(#e7e7e7 0 1px);
+}
 
-/* REUSABLE STYLES
+/* DONT USE! REUSABLE STYLES
 ---------------------------------------------- */
-.hidden {display: none !important;}
+//.hidden {display: none !important;}
+//.error {font-size: 1.3em; color: #f00;}
+//.floatRight {float: right !important;}
+//.floatLeft {float: left !important;}
+//.halfRight {float: right; width: 49%; overflow: hidden;}
+//.halfLeft {float: left; width: 49%; overflow: hidden;}
+//.third {float: left; width: 31%; margin-right: 2.83%;}
+//.thirdRight {float: right; width: 32%;}
+//.twoThirdsLeft {width: 65%; margin-right: 2%;}
+//.twoThirdsRight {float: right; width: 65%;}
+//.oneFifthLeft {float: left; width: 188px;}
+//.oneFifth {float: right; width: 185px; padding-left: 6px;}
+//.twoFifths {float: right; width: 372px;}
+//.twoFifthsLeft {float: left; width: 372px;}
+//.threeFifths {float: left; width: 564px;}
+//.threeFifthsRight {float: right; width: 564px;}
+//.threeFifthsCenter {float: left; width: 559px; margin-left: 9px;}
+//.fourFifths {float: left; width: 754px;}
+//.quarterLeft {float: left; width: 24%; margin-right: 1%;}
+//.quarterRight {float: right; width: 24%;}
+//.threeQuartersLeft {float: left; width: 74%;}
+//.threeQuartersRight {float: right; width: 74%;}
+//.noBorder {border-width: 0 !important;}
+//.noBorderTop {border-top-width: 0 !important;}
+//.noBorderRight {border-right-width: 0 !important;}
+//.noBorderBottom {border-bottom-width: 0 !important;}
+//.noBorderLeft {border-left-width: 0 !important;}
+//.noMarginTop {margin-top: 0 !important;}
+//.noMarginRight {margin-right: 0 !important;}
+//.noMarginBottom {margin-bottom: 0 !important;}
+//.noMarginLeft {margin-left: 0 !important;}
+//.fixed {position: fixed !important;}
+//.invisible {visibility: hidden !important;}
+//.rule { border-bottom-color:#DDDDDD; border-bottom-style:solid; border-bottom-width:1px; clear:both; height:0; margin:15px 0px; overflow: hidden;}
+
+.floatLeft_relative { float:left; position:relative; }
+.floatRight_relative { float:right; position:relative; }
 .hidden2 { position:absolute; top:0; left:-9999px; width:1px; height:1px; overflow:hidden; }
 .highlighted {color: #211922; background-color: #ff0 !important;}
-.error {font-size: 1.3em; color: #f00;}
 .clear {clear: both !important;}
-.floatRight {float: right !important;}
-.floatRight_relative { float:right; position:relative; }
-.floatLeft {float: left !important;}
-.floatLeft_relative { float:left; position:relative; }
-.halfRight {float: right; width: 49%; overflow: hidden;}
-.halfLeft {float: left; width: 49%; overflow: hidden;}
-.third {float: left; width: 31%; margin-right: 2.83%;}
-.thirdRight {float: right; width: 32%;}
-.twoThirdsLeft {width: 65%; margin-right: 2%;}
-.twoThirdsRight {float: right; width: 65%;}
-.oneFifthLeft {float: left; width: 188px;}
-.oneFifth {float: right; width: 185px; padding-left: 6px;}
-.twoFifths {float: right; width: 372px;}
-.twoFifthsLeft {float: left; width: 372px;}
-.threeFifths {float: left; width: 564px;}
-.threeFifthsRight {float: right; width: 564px;}
-.threeFifthsCenter {float: left; width: 559px; margin-left: 9px;}
-.fourFifths {float: left; width: 754px;}
-.quarterLeft {float: left; width: 24%; margin-right: 1%;}
-.quarterRight {float: right; width: 24%;}
-.threeQuartersLeft {float: left; width: 74%;}
-.threeQuartersRight {float: right; width: 74%;}
-.noBorder {border-width: 0 !important;}
-.noBorderTop {border-top-width: 0 !important;}
-.noBorderRight {border-right-width: 0 !important;}
-.noBorderBottom {border-bottom-width: 0 !important;}
-.noBorderLeft {border-left-width: 0 !important;}
-.noMarginTop {margin-top: 0 !important;}
-.noMarginRight {margin-right: 0 !important;}
-.noMarginBottom {margin-bottom: 0 !important;}
-.noMarginLeft {margin-left: 0 !important;}
-.fixed {position: fixed !important;}
-.invisible {visibility: hidden !important;}
-.rule { border-bottom-color:#DDDDDD; border-bottom-style:solid; border-bottom-width:1px; clear:both; height:0; margin:15px 0px; overflow: hidden;}
 
-*.unselectable {
+.unselectable {
    -moz-user-select: -moz-none;
    -khtml-user-select: none;
    -webkit-user-select: none;

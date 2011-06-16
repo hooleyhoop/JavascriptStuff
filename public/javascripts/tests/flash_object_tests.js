@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 14 Jun 2011 10:04:27 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 15 Jun 2011 11:05:00 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/tests/flash_object_tests.coffee
  */
 
@@ -65,7 +65,7 @@
       flashOb3.remove();
       return start();
     }, this);
-    expect(3);
+    expect(2);
     flashURL = ABoo.FlashObject.uRLForSwf("ImgResizer/ImgResizer");
     imgURL = "http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg";
     flashOb3 = ABoo.SharedFlashObject.sharedSwfForURL(flashURL, "100%", "100%", {
@@ -82,6 +82,7 @@
   });
   test("ready is called on headless player", function() {
     var flashOb3, flashOb4, flashURL;
+    expect(2);
     this.flashDidLoad = __bind(function(swf) {
       equals(flashOb3._ready, true, "!");
       flashOb3.remove();

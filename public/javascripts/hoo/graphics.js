@@ -320,10 +320,10 @@ ABoo.PlayButtonSprite = ABoo.HooSprite.extend({
 			var tri1Rect = [ triangle1PtArray[0][0], triangle1PtArray[0][1], triangle1PtArray[1][0]-triangle1PtArray[0][0], triangle1PtArray[2][1]-triangle1PtArray[0][1] ];
 
 			ctx.fillStyle = my_gradient;
-				Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], tenPercentOfWidth );
+				ABoo.Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], tenPercentOfWidth );
 			ctx.fill();
 			//ctx.strokeStyle = "#000";
-			//	Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], 0 );
+			//	ABoo.Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], 0 );
 			//ctx.stroke();
 
 			ctx.shadowColor = shadowCol;
@@ -332,17 +332,17 @@ ABoo.PlayButtonSprite = ABoo.HooSprite.extend({
 			ctx.shadowOffsetY = tenPercentOfWidth/10;
 
 			ctx.fillStyle = innerCol;
-				Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], tenPercentOfWidth/2.0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], tenPercentOfWidth/2.0 );
 			ctx.fill();
 			//ctx.strokeStyle = "#000";
-			//	Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], 0 );
+			//	ABoo.Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], 0 );
 			//ctx.stroke();
 
 			ctx.shadowColor= undefined;
 			ctx.shadowBlur = undefined;
 
 			ctx.fillStyle = innerinnerCol;
-				Graphics[graphicToDraw].draw( ctx, tri1Rect[0], tri1Rect[1], tri1Rect[2], tri1Rect[3], 0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, tri1Rect[0], tri1Rect[1], tri1Rect[2], tri1Rect[3], 0 );
 			ctx.fill();
 
 		ctx.restore();
@@ -396,11 +396,11 @@ ABoo.PauseButtonSprite = ABoo.HooSprite.extend({
 			var rects = ABoo.VectorMath.splitRectInTwo( insetRect3, 2.0*scale );
 			ctx.fillStyle = my_gradient;
 			ctx.save();
-				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
 			ctx.save();
-				Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
 
@@ -413,12 +413,12 @@ ABoo.PauseButtonSprite = ABoo.HooSprite.extend({
 			rects = ABoo.VectorMath.splitRectInTwo( insetRect2, 9.0*scale );
 			ctx.fillStyle = innerCol;
 			ctx.save();
-				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
 
 			ctx.save();
-				Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
 
@@ -429,11 +429,11 @@ ABoo.PauseButtonSprite = ABoo.HooSprite.extend({
 			rects = ABoo.VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
 			ctx.fillStyle = innerinnerCol;
 			ctx.save();
-				Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
 			ctx.save();
-				Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
 

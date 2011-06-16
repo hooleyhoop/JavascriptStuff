@@ -3,8 +3,8 @@
 
 - push( hoo_play_pause_button )
 
--# If no javascript, what would you expect? A link that sayts play
-%div[_]{ :data=> {'jsclass'=>'HooPlayPauseButton'}, :style=> "width:200px; height:200px;"}
+-# If no javascript, what would you expect? A link that says play
+%div[_]{ :data=> {'jsclass'=>'ABoo.HooPlayPauseButton'}, :style=> "width:200px; height:200px;"}
 	= link_to "play mp3", "#{_.action}", {'data-jshide'=>'true'}
 	= insert( _.views, "" )
 
@@ -12,9 +12,8 @@
 	:javascript
 
 		// When we need some different kinds of graphics start chopping up this heirarchy
-		ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend({
+		ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooCanvasViewMixin, {
 
-			_parentCanvas: undefined,
 			_playButtonSprite: undefined,
 			_pauseButtonSprite: undefined,
 			_currentSpriteState: undefined,
@@ -47,7 +46,7 @@
 
 			init: function( /* _percentOfCanvas */ ) {
 
-	    		this._super();
+				this._super();
 				this._playButtonSprite = ABoo.PlayButtonSprite.create();
 				this._pauseButtonSprite = ABoo.PauseButtonSprite.create();
 			},
@@ -57,27 +56,17 @@
 				return this._parentCanvas._$canvas;
 			},
 
-			//setSize: function( width, height ) {
-				// this._parentCanvas.setSize(width,height);
-			//},
-
-			drawInRect: function() {
-				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
-			},
-
-			drawNow: function( ctx, width, height ) {
+			// canvas -> HooCanvasViewMixin
+			drawContents: function( ctx, width, height ) {
 
 				if(!this._currentSprite)
 					return;
-				ctx.save();
 
 					var insetWidth = width*this._percentOfCanvas;
 					var insetHeight = height*this._percentOfCanvas;
 					var x = (width-insetWidth)/2.0;
 					var y = (height-insetHeight)/2.0;
 					this._currentSprite.spriteDraw( ctx, x, y, insetWidth, insetHeight );
-
-				ctx.restore();
 			},
 
 			showDisabledButton: function() {
@@ -164,7 +153,7 @@
 				HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
 				this._hooCanvas.addSubview( this._buttonGraphic );
 
-	    		this._super();
+				this._super();
 
 				//var self = this;
 				//setTimeout( function(){

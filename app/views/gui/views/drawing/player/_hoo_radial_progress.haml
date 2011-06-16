@@ -2,14 +2,13 @@
 
 - push( hoo_radial_progress )
 
-%div[_]( data-jsclass='HooRadialProgress' style="width:200px; height:200px;" )
+%div[_]( data-jsclass='ABoo.HooRadialProgress' style="width:200px; height:200px;" )
 	=  insert( _.views, "" )
 
 - if( _.includeOnce? )
 	:javascript
 
 		ABoo.DonutTestSprite = ABoo.HooSprite.extend({
-
 
 			_loadColor:"rgba(170,170,170,0.8)",
 			_playColor:"rgba(247,163,0,1.0)",
@@ -24,8 +23,8 @@
 
 				ctx.save();
 
-		   			// var newCanvas = $("<canvas></canvas>")[0];
-				    // var newContext = newCanvas.getContext('2d');
+					// var newCanvas = $("<canvas></canvas>")[0];
+					// var newContext = newCanvas.getContext('2d');
 					// newCanvas.width = width;
 					// newCanvas.height = height;
 
@@ -105,10 +104,9 @@
 			}
 		});
 
-		ABoo.HooRadialProgressGraphic = SC.Object.extend({
+		ABoo.HooRadialProgressGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
 
 			_donutTestSprite: undefined,
-			_parentCanvas: undefined,
 			_busyAngle: -1,
 			_outerRad: 1.0,
 			_innerRad: 0.5,
@@ -118,20 +116,17 @@
 			_lastUpdateTime:undefined,
 
 			init: function( /* init never has args */ ) {
-	    		this._super();
+				this._super();
 				this._donutTestSprite = ABoo.DonutTestSprite.create();
 			},
-			drawInRect: function() {
-				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
-			},
-			drawNow: function( ctx, width, height ) {
-				ctx.save();
+
+			// canvas -> HooCanvasViewMixin
+			drawContents: function( ctx, width, height ) {
 					// ctx.fillStyle = "rgba(100,100,100,1)";
 					// ctx.fillRect(0,0,width,height);
 					this._donutTestSprite.spriteDraw( ctx, 0, 0, width, height, this._busyAngle, this._outerRad, this._innerRad, this._loadProgess, this._playProgress );
-
-				ctx.restore();
 			},
+
 			setLoadProgress: function( degrees ) {
 				this._loadProgess = degrees;
 				this._parentCanvas.setNeedsDisplay();
@@ -174,10 +169,8 @@
 			},
 
 			setupDidComplete: function() {
-
 				HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
 				this._hooCanvas.addSubview( this._progressGraphic );
-				this._super();
 			},
 
 			toggleBusy: function() {

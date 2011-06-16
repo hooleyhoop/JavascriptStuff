@@ -7,7 +7,7 @@
 
 - push( hoo_simple_checkbox )
 
-%div[_]( data-jsclass='HooSimpleCheckbox' style="" )
+%div[_]( data-jsclass='ABoo.HooSimpleCheckbox' style="" )
 	= form_tag( '', :method=>:post, :remote=>true ) do
 		%span.sansSolidBold #{_.label}
 		%input( type="checkbox" name="c1" )
@@ -23,9 +23,9 @@
 			_checkbox:			undefined,
 
 			init: function( /* init never has args */ ) {
-	   			this._super();
+				this._super();
 
-				debugger; //TODO: swap this this.div$
+				// debugger; //TODO: swap this this.div$
 				this._checkbox = this.getFirstDomItemOfType("form input:checkbox");
 			},
 

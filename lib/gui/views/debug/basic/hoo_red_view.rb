@@ -1,4 +1,4 @@
-module GUI::Views::Debug
+module GUI::Views::Debug::Basic
 
 	# http://0.0.0.0:3000/widgets/redView
 	class HooRedView < GUI::Core::HooView

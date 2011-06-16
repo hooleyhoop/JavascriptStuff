@@ -7,9 +7,12 @@
  * NO! measurments in CSS. NO! 12px. NO! 2em. NO! 25%
 */
 /* small menu */
+/* line 17, sass/widget_specific.scss */
 .dynamicWidthButton {
-  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px inset;
-  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px inset;
+  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 0 10px inset;
+  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 0 10px inset;
+  -o-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 0 10px inset;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 0 10px inset;
   border: 1px solid #ffffff;
   overflow: auto;
   text-align: center;
@@ -17,15 +20,26 @@
   margin: 0;
   display: inline-block;
   zoom: 1;
-  *display: inline; }
-  .dynamicWidthButton[disabled="disabled"] {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px inset;
-    -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px inset;
-    pointer-events: none; }
-    .dynamicWidthButton[disabled="disabled"] a {
-      opacity: 0.6;
-      pointer-events: none; }
-  .dynamicWidthButton[data-position="left"] {
-    border-right: 0 none black; }
-  .dynamicWidthButton[data-position="middle"] {
-    border-right: 0 none black; }
+  *display: inline;
+}
+/* line 31, sass/widget_specific.scss */
+.dynamicWidthButton[disabled="disabled"] {
+  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 2px 10px inset;
+  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 2px 10px inset;
+  -o-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 2px 10px inset;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) 0 2px 10px inset;
+  pointer-events: none;
+}
+/* line 36, sass/widget_specific.scss */
+.dynamicWidthButton[disabled="disabled"] a {
+  opacity: 0.6;
+  pointer-events: none;
+}
+/* line 43, sass/widget_specific.scss */
+.dynamicWidthButton[data-position="left"] {
+  border-right: 0 none black;
+}
+/* line 52, sass/widget_specific.scss */
+.dynamicWidthButton[data-position="middle"] {
+  border-right: 0 none black;
+}

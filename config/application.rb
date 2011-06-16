@@ -61,7 +61,7 @@ module JavascriptStuff
 	# modernizr.js is included in window because it has to load after excanvas
 
 	#<link type="text/css" href="../stylesheets/Aristo/jquery-ui-1.8.7.custom.css" rel="stylesheet" />
-    config.action_view.stylesheet_expansions = { :app => ['simple_reset', 'audioboo_theme', 'type', 'positioning', 'widget_specific'] } # 'Aristo/jquery-ui-1.8.7.custom'
+    config.action_view.stylesheet_expansions = { :app => ['audioboo_theme', 'type', 'positioning', 'widget_specific'] } # 'Aristo/jquery-ui-1.8.7.custom'
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -76,6 +76,11 @@ module JavascriptStuff
         ActiveSupport::Dependencies.mechanism = :load
       end
     end
+
+	#MyProject::Application.configure do
+	#  config.sass.line_comments = false
+	#  config.sass.syntax = :nested
+	#end
 
   end
 end

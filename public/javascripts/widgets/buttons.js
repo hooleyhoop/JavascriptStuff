@@ -44,7 +44,7 @@ ABoo.HooAbstractButtonGraphic = SC.Object.extend({
 			console.warn("Could not find the clickable item");
 		return $item;
 	}
-})
+});
 
 // When we need some different kinds of graphics start chopping up this heirarchy
 ABoo.HooButtonGraphic = ABoo.HooAbstractButtonGraphic.extend({

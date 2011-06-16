@@ -3,7 +3,7 @@
 -# http://0.0.0.0:3000/widgets/canvas
 
 // Add Sprites to the canvas
-%div[_]{ :data=> {'jsclass'=>'HooCanvas'}, :style=>"width:100%; height:100%;"}
+%div[_]{ :data=> {'jsclass'=>'ABoo.HooCanvas'}, :style=>"width:100%; height:100%;"}
 	%canvas( width="1" height="1" )
 	= insert( _.views, "" )
 
@@ -19,7 +19,7 @@
 			_lastDirtyTime: false,
 
 			init: function( /* init never has args */ ) {
-	   			this._super();
+				this._super();
 				this._$canvas = this.getFirstDomItemOfType("canvas");
 				HOO_nameSpace.assert( this._$canvas );
 				this._subViews = new Array();

@@ -1,4 +1,4 @@
-module GUI::Views::Debug
+module GUI::Views::Debug::CroppedImage
 
     # http://0.0.0.0:3000/widgets/flashresizetest
 

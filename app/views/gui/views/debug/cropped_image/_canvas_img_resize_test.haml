@@ -1,0 +1,86 @@
+-# http://0.0.0.0:3000/widgets/canvasimgresizetest
+
+-# You have to add this to an existing canvas for it to work
+-# the js _hooCanvas property is set dynamically buy ruby in addRuntimeObject()
+
+- push( canvas_img_resize_test )
+- wrapLiveObject( _, {:style=>"width:100%, height:100%;"} ) do
+	= image_tag( _.imgUrl, :style=>"width:100%" )
+	%div( style="display:none; width:100%, height:100%;" )
+		= insert( _.views, "" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		ABoo.HooCanvasViewMixin = SC.Mixin.create({
+			_parentCanvas: undefined,
+			drawInRect: function() {
+				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
+			},
+			drawNow: function( ctx, width, height ) {
+				ctx.save();
+					this.drawContents( ctx, width, height );
+				ctx.restore();
+			}
+		});
+
+		ABoo.CroppedImageGRaphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
+
+			_img: undefined,
+
+			drawContents: function( ctx, width, height ) {
+				ctx.fillRect(0, 0, width, height);
+
+				var stageProp = width / height;
+				var imgProp = this._img.width / this._img.height;
+
+				// scale the image proportionally
+				var multiplier = 1;
+				if(imgProp>stageProp) {
+					multiplier = height / this._img.height;
+				} else {
+					multiplier = width / this._img.width;
+				}
+				var newWidth = this._img.width*multiplier;
+				var newHeight = this._img.height*multiplier;
+
+				var newx = -(newWidth - width) / 2.0;
+				var newy = -(newHeight - height) /2.0;
+
+				ctx.drawImage( this._img, newx, newy, newWidth, newHeight );
+			}
+		});
+
+		ABoo.GUI_Views_Debug_CroppedImage_CanvasImgResizeTest = ABoo.HooWidget.extend({
+
+			_hooCanvas: undefined,	// NB, this is hooked up from Ruby
+			_imgGraphic: undefined,
+			_srcImg$: undefined,
+
+			setupDidComplete: function() {
+				HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
+
+				var hiddenCanvas$ = this.getFirstDomItemOfType(":hidden");
+				hiddenCanvas$.show();
+
+				var self = this;
+				self._srcImg$ = self.getFirstDomItemOfType("img");
+				self._srcImg$.bind("load", function () {
+					var img = new Image();
+					img.onload = function(){
+						self._imgGraphic = ABoo.CroppedImageGRaphic.create( {_img: img} );
+						self._hooCanvas.addSubview( self._imgGraphic );
+						self._hooCanvas.setNeedsDisplay();
+					};
+					img.src = self._srcImg$.attr("src");
+					// alert(self._srcImg$.height());
+					self._srcImg$.hide();
+
+					// This doesn't really work.. can't get the canvas to be the right size
+					// maybe i could overlay the canvas on the image and bind their sizes together
+					// instead of the canvas using parentDidResize ? (parentDidResize is not getting the correct height)
+					self._hooCanvas._setSize(self._srcImg$.width(),self._srcImg$.height());
+				});
+			}
+		});
+

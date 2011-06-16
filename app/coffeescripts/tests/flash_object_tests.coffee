@@ -61,7 +61,7 @@ test( "ready is called on simple image", () ->
 		start()
 	
 	#Tell QUnit that you expect three assertions to run  
-	expect(3);
+	expect(2)
 	
 	flashURL = ABoo.FlashObject.uRLForSwf("ImgResizer/ImgResizer")
 	imgURL = "http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg"
@@ -79,6 +79,9 @@ test( "ready is called on simple image", () ->
 
 test( "ready is called on headless player", () ->
 
+	#Tell QUnit that you expect three assertions to run  
+	expect(2)
+	
 	this.flashDidLoad = (swf) =>
 		equals( flashOb3._ready, true, "!" )
 		flashOb3.remove()
