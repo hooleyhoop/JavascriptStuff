@@ -79,18 +79,24 @@ module GUI::Core
 
 		# gui_hoo_text_list_view_2168956940
 		def varName
-			'_' + self.jsClassName.underscore + '_'+ self.object_id.to_s
+			'_' + self.unQualifiedJsClassName.underscore + '_'+ self.object_id.to_s
 		end
 
 		# GUI_Views_Debug_FlippyToggleThing
-		def jsClassName
+		def unQualifiedJsClassName
 			className = self.class.to_s
 			className = className.gsub('::','_')
 		end
 
+		# This is OKorrect
+		# ABoo.GUI_Views_Debug_FlippyToggleThing
+		def qualifiedJsClassName
+			'ABoo.'+self.unQualifiedJsClassName
+		end
+
 		# gui_views_debug_flippy_toggle_thing
 		def CSSClassName
-			self.jsClassName.underscore
+			self.unQualifiedJsClassName.underscore
 		end
 
 		def HTMLIDName

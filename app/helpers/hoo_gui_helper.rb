@@ -169,7 +169,7 @@ END
 	# autoName the data-jsClass
 	def wrapLiveObject( obj, attrs={} )
 		# NB! haml_tag writes directly to the haml buffer, we dont return this then insert it in the page
-		stdAttrs = {:class=>_.CSSClassName, :id=>_.HTMLIDName, :data=>{'jsclass'=>'ABoo.'+_.jsClassName}}
+		stdAttrs = {:class=>_.CSSClassName, :id=>_.HTMLIDName, :data=>{'jsclass'=>_.qualifiedJsClassName}}
 		stdAttrs.merge!(attrs)
 		haml_tag :div, stdAttrs do
 		  	yield

@@ -16,7 +16,7 @@ ABoo.DebugView = SC.View.extend
 		return remaining + ( remaining==1 ? " item" : " items" )
 	).property('remaining').cacheable()	# property remaining string depends on remaining
 
-ABoo.HackedWidget = SC.View.extend( ABoo.RootObject,
+ABoo.HackedWidget = ABoo.SCView.extend
 	#json: undefined
 	#id: undefined
 	#div$: undefined
@@ -55,9 +55,9 @@ ABoo.HackedWidget = SC.View.extend( ABoo.RootObject,
 
 	mouseDown: () ->
 		console.log("pfft! pffft! pffft! ..")
-)
+
 	
-ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.HackedWidget.extend
+ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend
 	_flippyState: no
 	view2: undefined
 
@@ -77,6 +77,7 @@ ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.HackedWidget.extend
 		@view2.set( "template", template )
 		#alert(@div$)
 		@view2.appendTo( @div$ )
+		@view2.set( 'parentView', this )
 
 		#-- bind something here			
 		@addObserver('_flippyState', @view2, @view2.flippyStateDidChange );

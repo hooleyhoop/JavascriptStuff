@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 09:49:50 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 15:00:03 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/root_object.coffee
  */
 
@@ -11,7 +11,11 @@
       if (this.id != null) {
         this[SC.GUID_KEY] = this.id;
       }
+      if (!(this.id != null)) {
+        this.id = this[SC.GUID_KEY];
+      }
       this.div$ || (this.div$ = $("#" + this.id));
+      this.div$.addClass("sc-view");
       return this._super();
     },
     parentDidResize: function() {

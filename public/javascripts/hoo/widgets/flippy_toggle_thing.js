@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 11:09:28 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 16:36:50 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/flippy_toggle_thing.coffee
  */
 
@@ -22,7 +22,7 @@
       });
     }).property('remaining').cacheable()
   });
-  ABoo.HackedWidget = SC.View.extend(ABoo.RootObject, (function() {
+  ABoo.HackedWidget = ABoo.SCView.extend((function() {
     /*
     		id + json are set when created
     		we could rationalise this a bit..
@@ -43,7 +43,7 @@
       return console.log("pfft! pffft! pffft! ..");
     }
   });
-  ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.HackedWidget.extend({
+  ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend({
     _flippyState: false,
     view2: void 0,
     init: function() {
@@ -59,6 +59,7 @@
       template = SC.Handlebars.compile("<div {{bindAttr class=\"normalClass\"}} style='font-size:16px; background-color:orange'>{{firstBindingTest}}<div>");
       this.view2.set("template", template);
       this.view2.appendTo(this.div$);
+      this.view2.set('parentView', this);
       return this.addObserver('_flippyState', this.view2, this.view2.flippyStateDidChange);
     },
     flippyFlip: function() {

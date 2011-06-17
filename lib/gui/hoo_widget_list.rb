@@ -132,6 +132,9 @@ module GUI
 			'beepertest'					=>	GUI::Views::Debug::MovingASharedHeadlessFlash::BeeperTest.name,
 			'multiplebeepertest'			=>	GUI::Views::Debug::MovingASharedHeadlessFlash::MultipleBeeperTest.name,
 
+			'linkwithinlinetemplate'		=>	GUI::Views::Debug::SCTemplateTests::LinkWithInlineTemplate.name,
+			'linkwithmaybetemplate'			=>	GUI::Views::Debug::SCTemplateTests::LinkWithMaybeTemplate.name,
+
 			# unused
 			'bigWord'			    		=>	GUI::Views::Debug::Unused::HooBigWordView.name,
 

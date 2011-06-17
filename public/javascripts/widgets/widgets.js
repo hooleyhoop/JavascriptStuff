@@ -41,7 +41,6 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 			debugger;
 		}
 		var className = $(ob).data('jsclass');
-
 		var newInstanceName = '_'+idString;
 		var jsonName = newInstanceName+'_json';
 		var jsonOb = window[jsonName];
@@ -161,6 +160,7 @@ ABoo.HooWindow = ABoo.HooWidget.extend({
 		this._allViews = new Array();
 		$(window).bind( 'resize', {target:this, action:'windowDidResize', arg:"" }, eventTrampoline );
 	},
+
 	windowDidResize: function() {
 		$(this._allViews).each( function(i,ob){
 			if(ob.parentDidResize) {
@@ -169,6 +169,7 @@ ABoo.HooWindow = ABoo.HooWidget.extend({
 				debugger;
 		});
 	},
+
 	addSubView: function( childView ) {
 		this._allViews.push( childView );
 	},

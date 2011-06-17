@@ -4,8 +4,11 @@ ABoo.RootObject = SC.Mixin.create
 	id: undefined
 	div$: undefined
 	init: () ->
-		@[SC.GUID_KEY] = @id if @id?	# by assigning this[SC.GUID_KEY] to the divs-id it becomes a valid sproutcore view
+		@[SC.GUID_KEY] = @id if @id? 	# by assigning this[SC.GUID_KEY] to the divs-id it becomes a valid sproutcore view
+		@id=@[SC.GUID_KEY] if !@id? 
+		
 		this.div$ or= $( "#"+@id )
+		this.div$.addClass("sc-view")
 		@_super()
 		
 	parentDidResize: ->
@@ -17,7 +20,7 @@ ABoo.RootObject = SC.Mixin.create
 			console.error("Could not find the "+type+" dom item")
 			return null
 		return $item
-		
+			
 	# given an instance variable that contains the name of an object, swap the content of the instance variable for the actual object
 	swapFindAndSwapInstanceVariableNamed: ( jsonProp, iVarName ) ->
 		value = null
@@ -37,3 +40,5 @@ ABoo.Bindings = SC.Mixin.create
 
 	unbindToTarget: ( target, propertyName, observer, observerDidChangeMethod ) ->
 		target.removeObserver( propertyName, observer, observerDidChangeMethod )
+		
+	#TODO: more stuff to move where from widget

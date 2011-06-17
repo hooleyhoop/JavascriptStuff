@@ -1,0 +1,69 @@
+- push( link_with_inline_template )
+
+-# http://0.0.0.0:3000/widgets/linkwithinlinetemplate
+
+- wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
+	= link_to "Default", _.linkUrl
+
+	/ it's possible that we still just want a link, even with javascript enabled, so this is a no-go
+	%script( type="text/html" )
+		{{#view ABoo.ALittleExtraView}}
+		<div style='background-color:green; font-size:30px;'>monkey monkey<div>
+		{{/view}}
+
+- if( _.includeOnce? )
+	:javascript
+		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
+
+			_scRootView: undefined,
+
+			setupDidComplete: function() {
+
+				this.removeNoJSItems();
+				this.getRootSCView();
+
+				// this._scRootView._url =
+				alert("this "+this+" "+this._scRootView.parentView );
+			},
+
+			getRootSCView: function() {
+				// construct a link to the child views
+				wrapper$ = this.getFirstDomItemOfType(".sc-view");
+				var templateViews$ = wrapper$.children(".sc-view");
+				HOO_nameSpace.assert( templateViews$.length === 1, "could not find template view" );
+				var rootTemplateDiv = templateViews$[0];
+				var childID = $(rootTemplateDiv).attr("id");
+				this._scRootView = SC.View.views[childID];
+				HOO_nameSpace.assert( this._scRootView, "could not find template view" );
+			    this._scRootView.set( 'parentView', this );
+
+				//$.each( templateViews$, function(i,v){
+				//	var childID = $(v).attr("id");
+				//	this._scRootView = SC.View.views[childID];
+				//	alert(scChildInstance._url)
+				//});
+			},
+
+			/*
+			 * we could automatically remove all no-js items on set-up
+			*/
+			removeNoJSItems: function() {
+				var link = this.getFirstDomItemOfType("a");
+				link.remove();
+			}
+		});
+
+		ABoo.ALittleExtraView = ABoo.SCView.extend({
+
+			_url: "chickenShit",
+
+			init: function() {
+				this._super();
+				console.log("EEEEwwwwww "+this.id);
+			},
+
+			didCreateElement: function() {
+				this._super();
+			},
+
+		});

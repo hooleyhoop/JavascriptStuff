@@ -1,0 +1,60 @@
+- push( link_with_maybe_template )
+
+-# http://0.0.0.0:3000/widgets/linkwithmaybetemplate
+
+- wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
+	= link_to "click to play the audioBoo.mp3", _.linkUrl, :style=>"font-size:21px;"
+
+- if( _.includeOnce? )
+	:javascript
+		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
+
+			_scRootView: undefined,
+
+			setupDidComplete: function() {
+
+				var wantExtraJuice = true;
+				if( wantExtraJuice )
+				{
+					this.removeNoJSItems();
+
+					this._scRootView = ABoo.ALittleExtraView.create();
+					var template = SC.Handlebars.compile( "<div style='background-color:green; font-size:30px;'>monkey monkey<div>" );
+					this.setupRootSCView( this._scRootView, template );
+
+
+					// this._scRootView._url =
+					//alert("this "+this+" "+this._scRootView.parentView );
+				}
+
+			},
+
+			setupRootSCView: function( view, template ) {
+				view.set( "template", template )
+				view.appendTo( this.div$ )
+				view.set( 'parentView', this );
+			},
+
+			/*
+			 * we could automatically remove all no-js items on set-up
+			*/
+			removeNoJSItems: function() {
+				var link = this.getFirstDomItemOfType("a");
+				link.remove();
+			}
+		});
+
+		ABoo.ALittleExtraView = ABoo.SCView.extend({
+
+			_url: "chickenShit",
+
+			init: function() {
+				this._super();
+				console.log("EEEEwwwwww "+this.id);
+			},
+
+			didCreateElement: function() {
+				this._super();
+			},
+
+		});
