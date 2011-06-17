@@ -4,7 +4,7 @@ ABoo.RootObject = SC.Mixin.create
 	id: undefined
 	div$: undefined
 	init: () ->
-		@[SC.GUID_KEY] = @id if @id?
+		@[SC.GUID_KEY] = @id if @id?	# by assigning this[SC.GUID_KEY] to the divs-id it becomes a valid sproutcore view
 		this.div$ or= $( "#"+@id )
 		@_super()
 		

@@ -37,7 +37,8 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 	{
 		var idString = $(ob).attr('id');
 		if(idString==="") {
-			alert("cunt data class without id");
+			alert("data class without id");
+			debugger;
 		}
 		var className = $(ob).data('jsclass');
 

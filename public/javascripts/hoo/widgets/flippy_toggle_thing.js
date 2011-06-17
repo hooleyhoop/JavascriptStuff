@@ -1,28 +1,40 @@
-/* DO NOT MODIFY. This file was compiled Mon, 13 Jun 2011 13:19:39 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 11:09:28 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/flippy_toggle_thing.coffee
  */
 
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   ABoo.DebugView = SC.View.extend({
+    firstBindingTest: "version 2 - I have no idea!!",
+    normalClass: "steve",
+    remaining: 2,
     mouseDown: function() {
       return console.log("!!clicky clicky doHicky!!!..");
-    }
+    },
+    flippyStateDidChange: function() {
+      return alert("yay! i can go home now?");
+    },
+    remainingString: (function() {
+      var remaining, _ref;
+      remaining = this.get('remaining');
+      return remaining + ((_ref = remaining === 1) != null ? _ref : {
+        " item": " items"
+      });
+    }).property('remaining').cacheable()
   });
-  ABoo.HackedWidget = SC.View.extend({
-    json: void 0,
-    id: void 0,
-    div$: void 0,
+  ABoo.HackedWidget = SC.View.extend(ABoo.RootObject, (function() {
+    /*
+    		id + json are set when created
+    		we could rationalise this a bit..
+    		sproutcore this[SC.GUID_KEY] is the same as out id
+    		sproutcore's element is the same as our div$
+    	*/
+  })(), {
     init: function() {
-      var template, view2;
-      this[SC.GUID_KEY] = this.id;
-      this._super();
-      if (!this.div$) {
-        this.div$ = $("#" + this.id);
-      }
-      view2 = ABoo.DebugView.create();
-      template = SC.Handlebars.compile("<div style='font-size:21px; background-color:orange'>why why why??????<div>");
-      view2.set("template", template);
-      return view2.appendTo(this.div$);
+      return this._super();
+    },
+    didCreateElement: function() {
+      return this._super();
     },
     parentDidResize: function() {
       return console.log("oh reeally..");
@@ -33,11 +45,21 @@
   });
   ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.HackedWidget.extend({
     _flippyState: false,
+    view2: void 0,
     init: function() {
       return this._super();
     },
     setupDidComplete: function() {
-      return console.log("oh bisto..");
+      var template;
+      console.log("oh bisto..");
+      this.div$.bind('click', __bind(function(e) {
+        return this.flippyFlip();
+      }, this));
+      this.view2 = ABoo.DebugView.create();
+      template = SC.Handlebars.compile("<div {{bindAttr class=\"normalClass\"}} style='font-size:16px; background-color:orange'>{{firstBindingTest}}<div>");
+      this.view2.set("template", template);
+      this.view2.appendTo(this.div$);
+      return this.addObserver('_flippyState', this.view2, this.view2.flippyStateDidChange);
     },
     flippyFlip: function() {
       SC.RunLoop.begin();

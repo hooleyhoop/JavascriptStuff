@@ -21,18 +21,22 @@
 
 				if( this._state==false ) {
 					var img = this.getFirstDomItemOfType("img");
-				//-- make sure this only works once fuckwit
 					if(img) {
 						var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( "beeper/Beeper" );
 						var headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {} );
 						// NB, it only swaps in when fails to load due to flash blocker
-						headlessFlashOb.swapInForItem(img);
+						headlessFlashOb.swapInForItem( this, img );
 					}
-					this._state = true;
 				}
+			},
 
+			didSwapInFlash: function( swf ) {
+				this._state = true;
+			},
+
+			didSwapOutFlash: function( swf ) {
+				this._state = false;
 			}
-
 		});
 
 

@@ -143,12 +143,24 @@ ABoo.SharedFlashObjectClassMethods = SC.Mixin.create ABoo.FlashObjectClassMethod
 	Shared Headless Flash
 ###
 ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend
-	swapInForItem: ( item$ ) ->
+	
+	_activeScriptItem: undefined
+	
+	swapInForItem: ( scriptItem, domItem$ ) ->
 		if @_currentPlaceHolder?
+			if @_blocked
+				@_observableSwf.after( @_currentPlaceHolder ) 	# put back previous swapped out item
 			@remove()
+		@_blocked = NO			
 		@addReadyBindingAndTimeOut()
 		@insertSwfInvisibly()
-		@_currentPlaceHolder = item$
+		@_currentPlaceHolder = domItem$
+		@setActiveScriptItem( scriptItem )
+		
+	setActiveScriptItem: ( item ) ->
+		if @_activeScriptItem? then @_activeScriptItem.didSwapOutFlash( this )
+		@_activeScriptItem = item
+		@_activeScriptItem.didSwapInFlash( this )
 		
 	insertSwfInvisibly: () ->
 		@setSwfSize( 1, 1 )
@@ -156,6 +168,8 @@ ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend
 
 	# only does anything for headless swf
 	readyDidTimeout: () ->
+		$('body').trigger('event_flashBlockedDetected');
+		@_blocked = YES
 		@_readyTimeout = null		
 		@remove()	# remove the swf
 		@matchSwfSizeToItem()
@@ -169,7 +183,7 @@ ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend
 	flashBlockerDidFuckOff: () ->
 		@setSwfSize( 0, 0 )
 		@_observableSwf.after( @_currentPlaceHolder ) 	# put back previous swapped out item
-
+		@_blocked = NO
 
 ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create ABoo.SharedFlashObjectClassMethods,
 	# ok, this is copied and spasted for now as unsure how to do ABoo.HeadlessSharedFlashObject.create instead of ABoo.SharedFlashObject.create

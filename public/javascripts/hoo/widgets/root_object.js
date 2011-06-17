@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 13 Jun 2011 16:48:33 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 09:49:50 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/root_object.coffee
  */
 

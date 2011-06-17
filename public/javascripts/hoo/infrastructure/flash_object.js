@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 16 Jun 2011 17:04:30 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 09:24:49 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/flash_object.coffee
  */
 
@@ -155,19 +155,34 @@
   	Shared Headless Flash
   */
   ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend({
-    swapInForItem: function(item$) {
+    _activeScriptItem: void 0,
+    swapInForItem: function(scriptItem, domItem$) {
       if (this._currentPlaceHolder != null) {
+        if (this._blocked) {
+          this._observableSwf.after(this._currentPlaceHolder);
+        }
         this.remove();
       }
+      this._blocked = NO;
       this.addReadyBindingAndTimeOut();
       this.insertSwfInvisibly();
-      return this._currentPlaceHolder = item$;
+      this._currentPlaceHolder = domItem$;
+      return this.setActiveScriptItem(scriptItem);
+    },
+    setActiveScriptItem: function(item) {
+      if (this._activeScriptItem != null) {
+        this._activeScriptItem.didSwapOutFlash(this);
+      }
+      this._activeScriptItem = item;
+      return this._activeScriptItem.didSwapInFlash(this);
     },
     insertSwfInvisibly: function() {
       this.setSwfSize(1, 1);
       return $('body').after(this._observableSwf);
     },
     readyDidTimeout: function() {
+      $('body').trigger('event_flashBlockedDetected');
+      this._blocked = YES;
       this._readyTimeout = null;
       this.remove();
       this.matchSwfSizeToItem();
@@ -178,7 +193,8 @@
     },
     flashBlockerDidFuckOff: function() {
       this.setSwfSize(0, 0);
-      return this._observableSwf.after(this._currentPlaceHolder);
+      this._observableSwf.after(this._currentPlaceHolder);
+      return this._blocked = NO;
     }
   });
   ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create(ABoo.SharedFlashObjectClassMethods, {
