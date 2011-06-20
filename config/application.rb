@@ -35,7 +35,7 @@ module JavascriptStuff
     config.action_view.javascript_expansions[:defaults] = [
     'third_party/jquery/jquery-1.6.1', 'third_party/jquery/jquery-tmpl/jquery.tmpl.js', 'third_party/jquery/jquery-tmpl/jquery.tmplPlus.js', 'third_party/jquery/jquery-ujs/src/rails.js', 'third_party/jquery/jquery-ui-1.8.11.custom.min',
 
-    'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore-2.0.a.2.js',
+    'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore-2.0.beta.1',
 
 	'hoo/setup_app.js',
 
@@ -48,7 +48,7 @@ module JavascriptStuff
     'hoo/graphics.js',
 
 	'hoo/widgets/root_object.js',
-    'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js',
+    'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'hoo/widgets/canvas.js',
 
 	'hoo/widgets/flippy_toggle_thing.js',
 

@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 15:00:03 GMT from
+/* DO NOT MODIFY. This file was compiled Sat, 18 Jun 2011 13:10:34 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/root_object.coffee
  */
 
@@ -25,6 +25,7 @@
       var $item;
       $item = this.div$.find(type + ":first");
       if ($item.length !== 1) {
+        debugger;
         console.error("Could not find the " + type + " dom item");
         return null;
       }

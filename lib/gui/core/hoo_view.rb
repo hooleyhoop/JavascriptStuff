@@ -72,12 +72,12 @@ module GUI::Core
 		  self.object_id
 		end
 
-		# gui_hoo_text_list_view_2168956940
+		# _gui_hoo_text_list_view_2168956940
 		def uniqueSelector
 			self.varName
 		end
 
-		# gui_hoo_text_list_view_2168956940
+		# _gui_hoo_text_list_view_2168956940
 		def varName
 			'_' + self.unQualifiedJsClassName.underscore + '_'+ self.object_id.to_s
 		end

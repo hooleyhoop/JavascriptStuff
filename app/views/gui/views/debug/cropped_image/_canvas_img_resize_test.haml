@@ -12,18 +12,6 @@
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.HooCanvasViewMixin = SC.Mixin.create({
-			_parentCanvas: undefined,
-			drawInRect: function() {
-				this.drawNow( this._parentCanvas.ctx(), this._parentCanvas.width(), this._parentCanvas.height() );
-			},
-			drawNow: function( ctx, width, height ) {
-				ctx.save();
-					this.drawContents( ctx, width, height );
-				ctx.restore();
-			}
-		});
-
 		ABoo.CroppedImageGRaphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
 
 			_img: undefined,

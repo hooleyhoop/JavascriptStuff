@@ -17,6 +17,7 @@ ABoo.RootObject = SC.Mixin.create
 	getFirstDomItemOfType: (type) ->
 		$item = @div$.find(type+":first");
 		if( $item.length!=1 )
+			debugger;
 			console.error("Could not find the "+type+" dom item")
 			return null
 		return $item

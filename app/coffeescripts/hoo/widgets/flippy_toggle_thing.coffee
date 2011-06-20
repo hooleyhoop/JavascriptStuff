@@ -28,10 +28,10 @@ ABoo.HackedWidget = ABoo.SCView.extend
 		sproutcore's element is the same as our div$
 	###
 	init:() ->
-		#this[SC.GUID_KEY] = @id					
+		#this[SC.GUID_KEY] = @id
 		@_super()
 
-		#if not @div$				
+		#if not @div$
 		#	@div$ = $( "#"+@id )
 
 		#@div$.remove()
@@ -40,14 +40,16 @@ ABoo.HackedWidget = ABoo.SCView.extend
 		#SC.endPropertyChanges(@)
 		#@set('elementNeedsUpdate', NO)
 		#@_notifyDidCreateElement()
-		
+
 		#¢@set( 'element', @div$.clone().wrap('<div></div>').parent().html() ) #.clone().wrap('<div></div>').parent().html()
 		#@append()
 
 
 
 	# Hmm, this seems to be called before init?
-	didCreateElement:() ->
+	willInsertElement:() ->
+	    this._super()
+	didInsertElement:() ->
 	    this._super()
 
 	parentDidResize:() ->
@@ -56,7 +58,7 @@ ABoo.HackedWidget = ABoo.SCView.extend
 	mouseDown: () ->
 		console.log("pfft! pffft! pffft! ..")
 
-	
+
 ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend
 	_flippyState: no
 	view2: undefined
@@ -79,7 +81,7 @@ ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend
 		@view2.appendTo( @div$ )
 		@view2.set( 'parentView', this )
 
-		#-- bind something here			
+		#-- bind something here
 		@addObserver('_flippyState', @view2, @view2.flippyStateDidChange );
 
 

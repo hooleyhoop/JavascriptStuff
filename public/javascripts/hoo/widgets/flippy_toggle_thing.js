@@ -33,7 +33,7 @@
     init: function() {
       return this._super();
     },
-    didCreateElement: function() {
+    didInsertElement: function() {
       return this._super();
     },
     parentDidResize: function() {

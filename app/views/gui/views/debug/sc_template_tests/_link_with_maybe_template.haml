@@ -1,12 +1,40 @@
-- push( link_with_maybe_template )
-
 -# http://0.0.0.0:3000/widgets/linkwithmaybetemplate
+-# if it can go in haml, it should, right?
+-# if it can go in haml, it should, right?
+-# if it can go in haml, it should, right?
+-# if it can go in haml, it should, right?
 
+---- What i need to test is hooking up an inline moustache variable, say a counter
+---- To a widget property
+
+- push( link_with_maybe_template )
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
 	= link_to "click to play the audioBoo.mp3", _.linkUrl, :style=>"font-size:21px;"
 
+
 - if( _.includeOnce? )
 	:javascript
+
+		ABoo.ASimpleTestGraphicGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
+			_pauseButtonSprite: undefined,
+			init: function( /* _percentOfCanvas */ ) {
+				this._super();
+				this._pauseButtonSprite = ABoo.PauseButtonSprite.create();
+			},
+			drawContents: function( ctx, width, height ) {
+				var insetWidth = width;
+				var insetHeight = height;
+				var x = (width-insetWidth)/2.0;
+				var y = (height-insetHeight)/2.0;
+				HOO_nameSpace.assert( insetWidth != NaN, "NaN");
+		  		HOO_nameSpace.assert( insetHeight != NaN, "NaN");
+		  		HOO_nameSpace.assert( x != NaN, "NaN");
+		 		HOO_nameSpace.assert( y != NaN, "NaN");
+
+				this._pauseButtonSprite.spriteDraw( ctx, x, y, insetWidth, insetHeight );
+			},
+		});
+
 		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
 
 			_scRootView: undefined,
@@ -22,7 +50,17 @@
 					var template = SC.Handlebars.compile( "<div style='background-color:green; font-size:30px;'>monkey monkey<div>" );
 					this.setupRootSCView( this._scRootView, template );
 
+					// -- why is this so difficult, everything needs redoing to work with sproutcore
+					var newCanvas = $('<canvas>');
+					this.div$.append(newCanvas);
+					var canvas = ABoo.HooCanvas.create( { _$canvas:newCanvas } );
+					canvas._setSize(100,100);
 
+					// can we add something to the canvas? how?
+					var testGraphic = ABoo.ASimpleTestGraphicGraphic.create();
+					canvas.addSubview( testGraphic );
+
+					//canvas.setNeedsDisplay();
 					// this._scRootView._url =
 					//alert("this "+this+" "+this._scRootView.parentView );
 				}
@@ -53,7 +91,7 @@
 				console.log("EEEEwwwwww "+this.id);
 			},
 
-			didCreateElement: function() {
+			didInsertElement: function() {
 				this._super();
 			},
 

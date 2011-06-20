@@ -134,6 +134,7 @@ module GUI
 
 			'linkwithinlinetemplate'		=>	GUI::Views::Debug::SCTemplateTests::LinkWithInlineTemplate.name,
 			'linkwithmaybetemplate'			=>	GUI::Views::Debug::SCTemplateTests::LinkWithMaybeTemplate.name,
+			'dynamic_value_test'			=>	GUI::Views::Debug::SCTemplateTests::DynamicValueTest.name,
 
 			# unused
 			'bigWord'			    		=>	GUI::Views::Debug::Unused::HooBigWordView.name,

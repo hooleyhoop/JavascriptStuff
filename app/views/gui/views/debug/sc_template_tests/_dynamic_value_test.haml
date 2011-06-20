@@ -1,0 +1,62 @@
+-# http://0.0.0.0:3000/widgets/dynamic_value_test
+-# if it can go in haml, it should, right?
+-# if it can go in haml, it should, right?
+-# if it can go in haml, it should, right?
+-# if it can go in haml, it should, right?
+
+- push( dynamic_value_test )
+- wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white; font-size:23px;' ) do
+
+	/
+	/ demonstrates how child scview has bindings to parent widget
+	/ the observed property is itself a calculated property
+	/
+	%script( type="text/html" )
+		{{#view ABoo.MockViewTest counterBinding="ABoo.#{_.varName}.counterString"}}
+		<div style='background-color:green; font-size:30px;'> <b>Time is:</b> {{counter}}<div>
+		{{/view}}
+
+
+- if( _.includeOnce? )
+	:javascript
+
+		// There are several ways to setup the bindings
+		// counterBinding="ABoo.#{_.varName}.counterString"
+		// counterBinding: "ABoo.#{_.varName}.counterString"
+		// this.set( "counterBinding", "ABoo.#{_.varName}.counterString" );
+
+		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
+			counter: 0,
+
+			setupDidComplete: function() {
+				var self = this;
+				setInterval( function() {
+					var incrementalVal = self.counter+1;
+					self.set( "counter", incrementalVal );
+				}, 600 );
+			},
+
+			counterString: function() {
+				var counter = this.get('counter');
+				return counter + ( counter==1 ? " item" : " items" );
+			}.property('counter')
+
+		});
+
+
+		/*
+		 *	Subview with bindings to parent widget
+		*/
+		ABoo.MockViewTest = ABoo.SCView.extend({
+
+				init: function() {
+					this._super();
+				},
+
+				didInsertElement: function() {
+					this._super();
+				}
+
+			});
+
+

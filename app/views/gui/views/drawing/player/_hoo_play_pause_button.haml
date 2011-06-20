@@ -51,6 +51,10 @@
 				this._pauseButtonSprite = ABoo.PauseButtonSprite.create();
 			},
 
+			description: function() {
+				return "HooPlayPauseButtonGraphic";
+			},
+
 			getClickableItem: function() {
 				HOO_nameSpace.assert( this._parentCanvas, "this button must be added to a canvas to work" );
 				return this._parentCanvas._$canvas;
