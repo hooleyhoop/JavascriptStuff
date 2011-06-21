@@ -1,3 +1,29 @@
+/* line 26, ../../../../../../../.rvm/gems/ruby-1.9.2-head/gems/compass-0.11.3/frameworks/compass/stylesheets/compass/typography/_vertical_rhythm.scss */
+body {
+  font-size: 81.25%;
+  line-height: 1.154em;
+}
+
+/* line 30, ../../../../../../../.rvm/gems/ruby-1.9.2-head/gems/compass-0.11.3/frameworks/compass/stylesheets/compass/typography/_vertical_rhythm.scss */
+html > body {
+  font-size: 13px;
+}
+
+/* line 9, sass/type.scss */
+body {
+  -webkit-text-size-adjust: none;
+  margin-top: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  margin-bottom: 0em;
+}
+/* line 12, sass/type.scss */
+body input[type='text'] {
+  font-size: 30px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 500;
+}
+
 /*
  * Type
  *
@@ -7,109 +33,96 @@
  * NO! measurments in CSS. NO! 12px. NO! 2em. NO! 25%
 */
 /* VERY SMALL */
+/* line 34, sass/type.scss */
 .serifVSmall {
-  font: normal normal 11px/15px Georgia;
   text-decoration: none;
   padding-top: 4px;
   padding-bottom: 11px;
-  letter-spacing: 0.06pc; }
+  letter-spacing: 0.06pc;
+}
 
+/* line 42, sass/type.scss */
 .sansVSmallBold {
-  font: normal bold 9px/15px Helvetica;
   text-decoration: none;
   padding-top: 4px;
   padding-bottom: 11px;
-  letter-spacing: 0.06pc; }
+  letter-spacing: 0.06pc;
+}
 
 /* SET SOLID */
+/* line 52, sass/type.scss */
 .serifSolid {
-  font: normal normal 13px/15px Georgia;
   text-decoration: none;
   padding-top: 2px;
   padding-bottom: 13px;
-  word-spacing: -0.1pc; }
+  word-spacing: -0.1pc;
+}
 
+/* line 60, sass/type.scss */
 .sansSolid {
-  font: normal normal 13px/15px Helvetica;
   text-decoration: none;
   padding-top: 2px;
   padding-bottom: 13px;
-  word-spacing: -0.1pc; }
+  word-spacing: -0.1pc;
+}
 
+/* line 68, sass/type.scss */
 .sansSolidBold {
-  font: normal bold 13px/15px Helvetica;
   text-decoration: none;
   padding-top: 2px;
   padding-bottom: 13px;
-  word-spacing: -0.1pc; }
+  word-spacing: -0.1pc;
+}
 
 /* BIG */
+/* line 77, sass/type.scss */
 .serifBig {
-  font: normal normal 21px/30px Georgia;
   text-decoration: none;
   padding-top: 8px;
   padding-bottom: 7px;
   letter-spacing: -0.05pc;
-  word-spacing: -0.1pc; }
+  word-spacing: -0.1pc;
+}
 
+/* line 86, sass/type.scss */
 .sansBigBold {
-  font: normal bold 21px/30px Helvetica;
   text-decoration: none;
   padding-top: 8px;
   padding-bottom: 7px;
   letter-spacing: -0.06pc;
-  word-spacing: -0.13pc; }
+  word-spacing: -0.13pc;
+}
 
 /* VERY BIG */
+/* line 98, sass/type.scss */
 .serifVBig {
-  font: normal normal 28px/30px Georgia;
   text-decoration: none;
   padding-top: 4px;
   padding-bottom: 26px;
   letter-spacing: -0.07pc;
-  word-spacing: -0.1pc; }
+  word-spacing: -0.1pc;
+}
 
+/* line 107, sass/type.scss */
 .sansVBigBold {
-  font: normal bold 28px/30px Helvetica;
   text-decoration: none;
   padding-top: 4px;
   padding-bottom: 26px;
   letter-spacing: -0.07pc;
-  word-spacing: -0.1pc; }
+  word-spacing: -0.1pc;
+}
 
 /* OLD */
 /* Type Must have vericle padding relative to size to preserve basline grid, horizontal padding is fixed at 1x */
-.smallType {
-  font-size: 11px;
-  padding-top: 4px;
-  padding-bottom: 11px;
-  padding-left: 0;
-  color: #111; }
-
-.mediumType {
-  font-size: 13px;
-  padding-top: 2px;
-  padding-bottom: 13px;
-  padding-left: 0;
-  color: #111; }
-
-.bigType {
-  font-family: Georgia;
-  font-size: 25px;
-  padding-top: 5px;
-  padding-bottom: 25px;
-  word-spacing: -0.1em;
-  line-height: 30px;
-  padding-left: 0;
-  color: #111; }
-
+/* line 123, sass/type.scss */
 .smallListType {
-  font: bold 11px/15px Georgia;
   padding-top: 4px;
   padding-bottom: 11px;
-  margin-bottom: -15px; }
+  margin-bottom: -15px;
+}
 
-body input[type='text'] {
-  font-size: 30px;
-  font-family: Helvetica, sans-serif;
-  font-weight: 500; }
+/* Dubugging only */
+/* line 132, sass/type.scss */
+.showgrid {
+  background: url(/images/backgrounds/grid.png) 0 0px;
+}

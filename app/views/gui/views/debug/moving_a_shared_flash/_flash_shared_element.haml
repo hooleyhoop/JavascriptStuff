@@ -8,11 +8,10 @@
 - if( _.includeOnce? )
 	:javascript
 
-		#{_.jsClassName} = ABoo.SCView.extend({
+		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
 
 			mouseUp: function(ev$) {
 				// This cant be called twice because the image is switched out, but it is still crap
-				alert(this.div$);
 				var img = this.getFirstDomItemOfType("img");
 				if(img) {
 					var flashURL = ABoo.SharedFlashObject.uRLForSwf( "ImgResizer/ImgResizer" );

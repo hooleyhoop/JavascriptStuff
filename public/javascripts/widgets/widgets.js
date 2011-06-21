@@ -228,7 +228,8 @@ ABoo.SCView = SC.View.extend( ABoo.RootObject, {
 	},
 	createElement_hack: function() {
 		this.set( 'element', this.div$.html() );
-		this._notifyDidCreateElement();
+		this._notifyWillInsertElement();
+		this._notifyDidInsertElement();
 		return this;
 	}
 });

@@ -31,8 +31,12 @@ ABoo.whichPlayerVersion = () ->
 		isSafari: ABoo.browserIsSafari()
 		flash: hasMinimumFlash()
 	return ABoo.whichPlayerVersion( attrs );
-	
+
+# On Safari we prefer headless-flash as the audio element takes literally forever to load and begin playing
 ABoo.whichPlayerVersion = ( attrs ) ->
+
+	if attrs.isSafari and attrs.canvas and attrs.flash
+		return "headlessAudioPLayer"		
 	if attrs.canvas and attrs.html5Audio
 		return "html5AudioPLayer"
 	else

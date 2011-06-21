@@ -7,6 +7,11 @@ module GUI::Core
 
         @@_doOnceStuff = Array.new;
 
+		def self.inherited( child )
+			nameForHash = child.name.underscore;
+			#puts "#{nameForHash} has inherited me(#{self})"
+		end
+
 		def self.partial_path
 			#NB if we didnt want the GUI/ prefix we could do  name.split('::').last || ''
 			return self.name.underscore;
@@ -128,5 +133,12 @@ module GUI::Core
                 return true;
             end
         end
+
+    protected
+
+		def wc(*args)
+			GUI::HooWidgetList.widgetClass(*args)
+		end
+
 	end
 end

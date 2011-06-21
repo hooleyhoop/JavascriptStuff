@@ -12,30 +12,24 @@
   background: #e6e4e9 url(/images/backgrounds/audioboo.jpg) repeat-x 0 0;
 }
 
-/* Dubugging only */
-/* line 18, sass/audioboo_theme.scss */
-.showgrid {
-  background: url(/images/backgrounds/grid.png);
-}
-
-/* line 23, sass/audioboo_theme.scss */
+/* line 19, sass/audioboo_theme.scss */
 ul {
   list-style-position: inside;
   list-style-type: none;
 }
 
-/* line 32, sass/audioboo_theme.scss */
+/* line 28, sass/audioboo_theme.scss */
 :focus {
   outline: none;
 }
 
-/* line 33, sass/audioboo_theme.scss */
+/* line 29, sass/audioboo_theme.scss */
 ::-moz-focus-inner {
   border: 0;
 }
 
 /* This is a pretty rubbish way of marking each cell */
-/* line 36, sass/audioboo_theme.scss */
+/* line 32, sass/audioboo_theme.scss */
 .sparse_boo_cell {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.03)));
   background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.03));
@@ -46,7 +40,7 @@ ul {
 }
 
 /* just messing */
-/* line 41, sass/audioboo_theme.scss */
+/* line 37, sass/audioboo_theme.scss */
 .shadow {
   -moz-box-shadow: 3px 3px 4px #000;
   -webkit-box-shadow: 3px 3px 4px #000;
@@ -58,22 +52,22 @@ ul {
 }
 
 /* Some elements add extra space whatever you do */
-/* line 57, sass/audioboo_theme.scss */
+/* line 52, sass/audioboo_theme.scss */
 body .sc-view {
   position: relative;
   overflow: visible;
 }
-/* line 62, sass/audioboo_theme.scss */
+/* line 57, sass/audioboo_theme.scss */
 body input[type='text'] {
   color: #999;
   background-color: #f0f0f0;
   padding: 5px;
 }
-/* line 67, sass/audioboo_theme.scss */
+/* line 62, sass/audioboo_theme.scss */
 body input[type='text']::-webkit-input-placeholder {
   color: #aaa;
 }
-/* line 72, sass/audioboo_theme.scss */
+/* line 67, sass/audioboo_theme.scss */
 body .sc-button {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #f9f9f9), color-stop(34%, #dddddd), color-stop(67%, #f2f2f2), color-stop(100%, #f7f7f7));
   background-image: -webkit-linear-gradient(#f9f9f9 1%, #dddddd, #f2f2f2, #f7f7f7);
@@ -86,7 +80,7 @@ body .sc-button {
   float: right;
   padding: 5px;
 }
-/* line 79, sass/audioboo_theme.scss */
+/* line 74, sass/audioboo_theme.scss */
 body .sc-button:hover {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #ffffff), color-stop(34%, #e2e2e2), color-stop(67%, #f7f7f7), color-stop(100%, #fcfcfc));
   background-image: -webkit-linear-gradient(#ffffff 1%, #e2e2e2, #f7f7f7, #fcfcfc);
@@ -95,7 +89,9 @@ body .sc-button:hover {
   background-image: -ms-linear-gradient(#ffffff 1%, #e2e2e2, #f7f7f7, #fcfcfc);
   background-image: linear-gradient(#ffffff 1%, #e2e2e2, #f7f7f7, #fcfcfc);
 }
-/* line 90, sass/audioboo_theme.scss */
+/* line 85, sass/audioboo_theme.scss */
 body .sc-checkbox input[type="checkbox"] {
   margin-right: 7px;
 }
+
+/* Dubugging only */

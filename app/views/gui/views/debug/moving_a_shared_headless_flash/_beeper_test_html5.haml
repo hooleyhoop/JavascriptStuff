@@ -1,0 +1,89 @@
+-# http://0.0.0.0:3000/widgets/beepertesthtml5
+
+- push( beeper_test_html5 )
+
+- wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
+	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		ABoo.HTML5AudioBackend = SC.Object.extend({
+			_mp3url:undefined,
+			_audioElem:undefined,
+			init: function( /* init never has args */ ) {
+				this._super();
+				this._audioElem = document.createElement('audio');
+
+				//var $wrapper = $("<div class='booPlayerHolder'/>").appendTo(document.body);
+				//$wrapper.append(audioElem);
+				//img$.append(audioElem);
+			},
+
+			setSrc: function( mp3URL ) {
+				if( this._mp3url != mp3URL) {
+					this._mp3url = mp3URL;
+					this._audioElem.setAttribute( 'src', mp3URL );
+					/* seems like player doesn't need to be appended? */
+					this._audioElem.setAttribute( 'autoplay', true );
+					this._audioElem.load();
+					//this._audioElem.play();
+
+				} else {
+					if(this._audioElem && this._audioElem['currentTime'])	// incase it hasn't loaded yet
+						this._audioElem['currentTime'] = 0;
+				}
+
+			}
+		});
+
+		ABoo.HTML5AudioBackendClassMethods = SC.Mixin.create({
+
+			_sharedHTML5AudioBackend: undefined,
+
+			sharedAudioPlayerForURL: function( mp3URL ) {
+				if(!this._sharedHTML5AudioBackend) {
+					this._sharedHTML5AudioBackend = ABoo.HTML5AudioBackend.create();
+				}
+				this._sharedHTML5AudioBackend.setSrc(mp3URL);
+			}
+		});
+
+		SC.mixin( ABoo.HTML5AudioBackend, ABoo.HTML5AudioBackendClassMethods );
+
+		/*
+		 *
+		*/
+		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
+
+			_state: undefined,
+
+			didInsertElement: function() {
+				this._super();
+				this._state = false;
+			},
+
+			mouseUp: function(ev$) {
+
+				if( this._state==false ) {
+					var img$ = this.getFirstDomItemOfType("img");
+					if(img$) {
+						console.log("loading...");
+
+						var url = this.json.mp3Url;
+						var playerbackend = ABoo.HTML5AudioBackend.sharedAudioPlayerForURL( url );
+
+					}
+				}
+			},
+
+			didSwapInFlash: function( swf ) {
+				this._state = true;
+			},
+
+			didSwapOutFlash: function( swf ) {
+				this._state = false;
+			}
+		});
+
+

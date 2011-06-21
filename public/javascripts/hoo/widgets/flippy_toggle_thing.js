@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 16:36:50 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 20 Jun 2011 11:32:54 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/flippy_toggle_thing.coffee
  */
 
@@ -21,27 +21,6 @@
         " item": " items"
       });
     }).property('remaining').cacheable()
-  });
-  ABoo.HackedWidget = ABoo.SCView.extend((function() {
-    /*
-    		id + json are set when created
-    		we could rationalise this a bit..
-    		sproutcore this[SC.GUID_KEY] is the same as out id
-    		sproutcore's element is the same as our div$
-    	*/
-  })(), {
-    init: function() {
-      return this._super();
-    },
-    didInsertElement: function() {
-      return this._super();
-    },
-    parentDidResize: function() {
-      return console.log("oh reeally..");
-    },
-    mouseDown: function() {
-      return console.log("pfft! pffft! pffft! ..");
-    }
   });
   ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend({
     _flippyState: false,

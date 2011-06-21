@@ -14,6 +14,7 @@ ABoo.FlashObject = SC.Object.extend
 	_ready: undefined
 	_readyTimeout: undefined
 	_currentPlaceHolder: undefined
+	_blocked: NO
 	
 	init: () -> # _url, _width, _height, _flashVarDict
 		@_super()
@@ -35,10 +36,11 @@ ABoo.FlashObject = SC.Object.extend
 		
 		# Hack in some utility functions to make sure audio element has the same interface as the swf
 		#@_commandableSwf.getNodeProperty = function(propertyName){ return this[propertyName](); };
-		#@_commandableSwf.setNodeProperty = function(propertyName,value){ this['set'+propertyName](value); };
+		#@_commandableSwf.setNodeProperty = (propertyName,value) -> 
+		#	this['set'+propertyName](value)
 		
 	###
-		!important: everytime you move the swf it creates a new instance?
+		!important: everytime you move the swf it creates a new instance
 	###
 	appendToDiv: ( div$ ) ->
 		HOO_nameSpace.assert( @_ready==false, "ready called twice?" )
@@ -56,15 +58,20 @@ ABoo.FlashObject = SC.Object.extend
 		@_readyTimeout = SC.run.later( this, "readyDidTimeout", 1000 )
 
 	# only does anything for headless swf
+	# TODO: something weird here..flashDidLoad is still called here, but for headless player we have to rebind. Why?
 	readyDidTimeout: () ->
-		@_readyTimeout = null		
+		$('body').trigger('event_flashBlockedDetected');
+		@_blocked = YES		
+		@_readyTimeout = null
 		return 0
 		
 	flashDidLoad: () ->
+		#alert("wha");
 		HOO_nameSpace.assert( @_ready==false, "ready called twice?" )
 		@_ready = true
 		SC.run.cancel( @_readyTimeout )
 		@_readyTimeout = null
+		@_blocked = NO
 		@_delegate.flashDidLoad( this )
 
 	setSwfSize: ( width, height ) ->
@@ -113,21 +120,32 @@ ABoo.FlashObjectClassMethods = SC.Mixin.create
 ###
 ABoo.SharedFlashObject = ABoo.FlashObject.extend
 	_currentPlaceHolder: undefined
+	_activeScriptItem: undefined
 	
-	swapInForItem: ( item$ ) ->
+	swapInForItem: ( scriptItem, domItem$ ) ->
 		if @_currentPlaceHolder?
 			@_observableSwf.after( @_currentPlaceHolder ) 	# put back previous swapped out item
 			@remove()										# remove the swf from page
 
 		this.addReadyBindingAndTimeOut()
-		@_currentPlaceHolder = item$
-		@replacePlaceHolderWithSwf()
+		@_currentPlaceHolder = domItem$
+		@setActiveScriptItem( scriptItem )		
+		@insertSwfVisibly()
 
 	replacePlaceHolderWithSwf: () ->
 		@_currentPlaceHolder.after( @_observableSwf )
 		@_currentPlaceHolder.remove()
 			
-
+	insertSwfVisibly: () ->
+		@matchSwfSizeToItem()
+		@replacePlaceHolderWithSwf()
+			
+	setActiveScriptItem: ( item ) ->
+		if @_activeScriptItem? then @_activeScriptItem.didSwapOutFlash( this )
+		@_activeScriptItem = item
+		@_delegate = @_activeScriptItem 
+		@_activeScriptItem.didSwapInFlash( this )
+						
 ABoo.SharedFlashObjectClassMethods = SC.Mixin.create ABoo.FlashObjectClassMethods,
 	_cached: new Object()
 
@@ -143,37 +161,36 @@ ABoo.SharedFlashObjectClassMethods = SC.Mixin.create ABoo.FlashObjectClassMethod
 	Shared Headless Flash
 ###
 ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend
-	
-	_activeScriptItem: undefined
-	
+
 	swapInForItem: ( scriptItem, domItem$ ) ->
 		if @_currentPlaceHolder?
 			if @_blocked
 				@_observableSwf.after( @_currentPlaceHolder ) 	# put back previous swapped out item
 			@remove()
-		@_blocked = NO			
-		@addReadyBindingAndTimeOut()
-		@insertSwfInvisibly()
+		
 		@_currentPlaceHolder = domItem$
 		@setActiveScriptItem( scriptItem )
-		
-	setActiveScriptItem: ( item ) ->
-		if @_activeScriptItem? then @_activeScriptItem.didSwapOutFlash( this )
-		@_activeScriptItem = item
-		@_activeScriptItem.didSwapInFlash( this )
+
+		if @_blocked
+			@readyDidTimeout()	# cheekily just skip ahead to the timeout bit, we know already that it is blocked
+			
+		else
+			@addReadyBindingAndTimeOut()
+			@insertSwfInvisibly()
 		
 	insertSwfInvisibly: () ->
 		@setSwfSize( 1, 1 )
 		$('body').after( @_observableSwf )
-
+		
 	# only does anything for headless swf
 	readyDidTimeout: () ->
 		$('body').trigger('event_flashBlockedDetected');
 		@_blocked = YES
 		@_readyTimeout = null		
 		@remove()	# remove the swf
-		@matchSwfSizeToItem()
-		@replacePlaceHolderWithSwf()
+		@insertSwfVisibly()
+		
+		# TODO: something weird here..flashDidLoad is still called for basic, but for headless player we have to rebind to 'ready' event. Why?
 		@_observableSwf.bind 'ready', () =>
 			@flashBlockerDidFuckOff();
 	
@@ -184,6 +201,7 @@ ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend
 		@setSwfSize( 0, 0 )
 		@_observableSwf.after( @_currentPlaceHolder ) 	# put back previous swapped out item
 		@_blocked = NO
+		@flashDidLoad()
 
 ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create ABoo.SharedFlashObjectClassMethods,
 	# ok, this is copied and spasted for now as unsure how to do ABoo.HeadlessSharedFlashObject.create instead of ABoo.SharedFlashObject.create

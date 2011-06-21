@@ -1,0 +1,10 @@
+@import "compass/css3";
+@import "compass/typography/vertical_rhythm";
+
+$base-font-size: 30px;
+$base-line-height: 30px;
+
+@include establish-baseline();
+
+/* Dubugging only */
+.showgrid {background:url(/images/backgrounds/grid.png) 0 0px;}

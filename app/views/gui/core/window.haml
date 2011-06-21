@@ -28,8 +28,15 @@
 		-# I may still need/not need this, it may need to go before/after Compass reset i may need to refactor
 		= stylesheet_link_tag 'simple_reset.css'
 
+		/ all stylesheets
 		= stylesheet_link_tag :app, :cache=>'base'
 
+		<!--[if !IE]>-->
+		= stylesheet_link_tag 'type-iphone.css', :media=>"only screen and (max-device-width: 480px)"
+		= stylesheet_link_tag 'type-ipad.css', :media=>"only screen and (min-device-width: 768px) and (max-device-width: 1024px)"
+		<!--<![endif]-->
+
+		/ get rid of this in future
 		= insertHeaderAdditions()
 
 	%body( id="hooWindow" class="#{@window.style}" )

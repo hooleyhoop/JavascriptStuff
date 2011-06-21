@@ -10,6 +10,7 @@
 	/
 	/ demonstrates how child scview has bindings to parent widget
 	/ the observed property is itself a calculated property
+	/ TODO: maybe widget should be an objectController ?
 	/
 	%script( type="text/html" )
 		{{#view ABoo.MockViewTest counterBinding="ABoo.#{_.varName}.counterString"}}
@@ -26,7 +27,10 @@
 		// this.set( "counterBinding", "ABoo.#{_.varName}.counterString" );
 
 		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
+
 			counter: 0,
+
+			//-- when we have a link to the subview we are done right? home time.
 
 			setupDidComplete: function() {
 				var self = this;
@@ -48,15 +52,7 @@
 		 *	Subview with bindings to parent widget
 		*/
 		ABoo.MockViewTest = ABoo.SCView.extend({
-
-				init: function() {
-					this._super();
-				},
-
-				didInsertElement: function() {
-					this._super();
-				}
-
-			});
+			// we didnt really need the subclass. Could setup the binding here if we wanted.
+		});
 
 

@@ -115,6 +115,7 @@ module GUI
 			'redView'			    		=>	GUI::Views::Debug::Basic::HooRedView.name,
 			'colorFill'			    		=>	GUI::Views::Debug::Basic::HooColorFill.name,
 			'textStyle'						=>	GUI::Views::Debug::Basic::HooTextStyle.name,
+			'bigWord'			    		=>	GUI::Views::Debug::Basic::HooBigWordView.name,
 
 			# widget_preview
 			'singleWidget'		   			=>	GUI::Views::Debug::WidgetPreview::HooSingleWidgetView.name,
@@ -129,15 +130,21 @@ module GUI
 			'flashsharedelement'			=>	GUI::Views::Debug::MovingASharedFlash::FlashSharedElement.name,
 
 			# moving_a_shared_headless_flash
-			'beepertest'					=>	GUI::Views::Debug::MovingASharedHeadlessFlash::BeeperTest.name,
-			'multiplebeepertest'			=>	GUI::Views::Debug::MovingASharedHeadlessFlash::MultipleBeeperTest.name,
+			'beepertestflash'						=>	GUI::Views::Debug::MovingASharedHeadlessFlash::BeeperTestFlash.name,
+			'multiplebeepertestflash'				=>	GUI::Views::Debug::MovingASharedHeadlessFlash::MultipleBeeperTestFlash.name,
+			'headless_mp3_test_flash'				=>	GUI::Views::Debug::MovingASharedHeadlessFlash::HeadlessMp3TestFlash.name,
+			'multiple_headless_mp3_test_flash'		=>	GUI::Views::Debug::MovingASharedHeadlessFlash::MultipleHeadlessMp3TestFlash.name,
+			'small_player_mp3_test_flash'			=>	GUI::Views::Debug::MovingASharedHeadlessFlash::SmallPlayerMp3TestFlash.name,
+			'multiple_small_player_mp3_test_flash'	=>	GUI::Views::Debug::MovingASharedHeadlessFlash::MultipleSmallPlayerMp3TestFlash.name,
+
+			'beepertesthtml5'				=>	GUI::Views::Debug::MovingASharedHeadlessFlash::BeeperTestHTML5.name,
+			'multiplebeepertesthtml5'		=>	GUI::Views::Debug::MovingASharedHeadlessFlash::MultipleBeeperTestHTML5.name,
 
 			'linkwithinlinetemplate'		=>	GUI::Views::Debug::SCTemplateTests::LinkWithInlineTemplate.name,
 			'linkwithmaybetemplate'			=>	GUI::Views::Debug::SCTemplateTests::LinkWithMaybeTemplate.name,
 			'dynamic_value_test'			=>	GUI::Views::Debug::SCTemplateTests::DynamicValueTest.name,
 
 			# unused
-			'bigWord'			    		=>	GUI::Views::Debug::Unused::HooBigWordView.name,
 
 
 			# Lists
@@ -168,6 +175,10 @@ module GUI
 
 
 		}
+
+		def <<(widget)
+			@@widgets << widget
+		end
 
 		def self.widgets
 			@@widgets

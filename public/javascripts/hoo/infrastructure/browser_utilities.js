@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Wed, 08 Jun 2011 14:51:27 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 21 Jun 2011 10:14:21 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/browser_utilities.coffee
  */
 
@@ -40,6 +40,9 @@
     return ABoo.whichPlayerVersion(attrs);
   };
   ABoo.whichPlayerVersion = function(attrs) {
+    if (attrs.isSafari && attrs.canvas && attrs.flash) {
+      return "headlessAudioPLayer";
+    }
     if (attrs.canvas && attrs.html5Audio) {
       return "html5AudioPLayer";
     } else {

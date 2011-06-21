@@ -12,13 +12,9 @@
 */
 
 /* The One True Background */
-.grad_background {background:#e6e4e9 url(/images/backgrounds/audioboo.jpg) repeat-x 0 0;}
-
-/* Dubugging only */
-.showgrid {background:url(/images/backgrounds/grid.png);}
-
-
-
+.grad_background {
+	background:#e6e4e9 url(/images/backgrounds/audioboo.jpg) repeat-x 0 0;
+}
 
 ul {
   list-style-position: inside;
@@ -53,7 +49,6 @@ filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Colo
 //li { display: block; }
 
 body {
-
   .sc-view {
     position: relative;
     overflow: visible;
@@ -92,3 +87,5 @@ body {
     }
   }
 }
+/* Dubugging only */
+//.showgrid {background:url(/images/backgrounds/grid.png);}

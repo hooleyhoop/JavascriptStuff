@@ -1,0 +1,16 @@
+/* line 26, ../../../../../../../.rvm/gems/ruby-1.9.2-head/gems/compass-0.11.3/frameworks/compass/stylesheets/compass/typography/_vertical_rhythm.scss */
+body {
+  font-size: 187.5%;
+  line-height: 1em;
+}
+
+/* line 30, ../../../../../../../.rvm/gems/ruby-1.9.2-head/gems/compass-0.11.3/frameworks/compass/stylesheets/compass/typography/_vertical_rhythm.scss */
+html > body {
+  font-size: 30px;
+}
+
+/* Dubugging only */
+/* line 10, sass/type-iphone.scss */
+.showgrid {
+  background: url(/images/backgrounds/grid.png) 0 0px;
+}

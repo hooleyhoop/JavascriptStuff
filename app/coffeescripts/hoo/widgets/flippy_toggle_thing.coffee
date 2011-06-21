@@ -16,47 +16,6 @@ ABoo.DebugView = SC.View.extend
 		return remaining + ( remaining==1 ? " item" : " items" )
 	).property('remaining').cacheable()	# property remaining string depends on remaining
 
-ABoo.HackedWidget = ABoo.SCView.extend
-	#json: undefined
-	#id: undefined
-	#div$: undefined
-
-	###
-		id + json are set when created
-		we could rationalise this a bit..
-		sproutcore this[SC.GUID_KEY] is the same as out id
-		sproutcore's element is the same as our div$
-	###
-	init:() ->
-		#this[SC.GUID_KEY] = @id
-		@_super()
-
-		#if not @div$
-		#	@div$ = $( "#"+@id )
-
-		#@div$.remove()
-		#SC.beginPropertyChanges(this)
-		#@_didRenderChildViews = NO
-		#SC.endPropertyChanges(@)
-		#@set('elementNeedsUpdate', NO)
-		#@_notifyDidCreateElement()
-
-		#¢@set( 'element', @div$.clone().wrap('<div></div>').parent().html() ) #.clone().wrap('<div></div>').parent().html()
-		#@append()
-
-
-
-	# Hmm, this seems to be called before init?
-	willInsertElement:() ->
-	    this._super()
-	didInsertElement:() ->
-	    this._super()
-
-	parentDidResize:() ->
-		console.log("oh reeally..")
-
-	mouseDown: () ->
-		console.log("pfft! pffft! pffft! ..")
 
 
 ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend

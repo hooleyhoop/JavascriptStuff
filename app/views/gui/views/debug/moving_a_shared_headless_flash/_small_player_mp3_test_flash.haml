@@ -1,0 +1,54 @@
+-# http://0.0.0.0:3000/widgets/small_player_mp3_test_flash
+
+- push( small_player_mp3_test_flash )
+
+- wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
+	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px; width:150px; height:150px;" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
+
+			_state: undefined,
+			_sharedFlashOb:undefined,
+
+			didInsertElement: function() {
+				this._super();
+				this._state = false;
+			},
+
+			mouseUp: function(ev$) {
+
+				if( this._state==false ) {
+					var img$ = this.getFirstDomItemOfType("img");
+					if( img$ ) {
+						var flashURL = ABoo.SharedFlashObject.uRLForSwf( "SmallPlayerV10/lib/Debug/SmallPlayer" );
+						this._sharedFlashOb = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, '100%', '100%', {autostart:'play'} );
+						this._sharedFlashOb.swapInForItem( this, img$ );
+					}
+				}
+			},
+
+			// this doesn't mean that the swf is ready
+			didSwapInFlash: function( swf ) {
+				this._state = true;
+			},
+
+			didSwapOutFlash: function( swf ) {
+				this._state = false;
+			},
+
+			flashDidLoad: function( swf ) {
+
+				var mp3Url = this.json.mp3Url;
+				this._sharedFlashOb._commandableSwf.setSwfAttribute( 'src', mp3Url );
+
+				// this._commandablePlayer.type = 'audio/mpeg';
+				// this._commandablePlayer.preload = "auto";
+				this._sharedFlashOb._commandableSwf.load(); // force the audio to reset & start loading the new url
+				this._sharedFlashOb._commandableSwf.play()
+			}
+		});
+
+

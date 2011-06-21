@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 17 Jun 2011 09:24:49 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 21 Jun 2011 15:22:01 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/flash_object.coffee
  */
 
@@ -19,6 +19,7 @@
     _ready: void 0,
     _readyTimeout: void 0,
     _currentPlaceHolder: void 0,
+    _blocked: NO,
     init: function() {
       var $wrapper;
       this._super();
@@ -39,7 +40,7 @@
     }
   }, (function() {
     /*
-    		!important: everytime you move the swf it creates a new instance?
+    		!important: everytime you move the swf it creates a new instance
     	*/
   })(), {
     appendToDiv: function(div$) {
@@ -61,6 +62,8 @@
       return this._readyTimeout = SC.run.later(this, "readyDidTimeout", 1000);
     },
     readyDidTimeout: function() {
+      $('body').trigger('event_flashBlockedDetected');
+      this._blocked = YES;
       this._readyTimeout = null;
       return 0;
     },
@@ -69,6 +72,7 @@
       this._ready = true;
       SC.run.cancel(this._readyTimeout);
       this._readyTimeout = null;
+      this._blocked = NO;
       return this._delegate.flashDidLoad(this);
     },
     setSwfSize: function(width, height) {
@@ -120,18 +124,32 @@
   */
   ABoo.SharedFlashObject = ABoo.FlashObject.extend({
     _currentPlaceHolder: void 0,
-    swapInForItem: function(item$) {
+    _activeScriptItem: void 0,
+    swapInForItem: function(scriptItem, domItem$) {
       if (this._currentPlaceHolder != null) {
         this._observableSwf.after(this._currentPlaceHolder);
         this.remove();
       }
       this.addReadyBindingAndTimeOut();
-      this._currentPlaceHolder = item$;
-      return this.replacePlaceHolderWithSwf();
+      this._currentPlaceHolder = domItem$;
+      this.setActiveScriptItem(scriptItem);
+      return this.insertSwfVisibly();
     },
     replacePlaceHolderWithSwf: function() {
       this._currentPlaceHolder.after(this._observableSwf);
       return this._currentPlaceHolder.remove();
+    },
+    insertSwfVisibly: function() {
+      this.matchSwfSizeToItem();
+      return this.replacePlaceHolderWithSwf();
+    },
+    setActiveScriptItem: function(item) {
+      if (this._activeScriptItem != null) {
+        this._activeScriptItem.didSwapOutFlash(this);
+      }
+      this._activeScriptItem = item;
+      this._delegate = this._activeScriptItem;
+      return this._activeScriptItem.didSwapInFlash(this);
     }
   });
   ABoo.SharedFlashObjectClassMethods = SC.Mixin.create(ABoo.FlashObjectClassMethods, {
@@ -155,7 +173,6 @@
   	Shared Headless Flash
   */
   ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend({
-    _activeScriptItem: void 0,
     swapInForItem: function(scriptItem, domItem$) {
       if (this._currentPlaceHolder != null) {
         if (this._blocked) {
@@ -163,18 +180,14 @@
         }
         this.remove();
       }
-      this._blocked = NO;
-      this.addReadyBindingAndTimeOut();
-      this.insertSwfInvisibly();
       this._currentPlaceHolder = domItem$;
-      return this.setActiveScriptItem(scriptItem);
-    },
-    setActiveScriptItem: function(item) {
-      if (this._activeScriptItem != null) {
-        this._activeScriptItem.didSwapOutFlash(this);
+      this.setActiveScriptItem(scriptItem);
+      if (this._blocked) {
+        return this.readyDidTimeout();
+      } else {
+        this.addReadyBindingAndTimeOut();
+        return this.insertSwfInvisibly();
       }
-      this._activeScriptItem = item;
-      return this._activeScriptItem.didSwapInFlash(this);
     },
     insertSwfInvisibly: function() {
       this.setSwfSize(1, 1);
@@ -185,8 +198,7 @@
       this._blocked = YES;
       this._readyTimeout = null;
       this.remove();
-      this.matchSwfSizeToItem();
-      this.replacePlaceHolderWithSwf();
+      this.insertSwfVisibly();
       return this._observableSwf.bind('ready', __bind(function() {
         return this.flashBlockerDidFuckOff();
       }, this));
@@ -194,7 +206,8 @@
     flashBlockerDidFuckOff: function() {
       this.setSwfSize(0, 0);
       this._observableSwf.after(this._currentPlaceHolder);
-      return this._blocked = NO;
+      this._blocked = NO;
+      return this.flashDidLoad();
     }
   });
   ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create(ABoo.SharedFlashObjectClassMethods, {

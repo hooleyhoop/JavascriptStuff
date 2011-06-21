@@ -8,34 +8,57 @@
 	/ it's possible that we still just want a link, even with javascript enabled, so this is a no-go
 	%script( type="text/html" )
 		{{#view ABoo.ALittleExtraView}}
-		<div style='background-color:green; font-size:30px;'>monkey monkey<div>
+		<div style='background-color:light-gray; font-size:30px;'>Simple test inline template - no bindings<div>
 		{{/view}}
 
 - if( _.includeOnce? )
 	:javascript
-		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
+		#{_.qualifiedJsClassName} = ABoo.SCView.extend({  //  ABoo.SCView.extend ABoo.HooWidget.extend
 
 			_scRootView: undefined,
 
 			setupDidComplete: function() {
 
 				this.removeNoJSItems();
-				this.getRootSCView();
+				// this.getRootSCView();
 
 				// this._scRootView._url =
-				alert("this "+this+" "+this._scRootView.parentView );
+				//meh alert("this "+this+" "+this._scRootView.parentView );
 			},
 
+			addedSubview: function( rootSCView ) {
+				alert("mutah fucker");
+			},
+
+			//
+			// the sc-view is not created yet
+			//
 			getRootSCView: function() {
 				// construct a link to the child views
-				wrapper$ = this.getFirstDomItemOfType(".sc-view");
-				var templateViews$ = wrapper$.children(".sc-view");
-				HOO_nameSpace.assert( templateViews$.length === 1, "could not find template view" );
-				var rootTemplateDiv = templateViews$[0];
-				var childID = $(rootTemplateDiv).attr("id");
-				this._scRootView = SC.View.views[childID];
-				HOO_nameSpace.assert( this._scRootView, "could not find template view" );
-			    this._scRootView.set( 'parentView', this );
+
+				HOO_nameSpace.assert( this.div$, "doh" );
+				var queryString =  "#"+this.id+".sc-view:first";
+				var brainDump = $(queryString);
+
+				var idString = "#"+this.id;
+				var braindump2Intermediate = $( idString );
+				//alert(idString);
+				var braindump2 = braindump2Intermediate.find(".sc-view");
+
+				$("#"+this.id+".sc-view:first").live( 'click', function() {
+					// Live handler called.
+				});
+
+				//meh wrapper$ = this.getFirstDomItemOfType(".sc-view");
+
+
+				//meh var templateViews$ = wrapper$.children(".sc-view");
+				//meh HOO_nameSpace.assert( templateViews$.length === 1, "could not find template view" );
+				//meh var rootTemplateDiv = templateViews$[0];
+				//meh var childID = $(rootTemplateDiv).attr("id");
+				//meh this._scRootView = SC.View.views[childID];
+				//meh HOO_nameSpace.assert( this._scRootView, "could not find template view" );
+			    //meh this._scRootView.set( 'parentView', this );
 
 				//$.each( templateViews$, function(i,v){
 				//	var childID = $(v).attr("id");
@@ -43,6 +66,30 @@
 				//	alert(scChildInstance._url)
 				//});
 			},
+
+			didInsertElement: function() {
+				alert("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+			},
+
+			$: function(sel) {
+				alert("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+			},
+
+			element: function(key, value) {
+				alert("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+			},
+
+			// Possibly put this in rootview
+			elementId: function(key, value) {
+				//alert("key "+key+" value"+value);
+				return this.id;
+			}.property().cacheable(),
+
+			  findElementInParentElement: function(parentElem) {
+				alert("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN5");
+			  },
+
+
 
 			/*
 			 * we could automatically remove all no-js items on set-up
@@ -62,8 +109,43 @@
 				console.log("EEEEwwwwww "+this.id);
 			},
 
+			// this would mess up bad with sc subviews - would need a special rootview class?
 			didInsertElement: function() {
 				this._super();
+				var parentWidget = this.parentWidget();
+				this.set( 'parentView', parentWidget );
+
+				var childViews = parentWidget.get('childViews');
+				childViews.pushObject(this);
+
+				parentWidget.addedSubview(this);
 			},
 
+			// Doesn't do any magic. Parent node must be a widget
+			parentWidget: function() {
+				var item = this;
+				while( item.parentView ) {
+					console.log("go up");
+					item = item.parentView;
+				}
+				var elementID = item.get('elementId');
+				var idIs = $('#'+elementID).parent().attr("id");
+				var parentWidget = SC.View.views[idIs];
+				return parentWidget;
+			},
+
+			  findElementInParentElement: function(parentElem) {
+				alert("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+			  },
+
+			$: function(sel) {
+				alert("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+			},
+
+			element: function(key, value) {
+				alert("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+			},
 		});
+
+
+
