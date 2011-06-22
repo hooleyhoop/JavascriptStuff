@@ -1,4 +1,4 @@
-module GUI::Views::Drawing::Buttons::DivButton
+module Gui::Views::Drawing::Buttons::DivButton
 
 	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth
 	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth?initialState=1

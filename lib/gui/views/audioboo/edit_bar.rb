@@ -1,7 +1,7 @@
-module GUI::Views::Audioboo
+module Gui::Views::Audioboo
 
 	# http://0.0.0.0:3000/widgets/editBar
-	class EditBar < GUI::Core::HooView
+	class EditBar < Gui::Core::HooView
 
         attr_accessor :largeButton
 
@@ -10,7 +10,7 @@ module GUI::Views::Audioboo
 		def initialize( args={} )
 			super(args);
 
-			largeButtonclass =  GUI::HooWidgetList.widgetClass('largeSinglebuttonForm')
+			largeButtonclass =  Gui::HooWidgetList.widgetClass('largeSinglebuttonForm')
 			@largeButton = largeButtonclass.new
 			@largeButton.img = '../images/buttons/edit-button.png';
 			@largeButton.width = 105;
@@ -18,11 +18,11 @@ module GUI::Views::Audioboo
 			@largeButton.label = 'edit'
 			@largeButton.labelColor = '#969696'
 
-			#horizListClass = GUI::HooWidgetList.widgetClass('paddedHorizontal');
+			#horizListClass = Gui::HooWidgetList.widgetClass('paddedHorizontal');
 			#@horizList = horizListClass.new();
 
 			# configure the cell
-			#buttonCell = GUI::HooWidgetList.cellClass('actionButton1').new();
+			#buttonCell = Gui::HooWidgetList.cellClass('actionButton1').new();
 			#standardCell.mapping = {
 			#  "@heading"=>"BooTitle",
 			#  "@subHeading"=>"BooLocation"

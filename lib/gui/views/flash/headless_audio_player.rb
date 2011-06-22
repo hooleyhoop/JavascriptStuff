@@ -1,7 +1,7 @@
-module GUI::Views::Flash
+module Gui::Views::Flash
 
 	# http://0.0.0.0:3000/widgets/headlessPlayer
-	class HeadlessAudioPlayer < GUI::Core::HooView
+	class HeadlessAudioPlayer < Gui::Core::HooView
 
 		attr_accessor :mp3Url;
 

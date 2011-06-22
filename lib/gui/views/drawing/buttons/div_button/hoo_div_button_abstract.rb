@@ -1,13 +1,14 @@
-module GUI::Views::Drawing::Buttons::DivButton
+require "test/unit"
+
+module Gui::Views::Drawing::Buttons::DivButton
 
 	# 3 state Simple button
 	# 0) Disabled 1)state1 2)state1Pressed
     # Height is just the height of one state
 
-	class HooDivButtonAbstract < GUI::Core::HooView
+	class HooDivButtonAbstract < Gui::Core::HooView
 
-		include GUI::Core::HooBindingsMixin
-
+		include Gui::Core::HooBindingsMixin
 		include Test::Unit::Assertions
 
 		attr_accessor :img;

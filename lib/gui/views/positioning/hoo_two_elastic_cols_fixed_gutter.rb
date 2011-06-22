@@ -1,7 +1,7 @@
-module GUI::Views::Positioning
+module Gui::Views::Positioning
 
     # http://0.0.0.0:3000/widgets/twoElasticColsFixedGutter
-	class HooTwoElasticColsFixedGutter < GUI::Core::HooView
+	class HooTwoElasticColsFixedGutter < Gui::Core::HooView
 
         # specify one or the other
         attr_accessor :fixedColWidth;
@@ -39,10 +39,10 @@ module GUI::Views::Positioning
 			super();
             setFixedColumn('right', 45 )
 
-			placeholderView1 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView1 = Gui::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView1 );
 
-			placeholderView2 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView2 = Gui::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView2 );
 		end
 

@@ -1,9 +1,9 @@
-module GUI::Views::Debug
+module Gui::Views::Debug
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=hoo_user_comment_cell
 
     # Useful for debugging cells
-	class HooCellRenderer < GUI::Core::HooView
+	class HooCellRenderer < Gui::Core::HooView
 
 		attr_accessor :cell, :cellName;
     	attr_accessor :dataSrc;
@@ -16,7 +16,7 @@ module GUI::Views::Debug
 
 		def wasAddedToParentView
 		    super();
-            self.cell = GUI::HooWidgetList.cellClass( @cellName ).new();
+            self.cell = Gui::HooWidgetList.cellClass( @cellName ).new();
 
             # Cellrenderer just displays the chosen cell's debug fixture
             self.dataSrc = cell

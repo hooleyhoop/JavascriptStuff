@@ -1,23 +1,23 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
     # http://0.0.0.0:3000/widgets/speechBubblePane
 
     # The speech panel is actual an hoo_sliding_doors_panel inner panel with a little speech tag appended.
     # The speech tag can be on the bottom or on the right or on the left
-	class HooSlidingDoorsSpeechPanel < GUI::Core::HooView
+	class HooSlidingDoorsSpeechPanel < Gui::Core::HooView
 
         attr_accessor :speechPosition;
 
         def constructSubViews
 
-			slidingDoorsPanel   = GUI::HooWidgetList.widgetClass('slidingDoorsPanel1');
-			blueView            = GUI::HooWidgetList.widgetClass('blueView');
-            backgroundImage     = GUI::HooWidgetList.widgetClass('backgroundImage');
-            relativeOffsetView  = GUI::HooWidgetList.widgetClass('relativeOffsetView');
+			slidingDoorsPanel   = Gui::HooWidgetList.widgetClass('slidingDoorsPanel1');
+			blueView            = Gui::HooWidgetList.widgetClass('blueView');
+            backgroundImage     = Gui::HooWidgetList.widgetClass('backgroundImage');
+            relativeOffsetView  = Gui::HooWidgetList.widgetClass('relativeOffsetView');
 
             # 2 different setups, speech thing on the right or speech thing on the bottom
             if( @speechPosition=='right' )
-                splitView1 = GUI::HooWidgetList.widgetClass('verticalSplitView');
+                splitView1 = Gui::HooWidgetList.widgetClass('verticalSplitView');
                 dividerView = splitView1.new();
                 dividerView.setFixedColumn( 'right', 15 );
 
@@ -41,7 +41,7 @@ module GUI::Views::Unsorted
                 dividerView.addSubView( offsetView );
 
             elsif( @speechPosition=='left' )
-                splitView1 = GUI::HooWidgetList.widgetClass('verticalSplitView');
+                splitView1 = Gui::HooWidgetList.widgetClass('verticalSplitView');
                 dividerView = splitView1.new();
                 dividerView.setFixedColumn( 'left', 15 );
                 # careful here, we overide addSubview so call the secret method
@@ -64,7 +64,7 @@ module GUI::Views::Unsorted
                 dividerView.addSubView( @innerPanel1 );
 
             elsif( @speechPosition=='bottom' )
-			    splitView2 = GUI::HooWidgetList.widgetClass('horizontalSplitView');
+			    splitView2 = Gui::HooWidgetList.widgetClass('horizontalSplitView');
                 dividerView = splitView2.new();
                 dividerView.setFixedColumn( 'bottom', 15 );
                 self._addSubView( dividerView );
@@ -103,7 +103,7 @@ module GUI::Views::Unsorted
 			self.constructSubViews()
 
             # Add some content so it's easier to see what is going on
-            loremIpsumView = GUI::HooWidgetList.widgetClass('loremIpsum');
+            loremIpsumView = Gui::HooWidgetList.widgetClass('loremIpsum');
             loremIpsumView1 = loremIpsumView.new();
     	    addSubView( loremIpsumView1 );
 

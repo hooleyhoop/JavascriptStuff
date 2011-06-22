@@ -1,5 +1,5 @@
-module GUI::Layouts
-	class HooFixedSingleColView < GUI::Core::HooView
+module Gui::Layouts
+	class HooFixedSingleColView < Gui::Core::HooView
 
 		attr_accessor :header, :footer, :mainColumn, :sidebar;
 		attr_accessor :sideBarWidth;

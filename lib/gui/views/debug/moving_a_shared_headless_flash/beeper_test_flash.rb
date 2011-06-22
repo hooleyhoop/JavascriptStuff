@@ -1,8 +1,8 @@
-module GUI::Views::Debug::MovingASharedHeadlessFlash
+module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://0.0.0.0:3000/widgets/beepertestflash
+    # http://shooley.audioboo.fm:3000/widgets/beepertestflash
 
-	class BeeperTestFlash < GUI::Core::HooView
+	class BeeperTestFlash < Gui::Core::HooView
 
         # Mock Data
 		def setupDebugFixture

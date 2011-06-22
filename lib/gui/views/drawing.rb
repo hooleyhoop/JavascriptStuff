@@ -1,4 +1,4 @@
-module GUI::Views::Drawing
+module Gui::Views::Drawing
 
 #require 'gui/views/drawing/buttons/form_button/hoo_form_button_simple'
 #require 'gui/views/drawing/buttons/form_button/hoo_form_button_toggle'

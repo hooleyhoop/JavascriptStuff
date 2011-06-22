@@ -6,12 +6,12 @@ describe "HooWindow" do
   describe "creation" do
 
     before(:each) do
-      @window = GUI::HooWindow.new();
+      @window = Gui::HooWindow.new();
     end
-    
+
     it "should not have a parent view" do
       @window.parentView.should == nil;
     end
-    
+
   end
 end

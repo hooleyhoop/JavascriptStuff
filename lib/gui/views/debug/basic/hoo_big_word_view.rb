@@ -1,9 +1,11 @@
-module GUI::Views::Debug::Basic
+module Gui::Views::Debug::Basic
 
 	# http://0.0.0.0:3000/widgets/bigWord?text=hello_world
-	class HooBigWordView < GUI::Core::HooView
+	class HooBigWordView < Gui::Core::HooView
 
 		attr_accessor :text;
+
+		def self.dslName() 'bigWord' end
 
 		def initialize( args={} )
 			super(args);
@@ -29,3 +31,5 @@ module GUI::Views::Debug::Basic
 
 	end
 end
+
+

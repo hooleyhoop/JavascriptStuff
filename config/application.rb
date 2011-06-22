@@ -45,7 +45,7 @@ module JavascriptStuff
 
     'hoo/infrastructure/simple-state-machine.js',
     "hoo/infrastructure/sm_configurations/abstractConfiguration.js", "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine.js", "hoo/infrastructure/sm_configurations/fiveStateButtonStateMachine.js",
-
+	"hoo/infrastructure/sm_configurations/audioPlayerStateMachine.js",
 
     'hoo/graphics.js',
 

@@ -1,10 +1,10 @@
-module GUI::Views::Positioning
+module Gui::Views::Positioning
 
     # PLEASE FILL ME IN
     # http://0.0.0.0:3000/widgets/5col
 
 	# http://0.0.0.0:3000/widgets/5col
-	class Hoo5ColView < GUI::Core::HooView
+	class Hoo5ColView < Gui::Core::HooView
 
 		def wasAddedToParentView
 		    super();
@@ -14,19 +14,19 @@ module GUI::Views::Positioning
 		def setupDebugFixture
 			super();
 
-			placeholderView1 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView1 = Gui::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView1 );
 
-			placeholderView2 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView2 = Gui::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView2 );
 
-			placeholderView3 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView3 = Gui::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView3 );
 
-			placeholderView4 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView4 = Gui::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView4 );
 
-			placeholderView5 = GUI::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView5 = Gui::HooWidgetList.widgetClass('colorFill').new()
 			self.addSubView( placeholderView5 );
 		end
 

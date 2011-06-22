@@ -1,12 +1,12 @@
-module GUI::Views::Debug::MovingASharedHeadlessFlash
+module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://0.0.0.0:3000/widgets/small_player_mp3_test_flash
+    # http://shooley.audioboo.fm:3000/widgets/small_player_mp3_test_flash
 
-	class SmallPlayerMp3TestFlash < GUI::Core::HooView
+	class SmallPlayerMp3TestFlash < Gui::Core::HooView
 
 		# inherited
 		#self.included(base) do
-			#GUI::HooWidgetList << self
+			#Gui::HooWidgetList << self
 		#end
 
 		attr_accessor :mp3Url;

@@ -8,31 +8,21 @@
 - if( _.includeOnce? )
 	:javascript
 
-		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
+		ABoo.NewHeadlessFlashPlayerBackend = SC.Object.extend({
 
-			_state: undefined,
-			_headlessFlashOb:undefined,
+			_swfSrc: "HeadlessPlayer/lib/Debug/HeadlessPlayer",
+			_headlessFlashOb: undefined,
+			_mp3URL: undefined,
+			_state: false,
+			_stateMachine: undefined,
 
-			didInsertElement: function() {
-				this._super();
-				this._state = false;
-			},
+			_attachToPage: function( $pageItem ) {
 
-			mouseUp: function(ev$) {
-
-				if( this._state==false ) {
-					var img = this.getFirstDomItemOfType("img");
-					if(img) {
-
-
-						var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( "HeadlessPlayer/lib/Debug/HeadlessPlayer" );
-						this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
-						// NB, it only swaps in when fails to load due to flash blocker
-						this._headlessFlashOb.swapInForItem( this, img );
-
-
-					}
-				}
+				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
+				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( "HeadlessPlayer/lib/Debug/HeadlessPlayer" );
+				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
+				// NB, it only swaps in when fails to load due to flash blocker
+				this._headlessFlashOb.swapInForItem( this, $pageItem );
 			},
 
 			// this doesn't mean that the swf is ready
@@ -45,13 +35,35 @@
 			},
 
 			flashDidLoad: function( swf ) {
-				var mp3Url = this.json.mp3Url;
-				this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', mp3Url );
-
-				// this._commandablePlayer.type = 'audio/mpeg';
-				// this._commandablePlayer.preload = "auto";
-				this._headlessFlashOb._commandableSwf.load(); // force the audio to reset & start loading the new url
+				this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', this._mp3URL );
+				this._headlessFlashOb._commandableSwf.load();
 			}
+		});
+
+		// ABoo.NewHeadlessPlayerSingleton = SC.Object.extend({
+		/// wwwaaaaahhhh
+		// });
+
+		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
+
+			_flashPlayerBackend: undefined,
+
+			didInsertElement: function() {
+				this._super();
+
+				this._flashPlayerBackend = ABoo.NewHeadlessFlashPlayerBackend.create( {_mp3URL:this.json.mp3Url} );
+			},
+
+			mouseUp: function(ev$) {
+
+				if( this._flashPlayerBackend._state == false ) {
+					var img$ = this.getFirstDomItemOfType("img");
+					if(img$) {
+						this._flashPlayerBackend._attachToPage(img$);
+					}
+				}
+			}
+
 		});
 
 

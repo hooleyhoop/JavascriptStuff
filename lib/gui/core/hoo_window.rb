@@ -1,4 +1,4 @@
-module GUI::Core
+module Gui::Core
 	class HooWindow
 
 		attr_accessor :name;

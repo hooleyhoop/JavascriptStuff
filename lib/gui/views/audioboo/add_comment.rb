@@ -1,7 +1,7 @@
-module GUI::Views::Audioboo
+module Gui::Views::Audioboo
 
 	# http://0.0.0.0:3000/widgets/addComment
-	class AddComment < GUI::Core::HooView
+	class AddComment < Gui::Core::HooView
 
         attr_accessor :img, :postButtonImg;
         attr_accessor :width, :height;

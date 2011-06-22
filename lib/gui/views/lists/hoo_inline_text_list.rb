@@ -1,7 +1,7 @@
-module GUI::Views::Lists
+module Gui::Views::Lists
 
 	# http://0.0.0.0:3000/widgets/inlineTextList
-	class HooInlineTextList < GUI::Core::HooView
+	class HooInlineTextList < Gui::Core::HooView
 
     	attr_accessor :dataSrc;
         attr_accessor :size;

@@ -1,11 +1,11 @@
-module GUI::Views::Drawing::Menus::Items::HooTextMenuItemMixin
+module Gui::Views::Drawing::Menus::Items::HooTextMenuItemMixin
 
-	#class HooTextItemAbstract < GUI::Views::Drawing::Buttons::DivButton::HooDivButtonToggleDynamicWidth
+	#class HooTextItemAbstract < Gui::Views::Drawing::Buttons::DivButton::HooDivButtonToggleDynamicWidth
 
 		# requires a position accessor
 
 		#require 'gui/helpers/widgets_helper'
-		include GUI::Helpers::WidgetsHelper
+		include Gui::Helpers::WidgetsHelper
 
         # Mock Data
 		# def setupDebugFixture

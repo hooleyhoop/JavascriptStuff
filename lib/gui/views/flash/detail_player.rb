@@ -1,9 +1,9 @@
-module GUI::Views::Flash
+module Gui::Views::Flash
 
 	# http://0.0.0.0:3000/widgets/detailPlayer?url=http://boos.audioboo.fm/attachments/733544/Recording.mp3?audio_clip_id=213134
-	class DetailPlayer < GUI::Core::HooView
+	class DetailPlayer < Gui::Core::HooView
 
-		include GUI::Core::HooBindingsMixin
+		include Gui::Core::HooBindingsMixin
 
 		attr_accessor :playerLeft, :playerRight, :playerMid, :playButton, :carat;
 		attr_accessor :playerLeft2, :playerRight2, :playerMid2
@@ -22,12 +22,12 @@ module GUI::Views::Flash
 			@playButton		= '../images/player/play-button.png';
 			@carat			= '../images/player/carat.png';
 
-			headlessPlayer				= GUI::HooWidgetList.widgetClass('headlessPlayer');
-			singleActButton				= GUI::HooWidgetList.widgetClass('divButtonSimple');
-			toggleActButton				= GUI::HooWidgetList.widgetClass('divButtonToggle');
-			slider_class				= GUI::HooWidgetList.widgetClass('simpleSlider');
-			spinner_class				= GUI::HooWidgetList.widgetClass('simpleBusySpinner');
-			simpleTextFieldClass		= GUI::HooWidgetList.widgetClass('simpleTextField');
+			headlessPlayer				= Gui::HooWidgetList.widgetClass('headlessPlayer');
+			singleActButton				= Gui::HooWidgetList.widgetClass('divButtonSimple');
+			toggleActButton				= Gui::HooWidgetList.widgetClass('divButtonToggle');
+			slider_class				= Gui::HooWidgetList.widgetClass('simpleSlider');
+			spinner_class				= Gui::HooWidgetList.widgetClass('simpleBusySpinner');
+			simpleTextFieldClass		= Gui::HooWidgetList.widgetClass('simpleTextField');
 
 
 

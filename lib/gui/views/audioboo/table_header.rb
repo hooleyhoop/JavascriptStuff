@@ -1,7 +1,7 @@
-module GUI::Views::Audioboo
+module Gui::Views::Audioboo
 
     # http://0.0.0.0:3000/widgets/tableHeader
-	class TableHeader < GUI::Core::HooView
+	class TableHeader < Gui::Core::HooView
 
         attr_accessor :label;
         attr_accessor :color;

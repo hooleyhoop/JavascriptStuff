@@ -1,15 +1,17 @@
-module GUI::Core
+module Gui::Core
 
 	class HooView < Object
+
+		require 'gui/hoo_widget_list'
 
 		attr_accessor :parentView
 		attr_accessor :views
 
         @@_doOnceStuff = Array.new;
 
-		def self.inherited( child )
-			nameForHash = child.name.underscore;
-			#puts "#{nameForHash} has inherited me(#{self})"
+		# overide this if you want a cool name, like.. snakeForce
+		def self.dslName
+			dslName = name.demodulize
 		end
 
 		def self.partial_path
@@ -136,8 +138,9 @@ module GUI::Core
 
     protected
 
-		def wc(*args)
-			GUI::HooWidgetList.widgetClass(*args)
+		# This sucks. Namespaces suck. Does ruby have macros?
+		def widgetClass(*args)
+			Gui::HooWidgetList.widgetClass(*args)
 		end
 
 	end

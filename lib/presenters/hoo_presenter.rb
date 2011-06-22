@@ -9,7 +9,7 @@ module Presenters
 
 			super();
 			@controller = controller;
-	    	@window = GUI::Core::HooWindow.new();
+	    	@window = Gui::Core::HooWindow.new();
 
 	    	#-- assert rails 2 only
 	    	if( Rails::VERSION::MAJOR == 2 )
@@ -30,15 +30,15 @@ module Presenters
 		#end
 
 		def layoutClass( layoutName )
-			GUI::HooWidgetList.layoutClass( layoutName );
+			Gui::HooWidgetList.layoutClass( layoutName );
 		end
 
 		def widgetClass( widgetName )
-			GUI::HooWidgetList.widgetClass( widgetName );
+			Gui::HooWidgetList.widgetClass( widgetName );
 		end
 
 		def cellClass( cellName )
-			GUI::HooWidgetList.cellClass( cellName );
+			Gui::HooWidgetList.cellClass( cellName );
 		end
 
 	end

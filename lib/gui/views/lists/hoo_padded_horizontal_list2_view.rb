@@ -1,7 +1,7 @@
-module GUI::Views::Lists
+module Gui::Views::Lists
 
 	# http://0.0.0.0:3000/widgets/paddedHorizontal
-	class HooPaddedHorizontalList2View < GUI::Core::HooView
+	class HooPaddedHorizontalList2View < Gui::Core::HooView
 
 		attr_accessor :content;
 		attr_accessor :cell;
@@ -22,7 +22,7 @@ module GUI::Views::Lists
 				];
 
 		# cell
-			@cell = GUI::HooWidgetList.cellClass('horizontalList1').new()
+			@cell = Gui::HooWidgetList.cellClass('horizontalList1').new()
 			@cell.mapping = {
 				"@heading"=>"name",
 				"@subHeading"=>"email"

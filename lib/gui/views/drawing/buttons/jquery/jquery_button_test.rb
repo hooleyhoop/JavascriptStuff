@@ -1,4 +1,4 @@
-module GUI::Views::Drawing::Buttons::Jquery
+module Gui::Views::Drawing::Buttons::Jquery
 
 	# 3 state Simple button
 	# 0) Disabled 1)state1 2)state1Pressed
@@ -6,7 +6,7 @@ module GUI::Views::Drawing::Buttons::Jquery
 
 	# http://0.0.0.0:3000/widgets/jqueryTestButton
 
-	class JqueryButtonTest < GUI::Core::HooView
+	class JqueryButtonTest < Gui::Core::HooView
 
 		attr_accessor :img;
 		attr_accessor :size;

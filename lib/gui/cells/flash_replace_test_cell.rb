@@ -1,7 +1,7 @@
-module GUI::Cells
+module Gui::Cells
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=flashReplaceTestCell
-	class FlashReplaceTestCell < GUI::Core::HooCell
+	class FlashReplaceTestCell < Gui::Core::HooCell
 
 		attr_accessor :heading, :subHeading, :imgPath;
 

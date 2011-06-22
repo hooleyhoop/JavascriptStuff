@@ -1,7 +1,7 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
 	# http://0.0.0.0:3000/widgets/pullQuote1
-	class HooPullQuoteOneView < GUI::Core::HooView
+	class HooPullQuoteOneView < Gui::Core::HooView
 
     attr_accessor :text;
 

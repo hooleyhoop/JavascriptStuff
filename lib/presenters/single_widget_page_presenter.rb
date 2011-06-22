@@ -11,8 +11,8 @@ module Presenters
 			# Conflicting ways to set default widget
 			widgetView = widgetClass('singleWidget').new( defaultWidget, optionalArgs )
 
-			allItems = GUI::HooWidgetList.widgets.keys
-			allValues = GUI::HooWidgetList.widgets.values
+			allItems = Gui::HooWidgetList.widgets.keys
+			allValues = Gui::HooWidgetList.widgets.values
 
 			# If Ruby isn't phased out soon i will learn some Ruby idioms
 			# Construct the menu items out of our default widget list

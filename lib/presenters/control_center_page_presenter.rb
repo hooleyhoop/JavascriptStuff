@@ -2,10 +2,8 @@ module Presenters
 	class ControlCenterPagePresenter < HooPresenter
 
 		def initialize( controller )
-
-			super( controller );
-
-			@window.showGrid;
+			super( controller )
+			@window.showGrid
 
 			@menuItems = [
 				{ 'name'=>"javascript tests",		'url'=> controller.pages_javascript_unit_tests_path },
@@ -25,20 +23,19 @@ module Presenters
 
 				{ 'name'=>"headless player",		'url'=> controller.pages_headless_player_path },
 				{ 'name'=>"headless recorder",		'url'=> controller.pages_headless_recorder_path },
-			];
+			]
 
-			@importantMessage = widgetClass('bigWord').new( {:text=>'Views should be logic-less'} );
-			@window.contentView.addSubView( @importantMessage );
+			@importantMessage = widgetClass('bigWord').new( {:text=>'Views should be logic-less'} )
+			@window.contentView.addSubView( @importantMessage )
 
 			@textList = widgetClass('textList1').new()
-			@textList.dataSrc = self;
+			@textList.dataSrc = self
 
-			@window.contentView.addSubView( @textList );
-
+			@window.contentView.addSubView( @textList )
 		end
 
 		def allItems
-			return @menuItems;
+			return @menuItems
 		end
 
 	end

@@ -1,15 +1,15 @@
-module GUI::Views::Audioboo
+module Gui::Views::Audioboo
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=hoo_user_comment_cell
-	class AllUserComments < GUI::Core::HooView
+	class AllUserComments < Gui::Core::HooView
 
 		def initialize( args={} )
 
 			super(args);
-			spaced_cell_listClass = GUI::HooWidgetList.widgetClass('spacedCellList');
+			spaced_cell_listClass = Gui::HooWidgetList.widgetClass('spacedCellList');
             @commentList = spaced_cell_listClass.new();
             @commentList.dataSrc = self;
-            @commentList.cell = GUI::HooWidgetList.cellClass( 'hoo_user_comment_cell' ).new();
+            @commentList.cell = Gui::HooWidgetList.cellClass( 'hoo_user_comment_cell' ).new();
 
             @commentList.mapping = {
 				"@commentTxt"       => "comment",
@@ -54,7 +54,6 @@ module GUI::Views::Audioboo
 
         # Mock Data
 		def setupDebugFixture
-            # arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh arggghhh argggghhh argggghhh arrrgghhhh
 			super();
 		end
 

@@ -1,4 +1,4 @@
-module GUI::Core
+module Gui::Core
 	class HooCell < Object
 
         attr_accessor :currentIndex
@@ -6,6 +6,11 @@ module GUI::Core
 
         # when rendering the cell (the cell is share between each item) dataSrc is the current item
         attr_accessor :dataSrc
+
+		#def self.inherited( child )
+			#puts 'child added' + child.inspect
+			#Gui::HooWidgetList.registerWidget( child )
+		#end
 
 		def initialize( args={} )
 			super(args);

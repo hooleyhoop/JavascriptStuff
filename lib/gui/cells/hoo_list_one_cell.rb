@@ -1,7 +1,7 @@
-module GUI::Cells
+module Gui::Cells
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=list1
-	class HooListOneCell < GUI::Core::HooCell
+	class HooListOneCell < Gui::Core::HooCell
 
 		attr_accessor :heading, :subHeading;
 

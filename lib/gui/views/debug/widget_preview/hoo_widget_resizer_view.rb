@@ -1,7 +1,7 @@
-module GUI::Views::Debug::WidgetPreview
+module Gui::Views::Debug::WidgetPreview
 
 	# http://0.0.0.0:3000/widgets/widgetResizer
-	class HooWidgetResizerView < GUI::Core::HooView
+	class HooWidgetResizerView < Gui::Core::HooView
 
     attr_accessor :dataSrc;
     attr_accessor :actionName

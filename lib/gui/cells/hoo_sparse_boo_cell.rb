@@ -1,7 +1,7 @@
-module GUI::Cells
+module Gui::Cells
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=sparseBooCell
-	class HooSparseBooCell < GUI::Core::HooCell
+	class HooSparseBooCell < Gui::Core::HooCell
 
 		attr_accessor :heading, :subHeading, :imgPath;
 

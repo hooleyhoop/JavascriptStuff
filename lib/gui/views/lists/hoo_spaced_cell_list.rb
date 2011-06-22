@@ -1,7 +1,7 @@
-module GUI::Views::Lists
+module Gui::Views::Lists
 
 	# http://0.0.0.0:3000/widgets/spacedCellList
-	class HooSpacedCellList < GUI::Core::HooView
+	class HooSpacedCellList < Gui::Core::HooView
 
 		attr_accessor :cell;
     	attr_accessor :dataSrc;
@@ -10,7 +10,7 @@ module GUI::Views::Lists
 		def setupDebugFixture
 			super();
       # cell
-			@cell = GUI::HooWidgetList.cellClass('list1').new()
+			@cell = Gui::HooWidgetList.cellClass('list1').new()
 			@cell.mapping = {
 				"@heading"=>"name",
 				"@subHeading"=>"email"

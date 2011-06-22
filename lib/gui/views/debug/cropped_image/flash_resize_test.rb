@@ -1,8 +1,8 @@
-module GUI::Views::Debug::CroppedImage
+module Gui::Views::Debug::CroppedImage
 
     # http://0.0.0.0:3000/widgets/flashresizetest
 
-	class FlashResizeTest < GUI::Core::HooView
+	class FlashResizeTest < Gui::Core::HooView
 
 		attr_accessor :flashUrl;
 

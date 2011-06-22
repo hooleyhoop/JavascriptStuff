@@ -64,7 +64,7 @@ module Presenters
 			footerSpacer.addSubView( loremIpsumView.new() );
 			@colView.footer = footerSpacer;
 
-			#GUI::HooRoundedPanelPanel.new()
+			#Gui::HooRoundedPanelPanel.new()
 
 			@window.contentView.addSubView( @colView );
 		end

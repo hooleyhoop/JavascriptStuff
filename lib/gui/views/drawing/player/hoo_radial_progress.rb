@@ -1,10 +1,10 @@
-module GUI::Views::Drawing::Player
+module Gui::Views::Drawing::Player
 
 	# http://0.0.0.0:3000/widgets/radialProgress
 	# http://0.0.0.0:3000/widgets/radialProgress?outerRad=0.99&innerRad=0.8
-	class HooRadialProgress <  GUI::Core::HooView
+	class HooRadialProgress <  Gui::Core::HooView
 
-		include GUI::Core::HooBindingsMixin
+		include Gui::Core::HooBindingsMixin
 
 		attr_accessor :parentCanvas
 		attr_accessor :outerRad
@@ -20,18 +20,18 @@ module GUI::Views::Drawing::Player
 			super();
 
 			# playPauseButton needs a canvas
-			@parentCanvas = GUI::HooWidgetList.widgetClass('canvas').new();
+			@parentCanvas = Gui::HooWidgetList.widgetClass('canvas').new();
 			addSubView( @parentCanvas );
 
-			@chckbx1 = GUI::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} );
+			@chckbx1 = Gui::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} );
 			addSubView( @chckbx1 );
 			@chckbx1.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>nil, :actionIsAsync=>false  }} );
 
-			@txtfield1 = GUI::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'loadProgress', :value=>'100'} );
+			@txtfield1 = Gui::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'loadProgress', :value=>'100'} );
 			@txtfield1.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'setLoadProgress', :action_arg=>nil, :actionIsAsync=>false  }} );
 			addSubView( @txtfield1 );
 
-			@txtfield2 = GUI::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'playprogress', :value=>'130'} );
+			@txtfield2 = Gui::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'playprogress', :value=>'130'} );
 			@txtfield2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'setPlayProgress', :action_arg=>nil, :actionIsAsync=>false  }} );
 			addSubView( @txtfield2 );
 		end

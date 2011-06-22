@@ -1,8 +1,8 @@
-module GUI::Views::Drawing::Experiments
+module Gui::Views::Drawing::Experiments
 
     # http://0.0.0.0:3000/widgets/roundedTriangle
 
-	class RoundedTriangle < GUI::Core::HooView
+	class RoundedTriangle < Gui::Core::HooView
 
 
 

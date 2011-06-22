@@ -1,8 +1,8 @@
 require 'test/unit'
 
-module GUI::Views::Drawing::Buttons::FormButton
+module Gui::Views::Drawing::Buttons::FormButton
 
-	class HooFormButtonAbstract < GUI::Core::HooView
+	class HooFormButtonAbstract < Gui::Core::HooView
 
 		include Test::Unit::Assertions
 
@@ -15,7 +15,7 @@ module GUI::Views::Drawing::Buttons::FormButton
 		# the button action (no javascript) and the javacript action it will be replaced with
 		attr_accessor :action;
 
-		include GUI::Core::HooBindingsMixin
+		include Gui::Core::HooBindingsMixin
 
 		def initialize( args={} )
 			super(args);

@@ -1,7 +1,7 @@
-module GUI::Views::Positioning
+module Gui::Views::Positioning
 
     # http://0.0.0.0:3000/widgets/relativeOffsetView
-	class HooRelativeOffsetView < GUI::Core::HooView
+	class HooRelativeOffsetView < Gui::Core::HooView
 
 		attr_accessor :top, :right, :bottom, :left
 
@@ -17,7 +17,7 @@ module GUI::Views::Positioning
 		def setupDebugFixture
 			super();
 
-			placeholderView1 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView1 = Gui::HooWidgetList.widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView1 )
 		end
 

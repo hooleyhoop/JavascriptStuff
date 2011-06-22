@@ -1,11 +1,13 @@
-module GUI::Views::Lists
+module Gui::Views::Lists
 
     # http://0.0.0.0:3000/widgets/textList1
-	class HooTextListView < GUI::Core::HooView
+	class HooTextListView < Gui::Core::HooView
 
     	attr_accessor :allItems;
     	attr_accessor :dataSrc;
         attr_accessor :size;
+
+		def self.dslName() 'textList1' end
 
 		# Mock data
 		def setupDebugFixture

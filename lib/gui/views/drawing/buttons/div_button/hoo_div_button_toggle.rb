@@ -1,4 +1,4 @@
-module GUI::Views::Drawing::Buttons::DivButton
+module Gui::Views::Drawing::Buttons::DivButton
 
 	# 5 state Toggle button
 	# 0) Disabled 1)state1 2)state1Pressed 3)state2 4)state2Pessed

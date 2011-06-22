@@ -1,8 +1,8 @@
-module GUI::Views::Debug::SCTemplateTests
+module Gui::Views::Debug::ScTemplateTests
 
     # http://0.0.0.0:3000/widgets/dynamic_value_test
 
-	class DynamicValueTest < GUI::Core::HooView
+	class DynamicValueTest < Gui::Core::HooView
 
 		attr_accessor :linkUrl;
 

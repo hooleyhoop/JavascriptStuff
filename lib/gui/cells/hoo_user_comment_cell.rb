@@ -1,7 +1,7 @@
-module GUI::Cells
+module Gui::Cells
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=hoo_user_comment_cell
-	class HooUserCommentCell < GUI::Core::HooCell
+	class HooUserCommentCell < Gui::Core::HooCell
 
 		attr_accessor :commentTxt, :commentAuthor, :commentAuthorPic, :commentDate;
         attr_accessor :userBubble
@@ -10,7 +10,7 @@ module GUI::Cells
 			super(args);
 
             # each time the cell is rendered it will render this shared view
-			@speechBubbleClass = GUI::HooWidgetList.widgetClass('speechBubblePane');
+			@speechBubbleClass = Gui::HooWidgetList.widgetClass('speechBubblePane');
             @userBubble = @speechBubbleClass.new();
             @userBubble.speechPosition = 'left'
             @userBubble.constructSubViews();

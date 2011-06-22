@@ -1,9 +1,9 @@
-module GUI::Views::Drawing::Images
+module Gui::Views::Drawing::Images
 
 	# http://0.0.0.0:3000/widgets/backgroundImage
 
     # Draw a div with a background img at fixed size
-	class HooBackgroundImg < GUI::Core::HooView
+	class HooBackgroundImg < Gui::Core::HooView
 
         attr_accessor :img;
         attr_accessor :customCSSAttributes;	# This might be a useful thing to add elsewhere, lets see

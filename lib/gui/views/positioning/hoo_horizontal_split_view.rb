@@ -1,8 +1,8 @@
-module GUI::Views::Positioning
+module Gui::Views::Positioning
 
     # First of all lets split top / bottom
 	# http://0.0.0.0:3000/widgets/horizontalSplitView
-	class HooHorizontalSplitView < GUI::Core::HooView
+	class HooHorizontalSplitView < Gui::Core::HooView
 
         attr_accessor :fixedColWidth;
         attr_accessor :fixedColSide;
@@ -25,10 +25,10 @@ module GUI::Views::Positioning
 			super();
             setFixedColumn('top', 100 )
 
-			placeholderView1 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView1 = Gui::HooWidgetList.widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView1 );
 
-			placeholderView2 = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView2 = Gui::HooWidgetList.widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView2 );
 		end
 

@@ -1,20 +1,20 @@
-module GUI::Views::Debug::MovingASharedFlash
+module Gui::Views::Debug::MovingASharedFlash
 
     # http://0.0.0.0:3000/widgets/flashsharedelementtest
 
-	class FlashSharedElementTest < GUI::Core::HooView
+	class FlashSharedElementTest < Gui::Core::HooView
 
 		# Put a wodge of shared flash elements of the page to see what happens
 		def initialize( args={} )
 			super(args);
 
-			flashSharedInstance1 = GUI::HooWidgetList.widgetClass('flashsharedelement').new();
+			flashSharedInstance1 = Gui::HooWidgetList.widgetClass('flashsharedelement').new();
 	        addSubView( flashSharedInstance1 );
 
-        	flashSharedInstance2 = GUI::HooWidgetList.widgetClass('flashsharedelement').new();
+        	flashSharedInstance2 = Gui::HooWidgetList.widgetClass('flashsharedelement').new();
 	        addSubView( flashSharedInstance2 );
 
-        	flashSharedInstance3 = GUI::HooWidgetList.widgetClass('flashsharedelement').new();
+        	flashSharedInstance3 = Gui::HooWidgetList.widgetClass('flashsharedelement').new();
 	        addSubView( flashSharedInstance3 );
 
 		end

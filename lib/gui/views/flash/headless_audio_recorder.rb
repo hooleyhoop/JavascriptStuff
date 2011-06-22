@@ -1,7 +1,7 @@
-module GUI::Views::Flash
+module Gui::Views::Flash
 
 	# http://0.0.0.0:3000/widgets/headlessRecorder
-	class HeadlessAudioRecorder < GUI::Core::HooView
+	class HeadlessAudioRecorder < Gui::Core::HooView
 
 		def initialize( args={} )
 			super(args);

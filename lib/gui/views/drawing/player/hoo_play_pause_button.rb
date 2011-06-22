@@ -1,9 +1,9 @@
-module GUI::Views::Drawing::Player
+module Gui::Views::Drawing::Player
 
 	# http://0.0.0.0:3000/widgets/playPauseButton
-	class HooPlayPauseButton <  GUI::Views::Drawing::Buttons::DivButton::HooDivButtonAbstract
+	class HooPlayPauseButton <  Gui::Views::Drawing::Buttons::DivButton::HooDivButtonAbstract
 
-		include GUI::Core::HooBindingsMixin
+		include Gui::Core::HooBindingsMixin
 
 		attr_accessor :parentCanvas
 		attr_accessor :percentOfCanvas
@@ -19,7 +19,7 @@ module GUI::Views::Drawing::Player
 			super();
 
             # playPauseButton needs a canvas
-            @parentCanvas = GUI::HooWidgetList.widgetClass('canvas').new();
+            @parentCanvas = Gui::HooWidgetList.widgetClass('canvas').new();
     	    addSubView( @parentCanvas );
 
 			@action = 'http://audioboo.fm';

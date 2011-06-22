@@ -1,7 +1,7 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
 	# http://0.0.0.0:3000/widgets/roundedPanelView
-	class HooRoundedPanelView < GUI::Core::HooView
+	class HooRoundedPanelView < Gui::Core::HooView
 
 		def initialize
 			super();

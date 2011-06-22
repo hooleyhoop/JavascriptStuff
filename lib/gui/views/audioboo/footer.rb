@@ -1,7 +1,7 @@
-module GUI::Views::Audioboo
+module Gui::Views::Audioboo
 
 	# http://0.0.0.0:3000/widgets/footer
-	class Footer < GUI::Core::HooView
+	class Footer < Gui::Core::HooView
 
 		attr_accessor :allItems;
 
@@ -9,7 +9,7 @@ module GUI::Views::Audioboo
 		# Therefor you must pass the conditional data to initialize
 		def initialize( args={} )
 			super(args);
-			fourColClass = GUI::HooWidgetList.widgetClass('4col');
+			fourColClass = Gui::HooWidgetList.widgetClass('4col');
 			@fourColView = fourColClass.new();
 			self.addSubView( @fourColView );
 		end
@@ -44,14 +44,14 @@ module GUI::Views::Audioboo
 		def wasAddedToParentView
 			super();
 
-			textListClass = GUI::HooWidgetList.widgetClass('textList1');
+			textListClass = Gui::HooWidgetList.widgetClass('textList1');
 
 			# NB) limited to exactly 4 cols at the moment
 			allItems.each do |item|
 
 
 
-                    #spacerViewClass = GUI::HooWidgetList.widgetClass('spacerView');
+                    #spacerViewClass = Gui::HooWidgetList.widgetClass('spacerView');
                     #spacerView = spacerViewClass.new( 0, 0, 10, 5 );
 
                 listView = textListClass.new();

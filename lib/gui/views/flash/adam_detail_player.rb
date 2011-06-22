@@ -1,7 +1,7 @@
-module GUI::Views::Flash
+module Gui::Views::Flash
 
 	# http://0.0.0.0:3000/widgets/adam_detailPlayer
-	class AdamDetailPlayer < GUI::Core::HooView
+	class AdamDetailPlayer < Gui::Core::HooView
 
 		attr_accessor :playerLeft, :playerRight, :playerMid, :playButton, :carat;
 		attr_accessor :playerLeft2, :playerRight2, :playerMid2

@@ -1,4 +1,4 @@
-module GUI::Core::HooBindingsMixin
+module Gui::Core::HooBindingsMixin
 
 	def addBinding( aHash )
 		if(@bindings==nil)

@@ -1,7 +1,7 @@
-module GUI::Views::Drawing::Images
+module Gui::Views::Drawing::Images
 
     # http://0.0.0.0:3000/widgets/hoo100PercentImg
-	class HooOneHundredPercentImg < GUI::Core::HooView
+	class HooOneHundredPercentImg < Gui::Core::HooView
 
         attr_accessor :img;
         attr_accessor :label, :labelLink;

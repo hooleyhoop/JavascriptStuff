@@ -10,7 +10,7 @@ module Presenters
             @window.showGrid;
 
 			# lets lay out all widgets
-			allWidgets = GUI::HooWidgetList.widgetPaths
+			allWidgets = Gui::HooWidgetList.widgetPaths
 
 			allWidgets.each do |widget|
 				classFromString = widget.constantize
@@ -20,9 +20,9 @@ module Presenters
 			end
 
 			# some view can be nested
-			bluView = GUI::HooWidgetList.widgetClass('blueView').new();
+			bluView = Gui::HooWidgetList.widgetClass('blueView').new();
 			bluView.setupDebugFixture();
-			redView = GUI::HooWidgetList.widgetClass('redView').new();
+			redView = Gui::HooWidgetList.widgetClass('redView').new();
 			redView.setupDebugFixture();
 
 			bluView.addSubView( redView );

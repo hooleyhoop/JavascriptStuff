@@ -1,9 +1,9 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
     # Welcomen! There are 2 types at the moment. Outer and Inner
 
     # http://0.0.0.0:3000/widgets/slidingDoorsPanel1
-	class HooSlidingDoorsPanel < GUI::Core::HooView
+	class HooSlidingDoorsPanel < Gui::Core::HooView
 
     	attr_accessor :cornerDim;
     	attr_accessor :imgPath;
@@ -57,7 +57,7 @@ module GUI::Views::Unsorted
    			self.style = 'main'
 
             # Add some content so it's easier to see what is going on
-            loremIpsumView = GUI::HooWidgetList.widgetClass('loremIpsum');
+            loremIpsumView = Gui::HooWidgetList.widgetClass('loremIpsum');
             loremIpsumView1 = loremIpsumView.new();
     	    addSubView( loremIpsumView1 );
 

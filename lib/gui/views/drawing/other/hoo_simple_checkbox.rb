@@ -1,9 +1,9 @@
-module GUI::Views::Drawing::Other
+module Gui::Views::Drawing::Other
 
 	# http://0.0.0.0:3000/widgets/simpleCheckbox
-	class HooSimpleCheckbox < GUI::Core::HooView
+	class HooSimpleCheckbox < Gui::Core::HooView
 
-		include GUI::Core::HooBindingsMixin
+		include Gui::Core::HooBindingsMixin
 		include Test::Unit::Assertions
 
 		attr_accessor :label;

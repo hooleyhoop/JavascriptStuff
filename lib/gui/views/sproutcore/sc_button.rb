@@ -1,7 +1,7 @@
-module GUI::Views::Sproutcore
+module Gui::Views::Sproutcore
 
 	# http://0.0.0.0:3000/widgets/sc_button
-	class ScButton < GUI::Core::HooView
+	class ScButton < Gui::Core::HooView
 
 		attr_accessor :width, :height;
 

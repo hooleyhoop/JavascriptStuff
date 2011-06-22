@@ -1,7 +1,7 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
     # http://0.0.0.0:3000/widgets/info1
-	class HooInfoOneView < GUI::Core::HooView
+	class HooInfoOneView < Gui::Core::HooView
 
 	attr_accessor :title, :text;
 

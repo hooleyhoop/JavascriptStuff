@@ -1,4 +1,4 @@
-module GUI::Helpers::WidgetsHelper
+module Gui::Helpers::WidgetsHelper
 
 	# make some kind of inline css utility
 	def roundLeftHand( amount )

@@ -1,10 +1,10 @@
-module GUI::Views::Debug::CroppedImage
+module Gui::Views::Debug::CroppedImage
 
     # http://0.0.0.0:3000/widgets/canvasimgresizetest
 
-	class CanvasImgResizeTest < GUI::Core::HooView
+	class CanvasImgResizeTest < Gui::Core::HooView
 
-		include GUI::Core::HooBindingsMixin
+		include Gui::Core::HooBindingsMixin
 
 		attr_accessor :parentCanvas
 		attr_accessor :imgUrl;
@@ -19,7 +19,7 @@ module GUI::Views::Debug::CroppedImage
 			super();
 
             # CanvasImgResizeTest needs a canvas
-            @parentCanvas = GUI::HooWidgetList.widgetClass('canvas').new();
+            @parentCanvas = Gui::HooWidgetList.widgetClass('canvas').new();
     	    addSubView( @parentCanvas );
 
 		end

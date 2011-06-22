@@ -1,7 +1,7 @@
-module GUI::Views::Debug::WidgetPreview
+module Gui::Views::Debug::WidgetPreview
 
 	# http://0.0.0.0:3000/widgets/singleWidget
-	class HooSingleWidgetView < GUI::Core::HooView
+	class HooSingleWidgetView < Gui::Core::HooView
 
     attr_accessor :menuItems
     attr_accessor :textList, :widgetResizer;
@@ -11,10 +11,10 @@ module GUI::Views::Debug::WidgetPreview
 
         @hasDefaultWidget = (defaultWidget=='') ? false : true;
 
-        @widgetResizer = GUI::HooWidgetList.widgetClass('widgetResizer').new();
+        @widgetResizer = Gui::HooWidgetList.widgetClass('widgetResizer').new();
         @widgetResizer.dataSrc = self;
 
-        @setTransparencyButton = GUI::HooWidgetList.widgetClass('labeledButton').new();
+        @setTransparencyButton = Gui::HooWidgetList.widgetClass('labeledButton').new();
         addSubView( @setTransparencyButton );
 
         # dont show textlist if we have a default widget
@@ -28,7 +28,7 @@ module GUI::Views::Debug::WidgetPreview
 
         #only temp resizable content
         if( @hasDefaultWidget )
-            defaultWidgetClass = GUI::HooWidgetList.widgetClass( defaultWidget );
+            defaultWidgetClass = Gui::HooWidgetList.widgetClass( defaultWidget );
             tempRsizerContent = defaultWidgetClass.new( optionalArgs );
             tempRsizerContent.setupDebugFixture();
             @widgetResizer.addSubView( tempRsizerContent );

@@ -1,9 +1,9 @@
-module GUI::Views::Debug::MovingASharedFlash
+module Gui::Views::Debug::MovingASharedFlash
 
     # http://0.0.0.0:3000/widgets/flashsharedelement
 
 	# The purpose of this is ONLY to be used by FlashSharedElementTest
-	class FlashSharedElement < GUI::Core::HooView
+	class FlashSharedElement < Gui::Core::HooView
 
 		def initialize( args={} )
 			super(args);

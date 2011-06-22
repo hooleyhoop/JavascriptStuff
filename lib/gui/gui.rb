@@ -1,7 +1,7 @@
 module GUI
 
 	def widgetClass( name )
-		return GUI::HooWidgetList.widgetClass( name )
+		return Gui::HooWidgetList.widgetClass( name )
 	end
 
 end

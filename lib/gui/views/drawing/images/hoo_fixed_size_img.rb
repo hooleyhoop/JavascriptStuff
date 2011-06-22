@@ -1,7 +1,7 @@
-module GUI::Views::Drawing::Images
+module Gui::Views::Drawing::Images
 
     # http://0.0.0.0:3000/widgets/fixedSizeImage
-	class HooFixedSizeImg < GUI::Core::HooView
+	class HooFixedSizeImg < Gui::Core::HooView
 
 		attr_accessor :width, :height
         attr_accessor :img

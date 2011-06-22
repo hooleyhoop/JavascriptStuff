@@ -1,7 +1,7 @@
-module GUI::Views::Lists
+module Gui::Views::Lists
 
 	# http://0.0.0.0:3000/widgets/list1
-	class HooListOneView < GUI::Core::HooView
+	class HooListOneView < Gui::Core::HooView
 
 		attr_accessor :content;
 		attr_accessor :cell;
@@ -12,7 +12,7 @@ module GUI::Views::Lists
 			super();
 
       # add the header
-			@headerView = GUI::HooWidgetList.widgetClass('loremIpsum').new()
+			@headerView = Gui::HooWidgetList.widgetClass('loremIpsum').new()
 
       # content
 			@content = [
@@ -24,7 +24,7 @@ module GUI::Views::Lists
 			];
 
       # cell
-			@cell = GUI::HooWidgetList.cellClass('list1').new()
+			@cell = Gui::HooWidgetList.cellClass('list1').new()
 			@cell.mapping = {
 				"@heading"=>"name",
 				"@subHeading"=>"email"

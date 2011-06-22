@@ -1,7 +1,7 @@
-module GUI::Views::Audioboo
+module Gui::Views::Audioboo
 
     # http://0.0.0.0:3000/widgets/userDetailsBanner
-	class UserDetailsBanner < GUI::Core::HooView
+	class UserDetailsBanner < Gui::Core::HooView
 
         attr_accessor :img;
         attr_accessor :imgSize;

@@ -1,7 +1,7 @@
-module GUI::Cells
+module Gui::Cells
 
     # http://0.0.0.0:3000/widgets/cellRenderer?cellName=actionButton1
-	class HooActionButton1Cell < GUI::Core::HooCell
+	class HooActionButton1Cell < Gui::Core::HooCell
 
         attr_accessor :heading, :subHeading;
 

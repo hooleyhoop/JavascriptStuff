@@ -1,7 +1,7 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
 	# http://0.0.0.0:3000/widgets/loremIpsum
-	class HooLoremIpsumView < GUI::Core::HooView
+	class HooLoremIpsumView < Gui::Core::HooView
 
 	end
 end

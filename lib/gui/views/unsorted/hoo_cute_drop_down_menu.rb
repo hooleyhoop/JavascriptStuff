@@ -1,7 +1,7 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
 	# http://0.0.0.0:3000/widgets/cuteDropDownMenu
-	class HooCuteDropDownMenu < GUI::Core::HooView
+	class HooCuteDropDownMenu < Gui::Core::HooView
 
 		attr_accessor :content;
 		attr_accessor :cell;
@@ -22,7 +22,7 @@ module GUI::Views::Unsorted
 				];
 
 		# cell
-			@cell = GUI::HooWidgetList.cellClass('horizontalList1').new()
+			@cell = Gui::HooWidgetList.cellClass('horizontalList1').new()
 			@cell.mapping = {
 				"@heading"=>"name",
 				"@subHeading"=>"email"

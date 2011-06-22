@@ -1,7 +1,7 @@
-module GUI::Views::Unsorted
+module Gui::Views::Unsorted
 
     # http://0.0.0.0:3000/widgets/dropdownMenuView
-	class HooDropdownMenuView < GUI::Core::HooView
+	class HooDropdownMenuView < Gui::Core::HooView
 
     attr_accessor :menuTitle, :menuItems;
 

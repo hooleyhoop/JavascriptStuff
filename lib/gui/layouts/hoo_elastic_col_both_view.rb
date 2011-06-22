@@ -1,5 +1,5 @@
-module GUI::Layouts
-	class HooElasticColBothView < GUI::Core::HooView
+module Gui::Layouts
+	class HooElasticColBothView < Gui::Core::HooView
 
 		attr_accessor :fullWidthHeader, :elasticHeader, :footer, :mainColumn, :leftSidebar, :rightSidebar;
 		attr_accessor :leftColWidth, :rightColWidth;
