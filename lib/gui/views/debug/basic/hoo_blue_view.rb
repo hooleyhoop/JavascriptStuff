@@ -5,6 +5,8 @@ module Gui::Views::Debug::Basic
 
 		attr_accessor :width, :height;
 
+		def self.dslName() 'blueView' end
+
 		def initialize( args={} )
 			super(args);
 			@width = 90;

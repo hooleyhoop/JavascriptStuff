@@ -1,6 +1,6 @@
 module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://0.0.0.0:3000/widgets/beepertesthtml5
+    # http://0.0.0.0:3000/widgets/BeeperTestHtml5
 
 	class BeeperTestHtml5 < Gui::Core::HooView
 
@@ -8,7 +8,7 @@ module Gui::Views::Debug::MovingASharedHeadlessFlash
 
 		def initialize( args={} )
 			super(args);
-			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/305019-taking-frank-to-the-vet.mp3'} );
+			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/393446-converting-arr-to-mp3-for-an-audioboo.mp3'} );
 		end
 
         # Mock Data

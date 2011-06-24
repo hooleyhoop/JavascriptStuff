@@ -6,8 +6,10 @@ module Gui::Views::Debug::WidgetPreview
     attr_accessor :menuItems
     attr_accessor :textList, :widgetResizer;
 
+	def self.dslName() 'singleWidget' end
+
     def initialize( defaultWidget='', optionalArgs={} )
-        super();
+        super()
 
         @hasDefaultWidget = (defaultWidget=='') ? false : true;
 

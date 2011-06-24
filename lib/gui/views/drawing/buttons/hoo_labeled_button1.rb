@@ -1,4 +1,4 @@
-module Gui::Views::Unsorted
+module Gui::Views::Drawing::Buttons
 
 	# http://0.0.0.0:3000/widgets/labeledButton
 	class HooLabeledButton1 < Gui::Core::HooView
@@ -6,8 +6,10 @@ module Gui::Views::Unsorted
 		attr_accessor :label;
 		attr_accessor :action;
 
+		def self.dslName() 'labeledButton' end
+
 		def initialize( labelString="empty label" )
-			super();
+			super()
 			@label = labelString
 			@action = 'hackColors'
 		end

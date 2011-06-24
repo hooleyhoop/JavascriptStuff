@@ -1,4 +1,4 @@
--# http://0.0.0.0:3000/widgets/headless_mp3_test_flash
+-# http://0.0.0.0:3000/widgets/HeadlessMp3TestFlash
 
 - push( headless_mp3_test_flash )
 
@@ -18,7 +18,7 @@
 
 			_attachToPage: function( $pageItem ) {
 
-				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
+				//this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
 				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( "HeadlessPlayer/lib/Debug/HeadlessPlayer" );
 				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
 				// NB, it only swaps in when fails to load due to flash blocker

@@ -1,6 +1,6 @@
 module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://shooley.audioboo.fm:3000/widgets/headless_mp3_test_flash
+    # http://shooley.audioboo.fm:3000/widgets/HeadlessMp3TestFlash
 
 	class HeadlessMp3TestFlash < Gui::Core::HooView
 
@@ -13,7 +13,7 @@ module Gui::Views::Debug::MovingASharedHeadlessFlash
 
 		def initialize( args={} )
 			super(args);
-			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/305019-taking-frank-to-the-vet.mp3'} );
+			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/393446-converting-arr-to-mp3-for-an-audioboo.mp3'} );
 		end
 
         # Mock Data
