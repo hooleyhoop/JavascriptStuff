@@ -12,7 +12,7 @@ module Gui::Views::Lists
 			super();
 
       # add the header
-			@headerView = Gui::HooWidgetList.widgetClass('loremIpsum').new()
+			@headerView = widgetClass('loremIpsum').new()
 
       # content
 			@content = [

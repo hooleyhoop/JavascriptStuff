@@ -22,12 +22,12 @@ module Gui::Views::Flash
 			@playButton		= '../images/player/play-button.png';
 			@carat			= '../images/player/carat.png';
 
-			headlessPlayer				= Gui::HooWidgetList.widgetClass('headlessPlayer');
-			singleActButton				= Gui::HooWidgetList.widgetClass('divButtonSimple');
-			toggleActButton				= Gui::HooWidgetList.widgetClass('divButtonToggle');
-			slider_class				= Gui::HooWidgetList.widgetClass('simpleSlider');
-			spinner_class				= Gui::HooWidgetList.widgetClass('simpleBusySpinner');
-			simpleTextFieldClass		= Gui::HooWidgetList.widgetClass('simpleTextField');
+			headlessPlayer				= widgetClass('headlessPlayer');
+			singleActButton				= widgetClass('divButtonSimple');
+			toggleActButton				= widgetClass('divButtonToggle');
+			slider_class				= widgetClass('simpleSlider');
+			spinner_class				= widgetClass('simpleBusySpinner');
+			simpleTextFieldClass		= widgetClass('simpleTextField');
 
 
 

@@ -1,6 +1,6 @@
 module Gui::Views::Debug::MovingASharedFlash
 
-    # http://0.0.0.0:3000/widgets/flashsharedelement
+    # http://0.0.0.0:3000/widgets/FlashSharedElement
 
 	# The purpose of this is ONLY to be used by FlashSharedElementTest
 	class FlashSharedElement < Gui::Core::HooView

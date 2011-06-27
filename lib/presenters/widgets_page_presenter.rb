@@ -20,9 +20,9 @@ module Presenters
 			end
 
 			# some view can be nested
-			bluView = Gui::HooWidgetList.widgetClass('blueView').new();
+			bluView = widgetClass('blueView').new();
 			bluView.setupDebugFixture();
-			redView = Gui::HooWidgetList.widgetClass('redView').new();
+			redView = widgetClass('redView').new();
 			redView.setupDebugFixture();
 
 			bluView.addSubView( redView );

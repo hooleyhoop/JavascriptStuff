@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Player
 
-	# http://0.0.0.0:3000/widgets/simpleSlider
+	# http://0.0.0.0:3000/widgets/HooSimpleSlider
 	class HooSimpleSlider < Gui::Core::HooView
 
 		include Test::Unit::Assertions
@@ -14,8 +14,8 @@ module Gui::Views::Drawing::Player
 			super();
 
 			#-- add a checkbox
-			mockPlayer = Gui::HooWidgetList.widgetClass('mockPlayer').new()
-			chckBox = Gui::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} )
+			mockPlayer = widgetClass('MockPlayer').new()
+			chckBox = widgetClass('HooSimpleCheckbox').new( {:label=>'show busy'} )
 			chckBox.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock', :actionIsAsync=>false }} );
 
 			self.addSubView( mockPlayer );

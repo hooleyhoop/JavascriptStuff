@@ -1,7 +1,7 @@
 module Gui::Views::Drawing::Other
 
-	# http://0.0.0.0:3000/widgets/simpleTextField
-	# http://0.0.0.0:3000/widgets/simpleTextField?prefix=Hello&text=World&postfix=Humpf
+	# http://0.0.0.0:3000/widgets/HooSimpleTextField
+	# http://0.0.0.0:3000/widgets/HooSimpleTextField?prefix=Hello&text=World&postfix=Humpf
 	class HooSimpleTextField < Gui::Core::HooView
 
 		include Gui::Core::HooBindingsMixin

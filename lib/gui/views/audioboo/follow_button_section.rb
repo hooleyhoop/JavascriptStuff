@@ -30,21 +30,21 @@ module Gui::Views::Audioboo
 			isFollowing = true;
 			followButtonState = isFollowing ? 3 : 1;
 
-			@inLineMenu = Gui::HooWidgetList.widgetClass('miniInLineMenu').new();
+			@inLineMenu = widgetClass('miniInLineMenu').new();
 			@inLineMenu.height = 15;
 			@inLineMenu.labelColor = '#3574d7';
 
-			item1 = Gui::HooWidgetList.widgetClass('textToggleItem').new(  :initialState=>1 );
+			item1 = widgetClass('textToggleItem').new(  :initialState=>1 );
 			item1.labelStates = ['follow', 'follow', 'follow', 'un-follow', 'un-follow'];
 			item1.action = '/widgets/_ajaxPostTest';
 			item1.position = 'left';
 
-			itemMid = Gui::HooWidgetList.widgetClass('textLinkItem').new(  :initialState=>1 );
+			itemMid = widgetClass('textLinkItem').new(  :initialState=>1 );
 			itemMid.labelStates = ['rss', 'rss', 'rss'];
 			itemMid.action = '/widgets/_ajaxPostTest';
 			itemMid.position = 'middle';
 
-			item2 = Gui::HooWidgetList.widgetClass('textLinkItem').new( :initialState=>1 );
+			item2 = widgetClass('textLinkItem').new( :initialState=>1 );
 			item2.labelStates = ['iTunes', 'iTunes', 'iTunes'];
 			item2.action = '/widgets/_ajaxPostTest';
 			item2.position = 'right';
@@ -54,7 +54,7 @@ module Gui::Views::Audioboo
 			@inLineMenu.addLinkItem( item2 );
 
 			# OLD WAY
-			#largeButtonclass = Gui::HooWidgetList.widgetClass('formButtonToggle')
+			#largeButtonclass = widgetClass('formButtonToggle')
 			#@largeButton = largeButtonclass.new( :state=>followButtonState );
 			#@largeButton.img = '../images/buttons/follow_button/follow-button.png';
 			#@largeButton.size = [105,45];
@@ -62,7 +62,7 @@ module Gui::Views::Audioboo
 			#@largeButton.labelColor = '#fff';
 			#@largeButton.action = '/widgets/_ajaxPostTest';
 
-			#largeButtonclass =  Gui::HooWidgetList.widgetClass('largeSinglebuttonForm')
+			#largeButtonclass =  widgetClass('largeSinglebuttonForm')
 			#@largeButton = largeButtonclass.new();
 			#@largeButton.img = '../images/buttons/follow_button/follow-button.png';
 			#@largeButton.width = 105;

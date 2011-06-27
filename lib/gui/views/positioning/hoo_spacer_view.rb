@@ -17,7 +17,7 @@ module Gui::Views::Positioning
 		def setupDebugFixture
 			super();
 
-			placeHolderView = Gui::HooWidgetList.widgetClass('colorFill').new()
+			placeHolderView = widgetClass('colorFill').new()
 			self.addSubView( placeHolderView );
 
 			@top = @right = @bottom = @left = 15

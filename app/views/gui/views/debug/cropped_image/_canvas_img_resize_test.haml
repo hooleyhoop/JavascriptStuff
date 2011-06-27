@@ -1,4 +1,4 @@
--# http://0.0.0.0:3000/widgets/canvasimgresizetest
+-# http://0.0.0.0:3000/widgets/CanvasImgResizeTest
 
 -# You have to add this to an existing canvas for it to work
 -# the js _hooCanvas property is set dynamically buy ruby in addRuntimeObject()
@@ -39,7 +39,7 @@
 			}
 		});
 
-		ABoo.GUI_Views_Debug_CroppedImage_CanvasImgResizeTest = ABoo.HooWidget.extend({
+		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
 
 			_hooCanvas: undefined,	// NB, this is hooked up from Ruby
 			_imgGraphic: undefined,

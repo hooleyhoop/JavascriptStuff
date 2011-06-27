@@ -19,16 +19,16 @@ module Gui::Views::Audioboo
 			    @style = 'textList'
 			end
 
-            tableHeaderClass = Gui::HooWidgetList.widgetClass('tableHeader');
+            tableHeaderClass = widgetClass('tableHeader');
             @header = tableHeaderClass.new();
             self.addSubView( @header );
 
             if @style=='continuousText'
                 # list needs some spacing
-                spacerViewClass = Gui::HooWidgetList.widgetClass('spacerView');
+                spacerViewClass = widgetClass('spacerView');
                 spacerView = spacerViewClass.new( 0, 0, 5, 5 );
 
-                inlineTextListClass = Gui::HooWidgetList.widgetClass('inlineTextList');
+                inlineTextListClass = widgetClass('inlineTextList');
                 @listView = inlineTextListClass.new();
                 @listView.dataSrc = self;
                 @listView.size = 'small';
@@ -39,10 +39,10 @@ module Gui::Views::Audioboo
             elsif @style=='textList'
 
                 # list needs some spacing
-                spacerViewClass = Gui::HooWidgetList.widgetClass('spacerView');
+                spacerViewClass = widgetClass('spacerView');
                 spacerView = spacerViewClass.new( 0, 0, 10, 5 );
 
-                textListClass = Gui::HooWidgetList.widgetClass('textList1');
+                textListClass = widgetClass('textList1');
                 @listView = textListClass.new();
                 @listView.dataSrc = self;
                 @listView.size = 'small';
@@ -51,7 +51,7 @@ module Gui::Views::Audioboo
                 self.addSubView( spacerView );
 
             elsif @style=='cell'
-                listClass = Gui::HooWidgetList.widgetClass('spacedCellList');
+                listClass = widgetClass('spacedCellList');
                 @listView = listClass.new();
                 @listView.cell = Gui::HooWidgetList.cellClass('sparseBooCell').new()
                 @listView.dataSrc = self;

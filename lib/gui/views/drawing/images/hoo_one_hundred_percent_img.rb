@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Images
 
-    # http://0.0.0.0:3000/widgets/hoo100PercentImg
+    # http://0.0.0.0:3000/widgets/HooOneHundredPercentImg
 	class HooOneHundredPercentImg < Gui::Core::HooView
 
         attr_accessor :img;

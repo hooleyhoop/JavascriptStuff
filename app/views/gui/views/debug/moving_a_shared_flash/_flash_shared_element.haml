@@ -1,6 +1,6 @@
 - push( flash_shared_element )
 
--# http://0.0.0.0:3000/widgets/flashsharedelement
+-# http://0.0.0.0:3000/widgets/FlashSharedElement
 
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
 	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
@@ -10,13 +10,20 @@
 
 		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
 
+			didSwapInFlash: function( swf ) {
+			},
+
+			didSwapOutFlash: function( swf ) {
+			},
+
 			mouseUp: function(ev$) {
 				// This cant be called twice because the image is switched out, but it is still crap
-				var img = this.getFirstDomItemOfType("img");
-				if(img) {
+				var img$ = this.getFirstDomItemOfType("img");
+				if(img$) {
+
 					var flashURL = ABoo.SharedFlashObject.uRLForSwf( "ImgResizer/ImgResizer" );
 					var flashOb = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, "100%", "100%", {imgURL:"http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg"} );
-					flashOb.swapInForItem(img);
+					flashOb.swapInForItem(this,img$);
 				}
 			}
 

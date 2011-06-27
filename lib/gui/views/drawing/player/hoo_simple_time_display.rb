@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Player
 
-	# http://0.0.0.0:3000/widgets/simpleTimeDisplay
+	# http://0.0.0.0:3000/widgets/HooSimpleTimeDisplay
 	class HooSimpleTimeDisplay < Gui::Core::HooView
 
 		include Test::Unit::Assertions
@@ -14,7 +14,7 @@ module Gui::Views::Drawing::Player
 			super();
 
 			#-- add a checkbox
-			mockPlayer = Gui::HooWidgetList.widgetClass('mockPlayer').new()
+			mockPlayer = widgetClass('MockPlayer').new()
 			self.addSubView( mockPlayer );
 
 			self.addBinding( { :enabledBinding		=>{ :to_taget=>mockPlayer.varName, :to_property=>'_ready', :do_action=>'readyDidChange' } } );

@@ -25,10 +25,10 @@ module Gui::Views::Positioning
 			super();
             setFixedColumn('top', 100 )
 
-			placeholderView1 = Gui::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView1 = widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView1 );
 
-			placeholderView2 = Gui::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView2 = widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView2 );
 		end
 

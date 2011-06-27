@@ -1,6 +1,6 @@
 module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://shooley.audioboo.fm:3000/widgets/beepertestflash
+    # http://shooley.audioboo.fm:3000/widgets/BeeperTestFlash
 
 	class BeeperTestFlash < Gui::Core::HooView
 

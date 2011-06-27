@@ -1,6 +1,6 @@
 module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://shooley.audioboo.fm:3000/widgets/small_player_mp3_test_flash
+    # http://shooley.audioboo.fm:3000/widgets/SmallPlayerMp3TestFlash
 
 	class SmallPlayerMp3TestFlash < Gui::Core::HooView
 

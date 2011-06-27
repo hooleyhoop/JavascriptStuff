@@ -10,14 +10,14 @@ module Gui::Views::Unsorted
 
         def constructSubViews
 
-			slidingDoorsPanel   = Gui::HooWidgetList.widgetClass('slidingDoorsPanel1');
-			blueView            = Gui::HooWidgetList.widgetClass('blueView');
-            backgroundImage     = Gui::HooWidgetList.widgetClass('backgroundImage');
-            relativeOffsetView  = Gui::HooWidgetList.widgetClass('relativeOffsetView');
+			slidingDoorsPanel   = widgetClass('slidingDoorsPanel1');
+			blueView            = widgetClass('blueView');
+            backgroundImage     = widgetClass('backgroundImage');
+            relativeOffsetView  = widgetClass('relativeOffsetView');
 
             # 2 different setups, speech thing on the right or speech thing on the bottom
             if( @speechPosition=='right' )
-                splitView1 = Gui::HooWidgetList.widgetClass('verticalSplitView');
+                splitView1 = widgetClass('verticalSplitView');
                 dividerView = splitView1.new();
                 dividerView.setFixedColumn( 'right', 15 );
 
@@ -41,7 +41,7 @@ module Gui::Views::Unsorted
                 dividerView.addSubView( offsetView );
 
             elsif( @speechPosition=='left' )
-                splitView1 = Gui::HooWidgetList.widgetClass('verticalSplitView');
+                splitView1 = widgetClass('verticalSplitView');
                 dividerView = splitView1.new();
                 dividerView.setFixedColumn( 'left', 15 );
                 # careful here, we overide addSubview so call the secret method
@@ -64,7 +64,7 @@ module Gui::Views::Unsorted
                 dividerView.addSubView( @innerPanel1 );
 
             elsif( @speechPosition=='bottom' )
-			    splitView2 = Gui::HooWidgetList.widgetClass('horizontalSplitView');
+			    splitView2 = widgetClass('horizontalSplitView');
                 dividerView = splitView2.new();
                 dividerView.setFixedColumn( 'bottom', 15 );
                 self._addSubView( dividerView );
@@ -103,7 +103,7 @@ module Gui::Views::Unsorted
 			self.constructSubViews()
 
             # Add some content so it's easier to see what is going on
-            loremIpsumView = Gui::HooWidgetList.widgetClass('loremIpsum');
+            loremIpsumView = widgetClass('loremIpsum');
             loremIpsumView1 = loremIpsumView.new();
     	    addSubView( loremIpsumView1 );
 

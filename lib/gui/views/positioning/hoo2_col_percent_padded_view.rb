@@ -12,10 +12,10 @@ module Gui::Views::Positioning
 		def setupDebugFixture
 			super();
 
-			placeholderView1 = Gui::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView1 = widgetClass('colorFill').new()
 			self.addSubView( placeholderView1 );
 
-			placeholderView2 = Gui::HooWidgetList.widgetClass('colorFill').new()
+			placeholderView2 = widgetClass('colorFill').new()
 			self.addSubView( placeholderView2 );
 		end
 

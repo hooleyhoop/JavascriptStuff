@@ -1,6 +1,6 @@
 module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://shooley.audioboo.fm:3000/widgets/multiplebeepertestflash
+    # http://shooley.audioboo.fm:3000/widgets/MultipleBeeperTestFlash
 
 	class MultipleBeeperTestFlash < Gui::Core::HooView
 
@@ -8,13 +8,13 @@ module Gui::Views::Debug::MovingASharedHeadlessFlash
 		def initialize( args={} )
 			super(args);
 
-			flashSharedInstance1 = Gui::HooWidgetList.widgetClass('beepertestflash').new();
+			flashSharedInstance1 = widgetClass('BeeperTestFlash').new();
 	        addSubView( flashSharedInstance1 );
 
-        	flashSharedInstance2 = Gui::HooWidgetList.widgetClass('beepertestflash').new();
+        	flashSharedInstance2 = widgetClass('BeeperTestFlash').new();
 	        addSubView( flashSharedInstance2 );
 
-        	flashSharedInstance3 = Gui::HooWidgetList.widgetClass('beepertestflash').new();
+        	flashSharedInstance3 = widgetClass('BeeperTestFlash').new();
 	        addSubView( flashSharedInstance3 );
 
 		end

@@ -1,6 +1,6 @@
 module Gui::Views::Debug
 
-	# http://0.0.0.0:3000/widgets/debugTextInput?label=gonk&value=mightmouse
+	# http://0.0.0.0:3000/widgets/HooDebugTextInput?label=gonk&value=mightmouse
 	class HooDebugTextInput < Gui::Core::HooView
 
 		include Gui::Core::HooBindingsMixin

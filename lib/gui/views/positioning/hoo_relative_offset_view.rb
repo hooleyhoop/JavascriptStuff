@@ -17,7 +17,7 @@ module Gui::Views::Positioning
 		def setupDebugFixture
 			super();
 
-			placeholderView1 = Gui::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView1 = widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView1 )
 		end
 

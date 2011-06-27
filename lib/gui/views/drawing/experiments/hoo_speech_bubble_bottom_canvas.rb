@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Experiments
 
-    # http://0.0.0.0:3000/widgets/speechBubbleBottomCanvas
+    # http://0.0.0.0:3000/widgets/HooSpeechBubbleBottomCanvas
 
 	class HooSpeechBubbleBottomCanvas < Gui::Core::HooView
 
@@ -23,9 +23,9 @@ module Gui::Views::Drawing::Experiments
 			@triangleImgpath = '../images/innerpanel/inner_panel_speech_bottom.png';
 			@triangleImgSize = [30,15];
 
-			#slidingDoorsPanel   = Gui::HooWidgetList.widgetClass('slidingDoorsPanel1');
-            #backgroundImage     = Gui::HooWidgetList.widgetClass('backgroundImage');
-            #relativeOffsetView  = Gui::HooWidgetList.widgetClass('relativeOffsetView');
+			#slidingDoorsPanel   = widgetClass('slidingDoorsPanel1');
+            #backgroundImage     = widgetClass('backgroundImage');
+            #relativeOffsetView  = widgetClass('relativeOffsetView');
 
 
 			# manually tweak the position
@@ -50,7 +50,7 @@ module Gui::Views::Drawing::Experiments
 			self.constructSubViews()
 
             # Add some content so it's easier to see what is going on
-            loremIpsumView = Gui::HooWidgetList.widgetClass('loremIpsum');
+            loremIpsumView = widgetClass('HooLoremIpsumView');
             loremIpsumView1 = loremIpsumView.new();
     	    addSubView( loremIpsumView1 );
 

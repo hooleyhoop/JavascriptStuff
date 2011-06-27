@@ -1,6 +1,6 @@
 module Gui::Views::Debug::Basic
 
-	# http://0.0.0.0:3000/widgets/redView
+	# http://0.0.0.0:3000/widgets/HooRedView
 	class HooRedView < Gui::Core::HooView
 
 		attr_accessor :width, :height;

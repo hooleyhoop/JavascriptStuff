@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Other
 
-	# http://0.0.0.0:3000/widgets/simpleCheckbox
+	# http://0.0.0.0:3000/widgets/HooSimpleCheckbox
 	class HooSimpleCheckbox < Gui::Core::HooView
 
 		include Gui::Core::HooBindingsMixin

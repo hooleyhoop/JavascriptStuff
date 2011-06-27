@@ -6,7 +6,7 @@ module Gui::Views::Audioboo
 		def initialize( args={} )
 
 			super(args);
-			spaced_cell_listClass = Gui::HooWidgetList.widgetClass('spacedCellList');
+			spaced_cell_listClass = widgetClass('spacedCellList');
             @commentList = spaced_cell_listClass.new();
             @commentList.dataSrc = self;
             @commentList.cell = Gui::HooWidgetList.cellClass( 'hoo_user_comment_cell' ).new();

@@ -43,10 +43,10 @@ module Gui::Views::Positioning
 			super();
             setFixedColumn('left', 60 )
 
-			placeholderView1 = Gui::HooWidgetList.widgetClass('loremIpsum').new()
+			placeholderView1 = widgetClass('loremIpsum').new()
 			self.addSubView( placeholderView1 );
 
-			placeHolderView2 = Gui::HooWidgetList.widgetClass('colorFill').new()
+			placeHolderView2 = widgetClass('colorFill').new()
 			self.addSubView( placeHolderView2 );
 		end
 

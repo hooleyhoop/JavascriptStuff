@@ -57,7 +57,7 @@ module Gui::Views::Unsorted
    			self.style = 'main'
 
             # Add some content so it's easier to see what is going on
-            loremIpsumView = Gui::HooWidgetList.widgetClass('loremIpsum');
+            loremIpsumView = widgetClass('loremIpsum');
             loremIpsumView1 = loremIpsumView.new();
     	    addSubView( loremIpsumView1 );
 

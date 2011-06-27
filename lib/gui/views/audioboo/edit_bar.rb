@@ -10,7 +10,7 @@ module Gui::Views::Audioboo
 		def initialize( args={} )
 			super(args);
 
-			largeButtonclass =  Gui::HooWidgetList.widgetClass('largeSinglebuttonForm')
+			largeButtonclass =  widgetClass('largeSinglebuttonForm')
 			@largeButton = largeButtonclass.new
 			@largeButton.img = '../images/buttons/edit-button.png';
 			@largeButton.width = 105;
@@ -18,7 +18,7 @@ module Gui::Views::Audioboo
 			@largeButton.label = 'edit'
 			@largeButton.labelColor = '#969696'
 
-			#horizListClass = Gui::HooWidgetList.widgetClass('paddedHorizontal');
+			#horizListClass = widgetClass('paddedHorizontal');
 			#@horizList = horizListClass.new();
 
 			# configure the cell

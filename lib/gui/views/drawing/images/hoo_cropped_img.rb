@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Images
 
-    # http://0.0.0.0:3000/widgets/croppedImg
+    # http://0.0.0.0:3000/widgets/HooCroppedImg
 	class HooCroppedImg < Gui::Core::HooView
 
         attr_accessor :path;

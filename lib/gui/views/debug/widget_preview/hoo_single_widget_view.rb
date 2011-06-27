@@ -13,10 +13,10 @@ module Gui::Views::Debug::WidgetPreview
 
         @hasDefaultWidget = (defaultWidget=='') ? false : true;
 
-        @widgetResizer = Gui::HooWidgetList.widgetClass('widgetResizer').new();
+        @widgetResizer = widgetClass('widgetResizer').new();
         @widgetResizer.dataSrc = self;
 
-        @setTransparencyButton = Gui::HooWidgetList.widgetClass('labeledButton').new();
+        @setTransparencyButton = widgetClass('labeledButton').new();
         addSubView( @setTransparencyButton );
 
         # dont show textlist if we have a default widget
@@ -30,7 +30,7 @@ module Gui::Views::Debug::WidgetPreview
 
         #only temp resizable content
         if( @hasDefaultWidget )
-            defaultWidgetClass = Gui::HooWidgetList.widgetClass( defaultWidget );
+            defaultWidgetClass = widgetClass( defaultWidget );
             tempRsizerContent = defaultWidgetClass.new( optionalArgs );
             tempRsizerContent.setupDebugFixture();
             @widgetResizer.addSubView( tempRsizerContent );

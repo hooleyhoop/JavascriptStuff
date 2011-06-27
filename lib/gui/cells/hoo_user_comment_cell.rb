@@ -10,7 +10,7 @@ module Gui::Cells
 			super(args);
 
             # each time the cell is rendered it will render this shared view
-			@speechBubbleClass = Gui::HooWidgetList.widgetClass('speechBubblePane');
+			@speechBubbleClass = widgetClass('speechBubblePane');
             @userBubble = @speechBubbleClass.new();
             @userBubble.speechPosition = 'left'
             @userBubble.constructSubViews();

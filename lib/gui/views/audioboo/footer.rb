@@ -9,7 +9,7 @@ module Gui::Views::Audioboo
 		# Therefor you must pass the conditional data to initialize
 		def initialize( args={} )
 			super(args);
-			fourColClass = Gui::HooWidgetList.widgetClass('4col');
+			fourColClass = widgetClass('4col');
 			@fourColView = fourColClass.new();
 			self.addSubView( @fourColView );
 		end
@@ -44,14 +44,14 @@ module Gui::Views::Audioboo
 		def wasAddedToParentView
 			super();
 
-			textListClass = Gui::HooWidgetList.widgetClass('textList1');
+			textListClass = widgetClass('textList1');
 
 			# NB) limited to exactly 4 cols at the moment
 			allItems.each do |item|
 
 
 
-                    #spacerViewClass = Gui::HooWidgetList.widgetClass('spacerView');
+                    #spacerViewClass = widgetClass('spacerView');
                     #spacerView = spacerViewClass.new( 0, 0, 10, 5 );
 
                 listView = textListClass.new();

@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Player
 
-	# http://0.0.0.0:3000/widgets/smallPlayerPlayButton
+	# http://0.0.0.0:3000/widgets/HooSmallPlayerPlayButton
 	class HooSmallPlayerPlayButton < Gui::Core::HooView
 
 		include Gui::Core::HooBindingsMixin
@@ -16,30 +16,30 @@ module Gui::Views::Drawing::Player
 			super();
 
             # playPauseButton needs a canvas
-            @parentCanvas = Gui::HooWidgetList.widgetClass('canvas').new();
+            @parentCanvas = widgetClass('HooCanvas').new();
     	    addSubView( @parentCanvas );
 
 			# Radial Progress Indicator
-            @radialProgress = Gui::HooWidgetList.widgetClass('radialProgress').new( {:parentCanvas=>@parentCanvas, :outerRad=>1.0, :innerRad=>0.75} );
+            @radialProgress = widgetClass('HooRadialProgress').new( {:parentCanvas=>@parentCanvas, :outerRad=>1.0, :innerRad=>0.75} );
     	    addSubView( @radialProgress );
 
 			# Play / Pause Button
-	        @playPauseButton = Gui::HooWidgetList.widgetClass('playPauseButton').new( {:parentCanvas=>@parentCanvas, :percentOfCanvas=>0.7} );
+	        @playPauseButton = widgetClass('HooPlayPauseButton').new( {:parentCanvas=>@parentCanvas, :percentOfCanvas=>0.7} );
     	    addSubView( @playPauseButton );
 
 			@playPauseButton.action = 'http://audioboo.fm';
 			@playPauseButton.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock', :actionIsAsync=>false  }} );
 
 			#DEBUG STUFF
-    	    @chckbx1 = Gui::HooWidgetList.widgetClass('simpleCheckbox').new( {:label=>'show busy'} );
+    	    @chckbx1 = widgetClass('HooSimpleCheckbox').new( {:label=>'show busy'} );
     	    addSubView( @chckbx1 );
 			@chckbx1.addJavascriptAction( { :mouseClickAction=>{ :action_taget=> @radialProgress.varName, :action_event=>'toggleBusy', :action_arg=>nil, :actionIsAsync=>false  }} );
 
-    		@txtfield1 = Gui::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'loadProgress', :value=>'100'} );
+    		@txtfield1 = widgetClass('HooDebugTextInput').new( {:label=>'loadProgress', :value=>'100'} );
 			@txtfield1.addJavascriptAction( { :mouseClickAction=>{ :action_taget=> @radialProgress.varName, :action_event=>'setLoadProgress', :action_arg=>nil, :actionIsAsync=>false  }} );
     	    addSubView( @txtfield1 );
 
-    	   	@txtfield2 = Gui::HooWidgetList.widgetClass('debugTextInput').new( {:label=>'playprogress', :value=>'130'} );
+    	   	@txtfield2 = widgetClass('HooDebugTextInput').new( {:label=>'playprogress', :value=>'130'} );
 			@txtfield2.addJavascriptAction( { :mouseClickAction=>{ :action_taget=> @radialProgress.varName, :action_event=>'setPlayProgress', :action_arg=>nil, :actionIsAsync=>false  }} );
     	    addSubView( @txtfield2 );
 		end

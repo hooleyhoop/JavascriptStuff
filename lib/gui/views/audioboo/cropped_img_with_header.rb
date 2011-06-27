@@ -6,8 +6,8 @@ module Gui::Views::Audioboo
 		def initialize( args={} )
 			super( args );
 
-            tableHeaderClass = Gui::HooWidgetList.widgetClass('tableHeader');
-            croppedImgClass = Gui::HooWidgetList.widgetClass('croppedImg');
+            tableHeaderClass = widgetClass('tableHeader');
+            croppedImgClass = widgetClass('croppedImg');
 
             @header = tableHeaderClass.new();
             @croppedImg = croppedImgClass.new();

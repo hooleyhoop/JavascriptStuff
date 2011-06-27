@@ -1,6 +1,6 @@
 module Gui::Views::Debug::CroppedImage
 
-    # http://0.0.0.0:3000/widgets/flashresizetest
+    # http://0.0.0.0:3000/widgets/FlashResizeTest
 
 	class FlashResizeTest < Gui::Core::HooView
 

@@ -18,11 +18,15 @@
 
 			_attachToPage: function( $pageItem ) {
 
-				//this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
+				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
 				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( "HeadlessPlayer/lib/Debug/HeadlessPlayer" );
 				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
 				// NB, it only swaps in when fails to load due to flash blocker
 				this._headlessFlashOb.swapInForItem( this, $pageItem );
+
+
+				// can we draw the playbutton?
+
 			},
 
 			// this doesn't mean that the swf is ready

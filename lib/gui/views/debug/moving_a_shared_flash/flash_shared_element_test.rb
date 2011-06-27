@@ -1,6 +1,6 @@
 module Gui::Views::Debug::MovingASharedFlash
 
-    # http://0.0.0.0:3000/widgets/flashsharedelementtest
+    # http://0.0.0.0:3000/widgets/FlashSharedElementTest
 
 	class FlashSharedElementTest < Gui::Core::HooView
 
@@ -8,13 +8,13 @@ module Gui::Views::Debug::MovingASharedFlash
 		def initialize( args={} )
 			super(args);
 
-			flashSharedInstance1 = Gui::HooWidgetList.widgetClass('flashsharedelement').new();
+			flashSharedInstance1 = widgetClass('FlashSharedElement').new();
 	        addSubView( flashSharedInstance1 );
 
-        	flashSharedInstance2 = Gui::HooWidgetList.widgetClass('flashsharedelement').new();
+        	flashSharedInstance2 = widgetClass('FlashSharedElement').new();
 	        addSubView( flashSharedInstance2 );
 
-        	flashSharedInstance3 = Gui::HooWidgetList.widgetClass('flashsharedelement').new();
+        	flashSharedInstance3 = widgetClass('FlashSharedElement').new();
 	        addSubView( flashSharedInstance3 );
 
 		end

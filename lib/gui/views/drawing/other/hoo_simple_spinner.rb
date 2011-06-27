@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Other
 
-	# http://0.0.0.0:3000/widgets/simpleSpinner
+	# http://0.0.0.0:3000/widgets/HooSimpleSpinner
 	class HooSimpleSpinner < Gui::Core::HooView
 
 		include Test::Unit::Assertions

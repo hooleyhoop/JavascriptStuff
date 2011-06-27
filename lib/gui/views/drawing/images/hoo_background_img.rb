@@ -1,6 +1,6 @@
 module Gui::Views::Drawing::Images
 
-	# http://0.0.0.0:3000/widgets/backgroundImage
+	# http://0.0.0.0:3000/widgets/HooBackgroundImg
 
     # Draw a div with a background img at fixed size
 	class HooBackgroundImg < Gui::Core::HooView
