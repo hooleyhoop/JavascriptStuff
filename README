@@ -1,6 +1,8 @@
 Thoughts
 --------
 
+¥ Not sure about using handlebars template for player because if no javascript then we just want to show a link.
+
 have a page for javascript unit tests
 
 have a test page for widget

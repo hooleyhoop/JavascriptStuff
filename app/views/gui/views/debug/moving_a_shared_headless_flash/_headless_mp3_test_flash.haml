@@ -8,25 +8,56 @@
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.NewHeadlessFlashPlayerBackend = SC.Object.extend({
-
+		/*
+		 * Only one of these per page
+		*/
+		ABoo.NewHeadlessFlashPlayerSingleton = SC.Object.extend({
 			_swfSrc: "HeadlessPlayer/lib/Debug/HeadlessPlayer",
 			_headlessFlashOb: undefined,
+
+			// create the backing swf
+			init: function( /* init never has args */ ) {
+				this._super();
+				// this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
+				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( this._swfSrc );
+				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
+			},
+
+			playerBecameCurrent: function( playerInstance, $pageItem ) {
+				// NB, it only swaps in when fails to load due to flash blocker
+				this._headlessFlashOb.swapInForItem( playerInstance, $pageItem );
+			}
+		});
+		ABoo.NewHeadlessFlashPlayerSingletonClassMethods = SC.Mixin.create({
+
+			_sharedHeadlessPlayer: undefined,
+
+			sharedHeadlessPlayer: function() {
+				if( this._sharedHeadlessPlayer==undefined ){
+					this._sharedHeadlessPlayer = ABoo.NewHeadlessFlashPlayerSingleton.create();
+				}
+				return this._sharedHeadlessPlayer;
+			}
+		});
+		SC.mixin( ABoo.NewHeadlessFlashPlayerSingleton, ABoo.NewHeadlessFlashPlayerSingletonClassMethods );
+
+
+		/*
+		 * One of these for each instance on the page
+		*/
+		ABoo.NewHeadlessFlashPlayerBackend = SC.Object.extend({
+
 			_mp3URL: undefined,
+			_controller: undefined,
+
 			_state: false,
 			_stateMachine: undefined,
 
 			_attachToPage: function( $pageItem ) {
+				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().playerBecameCurrent( this, $pageItem );
 
-				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
-				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( "HeadlessPlayer/lib/Debug/HeadlessPlayer" );
-				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
-				// NB, it only swaps in when fails to load due to flash blocker
-				this._headlessFlashOb.swapInForItem( this, $pageItem );
-
-
-				// can we draw the playbutton?
-
+				// TODO: hold off on this for now.
+				//ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer.play( this._src );
 			},
 
 			// this doesn't mean that the swf is ready
@@ -36,35 +67,79 @@
 
 			didSwapOutFlash: function( swf ) {
 				this._state = false;
+
+				this._controller.hidePlayerGUI();
 			},
 
 			flashDidLoad: function( swf ) {
-				this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', this._mp3URL );
-				this._headlessFlashOb._commandableSwf.load();
+				this._controller.showPlayerGUI();
+				//old this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', this._mp3URL );
+				//old this._headlessFlashOb._commandableSwf.load();
 			}
 		});
 
-		// ABoo.NewHeadlessPlayerSingleton = SC.Object.extend({
-		/// wwwaaaaahhhh
-		// });
 
+		/*
+		 * Small Player with canvas front-end (flash backend)
+		*/
 		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
 
 			_flashPlayerBackend: undefined,
+			_canvas$: undefined,
+			_hooCanvas: undefined,
+			_placeHolder$: undefined,
 
 			didInsertElement: function() {
 				this._super();
 
-				this._flashPlayerBackend = ABoo.NewHeadlessFlashPlayerBackend.create( {_mp3URL:this.json.mp3Url} );
+				this._placeHolder$ = this.getFirstDomItemOfType("img");
+				this._flashPlayerBackend = ABoo.NewHeadlessFlashPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
 			},
 
 			mouseUp: function(ev$) {
 
+				// TODO: this is the pits..
 				if( this._flashPlayerBackend._state == false ) {
-					var img$ = this.getFirstDomItemOfType("img");
-					if(img$) {
-						this._flashPlayerBackend._attachToPage(img$);
+					if( this._placeHolder$ ) {
+						this._flashPlayerBackend._attachToPage( this._placeHolder$ );
 					}
+				}
+			},
+
+			showPlayerGUI: function() {
+
+				// can we draw the playbutton?
+
+				// TODO: move into a constructor on canvas?
+				this._canvas$ = $("<canvas>"); //TODO: does the canvas need to be in a wrapper to stretch it to 100%?
+
+				// remove the image and insert the canvas
+				this._placeHolder$.replaceWith( this._canvas$ );
+
+				this._hooCanvas = ABoo.HooCanvas.create( { _$canvas: this._canvas$ } );
+
+				// TODO: not how we will size it, but just to make it visible for now
+				this._hooCanvas._setSize(200,200);
+
+				// At last! we have found the bit where the whole scheme fails!
+				var theJson = { "percentOfCanvas":0.9, "javascriptActions":{"mouseClickAction":{"action_taget":"HooWindow","action_event":"hooLog","action_arg":"Holy Cock","actionIsAsync":false}} };
+
+				var playPause = ABoo.HooPlayPauseButton.create( {id:this.id, json:theJson, _hooCanvas: this._hooCanvas } );
+				playPause.setupDidComplete();
+
+			},
+
+			hidePlayerGUI: function() {
+
+				if(this._canvas$) {
+					// TODO: not sure we will create and destroy the canvas each time
+					this._hooCanvas.removeAllSubviews();
+
+					//TODO: put back the image
+					this._canvas$.replaceWith( this._placeHolder$ );
+
+					this._canvas$ = null;
+
 				}
 			}
 

@@ -304,17 +304,18 @@
 				this.loadedSeconds = false;
 				this._playCount = 0;
 				var self = this;
-				HeadlessAudioplayer.players.push(this);
 
-				if( HeadlessAudioplayer.sharedHeadlessPlayer==undefined ){
-					try {
-						HeadlessAudioplayer.sharedHeadlessPlayer = ABoo.HeadlessPlayerSingleton.create();
-					} catch(err) {
-			 			 $(this).trigger('booError', err);
-			  			alert("NO! "+err);
-			  			return;
-			  		}
-				}
+				HeadlessAudioplayer.listOfCurrentPlayersForDebug.push(this);
+
+				//moved_to_NewHeadlessFlashPlayerBackend if( HeadlessAudioplayer.sharedHeadlessPlayer==undefined ){
+				//moved_to_NewHeadlessFlashPlayerBackend 	try {
+				//moved_to_NewHeadlessFlashPlayerBackend 		HeadlessAudioplayer.sharedHeadlessPlayer = ABoo.HeadlessPlayerSingleton.create();
+				//moved_to_NewHeadlessFlashPlayerBackend 	} catch(err) {
+			 	//moved_to_NewHeadlessFlashPlayerBackend 		 $(this).trigger('booError', err);
+			  	//moved_to_NewHeadlessFlashPlayerBackend 		alert("NO! "+err);
+			  	//moved_to_NewHeadlessFlashPlayerBackend 		return;
+			  	//moved_to_NewHeadlessFlashPlayerBackend 	}
+				//moved_to_NewHeadlessFlashPlayerBackend }
 
 				if( this.json.mp3Url ) {
 					this._src = this.json.mp3Url;
@@ -358,7 +359,7 @@
 			}.property()
 
 		});
-		HeadlessAudioplayer.players = new Array();	// Class variable
+		HeadlessAudioplayer.listOfCurrentPlayersForDebug = new Array();	// Class variable
 
 		/* UTILITY */
 
@@ -371,7 +372,7 @@
 				return;
 			}
 
-			$.each( HeadlessAudioplayer.players, function( player_index, player_value ){
+			$.each( HeadlessAudioplayer.listOfCurrentPlayersForDebug, function( player_index, player_value ){
 				player_value.set('type', "shit");
 				console.log( "Player "+player_value+" :type "+player_value.get('type')+
 					", url "+player_value._src+

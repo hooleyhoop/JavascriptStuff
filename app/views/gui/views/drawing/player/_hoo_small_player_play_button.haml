@@ -4,21 +4,3 @@
 
 %div[_]( data-jsclass='ABoo.SmallPlayerPlayButton' style="width:200px; height:200px;" )
 	=  insert( _.views, "" )
-
-- if( _.includeOnce? )
-	:javascript
-
-		ABoo.SmallPlayerPlayButton = ABoo.HooWidget.extend({
-
-			_radialProgress: undefined,
-			_playPauseButton: undefined,
-
-			init: function( /* init never has args */ ) {
-				this._super();
-			},
-
-			setupDidComplete: function() {
-
-			}
-
-		});

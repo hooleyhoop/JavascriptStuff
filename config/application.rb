@@ -50,7 +50,7 @@ module JavascriptStuff
     'hoo/graphics.js',
 
 	'hoo/widgets/root_object.js',
-    'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'hoo/widgets/canvas.js',
+    'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'hoo/widgets/canvas.js', 'hoo/widgets/buttons/hoo_play_pause_button.js',
 
 	'hoo/widgets/flippy_toggle_thing.js',
 

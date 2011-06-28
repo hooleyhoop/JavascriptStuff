@@ -67,6 +67,13 @@ ABoo.HooCanvas = ABoo.HooWidget.extend({
 		//this.setNeedsDisplay();
 	},
 
+	removeAllSubviews: function() {
+		var self = this;
+		$.each( this._subViews, function(indexInArray, valueOfElement){
+			self.removeSubview( valueOfElement );
+		});
+	},
+
 	removeSubview: function( child ) {
 		var i = this._subViews.indexOf(child);
 		if(i>-1) {
