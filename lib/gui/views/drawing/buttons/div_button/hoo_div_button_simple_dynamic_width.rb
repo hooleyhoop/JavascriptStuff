@@ -4,9 +4,9 @@ module Gui::Views::Drawing::Buttons::DivButton
 	# 0) Disabled 1)state1 2)state1Pressed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/divButtonSimpleDynamicWidth
-	# http://0.0.0.0:3000/widgets/divButtonSimpleDynamicWidth?initialState=1
-	# http://0.0.0.0:3000/widgets/divButtonSimpleDynamicWidth?initialState=1&cornerRad=20&border=1
+	# http://0.0.0.0:3000/widgets/HooDivButtonSimpleDynamicWidth
+	# http://0.0.0.0:3000/widgets/HooDivButtonSimpleDynamicWidth?initialState=1
+	# http://0.0.0.0:3000/widgets/HooDivButtonSimpleDynamicWidth?initialState=1&cornerRad=20&border=1
 	class HooDivButtonSimpleDynamicWidth < HooDivButtonSimple
 
 		attr_accessor :cornerRad;

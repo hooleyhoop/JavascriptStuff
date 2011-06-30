@@ -1,33 +1,3 @@
-/*
- * Append a couple of states to 3 state button
-*/
-ABoo.HooFiveStateItem = ABoo.HooThreeStateItem.extend({
-
-	/* Add some extra states and overide some */
-	_createSM: function() {
-		this._buttonSM = ABoo.FiveStateButtonStateMachine.create({ _controller: this });
-	},
-
-	cmd_showMouseDown2: function() {
-		this._graphic.showMouseDown2State();
-	},
-
-	cmd_showMouseUp2: function() {
-		this._graphic.showMouseUp2State();
-	},
-
-	cmd_showMouseDownOut2: function() {
-		this._graphic.showMouseDown2State();
- 	},
-
-	cmd_fireButtonAction1: function() {
-		this._fire("ev_showState2" );
-	},
-
-	cmd_fireButtonAction2: function() {
-		this._fire("ev_showState1" );
-	}
-});
 
 /* Abstract Button */
 
@@ -275,11 +245,18 @@ ABoo.HooFormButtonToggle = ABoo.HooFormButtonSimple.extend({
 	// we just use a different state machine than the three state button, everthing else is the same
 	_createStateController: function() {
 
-		this._buttonSMControl = ABoo.HooFiveStateItem.create( { 	_graphic:this._buttonGraphic } );
+		this._buttonSMControl = ABoo.HooFiveStateItem.create( { _graphic:this._buttonGraphic } );
 	}
 });
 
+//ABoo.HooFormButtonToggleAsync = ABoo.HooFormButtonSimple.extend({
 
+	// we just use a different state machine than the three state button, everthing else is the same
+//	_createStateController: function() {
+
+//		this._buttonSMControl = ABoo.HooFiveStateItem.create( { _graphic:this._buttonGraphic, _autoShowNextState:false } );
+//	}
+//});
 
 ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend({
 

@@ -3,12 +3,12 @@
 -# If you don't have Javascript you dont need rollovers
 -# Javascript-less site should be minimal and semantic
 
--# http://0.0.0.0:3000/widgets/formButtonToggle?initialState=1
+-# http://0.0.0.0:3000/widgets/HooFormButtonToggle?initialState=1
 
 - push( hoo_form_button_toggle )
 
 -# adding the data-jsclass attribute means that a javascript instance will be created
-%div[_]( data-jsclass='HooFormButtonToggle' )
+%div[_]( data-jsclass='ABoo.HooFormButtonToggle' )
 	= form_tag( "#{_.action}", :method=>:post, :remote=>true ) do
 
 		-# Old way used a submit button. Thee are a bitch to style. So is this.
@@ -29,3 +29,4 @@
 			%span.unselectable( style="#{textStyle}" )
 				-# Insert the correct label for this initialState
 				#{_.labelStates[_.initialState]}
+

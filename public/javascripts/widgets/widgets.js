@@ -139,7 +139,12 @@ ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 		if( this.json.javascriptActions && this.json.javascriptActions[action] )
 		{
 			var a = this.json.javascriptActions[action];
-			var target	= HOO_nameSpace[ a['action_taget'] ];
+			var unknownTarget = a['action_taget'];
+			var target	= HOO_nameSpace[ unknownTarget ];
+
+			if(!target)
+				target = unknownTarget;
+
 			var action	= target[ a['action_event'] ];
 			var arg		= a['action_arg'];
 			var isAsync = a['actionIsAsync'];

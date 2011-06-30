@@ -44,7 +44,9 @@ module JavascriptStuff
     'hoo/infrastructure/browser_utilities.js', 'hoo/infrastructure/activeListenerDebugger.js', "hoo/infrastructure/vector_math.js", 'hoo/infrastructure/flash_object.js',
 
     'hoo/infrastructure/simple-state-machine.js',
-    "hoo/infrastructure/sm_configurations/abstractConfiguration.js", "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine.js", "hoo/infrastructure/sm_configurations/fiveStateButtonStateMachine.js",
+    "hoo/infrastructure/sm_configurations/abstractConfiguration.js",
+    "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine.js",
+    "hoo/infrastructure/sm_configurations/fiveStateButtonStateMachine.js",
 	"hoo/infrastructure/sm_configurations/audioPlayerStateMachine.js",
 
     'hoo/graphics.js',
@@ -53,6 +55,7 @@ module JavascriptStuff
     'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'hoo/widgets/canvas.js', 'hoo/widgets/buttons/hoo_play_pause_button.js',
 
 	'hoo/widgets/flippy_toggle_thing.js',
+	'hoo/widgets/hoo_radial_progress.js',
 
 	# order important here
     # coffeescripts

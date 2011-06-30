@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 21 Jun 2011 15:22:01 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 29 Jun 2011 17:25:40 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/flash_object.coffee
  */
 
@@ -36,7 +36,10 @@
       }
       this._observableSwf = $wrapper;
       this._commandableSwf = $wrapper.find('object')[0];
-      return this._ready = false;
+      this._ready = false;
+      return this._commandableSwf.getNodeProperty = function(propertyName) {
+        return this[propertyName]();
+      };
     }
   }, (function() {
     /*

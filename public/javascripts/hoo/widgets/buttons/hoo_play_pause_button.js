@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 27 Jun 2011 14:48:02 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 30 Jun 2011 17:14:18 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/hoo_play_pause_button.coffee
  */
 
@@ -139,6 +139,14 @@
       return this._super();
     },
     setupDidComplete: function() {
+      var BINDINGSTEST, debugOnly;
+      BINDINGSTEST = false;
+      if (BINDINGSTEST) {
+        debugOnly = ABoo.SimpleCounterForBindingsDebugging.create({
+          _rate: 1000
+        });
+        debugOnly.addObserver('_flag', this._playPauseButton, 'enabledDidChange');
+      }
       return 0;
     }
   });

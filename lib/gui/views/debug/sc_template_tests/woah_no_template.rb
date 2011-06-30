@@ -1,8 +1,8 @@
 module Gui::Views::Debug::ScTemplateTests
 
-    # http://0.0.0.0:3000/widgets/LinkWithInlineTemplate
+    # http://0.0.0.0:3000/widgets/WoahNoTemplate
 
-	class LinkWithInlineTemplate < Gui::Core::HooView
+	class WoahNoTemplate < Gui::Core::HooView
 
 		attr_accessor :linkUrl;
 

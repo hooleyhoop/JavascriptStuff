@@ -1,0 +1,52 @@
+-# http://0.0.0.0:3000/widgets/HooDynamicSmallPlayerPlayButton
+
+- push( hoo_dynamic_small_player_play_button )
+
+%div[_]( data-jsclass='ABoo.DynamicSmallPlayerPlayButton' style="width:200px; height:200px;" )
+	waaaaaa!
+	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		// Grrrr!
+		// it is important i think that we can create these things dynamically
+		ABoo.DynamicSmallPlayerPlayButton = ABoo.SCView.extend({
+
+			_smallPlayerFrontEnd: undefined,
+
+			didInsertElement: function() {
+				this._super();
+
+				/* So! There is alot of stuff here that hasn't been conceptually tidied up in any way
+					// TODO!
+				*/
+
+				// TODO: move into a constructor on canvas?
+				this._canvas$ = $("<canvas>"); //TODO: does the canvas need to be in a wrapper to stretch it to 100%?
+
+				// remove the image and insert the canvas
+				this._placeHolder$ = this.getFirstDomItemOfType("img");
+				this._placeHolder$.replaceWith( this._canvas$ );
+
+				this._hooCanvas = ABoo.HooCanvas.create( { _$canvas: this._canvas$ } );
+
+				// TODO: not how we will size it, but just to make it visible for now
+				this._hooCanvas._setSize(350,350);
+
+				// At last! we have found the bit where the whole scheme fails!
+				var thePlayButtonJson = { "percentOfCanvas":0.9, "javascriptActions":{"mouseClickAction":{"action_taget":"HooWindow","action_event":"hooLog","action_arg":"Holy Cock","actionIsAsync":false}} };
+				var theRadialProgressJson = { "_outerRad":0.99, "_innerRad":0.5 };
+
+				var radialProgress = ABoo.HooRadialProgress.create( {json:theRadialProgressJson, _hooCanvas: this._hooCanvas } );
+				var playPause = ABoo.HooPlayPauseButton.create( {json:thePlayButtonJson, _hooCanvas: this._hooCanvas } );
+
+				_smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create( {_radialProgress:radialProgress , _playPauseButton:playPause });
+
+				radialProgress.setupDidComplete();
+				playPause.setupDidComplete();
+				_smallPlayerFrontEnd.setupDidComplete();
+
+				radialProgress.setLoadProgress(200);
+			}
+		});

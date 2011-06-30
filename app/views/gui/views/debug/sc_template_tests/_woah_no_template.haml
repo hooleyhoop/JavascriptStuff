@@ -1,0 +1,32 @@
+-# http://0.0.0.0:3000/widgets/WoahNoTemplate
+
+-# if it can go in haml, it should, right?
+
+- push( woah_no_template )
+- wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white; font-size:23px;' ) do
+	placeholder
+
+
+- if( _.includeOnce? )
+	:javascript
+
+		/*
+		 * Dynamically ender a template and insert it into doc
+		*/
+
+		// create and render a view
+		#{_.qualifiedJsClassName} = ABoo.HooWidget.extend({
+			setupDidComplete: function() {
+				var comeonReallyDidYouExpectThisToWork = ABoo.MockViewTest2.create();
+				comeonReallyDidYouExpectThisToWork.appendTo(this.div$);
+			}
+		});
+
+		ABoo.MockViewTest2 = SC.View.extend({
+			// we didnt really need the subclass. Could setup the binding here if we wanted.
+			defaultTemplate: SC.Handlebars.compile('<label><input type="checkbox" {{bindAttr checked="value"}}>{{title}}</label>'),
+			title: "Hiya"
+			// attribute bindings can go here!
+		});
+
+

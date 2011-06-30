@@ -7,7 +7,8 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 	_action: undefined
 	_actionArg: undefined
 	_isAsync: undefined
-
+	#_autoShowNextState:true
+	
 	init:() -> # _graphic
 		@_super()
 		@_createSM()
@@ -45,9 +46,12 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 	cmd_showMouseDownOut1: () ->
 		@_graphic.showMouseUp1State()
 
+	# --wrong! This automatically transitions to the next state - not always what we want in asynchronous events
+	# Doh! that is what _isAsync is for
 	cmd_fireButtonAction1: () ->
-		@_fire("ev_showState1" )
-
+		@_fire("ev_showState1" ) # unless !@_autoShowNextState
+		0
+		
 	_fire: (nextState) ->
 
 		###
@@ -105,4 +109,31 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 
 	setCurrentStateName: (arg) ->
 		return @_buttonSM.processInputSignal( arg )
+
+###
+ * Append a couple of states to 3 state button
+###
+ABoo.HooFiveStateItem = ABoo.HooThreeStateItem.extend
+
+	# Add some extra states and overide some #
+	_createSM: () ->
+		@_buttonSM = ABoo.FiveStateButtonStateMachine.create({ _controller: this })
+
+	cmd_showMouseDown2: () ->
+		@_graphic.showMouseDown2State()
+
+	cmd_showMouseUp2: () ->
+		@_graphic.showMouseUp2State()
+
+	cmd_showMouseDownOut2: () ->
+		@_graphic.showMouseDown2State()
+
+	# This automatically triggers going to the next state - not always what we want in asynchronous events
+	cmd_fireButtonAction1: () ->
+		@_fire("ev_showState2" ) # unless !@_autoShowNextState
+
+	# This automatically triggers going to the next state
+	cmd_fireButtonAction2: () ->
+		@_fire("ev_showState1" ) # unless !@_autoShowNextState
+
 

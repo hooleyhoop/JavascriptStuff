@@ -104,6 +104,10 @@ ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooC
 		return undefined
 )
 
+# I used to think...
+# HooFormButtonToggleAsync is just like form button toggle except it doesn't automatically go 
+# to the next graphic state when clicked, the player tells us when to do that
+# UPDATE: then i discorvered we already had the _isAsync to handle this - just set it with the action
 ABoo.HooPlayPauseButton = ABoo.HooFormButtonToggle.extend
 
 	# _started: false,
@@ -146,6 +150,12 @@ ABoo.SmallPlayerPlayButton = ABoo.HooWidget.extend
 		@_super()
 
 	setupDidComplete: () ->
+		# example of setting up a binding
+		BINDINGSTEST = false
+		if(BINDINGSTEST)
+			debugOnly = ABoo.SimpleCounterForBindingsDebugging.create({_rate:1000})
+			#debugOnly.addObserver('_counter', this, this.loadDidChange )
+			debugOnly.addObserver('_flag', @_playPauseButton, 'enabledDidChange' )
 		0
 
 

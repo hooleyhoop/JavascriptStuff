@@ -4,8 +4,8 @@ module Gui::Views::Drawing::Buttons::FormButton
 	# 0) Disabled 1)state1 2)state1Pressed
     # Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/formButtonSimple
-	# http://0.0.0.0:3000/widgets/formButtonSimple?initialState=1
+	# http://0.0.0.0:3000/widgets/HooFormButtonSimple
+	# http://0.0.0.0:3000/widgets/HooFormButtonSimple?initialState=1
 
 	class HooFormButtonSimple < HooFormButtonAbstract
 

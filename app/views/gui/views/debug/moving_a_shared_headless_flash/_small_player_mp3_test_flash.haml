@@ -1,4 +1,5 @@
 -# http://0.0.0.0:3000/widgets/SmallPlayerMp3TestFlash
+-# http://shooley.audioboo.fm:3000/widgets/SmallPlayerMp3TestFlash
 
 - push( small_player_mp3_test_flash )
 
@@ -24,7 +25,7 @@
 					var img$ = this.getFirstDomItemOfType("img");
 					if( img$ ) {
 						var flashURL = ABoo.SharedFlashObject.uRLForSwf( "SmallPlayerV10/lib/Debug/SmallPlayer" );
-						this._sharedFlashOb = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, '100%', '100%', {autostart:'play'} );
+						this._sharedFlashOb = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, '100%', '100%', {autostart:'load'} );
 						this._sharedFlashOb.swapInForItem( this, img$ );
 					}
 				}
@@ -47,6 +48,8 @@
 				// this._commandablePlayer.type = 'audio/mpeg';
 				// this._commandablePlayer.preload = "auto";
 				this._sharedFlashOb._commandableSwf.load(); // force the audio to reset & start loading the new url
+
+				// TODO: if you play it, you have to manually update the play count (the first time only)
 				this._sharedFlashOb._commandableSwf.play()
 			}
 		});

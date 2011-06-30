@@ -1,8 +1,11 @@
 -# http://0.0.0.0:3000/widgets/HeadlessMp3TestFlash
+-# http://shooley.audioboo.fm:3000/widgets/HeadlessMp3TestFlash
 
 - push( headless_mp3_test_flash )
 
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
+	-# TODO: really we want a link here, right? Then in js we remove the link and show the image,
+	-# or we could put the image in as well as the link. Ok, so the link is optional
 	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
 
 - if( _.includeOnce? )
@@ -18,16 +21,74 @@
 			// create the backing swf
 			init: function( /* init never has args */ ) {
 				this._super();
-				// this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this} );
 				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( this._swfSrc );
-				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
+				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'load'} );
 			},
 
 			playerBecameCurrent: function( playerInstance, $pageItem ) {
 				// NB, it only swaps in when fails to load due to flash blocker
 				this._headlessFlashOb.swapInForItem( playerInstance, $pageItem );
+			},
+
+
+			// TODO: when you play we have to manually update playcount (first time thru only)
+			//play: function(callback) {
+				//this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', this._mp3URL );
+				//this._headlessFlashOb._commandableSwf.load();
+
+				//this._headlessFlashOb._commandableSwf.setAttribute( 'autoplay', true );
+				//this._headlessFlashOb._commandableSwf.play();
+			//},
+
+			setSrc: function( mp3Url ) {
+				if (!mp3Url) debugger;
+				this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', mp3Url );
+				// this._commandableSwf.type = 'audio/mpeg';
+				// this._commandableSwf.preload = "auto";
+
+				// TODO: we need to append page location?
+				this._headlessFlashOb._commandableSwf.load(); // force the audio to reset & start loading the new url
+			},
+
+			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
+				return timeRanges[timeRangeIndex][1];
+			},
+
+			buffered: function() {
+
+			  	var timeRanges = this._headlessFlashOb._commandableSwf.getNodeProperty('buffered');
+			  	if(!timeRanges){
+			  		console.log("Buffered attribute NOT found");
+			  		return 0;
+			  	}
+			  	var endTime = 0;
+
+			  	if( timeRanges.length )
+				try {
+					// Discount the possibility of multiple buffers for now (theoretically possible with range requests if the user skips forward, but Safari doesn't seem to support it)
+					// and just return the proportion of buffered time
+					var timeRangeIndex = timeRanges.length-1;
+					endTime = this._getTimeRangeEnd( timeRanges, timeRangeIndex ); // implemented differently for flash and html5
+				} catch(err) {
+					alert(err);
+					return 0;
+				}
+				return endTime;
+			},
+
+			duration: function() {
+			  	return this._headlessFlashOb._commandableSwf.getNodeProperty('duration');
+			},
+
+			loadedDegrees: function() {
+				var buffered = this.buffered();
+				var duration =  this.duration();
+				console.log("<<<<< loadedDegrees "+buffered+" "+duration+" >>>>>>");
+				return duration===0 ? 0 : (buffered / duration * 360);
 			}
+
 		});
+
 		ABoo.NewHeadlessFlashPlayerSingletonClassMethods = SC.Mixin.create({
 
 			_sharedHeadlessPlayer: undefined,
@@ -49,15 +110,18 @@
 
 			_mp3URL: undefined,
 			_controller: undefined,
+			_watchableEvents: 'error emptied loadstart progress loadeddata loadedmetadata durationchange timeupdate canplay canplaythrough waiting play ended abort dataunavailable empty pause ratechange seeked seeking volumechange stalled',
 
+			// TODO: remove this in favor of state machine
 			_state: false,
+
 			_stateMachine: undefined,
 
 			_attachToPage: function( $pageItem ) {
-				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().playerBecameCurrent( this, $pageItem );
 
-				// TODO: hold off on this for now.
-				//ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer.play( this._src );
+				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this._controller } );
+
+				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().playerBecameCurrent( this, $pageItem );
 			},
 
 			// this doesn't mean that the swf is ready
@@ -67,14 +131,51 @@
 
 			didSwapOutFlash: function( swf ) {
 				this._state = false;
-
+				this._killObservations();
 				this._controller.hidePlayerGUI();
 			},
 
 			flashDidLoad: function( swf ) {
 				this._controller.showPlayerGUI();
-				//old this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', this._mp3URL );
-				//old this._headlessFlashOb._commandableSwf.load();
+
+				this._createObservervations();
+				this._stateMachine.processInputSignal( "ready" );
+
+				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().setSrc( this._mp3URL );
+
+				// TODO: hold off on this for now.
+				// ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().play( this._mp3URL );
+			},
+
+			//TODO: must we tear down observations also
+			_createObservervations: function(){
+			  	var self = this;
+				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer()._headlessFlashOb._observableSwf );
+				$actualPlayer.bind( this._watchableEvents, function( e ) {
+					self.handleHeadlessFlashPlayerEvent(e.type);
+				});
+			},
+
+			_killObservations: function() {
+				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer()._headlessFlashOb._observableSwf );
+				$actualPlayer.unbind( this._watchableEvents );
+			},
+
+			handleHeadlessFlashPlayerEvent: function( eventName ) {
+				console.log("Mofo! got an event " + eventName );
+				this._stateMachine.processInputSignal( eventName );
+			},
+
+			buffered: function() {
+				return ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().buffered();
+			},
+
+			loadedDegrees: function() {
+				return ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().loadedDegrees();
+			},
+
+			play: function() {
+				console.log("wwwwwooooooooo");
 			}
 		});
 
@@ -88,6 +189,12 @@
 			_canvas$: undefined,
 			_hooCanvas: undefined,
 			_placeHolder$: undefined,
+			_smallPlayerFrontEnd: undefined,
+
+			/* properties to bind to. neccesary? */
+			_ready: false,
+			_loadProgress: 0,
+			_busyFlag: false,
 
 			didInsertElement: function() {
 				this._super();
@@ -122,11 +229,25 @@
 				this._hooCanvas._setSize(200,200);
 
 				// At last! we have found the bit where the whole scheme fails!
-				var theJson = { "percentOfCanvas":0.9, "javascriptActions":{"mouseClickAction":{"action_taget":"HooWindow","action_event":"hooLog","action_arg":"Holy Cock","actionIsAsync":false}} };
+				var thePlayButtonJson = { "percentOfCanvas":0.7,
+											"javascriptActions":{"mouseClickAction":{"action_taget":this, "action_event":"playClickAction", "action_arg":null, "actionIsAsync":true}}
+										};
+				var theRadialProgressJson = { "outerRad":0.95, "innerRad":0.85 };
 
-				var playPause = ABoo.HooPlayPauseButton.create( {id:this.id, json:theJson, _hooCanvas: this._hooCanvas } );
+
+				var radialProgress = ABoo.HooRadialProgress.create( {json:theRadialProgressJson, _hooCanvas: this._hooCanvas } );
+				var playPause = ABoo.HooPlayPauseButton.create( {json:thePlayButtonJson, _hooCanvas: this._hooCanvas } );
+				this._smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create( {_radialProgress:radialProgress , _playPauseButton:playPause });
+
+				// TODO: dont forget to clean these up
+				this.addObserver('_loadProgress', radialProgress, radialProgress.loadDidChange );
+				this.addObserver('_busyFlag', radialProgress, radialProgress.busyDidChange );
+				this.addObserver('_ready', playPause, 'enabledDidChange' )
+
+
+				radialProgress.setupDidComplete();
 				playPause.setupDidComplete();
-
+				this._smallPlayerFrontEnd.setupDidComplete();
 			},
 
 			hidePlayerGUI: function() {
@@ -141,8 +262,112 @@
 					this._canvas$ = null;
 
 				}
-			}
+			},
 
+			/* state machine events */
+			ready: function() {
+				this.set('_ready', true );
+				//_guiSprite.setPlayButtonActions(/* fill in args */);
+			},
+			durationchange: function() {
+				console.log("durationchange" );
+			},
+
+			// TODO: boiler plate - move
+			animateLoadProgress: function( from, to ) {
+
+				//var fromProgressVal = { progress: from };
+				this.fakeProgress = from;
+				var toProgressVal = { fakeProgress: to };
+				var self = this;
+				jQuery(this).animate( toProgressVal, {
+					duration: 1000,
+					step: function(now, fx) {
+						// console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
+						self.set('_loadProgress', now );
+					},
+					queue: false
+				});
+			},
+
+			// TODO: !!!!!!
+			// Sooooooooooooooo,
+			// Who is in control of the Button States?
+			_showPlay: function() {
+				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" );
+			},
+
+			_showPause: function() {
+				alert("w");
+				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" );
+			},
+
+			_showDisabled: function() {
+				alert("x");
+				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" );
+			},
+
+			progressupdate: function( ) {
+				var loadedDegrees = this._loadProgress;
+				if( loadedDegrees>0 )
+					this.set('_busyFlag', false);
+				this.animateLoadProgress( loadedDegrees, this._flashPlayerBackend.loadedDegrees() );
+			},
+
+			timeupdate: function() {
+				//_guiSprite.setPlayProgress( currentTimePercent() );
+			},
+
+			/* loading commands */
+			cmd_showEmptyLoader: function() {
+				jQuery(this).stop();
+				this.set('_loadProgress', 0);
+				this.set('_busyFlag', false);
+				// setPlayProgress(0)
+			},
+			cmd_showStalledLoader: function() {
+				this.set('_busyFlag', true);
+			},
+			cmd_showLoadingLoader: function() {
+			},
+			cmd_showFinishedLoader: function() {
+				this.animateLoadProgress( this._loadProgress, 360 );
+				this.set('_busyFlag', false);
+			},
+			cmd_showResettingLoader: function() {
+			},
+			cmd_showErrorLoader: function() {
+				this._showDisabled();
+				this.set('_busyFlag', true);
+			},
+
+			/* playing commands */
+			cmd_showEmptyPlayer: function() {
+				this._showDisabled();
+			},
+			cmd_showStoppedPlayer: function() {
+				this._showPlay();
+			},
+			cmd_showWaitingPlayer: function() {
+				this.set('_busyFlag', true);
+			},
+			cmd_hideWaitingPlayer: function() {
+				this.set('_busyFlag', false);
+			},
+			cmd_showPlayingPlayer: function() {
+				this._showPause();
+			},
+			cmd_showFinishedPlayer: function() {
+				//_guiSprite.setPlayProgress( 0 );
+				this._showPlay();
+			},
+			cmd_showErrorPlayer: function() {
+				this._showDisabled();
+			},
+
+			playClickAction: function() {
+				this._flashPlayerBackend.play();
+			}
 		});
 
 

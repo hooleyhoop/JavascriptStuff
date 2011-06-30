@@ -18,7 +18,7 @@ ABoo.DebugView = SC.View.extend
 
 
 
-ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend
+ABoo.Gui_Views_Debug_FlippyToggleThing = ABoo.SCView.extend
 	_flippyState: no
 	view2: undefined
 

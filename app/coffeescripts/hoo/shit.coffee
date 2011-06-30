@@ -1,3 +1,21 @@
+###
+##  Hmm ##
+###
+ABoo.SimpleCounterForBindingsDebugging = SC.Object.extend
+	_rate: 1000
+	_counter: 0
+	_flag: false
+	init: ( ) ->
+		@_super()
+		setInterval( () =>
+			incrementalVal = @_counter+1
+			newFlag = !self._flag
+			@set( "_counter", incrementalVal )
+			@set( "_flag", newFlag )
+			console.log("DEBUG "+incrementalVal)
+		, 1000 )
+
+
 # The HooWidget creates a View and sets the template
 ABoo.FirstGo = ABoo.HooWidget.extend
 	_imgItems: undefined

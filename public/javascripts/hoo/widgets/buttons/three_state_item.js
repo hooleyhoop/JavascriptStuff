@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 06 Jun 2011 17:04:05 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 30 Jun 2011 17:14:18 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/three_state_item.coffee
  */
 
@@ -49,7 +49,8 @@
       return this._graphic.showMouseUp1State();
     },
     cmd_fireButtonAction1: function() {
-      return this._fire("ev_showState1");
+      this._fire("ev_showState1");
+      return 0;
     },
     _fire: function(nextState) {
       /*
@@ -104,6 +105,31 @@
     },
     setCurrentStateName: function(arg) {
       return this._buttonSM.processInputSignal(arg);
+    }
+  });
+  /*
+   * Append a couple of states to 3 state button
+  */
+  ABoo.HooFiveStateItem = ABoo.HooThreeStateItem.extend({
+    _createSM: function() {
+      return this._buttonSM = ABoo.FiveStateButtonStateMachine.create({
+        _controller: this
+      });
+    },
+    cmd_showMouseDown2: function() {
+      return this._graphic.showMouseDown2State();
+    },
+    cmd_showMouseUp2: function() {
+      return this._graphic.showMouseUp2State();
+    },
+    cmd_showMouseDownOut2: function() {
+      return this._graphic.showMouseDown2State();
+    },
+    cmd_fireButtonAction1: function() {
+      return this._fire("ev_showState2");
+    },
+    cmd_fireButtonAction2: function() {
+      return this._fire("ev_showState1");
     }
   });
 }).call(this);

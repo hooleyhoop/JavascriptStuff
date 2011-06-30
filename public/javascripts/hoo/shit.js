@@ -1,8 +1,27 @@
-/* DO NOT MODIFY. This file was compiled Mon, 06 Jun 2011 09:42:34 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 30 Jun 2011 14:03:05 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/shit.coffee
  */
 
 (function() {
+  /*
+  ##  Hmm ##
+  */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  ABoo.SimpleCounterForBindingsDebugging = SC.Object.extend({
+    _rate: 1000,
+    _counter: 0,
+    _flag: false,
+    init: function() {
+      this._super();
+      return setInterval(__bind(function() {
+        var incrementalVal, newFlag;
+        incrementalVal = this._counter + 1;
+        newFlag = !self._flag;
+        this.set("_counter", incrementalVal);
+        this.set("_flag", newFlag);
+        return console.log("DEBUG " + incrementalVal);
+      }, this), 1000);
+    }
+  });
   ABoo.FirstGo = ABoo.HooWidget.extend({
     _imgItems: void 0,
     _view: void 0,

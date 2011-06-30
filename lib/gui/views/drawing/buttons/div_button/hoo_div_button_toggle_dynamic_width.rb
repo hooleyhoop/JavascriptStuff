@@ -1,8 +1,8 @@
 module Gui::Views::Drawing::Buttons::DivButton
 
-	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth
-	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth?initialState=1
-	# http://0.0.0.0:3000/widgets/divButtonToggleDynamicWidth?initialState=1&cornerRad=20&border=1
+	# http://0.0.0.0:3000/widgets/HooDivButtonToggleDynamicWidth
+	# http://0.0.0.0:3000/widgets/HooDivButtonToggleDynamicWidth?initialState=1
+	# http://0.0.0.0:3000/widgets/HooDivButtonToggleDynamicWidth?initialState=1&cornerRad=20&border=1
 	class HooDivButtonToggleDynamicWidth < HooDivButtonToggle
 
 		attr_accessor :cornerRad;

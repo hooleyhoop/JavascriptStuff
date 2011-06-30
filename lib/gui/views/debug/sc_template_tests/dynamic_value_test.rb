@@ -1,6 +1,6 @@
 module Gui::Views::Debug::ScTemplateTests
 
-    # http://0.0.0.0:3000/widgets/dynamic_value_test
+    # http://0.0.0.0:3000/widgets/DynamicValueTest
 
 	class DynamicValueTest < Gui::Core::HooView
 

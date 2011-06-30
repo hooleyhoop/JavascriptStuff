@@ -1,6 +1,6 @@
 module Gui::Views::Debug
 
-	# http://0.0.0.0:3000/widgets/flippyToggleThing
+	# http://0.0.0.0:3000/widgets/FlippyToggleThing
 	class FlippyToggleThing < Gui::Core::HooView
 
 	# Mock data

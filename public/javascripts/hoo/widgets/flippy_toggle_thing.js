@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 20 Jun 2011 11:32:54 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 30 Jun 2011 15:31:13 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/flippy_toggle_thing.coffee
  */
 
@@ -22,7 +22,7 @@
       });
     }).property('remaining').cacheable()
   });
-  ABoo.GUI_Views_Debug_FlippyToggleThing = ABoo.SCView.extend({
+  ABoo.Gui_Views_Debug_FlippyToggleThing = ABoo.SCView.extend({
     _flippyState: false,
     view2: void 0,
     init: function() {

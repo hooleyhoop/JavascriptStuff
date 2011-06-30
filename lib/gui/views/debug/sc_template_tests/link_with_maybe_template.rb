@@ -1,6 +1,6 @@
 module Gui::Views::Debug::ScTemplateTests
 
-    # http://0.0.0.0:3000/widgets/linkwithmaybetemplate
+    # http://0.0.0.0:3000/widgets/LinkWithMaybeTemplate
 
 	class LinkWithMaybeTemplate < Gui::Core::HooView
 

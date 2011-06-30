@@ -4,7 +4,7 @@ module Gui::Views::Drawing::Buttons::Jquery
 	# 0) Disabled 1)state1 2)state1Pressed
 	# Height is just the height of one state
 
-	# http://0.0.0.0:3000/widgets/jqueryTestButton
+	# http://0.0.0.0:3000/widgets/JqueryButtonTest
 
 	class JqueryButtonTest < Gui::Core::HooView
 
