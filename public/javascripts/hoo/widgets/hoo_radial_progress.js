@@ -2,7 +2,7 @@ ABoo.DonutTestSprite = ABoo.HooSprite.extend({
 
 	_loadColor:"rgba(170,170,170,0.8)",
 	_playColor:"rgba(247,163,0,1.0)",
-	_busyColor:"#FF00ff",
+	_busyColor:"#22b248",
 
 	spriteDraw: function( ctx, x, y, width, height, busyAngle, outerRad, innerRad, loadAmt, playAmt ) {
 
@@ -201,6 +201,11 @@ ABoo.HooRadialProgress = ABoo.HooWidget.extend({
 
 	setPlayProgress: function( degrees ) {
 		this._progressGraphic.setPlayProgress(parseFloat(degrees));
+	},
+
+	// for binding - kinda boilerplate - TODO! get rid
+	playDidChange: function (sender, key) {
+		this.setPlayProgress(sender.get(key));
 	},
 
 	// for binding - kinda boilerplate - TODO! get rid

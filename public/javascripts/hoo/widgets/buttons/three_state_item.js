@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 30 Jun 2011 17:14:18 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 01 Jul 2011 13:11:50 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/three_state_item.coffee
  */
 
@@ -58,7 +58,7 @@
       		how do we handle toggle button?
       		how do we handle async actions?
       		how do we go back to the correct state?
-      		*/      var completionCallback, onCompleteStuffHash;
+      		*/      var actionToCall, completionCallback, onCompleteStuffHash;
       completionCallback = __bind(function() {
         return this.sendEvent(nextState);
       }, this);
@@ -67,7 +67,16 @@
         onCompleteAction: completionCallback
       };
       if (this._target) {
-        this._action.call(this._target, this._actionArg, onCompleteStuffHash);
+        actionToCall = this._action;
+        if ($.isArray(actionToCall)) {
+          HOO_nameSpace.assert(actionToCall.length === 2, "If actions is an array it must have exactly 2 actions");
+          if (nextState === "ev_showState1") {
+            actionToCall = actionToCall[1];
+          } else {
+            actionToCall = actionToCall[0];
+          }
+        }
+        actionToCall.call(this._target, this._actionArg, onCompleteStuffHash);
       }
       if (this._isAsync === false) {
         return completionCallback();

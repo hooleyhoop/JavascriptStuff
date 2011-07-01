@@ -26,7 +26,7 @@ ABoo.HooStateMachine_state = SC.Object.extend
 
 	addTransition: ( event, targetState ) ->
 		unless targetState? and event?
-			alert("Error: invalid params for HooStateMachine_state") 
+			alert("Error: invalid params for HooStateMachine_state")
 
 		t = ABoo.HooStateMachine_transition.create( {_source:@, _trigger:event, _target:targetState} )
 		@_transitions[event._name] = t
@@ -36,10 +36,10 @@ ABoo.HooStateMachine_state = SC.Object.extend
 
 	addEntryAction: ( cmd ) ->
 		@_entryActions.push(cmd)
-		
+
 	addExitAction: ( cmd ) ->
 		@_exitActions.push(cmd)
-		
+
 	# NOT yet updated for HSM
 	#getAllTargets: () ->
 	#	result = new Array()
@@ -48,21 +48,21 @@ ABoo.HooStateMachine_state = SC.Object.extend
 	#		result.push( value._target );
 	#	});
 	#	return result;
-	
+
 	# hsm
 	hasTransition: ( eventName ) ->
 		hasT = @_transitions.hasOwnProperty( eventName )
 		if hasT==false and @_parent?
 			hasT = @_parent.hasTransition(eventName)
 		return hasT
-		
+
 	# hsm
 	transitionForEvent: ( eventName ) ->
 		transition = @_transitions[eventName]
 		if !transition? and @_parent?
 			transition = @_parent.transitionForEvent(eventName)
 		return transition
-		
+
 	# hsm
 	targetState: ( eventName ) ->
 		transition = @transitionForEvent(eventName)
@@ -84,7 +84,7 @@ ABoo.HooStateMachine_state = SC.Object.extend
 			hierachy.unshift(head); # because insertAtBeginning would be too helpful
 			head = head._parent;
 		return hierachy
-		
+
 ###
 	Transition
 ###
@@ -94,7 +94,7 @@ ABoo.HooStateMachine_transition = SC.Object.extend
 	_target: undefined
 
 	getEventName: () ->
-		return @_trigger._name		
+		return @_trigger._name
 
 ###
 	HooStateMachineConfigurator
@@ -130,7 +130,7 @@ ABoo.HooStateMachineConfigurator = SC.Object.extend
 				parentState = @_states[parentStateName]
 				unless parentState?
 					alert("Error: Parent state doesnt exist")
-	
+
 			newState = ABoo.HooStateMachine_state.create( {_name: stateName, _parent: parentState} )
 			@_states[stateName] = newState
 
@@ -138,13 +138,13 @@ ABoo.HooStateMachineConfigurator = SC.Object.extend
 		for value in @_config['events']
 			newEvent = ABoo.HooStateMachine_event.create( {_name: value} )
 			@_events[value] = newEvent
-		
+
 	parseResetEvents: () ->
 		for value in @_config['resetEvents']
 			ev = @_events[value]
 			alert("Error! is reset event a real event?") unless ev
 			@_resetEvents.push( ev )
-		
+
 	parseCommands: () ->
 		for value in @_config['commands']
 			newCommand = ABoo.HooStateMachine_command.create( {_name: value} )
@@ -175,7 +175,7 @@ ABoo.HooStateMachineConfigurator = SC.Object.extend
 				exitCmd = @_commands[exitAction]
 				# alert("state > "+state+" exit cmd "+entryCmd);
 				state.addExitAction( exitCmd )
-	
+
 	state: ( key ) ->
 		return @_states[key]
 
@@ -189,7 +189,7 @@ ABoo.HooStateMachine = SC.Object.extend
 	init: () ->
 		@_super()
 		@_resetEvents or= new Array()
-		
+
 	#getStates: function() {
 	#	var result = new Array()
 	#	@_collectStates( result, @_startState )
@@ -204,7 +204,7 @@ ABoo.HooStateMachine = SC.Object.extend
 	#		collectStates(result, value);
 	#	});
 	#}
-	
+
 	addResetEvents: ( events ) ->
 		@_resetEvents.push value for value in events
 		return true
@@ -216,7 +216,7 @@ ABoo.HooStateMachine = SC.Object.extend
 
 	resetEventNames: () ->
 		eventNames = (event._name for event in @_resetEvents)
-		
+
 
 ###
  * Communicates with devices by receiving event messages and sending command messages.
@@ -225,7 +225,7 @@ ABoo.HooStateMachine = SC.Object.extend
 ABoo.HooStateMachine_controller = SC.Object.extend
 	_currentState: undefined
 	_machine: undefined
-	_commandsChannel: undefined		
+	_commandsChannel: undefined
 
 	handle: ( eventName, e, f ) ->
 		nextState = null
@@ -235,12 +235,12 @@ ABoo.HooStateMachine_controller = SC.Object.extend
 			@_commandsChannel.lastWindowEvent = e
 		if @_currentState.hasTransition(eventName)
 			nextState = @_currentState.targetState(eventName)
-		else if @_machine.isResetEvent(eventName) 
+		else if @_machine.isResetEvent(eventName)
 			console.log("Found reset event")
 			nextState = @_machine._startState
 		# ignore unknown events
-		else
-			console.log("** Unknown event "+eventName+" for state: "+@_currentState._name )
+		#else
+		#	console.log("** Unknown event "+eventName+" for state: "+@_currentState._name )
 		if nextState?
 			@_transitionTo( nextState )
 
@@ -262,7 +262,7 @@ ABoo.HooStateMachine_controller = SC.Object.extend
 			thatParentList.splice(0,sharedparentsIndex+1)
 
 		thisParentList.reverse()
-		
+
 		for element in thisParentList
 			element.executeExitActions( @_commandsChannel )
 

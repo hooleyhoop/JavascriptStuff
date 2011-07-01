@@ -8,16 +8,17 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 	_actionArg: undefined
 	_isAsync: undefined
 	#_autoShowNextState:true
-	
+
 	init:() -> # _graphic
 		@_super()
 		@_createSM()
 		@_graphic.showDisabledButton()
 		@_listenerDebugger = ABoo.ActiveListenerDebugger.create()
-		
+
 	_createSM: () ->
 		@_buttonSM = ABoo.ThreeStateButtonStateMachine.create( { _controller: @ } )
 
+	# just an experiment, action could be an array
 	setButtonTarget: ( target, action, arg, isAsync ) ->
 		@_target = target
 		@_action = action
@@ -51,7 +52,7 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 	cmd_fireButtonAction1: () ->
 		@_fire("ev_showState1" ) # unless !@_autoShowNextState
 		0
-		
+
 	_fire: (nextState) ->
 
 		###
@@ -67,10 +68,19 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 		onCompleteStuffHash = {onCompleteTarget: @, onCompleteAction: completionCallback}
 
 		if @_target
-			#@_delegate.fireAction();
-			@_action.call( @_target, @_actionArg, onCompleteStuffHash )
+			#@_delegate.fireAction();=
+			actionToCall = @_action
+			if($.isArray(actionToCall))
+				HOO_nameSpace.assert( actionToCall.length==2, "If actions is an array it must have exactly 2 actions" )
+				# crap way to toggle between 2 actions
+				if( nextState=="ev_showState1" )
+					actionToCall = actionToCall[1]
+				else
+					actionToCall = actionToCall[0]
 
-		if @_isAsync==false 
+			actionToCall.call( @_target, @_actionArg, onCompleteStuffHash )
+
+		if @_isAsync==false
 			completionCallback()
 
 	cmd_abortClickAction: () ->
@@ -83,13 +93,13 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 		@_clickableItem$.unselectable = "on"
 		@_clickableItem$.onselectstart = () ->
 			return false
-		
+
 		@_listenerDebugger.addListener( @_clickableItem$, 'mouseleave', @, @_mouseRollOutHandler )
 		@_listenerDebugger.addListener( @_clickableItem$, 'mouseenter', @, @_mouseRollOverHandler )
 
 		@sendEvent( "ev_buttonPressed" )
 		e.preventDefault()
-		
+
 	_mouseStageUp: (e) ->
 		@_listenerDebugger.removeListener( $(window), 'mouseup', @, @_mouseStageUp )
 		@_listenerDebugger.removeListener( @_clickableItem$, 'mouseleave', @, @_mouseRollOutHandler )

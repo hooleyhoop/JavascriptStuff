@@ -134,21 +134,47 @@ ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 		this.unbindToTarget( target, propertyName, this, observerDidChangeMethod );
 	},
 
+	/*
+	*/
 	setup_hoo_action_from_json: function( action ) {
 
 		if( this.json.javascriptActions && this.json.javascriptActions[action] )
 		{
+			// helper function to unpack json
+			var extractActionFromjson  = function( a ) {
+				var unknownTarget = a['action_taget'];
+				var target	= HOO_nameSpace[ unknownTarget ];
+
+				if(!target)
+					target = unknownTarget;
+
+				var actionNames = a['action_event'];
+				var action;
+				if($.isArray(actionNames)) {
+					HOO_nameSpace.assert( actionNames.length==2, "If actionNames is an array it must have exactly 2 actions" )
+					action	= [target[actionNames[0]], target[actionNames[1]]];
+					//alert("action is "+actionNames[0]+ " " + [actionNames[1]]);
+				} else {
+					action	= target[ actionNames ];
+				}
+				var arg		= a['action_arg'];
+				var isAsync = a['actionIsAsync'];
+				return { t:target, a:action, w:arg, actionIsAsync: isAsync };
+			}
+
 			var a = this.json.javascriptActions[action];
-			var unknownTarget = a['action_taget'];
-			var target	= HOO_nameSpace[ unknownTarget ];
-
-			if(!target)
-				target = unknownTarget;
-
-			var action	= target[ a['action_event'] ];
-			var arg		= a['action_arg'];
-			var isAsync = a['actionIsAsync'];
-			return { t:target, a:action, w:arg, actionIsAsync: isAsync };
+			if($.isArray( a )) {
+				var allResultActions = new Array();
+				for( var i=0; i<a.length; i++ ) {
+					var jAction = a[i];
+					allResultActions.push( extractActionFromjson(jAction) );
+				}
+				// return multiple action dicts
+				return allActions;
+			} else {
+				// return single action dict
+				return extractActionFromjson(a);
+			}
 		}
 		return null;
 	}

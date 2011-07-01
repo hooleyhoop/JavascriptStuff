@@ -474,11 +474,16 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 			this.start();
 	},
 	unregisterCanvas: function( canvas ) {
+		console.warn("unregisterCanvas CANVAS!");
 		var i = this._canvasElements.indexOf(canvas);
-		if(i>-1)
+		if(i>-1) {
 			this._canvasElements.splice(i,1);
-		if(this._running && this._canvasElements.length==0 && this._listeners.length==0 )
+			console.warn("removed canvas from array CANVAS!");
+		}
+		if( this._running && this._canvasElements.length==0 && this._listeners.length==0 )
 			this.stop();
+		else
+			console.warn("Not stopping canvas because: "+this._running +" "+this._canvasElements.length+" "+this._listeners.length );
 	},
 
 	start: function() {
@@ -487,6 +492,7 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 		this._running = true;
 	},
 	stop: function() {
+		console.warn("STOPPING CANVAS!");
         clearInterval(this._timer);
         this._timer = null;
 		this._running = false;

@@ -62,14 +62,17 @@ ABoo.HooCanvas = ABoo.HooWidget.extend({
 	},
 
 	addSubview: function( child ) {
+		console.warn("ADD "+child);
 		this._subViews.push( child );
 		child._parentCanvas = this;
-		//this.setNeedsDisplay();
 	},
 
 	removeAllSubviews: function() {
 		var self = this;
-		$.each( this._subViews, function(indexInArray, valueOfElement){
+		var newViewList = this._subViews.slice(); //jQuery.extend({}, this._subViews);
+		// .. to avoid mutating the array while enumarting contents..
+		$.each( newViewList, function(indexInArray, valueOfElement){
+			console.warn("REMOVE "+valueOfElement);
 			self.removeSubview( valueOfElement );
 		});
 	},
