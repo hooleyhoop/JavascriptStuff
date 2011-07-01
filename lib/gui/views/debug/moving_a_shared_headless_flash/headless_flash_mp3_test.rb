@@ -1,8 +1,8 @@
 module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://shooley.audioboo.fm:3000/widgets/HeadlessMp3TestFlash
+    # http://shooley.audioboo.fm:3000/widgets/HeadlessFlashMp3Test
 
-	class HeadlessMp3TestFlash < Gui::Core::HooView
+	class HeadlessFlashMp3Test < Gui::Core::HooView
 
 		# inherited
 		#self.included(base) do

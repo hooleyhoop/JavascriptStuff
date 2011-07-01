@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Wed, 29 Jun 2011 17:25:40 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 01 Jul 2011 16:44:38 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/flash_object.coffee
  */
 
@@ -101,9 +101,6 @@
         _height: height,
         _flashVarDict: flashVarDict
       });
-    },
-    cachedSwfForURL: function() {
-      return nil;
     },
     embedString: function(url, idNum, width, height, flashVarDict) {
       var flashVars;

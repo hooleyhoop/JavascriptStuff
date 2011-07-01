@@ -1,8 +1,8 @@
 module Gui::Views::Debug::MovingASharedHeadlessFlash
 
-    # http://shooley.audioboo.fm:3000/widgets/MultipleHeadlessMp3TestFlash
+    # http://shooley.audioboo.fm:3000/widgets/MultipleHeadlessFlashMp3Test
 
-	class MultipleHeadlessMp3TestFlash < Gui::Core::HooView
+	class MultipleHeadlessFlashMp3Test < Gui::Core::HooView
 
 		# Put a wodge of shared flash elements of the page to see what happens
 		def initialize( args={} )

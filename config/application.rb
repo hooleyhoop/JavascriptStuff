@@ -41,7 +41,7 @@ module JavascriptStuff
 
 	'hoo/setup_app.js',
 
-    'hoo/infrastructure/browser_utilities.js', 'hoo/infrastructure/activeListenerDebugger.js', "hoo/infrastructure/vector_math.js", 'hoo/infrastructure/flash_object.js',
+    'hoo/infrastructure/browser_utilities.js', 'hoo/infrastructure/activeListenerDebugger.js', "hoo/infrastructure/vector_math.js", 'hoo/infrastructure/flash_object.js', 'hoo/infrastructure/div_object',
 
     'hoo/infrastructure/simple-state-machine.js',
     "hoo/infrastructure/sm_configurations/abstractConfiguration.js",
