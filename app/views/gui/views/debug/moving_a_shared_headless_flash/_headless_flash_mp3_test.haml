@@ -15,7 +15,7 @@
 		/*
 		 * Only one of these per page
 		*/
-		ABoo.NewHeadlessFlashPlayerSingleton = SC.Object.extend({
+		ABoo.NewHeadlessFlashPlayerSingleton = ABoo.NewHeadlessPlayerSingleton.extend({
 			_swfSrc: "HeadlessPlayer/lib/Debug/HeadlessPlayer",
 			_headlessFlashOb: undefined,
 
@@ -24,88 +24,13 @@
 				this._super();
 				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( this._swfSrc );
 
-				// varoius autostart options here - load, play, etc.
-				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'play'} );
-			},
-
-			playerBecameCurrent: function( playerInstance, $pageItem ) {
-				// NB, it only swaps in when fails to load due to flash blocker
-				this._headlessFlashOb.swapInForItem( playerInstance, $pageItem );
-			},
-
-
-			// TODO: when you play we have to manually update playcount (first time thru only)
-			//play: function(callback) {
-				//this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', this._mp3URL );
-				//this._headlessFlashOb._commandableSwf.load();
-
-				//this._headlessFlashOb._commandableSwf.setAttribute( 'autoplay', true );
-				//this._headlessFlashOb._commandableSwf.play();
-			//},
-
-			setSrc: function( mp3Url ) {
-				if (!mp3Url) debugger;
-
-				// TODO! check that we are loading the same url!
-
-				this._headlessFlashOb._commandableSwf.setSwfAttribute( 'src', mp3Url );
-				// this._commandableSwf.type = 'audio/mpeg';
-				// this._commandableSwf.preload = "auto";
-
-				// TODO: we need to append page location?
-				this._headlessFlashOb._commandableSwf.load(); // force the audio to reset & start loading the new url
+				// varoius autostart options here - load, play, etc. - cant really use 'em to stay consistent with html5 audio
+				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'load'} );
+				this._audioPlayingDomNode = this._headlessFlashOb;
 			},
 
 			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
 				return timeRanges[timeRangeIndex][1];
-			},
-
-			buffered: function() {
-
-			  	var timeRanges = this._headlessFlashOb._commandableSwf.getNodeProperty('buffered');
-			  	if(!timeRanges){
-			  		console.log("Buffered attribute NOT found");
-			  		return 0;
-			  	}
-			  	var endTime = 0;
-
-			  	if( timeRanges.length )
-				try {
-					// Discount the possibility of multiple buffers for now (theoretically possible with range requests if the user skips forward, but Safari doesn't seem to support it)
-					// and just return the proportion of buffered time
-					var timeRangeIndex = timeRanges.length-1;
-					endTime = this._getTimeRangeEnd( timeRanges, timeRangeIndex ); // implemented differently for flash and html5
-				} catch(err) {
-					alert(err);
-					return 0;
-				}
-				return endTime;
-			},
-
-			duration: function() {
-			  	return this._headlessFlashOb._commandableSwf.getNodeProperty('duration');
-			},
-
-			loadedDegrees: function() {
-				var buffered = this.buffered();
-				var duration =  this.duration();
-				//console.log("<<<<< loadedDegrees "+buffered+" "+duration+" >>>>>>");
-				return duration===0 ? 0 : (buffered / duration * 360);
-			},
-
-			playedDegrees: function() {
-				var ct = this._headlessFlashOb._commandableSwf.getSwfAttribute('currentTime');
-				var duration =  this.duration();
-				return duration===0 ? 0 : (ct / duration * 360);
-			},
-
-			// TODO: when you play we have to manually update playcount (first time thru only) - sort out what happens when autoplay
-			play: function() {
-				this._headlessFlashOb._commandableSwf.play();
-			},
-
-			pause: function() {
-				this._headlessFlashOb._commandableSwf.pause();
 			}
 
 		});
@@ -162,7 +87,7 @@
 				this._createObservervations();
 				this._stateMachine.processInputSignal( "ready" );
 
-				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().setSrc( this._mp3URL );
+				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().setSrc( this._mp3URL, true, true );
 
 				// TODO: hold off on this for now.
 				// ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().play( this._mp3URL );
@@ -369,9 +294,12 @@
 
 			progressupdate: function() {
 				var loadedDegrees = this._loadProgress;
-				if( loadedDegrees>0 )
+				var actualLoadedDegrees = this._flashPlayerBackend.loadedDegrees();
+				if( actualLoadedDegrees > 0 ) {
 					this.set('_busyFlag', false);
-				this.animateLoadProgress( loadedDegrees, this._flashPlayerBackend.loadedDegrees() );
+					console.log("hide stalled");
+				}
+				this.animateLoadProgress( loadedDegrees, actualLoadedDegrees );
 			},
 
 			timeupdate: function() {
@@ -387,15 +315,19 @@
 			},
 			cmd_showStalledLoader: function() {
 				this.set('_busyFlag', true);
+				console.log("show stalled "+this._flashPlayerBackend.loadedDegrees());
 			},
 			cmd_showLoadingLoader: function() {
+				this.set('_busyFlag', true);
 			},
+
 			//cmd_showFinishedLoader: function() {
 			//	this.animateLoadProgress( this._loadProgress, 360 );
 			//	this.set('_busyFlag', false);
 			//},
 			//cmd_showResettingLoader: function() {
 			//},
+
 			cmd_showErrorLoader: function() {
 				this._showDisabled();
 				this.set('_busyFlag', true);
@@ -410,9 +342,11 @@
 			},
 			cmd_showWaitingPlayer: function() {
 				this.set('_busyFlag', true);
+					console.log("show stalled 2");
 			},
 			cmd_hideWaitingPlayer: function() {
 				this.set('_busyFlag', false);
+				console.log("hide stalled 2");
 			},
 			cmd_showPlayingPlayer: function() {
 				this._showPause();

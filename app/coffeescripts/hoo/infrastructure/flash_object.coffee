@@ -31,16 +31,24 @@ ABoo.FlashObject = SC.Object.extend
 			$wrapper.append(@_objectTagString);
 		@_observableSwf = $wrapper;
 		@_commandableSwf = $wrapper.find('object')[0]
-
 		@_ready = false
 
-		# Hack in some utility functions to make sure audio element has the same interface as the swf
-		@_commandableSwf.getNodeProperty = (propertyName) ->
-			return this[propertyName]()
+	# Hack in some utility functions to make sure audio element has the same interface as the swf
+	getNodeProperty: (propertyName) ->
+		return @_commandableSwf[propertyName]()
 
-		# @_commandableSwf.setNodeProperty = (propertyName,value) ->
-		#	this['set'+propertyName](value)
+	setNodeProperty: (propertyName,value) ->
+		@_commandableSwf['set'+propertyName](value)
 
+	attrGetter: (propertyName) ->
+		@_commandableSwf.getSwfAttribute(propertyName)
+			
+	attrSetter: (propertyName,value) ->
+		@_commandableSwf.setSwfAttribute(propertyName,value)
+		
+	cmd: (functionName, argArray ) ->
+		@_commandableSwf[functionName].apply(@_commandableSwf,argArray)
+		
 	###
 		!important: everytime you move the swf it creates a new instance
 	###

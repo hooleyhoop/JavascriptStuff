@@ -15,92 +15,20 @@
 		/*
 		 * Only one of these per page
 		*/
-		ABoo.NewHeadlessHTML5PlayerSingleton = SC.Object.extend({
+		ABoo.NewHeadlessHTML5PlayerSingleton = ABoo.NewHeadlessPlayerSingleton.extend({
 			_headlessAudioOb: undefined,
 
 			// create the backing html5
 			init: function( /* init never has args */ ) {
 				this._super();
-				 this._headlessAudioOb = ABoo.HeadlessSharedDivObject.sharedDivForTag( "audio" );
-			},
+				this._headlessAudioOb = ABoo.HeadlessSharedDivObject.sharedDivForTag( "audio" );
+				this._audioPlayingDomNode = this._headlessAudioOb;
 
-			playerBecameCurrent: function( playerInstance, $pageItem ) {
-				// NB, it only physically swaps in when fails to load due to flash blocker
-				this._headlessAudioOb.swapInForItem( playerInstance, $pageItem );
-			},
-
-			setSrc: function( mp3Url2 ) {
-				if (!mp3Url2) debugger;
-
-				// TODO: check duplicate url ? as in beeper
-				console.log("SRC: "+mp3Url2);
-
-				this._headlessAudioOb._commandableSwf.setAttribute( 'src', mp3Url2 );
-
-				// this._commandableSwf.type = 'audio/mpeg';
-				// this._commandableSwf.preload = "auto";
-
-				/* seems like player doesn't need to be appended? */
-				this._headlessAudioOb._commandableSwf.setAttribute( 'autoplay', true );
-				this._headlessAudioOb._commandableSwf.load();
 			},
 
 			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
 				return timeRanges.end(timeRangeIndex);
-			},
-
-			buffered: function() {
-
-			  	var timeRanges = this._headlessAudioOb._commandableSwf.getNodeProperty('buffered');
-			  	if(!timeRanges){
-			  		console.log("Buffered attribute NOT found");
-			  		return 0;
-			  	}
-			  	var endTime = 0;
-
-			  	if( timeRanges.length )
-				try {
-					// Discount the possibility of multiple buffers for now (theoretically possible with range requests if the user skips forward, but Safari doesn't seem to support it)
-					// and just return the proportion of buffered time
-					var timeRangeIndex = timeRanges.length-1;
-					endTime = this._getTimeRangeEnd( timeRanges, timeRangeIndex ); // implemented differently for flash and html5
-				} catch(err) {
-					alert(err);
-					return 0;
-				}
-				return endTime;
-			},
-
-			duration: function() {
-				var dur = this._headlessAudioOb._commandableSwf.getNodeProperty('duration');
-				dur = (isNaN(dur)) ? 0 : dur;
-				//console.log("DUR: "+dur);
-			  	return dur;
-			},
-
-			loadedDegrees: function() {
-				var buffered = this.buffered();
-				var duration =  this.duration();
-				var degrees = duration===0 ? 0 : (buffered / duration * 360);
-				console.log("<<<<< loadedDegrees "+buffered+" "+duration+" >>>>>> "+degrees );
-				return degrees
-			},
-
-			playedDegrees: function() {
-				var ct = this._headlessAudioOb._commandableSwf.getNodeProperty('currentTime');
-				var duration =  this.duration();
-				return duration===0 ? 0 : (ct / duration * 360);
-			},
-
-			// TODO: when you play we have to manually update playcount (first time thru only)
-			play: function() {
-				this._headlessAudioOb._commandableSwf.play();
-			},
-
-			pause: function() {
-				this._headlessAudioOb._commandableSwf.pause();
 			}
-
 		});
 
 		ABoo.NewHeadlessHTML5PlayerSingletonClassMethods = SC.Mixin.create({
@@ -158,7 +86,8 @@
 				this._createObservervations();
 				this._stateMachine.processInputSignal( "ready" );
 
-				ABoo.NewHeadlessHTML5PlayerSingleton.sharedHeadlessPlayer().setSrc( this._mp3URL );
+				// autostart options needed here
+				ABoo.NewHeadlessHTML5PlayerSingleton.sharedHeadlessPlayer().setSrc( this._mp3URL, true, true );
 
 				// TODO: hold off on this for now.
 				// ABoo.NewHeadlessHTML5PlayerSingleton.sharedHeadlessPlayer().play( this._mp3URL );
@@ -353,6 +282,7 @@
 
 			// TODO: boiler plate - move
 			animatePlayProgress: function( from, to ) {
+				//console.log("ANIMATE PLAYPROGRESS "+from+" "+to);
 				//var fromProgressVal = { progress: from };
 				this.fakePlayProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
 				var toPlayProgressVal = { fakePlayProgress: to };
@@ -384,8 +314,9 @@
 
 			progressupdate: function() {
 				var loadedDegrees = this._loadProgress;
-				if( loadedDegrees>0 )
+				if( loadedDegrees>0 ){
 					this.set('_busyFlag', false);
+				}
 				this.animateLoadProgress( loadedDegrees, this._html5PlayerBackend.loadedDegrees() );
 			},
 
@@ -407,6 +338,7 @@
 				this.set('_busyFlag', true);
 			},
 			cmd_showLoadingLoader: function() {
+				this.set('_busyFlag', true);
 			},
 			//cmd_showFinishedLoader: function() {
 			//	this.animateLoadProgress( this._loadProgress, 360 );

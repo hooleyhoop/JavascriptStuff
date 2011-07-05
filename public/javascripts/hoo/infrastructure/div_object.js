@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 04 Jul 2011 09:48:35 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 05 Jul 2011 15:50:23 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/div_object.coffee
  */
 
@@ -17,24 +17,28 @@
       this._swfID = ABoo.FlashObject.newID();
       this._observableSwf = document.createElement(this._tag);
       this._commandableSwf = this._observableSwf;
-      this._ready = false;
-      this._commandableSwf.getNodeProperty = function(propertyName) {
-        return this[propertyName];
-      };
-      return this._commandableSwf.setNodeProperty = function(propertyName, value) {
-        return this[propertyName] = value;
-      };
+      return this._ready = false;
+    },
+    getNodeProperty: function(propertyName) {
+      return this._commandableSwf[propertyName];
+    },
+    setNodeProperty: function(propertyName, value) {
+      return this._commandableSwf[propertyName] = value;
+    },
+    attrGetter: function(propertyName) {
+      return this.getNodeProperty(propertyName);
+    },
+    attrSetter: function(propertyName, value) {
+      return this._commandableSwf.setAttribute(propertyName, value);
+    },
+    cmd: function(functionName, argArray) {
+      return this._commandableSwf[functionName].apply(this._commandableSwf, argArray);
     }
   }, (function() {
     /*
     		!important: everytime you move the swf it creates a new instance
     	*/
   })(), {
-    appendToDiv: function(div$) {
-      HOO_nameSpace.assert(this._ready === false, "ready called twice?");
-      this._observableSwf.appendTo(div$);
-      return this.flashDidLoad();
-    },
     remove: function() {
       return this._ready = false;
     },
@@ -118,7 +122,9 @@
       this.insertSwfInvisibly();
       return this.flashDidLoad();
     },
-    insertSwfInvisibly: function() {}
+    insertSwfInvisibly: function() {
+      return 0;
+    }
   });
   ABoo.HeadlessSharedDivObjectClassMethods = SC.Mixin.create(ABoo.SharedDivObjectClassMethods, {
     sharedDivForTag: function(tag) {

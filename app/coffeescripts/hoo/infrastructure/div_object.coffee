@@ -1,6 +1,13 @@
 ###
 	HTML
 ###
+ABoo.DomNodeProxy = SC.Object.extend
+	here! for div
+	
+ABoo.InvisibleDomNodeProxy = SC.Object.extend
+	here for audio node
+
+-- here, rename this!
 ABoo.DivObject = SC.Object.extend
 
 	_swfID: undefined
@@ -14,22 +21,33 @@ ABoo.DivObject = SC.Object.extend
 		@_super()
 		@_swfID = ABoo.FlashObject.newID()
 		@_observableSwf = document.createElement(@_tag)
-		@_commandableSwf = @_observableSwf
-		
+		@_commandableSwf = @_observableSwf		
 		@_ready = false
+
+	# Hack in some utility functions to make sure audio element has the same interface as the swf
+	getNodeProperty: (propertyName) ->
+		return @_commandableSwf[propertyName]
+
+	setNodeProperty: (propertyName,value) -> 
+		@_commandableSwf[propertyName]=value
 		
-		# Hack in some utility functions to make sure audio element has the same interface as the swf
-		@_commandableSwf.getNodeProperty = (propertyName) ->
-			return this[propertyName]
-		@_commandableSwf.setNodeProperty = (propertyName,value) -> 
-			this[propertyName]=value
+	attrGetter: (propertyName) ->
+		this.getNodeProperty(propertyName)
+						
+	attrSetter: (propertyName,value) ->
+		@_commandableSwf.setAttribute(propertyName,value)
+
+	cmd: (functionName, argArray ) ->
+		@_commandableSwf[functionName].apply(@_commandableSwf,argArray)
+				
 	###
 		!important: everytime you move the swf it creates a new instance
 	###
-	appendToDiv: ( div$ ) ->
-		HOO_nameSpace.assert( @_ready==false, "ready called twice?" )
-		@_observableSwf.appendTo( div$ )
-		@flashDidLoad();
+	#appendToDiv: ( div$ ) ->
+	#	alert("bay bay its a wide world");
+	#	HOO_nameSpace.assert( @_ready==false, "ready called twice?" )
+	#	@_observableSwf.appendTo( div$ )
+	#	@flashDidLoad();
 			
 	remove: () ->
 		#@_observableSwf.remove()
@@ -127,7 +145,7 @@ ABoo.HeadlessSharedDivObject = ABoo.SharedDivObject.extend
 		# TODO: not needed for audio - will be needed for others
 		#@setSwfSize( 1, 1 )
 		#$('body').after( @_observableSwf )
-		
+		0
 	# only does anything for headless swf
 	#readyDidTimeout: () ->
 	#	$('body').trigger('event_flashBlockedDetected');
