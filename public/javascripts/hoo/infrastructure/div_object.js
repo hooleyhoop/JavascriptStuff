@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 01 Jul 2011 16:56:52 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 04 Jul 2011 09:48:35 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/div_object.coffee
  */
 
@@ -18,8 +18,11 @@
       this._observableSwf = document.createElement(this._tag);
       this._commandableSwf = this._observableSwf;
       this._ready = false;
-      return this._commandableSwf.getNodeProperty = function(propertyName) {
-        return this[propertyName]();
+      this._commandableSwf.getNodeProperty = function(propertyName) {
+        return this[propertyName];
+      };
+      return this._commandableSwf.setNodeProperty = function(propertyName, value) {
+        return this[propertyName] = value;
       };
     }
   }, (function() {
@@ -33,7 +36,6 @@
       return this.flashDidLoad();
     },
     remove: function() {
-      this._observableSwf.remove();
       return this._ready = false;
     },
     flashDidLoad: function() {

@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Wed, 29 Jun 2011 17:15:31 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 05 Jul 2011 10:14:20 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/sm_configurations/audioPlayerStateMachine.coffee
  */
 
@@ -73,8 +73,6 @@
         case "canplaythrough":
           this._loadingController.handle("ev_load");
           return this._playingController.handle("ev_canPlay");
-        case "loadeddata":
-          return this._loadingController.handle("ev_loadComplete");
         case "emptied":
           this._loadingController.handle("ev_reset");
           return this._playingController.handle("ev_reset");
@@ -94,9 +92,9 @@
   });
   ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create({
     loadingStateMachine_config: {
-      "states": ["st_empty", "st_stalled", "st_loading", "st_loaded", "st_resetting", "st_error"],
-      "events": ["ev_error", "ev_reset", "ev_load", "ev_loadComplete", "ev_resetComplete", "ev_stall"],
-      "commands": ["cmd_showEmptyLoader", "cmd_showStalledLoader", "cmd_showLoadingLoader", "cmd_showFinishedLoader", "cmd_showResettingLoader", "cmd_showErrorLoader"],
+      "states": ["st_empty", "st_stalled", "st_loading", "st_resetting", "st_error"],
+      "events": ["ev_error", "ev_reset", "ev_load", "ev_resetComplete", "ev_stall"],
+      "commands": ["cmd_showEmptyLoader", "cmd_showStalledLoader", "cmd_showLoadingLoader", "cmd_showResettingLoader", "cmd_showErrorLoader"],
       "transitions": [
         {
           "state": "st_empty",
@@ -112,10 +110,6 @@
           "nextState": "st_error"
         }, {
           "state": "st_loading",
-          "event": "ev_loadComplete",
-          "nextState": "st_loaded"
-        }, {
-          "state": "st_loading",
           "event": "ev_reset",
           "nextState": "st_resetting"
         }, {
@@ -128,10 +122,6 @@
           "nextState": "st_error"
         }, {
           "state": "st_stalled",
-          "event": "ev_reset",
-          "nextState": "st_resetting"
-        }, {
-          "state": "st_loaded",
           "event": "ev_reset",
           "nextState": "st_resetting"
         }, {
@@ -160,10 +150,6 @@
         }, {
           "state": "st_loading",
           "entryAction": "cmd_showLoadingLoader",
-          "exitAction": null
-        }, {
-          "state": "st_loaded",
-          "entryAction": "cmd_showFinishedLoader",
           "exitAction": null
         }, {
           "state": "st_resetting",

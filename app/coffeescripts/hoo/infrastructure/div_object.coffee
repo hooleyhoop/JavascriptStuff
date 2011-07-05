@@ -20,11 +20,9 @@ ABoo.DivObject = SC.Object.extend
 		
 		# Hack in some utility functions to make sure audio element has the same interface as the swf
 		@_commandableSwf.getNodeProperty = (propertyName) ->
-			return this[propertyName]();
-			
-		# @_commandableSwf.setNodeProperty = (propertyName,value) -> 
-		#	this['set'+propertyName](value)
-		
+			return this[propertyName]
+		@_commandableSwf.setNodeProperty = (propertyName,value) -> 
+			this[propertyName]=value
 	###
 		!important: everytime you move the swf it creates a new instance
 	###
@@ -34,7 +32,7 @@ ABoo.DivObject = SC.Object.extend
 		@flashDidLoad();
 			
 	remove: () ->
-		@_observableSwf.remove()
+		#@_observableSwf.remove()
 		@_ready = false
 
 	#addReadyBindingAndTimeOut: () ->

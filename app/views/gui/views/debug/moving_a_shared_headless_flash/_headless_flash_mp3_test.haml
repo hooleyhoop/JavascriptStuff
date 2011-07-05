@@ -316,9 +316,9 @@
 
 				// it shows ready too soon!!!!
 			},
-			//durationchange: function() {
-			//	console.log("durationchange" );
-			//},
+			durationchange: function() {
+				console.log("durationchange" );
+			},
 
 			// TODO: boiler plate - move
 			animateLoadProgress: function( from, to ) {
@@ -388,12 +388,12 @@
 			cmd_showStalledLoader: function() {
 				this.set('_busyFlag', true);
 			},
-			//cmd_showLoadingLoader: function() {
-			//},
-			cmd_showFinishedLoader: function() {
-				this.animateLoadProgress( this._loadProgress, 360 );
-				this.set('_busyFlag', false);
+			cmd_showLoadingLoader: function() {
 			},
+			//cmd_showFinishedLoader: function() {
+			//	this.animateLoadProgress( this._loadProgress, 360 );
+			//	this.set('_busyFlag', false);
+			//},
 			//cmd_showResettingLoader: function() {
 			//},
 			cmd_showErrorLoader: function() {

@@ -36,7 +36,7 @@ ABoo.FlashObject = SC.Object.extend
 
 		# Hack in some utility functions to make sure audio element has the same interface as the swf
 		@_commandableSwf.getNodeProperty = (propertyName) ->
-			return this[propertyName]();
+			return this[propertyName]()
 
 		# @_commandableSwf.setNodeProperty = (propertyName,value) ->
 		#	this['set'+propertyName](value)

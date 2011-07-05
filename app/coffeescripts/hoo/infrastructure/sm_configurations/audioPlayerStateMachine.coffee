@@ -65,8 +65,8 @@ ABoo.AudioPlayerStateMachine = SC.Object.extend
 				@_loadingController.handle( "ev_load" )
 				@_playingController.handle( "ev_canPlay" )
 
-			when "loadeddata"
-				@_loadingController.handle( "ev_loadComplete" )
+			#when "loadeddata"
+			#	@_loadingController.handle( "ev_loadComplete" )
 
 			when "emptied"
 				@_loadingController.handle( "ev_reset" )
@@ -93,7 +93,7 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			"st_empty"
 			"st_stalled"
 			"st_loading"
-			"st_loaded"
+			#"st_loaded"
 			"st_resetting"
 			"st_error"
 		]
@@ -101,7 +101,7 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			"ev_error"
 			"ev_reset"
 			"ev_load"
-			"ev_loadComplete"
+			#"ev_loadComplete"
 			"ev_resetComplete"
 			"ev_stall"
 		]
@@ -109,7 +109,7 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			"cmd_showEmptyLoader"
 			"cmd_showStalledLoader"
 			"cmd_showLoadingLoader"
-			"cmd_showFinishedLoader"
+			#"cmd_showFinishedLoader"
 			"cmd_showResettingLoader"
 			"cmd_showErrorLoader"
 		]
@@ -118,14 +118,14 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 
 			{"state": "st_loading", "event": "ev_stall", "nextState": "st_stalled"}
 			{"state": "st_loading", "event": "ev_error", "nextState": "st_error"}
-			{"state": "st_loading", "event": "ev_loadComplete", "nextState": "st_loaded"}
+			#{"state": "st_loading", "event": "ev_loadComplete", "nextState": "st_loaded"}
 			{"state": "st_loading", "event": "ev_reset", "nextState": "st_resetting"}
 
 			{"state": "st_stalled", "event": "ev_load", "nextState": "st_loading"}
 			{"state": "st_stalled", "event": "ev_error", "nextState": "st_error"}
 			{"state": "st_stalled", "event": "ev_reset", "nextState": "st_resetting"}
 
-			{"state": "st_loaded", "event": "ev_reset", "nextState": "st_resetting"}
+			#{"state": "st_loaded", "event": "ev_reset", "nextState": "st_resetting"}
 			{"state": "st_empty", "event": "ev_reset", "nextState": "st_resetting"}
 			{"state": "st_error", "event": "ev_reset", "nextState": "st_resetting"}
 			{"state": "st_resetting", "event": "ev_resetComplete", "nextState": "st_empty"}
@@ -134,7 +134,7 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			{"state": "st_empty", "entryAction": "cmd_showEmptyLoader", "exitAction": null }
 			{"state": "st_stalled", "entryAction": "cmd_showStalledLoader", "exitAction": null }
 			{"state": "st_loading", "entryAction": "cmd_showLoadingLoader", "exitAction": null }
-			{"state": "st_loaded", "entryAction": "cmd_showFinishedLoader", "exitAction": null }
+			#{"state": "st_loaded", "entryAction": "cmd_showFinishedLoader", "exitAction": null }
 			{"state": "st_resetting", "entryAction": "cmd_showResettingLoader", "exitAction": null }
 			{"state": "st_error", "entryAction": "cmd_showErrorLoader", "exitAction": null }
 		]

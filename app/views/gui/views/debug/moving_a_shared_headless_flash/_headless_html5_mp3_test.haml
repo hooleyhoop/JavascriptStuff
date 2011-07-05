@@ -33,6 +33,7 @@
 				if (!mp3Url2) debugger;
 
 				// TODO: check duplicate url ? as in beeper
+				console.log("SRC: "+mp3Url2);
 
 				this._headlessAudioOb._commandableSwf.setAttribute( 'src', mp3Url2 );
 
@@ -45,7 +46,7 @@
 			},
 
 			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
-				timeRanges.end(timeRangeIndex);
+				return timeRanges.end(timeRangeIndex);
 			},
 
 			buffered: function() {
@@ -71,18 +72,22 @@
 			},
 
 			duration: function() {
-			  	return this._headlessAudioOb._commandableSwf.getNodeProperty('duration');
+				var dur = this._headlessAudioOb._commandableSwf.getNodeProperty('duration');
+				dur = (isNaN(dur)) ? 0 : dur;
+				//console.log("DUR: "+dur);
+			  	return dur;
 			},
 
 			loadedDegrees: function() {
 				var buffered = this.buffered();
 				var duration =  this.duration();
-				//console.log("<<<<< loadedDegrees "+buffered+" "+duration+" >>>>>>");
-				return duration===0 ? 0 : (buffered / duration * 360);
+				var degrees = duration===0 ? 0 : (buffered / duration * 360);
+				console.log("<<<<< loadedDegrees "+buffered+" "+duration+" >>>>>> "+degrees );
+				return degrees
 			},
 
 			playedDegrees: function() {
-				var ct = this._headlessAudioOb._commandableSwf.getAttribute('currentTime');
+				var ct = this._headlessAudioOb._commandableSwf.getNodeProperty('currentTime');
 				var duration =  this.duration();
 				return duration===0 ? 0 : (ct / duration * 360);
 			},
@@ -136,12 +141,15 @@
 			// this doesn't mean that the swf is ready
 			didSwapInFlash: function( swf ) {
 				this._state = true;
+				console.log("SWApped in");
 			},
 
 			didSwapOutFlash: function( swf ) {
+				console.log("swapped out");
 				this._state = false;
 				this._killObservations();
 				this._controller.hidePlayerGUI();
+				//ABoo.NewHeadlessHTML5PlayerSingleton.sharedHeadlessPlayer().setSrc( "" );
 			},
 
 			flashDidLoad: function( swf ) {
@@ -171,8 +179,13 @@
 			},
 
 			handleHeadlessFlashPlayerEvent: function( eventName ) {
-				//console.log("Mofo! got an event " + eventName );
-				this._stateMachine.processInputSignal( eventName );
+
+				if(eventName!="timeupdate")
+					console.log("HTML5 player: got an event > " + eventName );
+
+				// TODO: shit shit and bugger!
+				if(eventName!="loadeddata")
+					this._stateMachine.processInputSignal( eventName );
 			},
 
 			buffered: function() {
@@ -277,8 +290,8 @@
 			},
 
 			hidePlayerGUI: function() {
-
 				if(this._canvas$) {
+					$(this).stop();
 
 					var radialProgress = this._smallPlayerFrontEnd._radialProgress;
 					var playPause = this._smallPlayerFrontEnd._playPauseButton;
@@ -304,13 +317,26 @@
 
 				// it shows ready too soon!!!!
 			},
-			//durationchange: function() {
-			//	console.log("durationchange" );
-			//},
+			durationchange: function() {
+				console.log("durationchange" );
+
+				// so, load progress events are sketchy to say the least, attach loadProgress checks everywhere we can..
+				this._fakeLoadProgressEvent();
+			},
+
+			// seems like we dont always get progress events.. manually check
+			_fakeLoadProgressEvent: function() {
+				var loadedDegrees = this._loadProgress;
+				var reportedLoadedDegress = this._html5PlayerBackend.loadedDegrees();
+				if( loadedDegrees!=reportedLoadedDegress )
+					this.animateLoadProgress( loadedDegrees, reportedLoadedDegress );
+			},
 
 			// TODO: boiler plate - move
 			animateLoadProgress: function( from, to ) {
-
+				//console.warn("Animate from "+from+" to "+to);
+				//if(from==0 && to==360)
+				//	debugger;
 				//var fromProgressVal = { progress: from };
 				this.fakeLoadProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
 				var toLoadProgressVal = { fakeLoadProgress: to };
@@ -318,7 +344,7 @@
 				jQuery(this).animate( toLoadProgressVal, {
 					duration: 1000,
 					step: function(now, fx) {
-						// console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
+						//console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
 						self.set('_loadProgress', now );
 					},
 					queue: false
@@ -335,6 +361,7 @@
 					duration: 1000,
 					step: function(now, fx) {
 						//console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
+						//console.warn(now);
 						self.set('_playProgress', now );
 					},
 					queue: false
@@ -364,6 +391,9 @@
 
 			timeupdate: function() {
 				this.animatePlayProgress( this._playProgress, this._html5PlayerBackend.playedDegrees() );
+
+				// TODO: This is horrible
+				//this._fakeLoadProgressEvent();
 			},
 
 			/* loading commands */
@@ -376,12 +406,12 @@
 			cmd_showStalledLoader: function() {
 				this.set('_busyFlag', true);
 			},
-			//cmd_showLoadingLoader: function() {
-			//},
-			cmd_showFinishedLoader: function() {
-				this.animateLoadProgress( this._loadProgress, 360 );
-				this.set('_busyFlag', false);
+			cmd_showLoadingLoader: function() {
 			},
+			//cmd_showFinishedLoader: function() {
+			//	this.animateLoadProgress( this._loadProgress, 360 );
+			//	this.set('_busyFlag', false);
+			//},
 			//cmd_showResettingLoader: function() {
 			//},
 			cmd_showErrorLoader: function() {

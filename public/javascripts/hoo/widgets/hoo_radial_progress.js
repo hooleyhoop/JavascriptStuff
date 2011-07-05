@@ -22,7 +22,9 @@ ABoo.DonutTestSprite = ABoo.HooSprite.extend({
 			var playingRotAmount = playAmt/360.0 * Math.PI*2.0;
 
 			var busySpinnerAngle = busyAngle % 360 * Math.PI/180.0;
-			HOO_nameSpace.assert( loadingRotAmount>=playingRotAmount, "Go on, explain to me how this happened.");
+
+			// THis actually happens quite often > basically happerns when you have started playing but...
+			//HOO_nameSpace.assert( loadingRotAmount>=playingRotAmount, "Go on, explain to me how this happened.");
 
 			var outerRadius = width/2.0 * outerRad;
 			var innerRadius = width/2.0 * innerRad;
