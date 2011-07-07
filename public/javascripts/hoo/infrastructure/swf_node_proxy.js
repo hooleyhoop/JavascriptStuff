@@ -1,5 +1,5 @@
-/* DO NOT MODIFY. This file was compiled Tue, 05 Jul 2011 15:53:45 GMT from
- * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/flash_object.coffee
+/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 09:24:47 GMT from
+ * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/swf_node_proxy.coffee
  */
 
 (function() {

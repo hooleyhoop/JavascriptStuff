@@ -21,7 +21,7 @@
 			// create the backing html5
 			init: function( /* init never has args */ ) {
 				this._super();
-				this._headlessAudioOb = ABoo.HeadlessSharedDivObject.sharedDivForTag( "audio" );
+				this._headlessAudioOb = ABoo.HeadlessSharedDomNodeProxy.sharedDivForTag( "audio" );
 				this._audioPlayingDomNode = this._headlessAudioOb;
 
 			},

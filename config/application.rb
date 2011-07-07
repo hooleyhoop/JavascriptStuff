@@ -41,15 +41,15 @@ module JavascriptStuff
 
 	'hoo/setup_app.js',
 
-    'hoo/infrastructure/browser_utilities.js', 'hoo/infrastructure/activeListenerDebugger.js', "hoo/infrastructure/vector_math.js", 'hoo/infrastructure/flash_object.js', 'hoo/infrastructure/div_object', 'hoo/infrastructure/headless-player',
+    'hoo/infrastructure/browser_utilities', 'hoo/infrastructure/activeListenerDebugger', "hoo/infrastructure/vector_math", 'hoo/infrastructure/swf_node_proxy', 'hoo/infrastructure/dom_node_proxy', 'hoo/infrastructure/headless-player',
 
-    'hoo/infrastructure/simple-state-machine.js',
-    "hoo/infrastructure/sm_configurations/abstractConfiguration.js",
-    "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine.js",
-    "hoo/infrastructure/sm_configurations/fiveStateButtonStateMachine.js",
-	"hoo/infrastructure/sm_configurations/audioPlayerStateMachine.js",
+    'hoo/infrastructure/simple-state-machine',
+    "hoo/infrastructure/sm_configurations/abstractConfiguration",
+    "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine",
+    "hoo/infrastructure/sm_configurations/fiveStateButtonStateMachine",
+	"hoo/infrastructure/sm_configurations/audioPlayerStateMachine",
 
-    'hoo/graphics.js',
+    'hoo/graphics',
 
 	'hoo/widgets/root_object.js',
     'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'hoo/widgets/canvas.js', 'hoo/widgets/buttons/hoo_play_pause_button.js',

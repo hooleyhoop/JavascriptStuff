@@ -1,11 +1,11 @@
-/* DO NOT MODIFY. This file was compiled Tue, 05 Jul 2011 15:50:23 GMT from
- * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/div_object.coffee
+/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 09:25:37 GMT from
+ * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/dom_node_proxy.coffee
  */
 
 (function() {
   /*
   	HTML
-  */  ABoo.DivObject = SC.Object.extend({
+  */  ABoo.DomNodeProxy = SC.Object.extend({
     _swfID: void 0,
     _commandableSwf: void 0,
     _observableSwf: void 0,
@@ -33,19 +33,20 @@
     },
     cmd: function(functionName, argArray) {
       return this._commandableSwf[functionName].apply(this._commandableSwf, argArray);
-    }
-  }, (function() {
-    /*
-    		!important: everytime you move the swf it creates a new instance
-    	*/
-  })(), {
-    remove: function() {
-      return this._ready = false;
+    },
+    appendToDiv: function(div$) {
+      HOO_nameSpace.assert(this._ready === false, "ready called twice?");
+      this._observableSwf.appendTo(div$);
+      return this.flashDidLoad();
     },
     flashDidLoad: function() {
       HOO_nameSpace.assert(this._ready === false, "ready called twice?");
       this._ready = true;
       return this._delegate.flashDidLoad(this);
+    },
+    remove: function() {
+      this._observableSwf.remove();
+      return this._ready = false;
     },
     setSwfSize: function(width, height) {
       this._observableSwf.width(width);
@@ -55,17 +56,21 @@
       return this.setSwfSize(this._currentPlaceHolder.width(), this._currentPlaceHolder.height());
     }
   });
-  ABoo.DivObjectClassMethods = SC.Mixin.create({
-    newDivFortag: function(tag) {
-      return ABoo.DivObject.create({
+  /*
+  	DomNodeProxyClassMethods
+  */
+  ABoo.DomNodeProxyClassMethods = SC.Mixin.create({
+    newDomNodeProxyFortag: function(tag) {
+      return this.create({
         _tag: tag
       });
     }
   });
+  SC.mixin(ABoo.DomNodeProxy, ABoo.DomNodeProxyClassMethods);
   /*
-  	Shared Div
+  	SharedDomNodeProxy
   */
-  ABoo.SharedDivObject = ABoo.DivObject.extend({
+  ABoo.SharedDomNodeProxy = ABoo.DomNodeProxy.extend({
     _currentPlaceHolder: void 0,
     _activeScriptItem: void 0,
     swapInForItem: function(scriptItem, domItem$) {
@@ -95,7 +100,10 @@
       return this._activeScriptItem.didSwapInFlash(this);
     }
   });
-  ABoo.SharedDivObjectClassMethods = SC.Mixin.create(ABoo.DivObjectClassMethods, {
+  /*
+  	SharedDomNodeProxyClassMethods
+  */
+  ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create(ABoo.DomNodeProxyClassMethods, {
     _cached: new Object(),
     sharedDivForTag: function(tag) {
       var cachedFlash;
@@ -109,10 +117,15 @@
       return cachedFlash;
     }
   });
+  SC.mixin(ABoo.SharedDomNodeProxy, ABoo.SharedDomNodeProxyClassMethods);
   /*
-  	Shared Headless Flash
+  	HeadlessSharedDomNodeProxy
   */
-  ABoo.HeadlessSharedDivObject = ABoo.SharedDivObject.extend({
+  ABoo.HeadlessSharedDomNodeProxy = ABoo.SharedDomNodeProxy.extend({
+    appendToDiv: function(div$) {
+      HOO_nameSpace.assert(this._ready === false, "ready called twice?");
+      return this.flashDidLoad();
+    },
     swapInForItem: function(scriptItem, domItem$) {
       if (this._currentPlaceHolder != null) {
         this.remove();
@@ -122,24 +135,15 @@
       this.insertSwfInvisibly();
       return this.flashDidLoad();
     },
+    remove: function() {
+      return this._ready = false;
+    },
     insertSwfInvisibly: function() {
       return 0;
     }
   });
-  ABoo.HeadlessSharedDivObjectClassMethods = SC.Mixin.create(ABoo.SharedDivObjectClassMethods, {
-    sharedDivForTag: function(tag) {
-      var cachedFlash;
-      cachedFlash = this._cached[tag];
-      if (!(cachedFlash != null)) {
-        cachedFlash = this.create({
-          _tag: tag
-        });
-        this._cached[tag] = cachedFlash;
-      }
-      return cachedFlash;
-    }
-  });
-  SC.mixin(ABoo.DivObject, ABoo.DivObjectClassMethods);
-  SC.mixin(ABoo.SharedDivObject, ABoo.SharedDivObjectClassMethods);
-  SC.mixin(ABoo.HeadlessSharedDivObject, ABoo.HeadlessSharedDivObjectClassMethods);
+  SC.mixin(ABoo.HeadlessSharedDomNodeProxy, ABoo.SharedDomNodeProxyClassMethods);
+  /*
+  	HeadlessSharedDomNodeProxyClassMethods
+  */
 }).call(this);
