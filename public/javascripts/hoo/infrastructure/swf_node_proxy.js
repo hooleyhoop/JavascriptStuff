@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 09:24:47 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 09:43:41 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/swf_node_proxy.coffee
  */
 
@@ -131,6 +131,7 @@
       return flashVarString;
     }
   });
+  SC.mixin(ABoo.FlashObject, ABoo.FlashObjectClassMethods);
   /*
   	Shared Flash
   */
@@ -164,6 +165,9 @@
       return this._activeScriptItem.didSwapInFlash(this);
     }
   });
+  /*
+  	SharedFlashObjectClassMethods
+  */
   ABoo.SharedFlashObjectClassMethods = SC.Mixin.create(ABoo.FlashObjectClassMethods, {
     _cached: new Object(),
     sharedSwfForURL: function(swfURL, width, height, flashVarDict) {
@@ -181,8 +185,9 @@
       return cachedFlash;
     }
   });
+  SC.mixin(ABoo.SharedFlashObject, ABoo.SharedFlashObjectClassMethods);
   /*
-  	Shared Headless Flash
+  	HeadlessSharedFlashObject
   */
   ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend({
     swapInForItem: function(scriptItem, domItem$) {
@@ -222,23 +227,6 @@
       return this.flashDidLoad();
     }
   });
-  ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create(ABoo.SharedFlashObjectClassMethods, {
-    sharedSwfForURL: function(swfURL, width, height, flashVarDict) {
-      var cachedFlash;
-      cachedFlash = this._cached[swfURL];
-      if (!(cachedFlash != null)) {
-        cachedFlash = this.create({
-          _url: swfURL,
-          _width: "100%",
-          _height: "100%",
-          _flashVarDict: flashVarDict
-        });
-        this._cached[swfURL] = cachedFlash;
-      }
-      return cachedFlash;
-    }
-  });
-  SC.mixin(ABoo.FlashObject, ABoo.FlashObjectClassMethods);
-  SC.mixin(ABoo.SharedFlashObject, ABoo.SharedFlashObjectClassMethods);
+  ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create(ABoo.SharedFlashObjectClassMethods, 0);
   SC.mixin(ABoo.HeadlessSharedFlashObject, ABoo.HeadlessSharedFlashObjectClassMethods);
 }).call(this);

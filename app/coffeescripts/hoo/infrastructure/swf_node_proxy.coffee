@@ -122,6 +122,8 @@ ABoo.FlashObjectClassMethods = SC.Mixin.create
 		return flashVarString
 
 
+SC.mixin( ABoo.FlashObject, ABoo.FlashObjectClassMethods )
+
 ###
 	Shared Flash
 ###
@@ -153,6 +155,9 @@ ABoo.SharedFlashObject = ABoo.FlashObject.extend
 		@_delegate = @_activeScriptItem
 		@_activeScriptItem.didSwapInFlash( this )
 
+###
+	SharedFlashObjectClassMethods
+###
 ABoo.SharedFlashObjectClassMethods = SC.Mixin.create ABoo.FlashObjectClassMethods,
 	_cached: new Object()
 
@@ -164,10 +169,12 @@ ABoo.SharedFlashObjectClassMethods = SC.Mixin.create ABoo.FlashObjectClassMethod
 		return cachedFlash
 
 
+SC.mixin( ABoo.SharedFlashObject, ABoo.SharedFlashObjectClassMethods )
+
 ###
-	Shared Headless Flash
+	HeadlessSharedFlashObject
 ###
-ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend
+ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend ( 
 
 	swapInForItem: ( scriptItem, domItem$ ) ->
 		if @_currentPlaceHolder?
@@ -209,16 +216,9 @@ ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend
 		@_observableSwf.after( @_currentPlaceHolder ) 	# put back previous swapped out item
 		@_blocked = NO
 		@flashDidLoad()
+)
 
 ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create ABoo.SharedFlashObjectClassMethods,
-	# ok, this is copied and spasted for now as unsure how to do ABoo.HeadlessSharedFlashObject.create instead of ABoo.SharedFlashObject.create
-	sharedSwfForURL: ( swfURL, width, height, flashVarDict ) ->
-		cachedFlash = @_cached[swfURL];
-		if !cachedFlash?
-			cachedFlash = @create( {_url:swfURL, _width:"100%", _height:"100%", _flashVarDict:flashVarDict} )
-			@_cached[swfURL] = cachedFlash
-		return cachedFlash
-
-SC.mixin( ABoo.FlashObject, ABoo.FlashObjectClassMethods )
-SC.mixin( ABoo.SharedFlashObject, ABoo.SharedFlashObjectClassMethods )
+	0
+	
 SC.mixin( ABoo.HeadlessSharedFlashObject, ABoo.HeadlessSharedFlashObjectClassMethods )

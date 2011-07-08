@@ -31,7 +31,7 @@ module Gui::Views::Drawing::Buttons::DivButton
 		def setupDebugFixture
 			super();
 			@size = [105, 45];
-			@initialState=0 if @initialState==nil
+			@initialState ||= 0
 			@labelColor = '#eee';
 
 			# div buttons still need to work without javascript!
@@ -56,8 +56,9 @@ module Gui::Views::Drawing::Buttons::DivButton
 				:initialState		=> @initialState,
 				:size				=> @size,
 			}
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
+			allItems.merge!( { :bindings => @bindings } ) unless @bindings.nil?
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions.nil?
+			return allItems
 		end
 
 	end

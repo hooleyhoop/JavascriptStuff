@@ -25,7 +25,7 @@
 				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( this._swfSrc );
 
 				// varoius autostart options here - load, play, etc. - cant really use 'em to stay consistent with html5 audio
-				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, 1, 1, {autostart:'load'} );
+				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, '100%', '100%', {autostart:'load'} );
 				this._audioPlayingDomNode = this._headlessFlashOb;
 			},
 
@@ -35,16 +35,7 @@
 
 		});
 
-		ABoo.NewHeadlessFlashPlayerSingletonClassMethods = SC.Mixin.create({
-
-			_sharedHeadlessPlayer: undefined,
-
-			sharedHeadlessPlayer: function() {
-				if( this._sharedHeadlessPlayer==undefined ){
-					this._sharedHeadlessPlayer = ABoo.NewHeadlessFlashPlayerSingleton.create();
-				}
-				return this._sharedHeadlessPlayer;
-			}
+		ABoo.NewHeadlessFlashPlayerSingletonClassMethods = SC.Mixin.create( ABoo.SingletonClassMethods, {
 		});
 		SC.mixin( ABoo.NewHeadlessFlashPlayerSingleton, ABoo.NewHeadlessFlashPlayerSingletonClassMethods );
 
@@ -67,7 +58,7 @@
 
 				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this._controller } );
 
-				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().playerBecameCurrent( this, $pageItem );
+				ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().playerBecameCurrent( this, $pageItem );
 			},
 
 			// this doesn't mean that the swf is ready
@@ -87,23 +78,23 @@
 				this._createObservervations();
 				this._stateMachine.processInputSignal( "ready" );
 
-				ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().setSrc( this._mp3URL, true, true );
+				ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().setSrc( this._mp3URL, true, true );
 
 				// TODO: hold off on this for now.
-				// ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().play( this._mp3URL );
+				// ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().play( this._mp3URL );
 			},
 
 			//TODO: must we tear down observations also
 			_createObservervations: function(){
 			  	var self = this;
-				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer()._headlessFlashOb._observableSwf );
+				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance()._headlessFlashOb._observableSwf );
 				$actualPlayer.bind( this._watchableEvents, function( e ) {
 					self.handleHeadlessFlashPlayerEvent(e.type);
 				});
 			},
 
 			_killObservations: function() {
-				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer()._headlessFlashOb._observableSwf );
+				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance()._headlessFlashOb._observableSwf );
 				$actualPlayer.unbind( this._watchableEvents );
 			},
 
@@ -113,23 +104,27 @@
 			},
 
 			buffered: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().buffered();
+				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().buffered();
 			},
 
 			loadedDegrees: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().loadedDegrees();
+				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().loadedDegrees();
 			},
 
 			playedDegrees: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().playedDegrees();
+				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().playedDegrees();
 			},
 
 			play: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().play();
+				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().play();
 			},
 
 			pause: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedHeadlessPlayer().pause();
+				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().pause();
+			},
+
+			setCurrentTime: function( secs ) {
+				ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().setCurrentTime(secs);
 			}
 		});
 
@@ -177,13 +172,10 @@
 
 				SC.RunLoop.begin();
 
-				// TODO: move into a constructor on canvas?
-				this._canvas$ = $("<canvas>"); //TODO: does the canvas need to be in a wrapper to stretch it to 100%?
+				this._hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas();
 
 				// remove the image and insert the canvas
-				this._placeHolder$.replaceWith( this._canvas$ );
-
-				this._hooCanvas = ABoo.HooCanvas.create( { _$canvas: this._canvas$ } );
+				this._hooCanvas.swapInFor( this._placeHolder$ );
 
 				// TODO: not how we will size it, but just to make it visible for now
 				this._hooCanvas._setSize(200,200);
@@ -243,6 +235,7 @@
 			},
 			durationchange: function() {
 				console.log("durationchange" );
+				this.set('_busyFlag', false);
 			},
 
 			// TODO: boiler plate - move
@@ -342,7 +335,7 @@
 			},
 			cmd_showWaitingPlayer: function() {
 				this.set('_busyFlag', true);
-					console.log("show stalled 2");
+				console.log("show stalled 2");
 			},
 			cmd_hideWaitingPlayer: function() {
 				this.set('_busyFlag', false);
@@ -354,7 +347,15 @@
 			cmd_showFinishedPlayer: function() {
 				jQuery(this).stop();
 				this.set( '_playProgress', 0 );
-				this._showPlay();
+
+				// need this to reset
+
+				//this._flashPlayerBackend.handleHeadlessFlashPlayerEvent('pause');
+				this._flashPlayerBackend.pause();
+				this._flashPlayerBackend.setCurrentTime(0);
+				//this._showPlay();
+
+				// maybe stop goes here?
 			},
 			cmd_showErrorPlayer: function() {
 				this._showDisabled();

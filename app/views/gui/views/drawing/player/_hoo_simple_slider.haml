@@ -66,172 +66,19 @@
 		});
 
 
+		// !! Should this have a canvas or not? i can not decide.
+		// !! it's different as it uses the divs infront of the canvas to draw the progress
+
+
 		/*
-		 *
+		 * This canvas stuff was out of place in slider - temporarily moved here!
 		*/
-		ABoo.HooSimpleSlider = ABoo.HooWidget.extend({
-
-			_$parentDiv:		undefined,
-			_$canvas:			undefined,
-			_loadProgressDiv:	undefined,
-			_playProgressDiv:	undefined,
-
-			_started:			false,
-
-			_timeStep:			undefined,
-			_currentTime:		undefined,
-
-			_loadedAmount:		0,
-			_playedAmount:		0,
-
-			_maxAmount:			0,
-			_maxBarWidth:		0,
-
-			_busyFadeHelper:	undefined,
-			_stateMachine: 		undefined,
-
-			init: function( /* init never has args */ ) {
-
-				this._super();
-
-				this._$parentDiv = $( "#"+this.id );
-				debugger; //TODO: swap this this.div$
-				this._$canvas = this._$parentDiv.find( "canvas:first" );
-				this._loadProgressDiv = this._$parentDiv.find( ".loadProgress:first" );
-				this._playProgressDiv = this._$parentDiv.find( ".playProgress:first" );
-				this._loadedAmount = 0;
-				this._playedAmount = 0;
-				this._timeStep = 1000/15;
-				this._currentTime = 0;
-
-				this._stateMachine = ABoo.HooSliderItem.create();
-				this._stateMachine._delegate = this;
-				this._stateMachine._setupStateMachine( 0 );
-				this._stateMachine.setInitialState( 0 );
-
-				this._busyFadeHelper = ABoo.BusyFadeHelper.create();
-			},
-
-			setupDidComplete: function() {
-
-				this.resizeAll();
-				this._started = true;
-
-				/* Redo Bindings */
-				var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
-				if( hasBinding==false && this.json.initialState>0 ) {
-					this._stateMachine._fsm_controller.handle( "enable" );
-				}
-
-				hasBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
-				hasBinding = this.setup_hoo_binding_from_json( 'loadedValueBinding' );
-				hasBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
-
-				// remember! the alert stuff doesnt work in ie
-				this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
-			},
-
-			// we observed a change!
-			readyDidChange: function( target, property ) {
-
-				//pbtarget.removeObserver( property, this, this.readyDidChange );
-				if( target.get(property)) {
-					this._stateMachine._fsm_controller.handle( "enable" );
-				}
-				// handle disable as well as enable?
-			},
-
-			maxAmountDidChange:  function( target, property ) {
-				this.set( '_maxAmount', target[property] );
-				this.recalcLoadedAndPlayedAmounts();
-			},
-
-			recalcLoadedAndPlayedAmounts: function() {
-				this.setPlayAmount(this._playedAmount);
-				this.setLoadAmount(this._loadedAmount);
-			},
-
-			/* get notification callback */
-			loadedDidChange: function( target, property ) {
-
-				if(this._maxAmount!=0) {
-					var percent = target[property]/this._maxAmount;
-					if(percent<0 || percent>1.1)
-						debugger;
-					else if(percent>1)
-						percent = 1;
-					else
-						this.setLoadAmount(percent);
-				}
-			},
-
-			/* get notification callback */
-			playedDidChange: function( target, property ) {
-
-				if(this._maxAmount!=0) {
-					var percent = target[property]/this._maxAmount;
-					if(percent<0 || percent>1.1)
-						debugger;
-					else if(percent>1)
-						percent = 1;
-					else
-						this.setPlayAmount(percent);
-				}
-			},
-
-			setPlayAmount: function( arg ) {
-				this._playedAmount = arg;
-			    this._playProgressDiv.width(this._maxBarWidth*this._playedAmount);
-			},
-
-			setLoadAmount: function( arg ) {
-				this._loadedAmount = arg;
-			    this._loadProgressDiv.width(this._maxBarWidth*this._loadedAmount);
-			},
-
-			getClickableItem: function() {
-				return this._$parentDiv.find( ".slider" );
-			},
-
-			parentDidResize: function() {
-
-				//if(Modernizr.canvas!==undefined)
-				if(this._started===true)
-					this.resizeAll();
-				//}
-			},
-
-			resizeAll: function() {
-
-				console.log("resize");
-				var newWidth = this._$parentDiv.width();
-				var newHeight = this._$parentDiv.outerHeight();
-				var currentWidth = this._$canvas.width();
-				var currentHeight = this._$canvas.outerHeight();
-
-				if( newWidth!=currentWidth || newHeight!=currentHeight) {
-
-					// resize canvas
-					this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
-					var ctx = this._$canvas[0].getContext('2d');
-
-					this._maxBarWidth = newWidth-4;
-					var maxBarHeight = newHeight-4;
-
-				    this.draw(ctx, this._maxBarWidth, maxBarHeight);
-
-					this.recalcLoadedAndPlayedAmounts();
-				}
-			},
+		ABoo.ProgressBusybacking = SC.Object.extend({
 
 			draw: function( ctx, width, height ) {
-
 				ctx.save();
-
 				ctx.setTransform(1, 0, 0, 1, 0, 0);
-
 				ctx.clearRect(0,0,width,height);
-
 				ctx.globalAlpha = 1.0;
 				ctx.globalCompositeOperation = 'source-over';
 
@@ -296,35 +143,232 @@
 
 				ctx.restore();
 			},
+		});
+
+
+		/*
+		 *
+		*/
+		ABoo.HooSimpleSliderGraphic = ABoo.HooButtonGraphic.extend({
+
+			showDisabledButton: function() {
+				//alert("one");
+		    },
+			showMouseUp1State: function() {
+				//alert("two");
+			},
+			showMouseDown1State: function() {
+				//alert("threes");
+			}
+
+		});
+
+		/*
+		 *
+		*/
+		ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend({
+
+
+			_loadProgressDiv:	undefined,
+			_playProgressDiv:	undefined,
+			_started:			false,
+			_timeStep:			undefined,
+			_currentTime:		undefined,
+			_loadedAmount:		0,
+			_playedAmount:		0,
+			_maxAmount:			0,
+			_maxBarWidth:		0,
+			_currentWidth:		0,
+			_currentWHeight:	0,
+
+			//mwah _busyFadeHelper:	undefined,
+			//mwah _stateMachine: 		undefined,
+			//mwah _hooCanvas: undefined,
+
+			init: function( /* init never has args */ ) {
+				this._super();
+				this._loadProgressDiv = this.getFirstDomItemOfType(".loadProgress");
+				this._playProgressDiv = this.getFirstDomItemOfType(".playProgress");
+
+				//mwah this._loadedAmount = 0;
+				//mwah this._playedAmount = 0;
+				//mwah this._timeStep = 1000/15;
+				//mwah this._currentTime = 0;
+
+				//mwah this._stateMachine = ABoo.HooSliderItem.create();
+				//mwah this._stateMachine._delegate = this;
+				//mwah this._stateMachine._setupStateMachine( 0 );
+				//mwah this._stateMachine.setInitialState( 0 );
+
+				//mwah this._busyFadeHelper = ABoo.BusyFadeHelper.create();
+			},
+
+			_createGraphic: function() {
+				return ABoo.HooSimpleSliderGraphic.create( { _rootItemId:this.id, _itemType:".slider" } ); // _textHolder:"span", _labelStates: this.json.labelStates
+			},
+
+			_createStateController: function() {
+				return ABoo.HooSliderItem.create( { _graphic:this._buttonGraphic } );
+			},
+
+			setupDidComplete: function() {
+
+				this._super();
+				//mwah HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
+
+				// some disaster of order of operations here - resizeAll has alreadyw been called too many times, we just werent ready
+				this._started = true;
+				this.resizeAll();
+
+				//mwah /* Redo Bindings */
+				//mwah var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
+				//mwah if( hasBinding==false && this.json.initialState>0 ) {
+				//mwah 	this._stateMachine.processInputSignal( "enable" );
+				//mwah }
+
+				var hasMaxValBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
+				var hasLoadedValBinding = this.setup_hoo_binding_from_json( 'loadedValueBinding' );
+				var hasPlayedValBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
+
+				// remember! the alert stuff doesnt work in ie
+				//mwah this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
+			},
+
+
+			// we observed a change!
+			// If no binding is found this gets called anyway? So assume default is on?
+			readyDidChange: function( target, property ) {
+
+				//pbtarget.removeObserver( property, this, this.readyDidChange );
+				// handle disable as well as enable?
+
+				// why does this seem to be
+				if( target.get(property) ) {
+					this._buttonSMControl.sendEvent( "ev_showState1" );
+				}
+			},
+
+			/* we observed a change! - notification callback */
+			maxAmountDidChange:  function( target, property ) {
+				var updatedVal =  target[property];
+				this.set( '_maxAmount', updatedVal );
+				this.recalcLoadedAndPlayedAmounts();
+			},
+
+
+			/* we observed a change! - notification callback */
+			loadedDidChange: function( target, property ) {
+				var percent = ABoo.HooMath.xAsUnitPercentOfY( target[property], this._maxAmount );
+				this.setLoadAmount(percent);
+			},
+
+			/* we observed a change! - notification callback */
+			playedDidChange: function( target, property ) {
+				var updatedAmount = target[property];
+				var percent = ABoo.HooMath.xAsUnitPercentOfY( updatedAmount, this._maxAmount );
+				//console.log("Played "+updatedAmount+" "+percent );
+				this.setPlayAmount(percent);
+			},
+
+
+			recalcLoadedAndPlayedAmounts: function() {
+				this.setPlayAmount(this._playedAmount);
+				this.setLoadAmount(this._loadedAmount);
+			},
+
+			// could/should do this with SC bindings?
+			setPlayAmount: function( arg ) {
+				this.set( '_playedAmount', arg );
+				var playDivWidth = this._maxBarWidth*this._playedAmount;
+			    this._playProgressDiv.width( playDivWidth );
+			},
+
+			setLoadAmount: function( arg ) {
+				this.set( '_loadedAmount', arg );
+				var loadDivWidth = this._maxBarWidth*this._loadedAmount;
+				// console.log("LoadDivWidth = "+this._maxBarWidth);
+			    this._loadProgressDiv.width(loadDivWidth);
+			},
+
+			//mwah  getClickableItem: function() {
+			//mwah 	alert("oh really?");
+			//mwah 	return  this.getFirstDomItemOfType(".slider");
+			//mwah },
+
+			parentDidResize: function() {
+
+				//if(Modernizr.canvas!==undefined)
+				if(this._started===true)
+					this.resizeAll();
+				//}
+			},
+
+			resizeAll: function() {
+
+				var newWidth = this.div$.width();
+				var newHeight = this.div$.outerHeight();
+				//var currentWidth = this._$canvas.width();
+				//var currentHeight = this._$canvas.outerHeight();
+
+				console.log("resize "+newWidth);
+
+				if( newWidth!=this._currentWidth || newHeight!=this._currentHeight ) {
+
+
+					// resize canvas
+					//mwah this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
+					//mwah var ctx = this._$canvas[0].getContext('2d');
+
+					this._maxBarWidth = newWidth-4;
+					var maxBarHeight = newHeight-4;
+
+				    //mwah this.draw(ctx, this._maxBarWidth, maxBarHeight);
+
+					this.recalcLoadedAndPlayedAmounts();
+
+					this._currentWidth = newWidth;
+					this._currentHeight = newHeight;
+				}
+			},
+
 
 			toggleBusy: function() {
-				if(this._busyFadeHelper._showBusy)
-					this.stopBusy();
-				else
-					this.startBusy();
+				//mwah if(this._busyFadeHelper._showBusy)
+				//mwah 	this.stopBusy();
+				//mwah else
+				//mwah	this.startBusy();
 			},
 
 			startBusy: function() {
 
 				var self = this;
-				this._busyFadeHelper._animFunction = function() {
-					var ctx = self._$canvas[0].getContext('2d');
-				    self.draw(ctx, self._$parentDiv.width(), self._$parentDiv.outerHeight());
-					self._currentTime = (self._currentTime + self._timeStep) % 1000;
-				}
-				this._busyFadeHelper.begin( self._timeStep );
+				//mwah this._busyFadeHelper._animFunction = function() {
+					//mwah var ctx = self._$canvas[0].getContext('2d');
+				    //mwah self.draw(ctx, self.div$.width(), self.div$.outerHeight());
+					//mwah self._currentTime = (self._currentTime + self._timeStep) % 1000;
+				//mwah }
+				//mwah this._busyFadeHelper.begin( self._timeStep );
 			},
 
 			stopBusy: function() {
-				this._busyFadeHelper.end();
+				//mwah this._busyFadeHelper.end();
 			},
 
-			temporarySetEnabledState: function( stateIndex, enabled ) {},
-			enableButton: function( stateIndex ) {},
+
+			// wtf is this?
+			temporarySetEnabledState: function( stateIndex, enabled ) {
+				alert("wtf");
+			},
+			enableButton: function( stateIndex ) {
+				alert("wtf");
+			},
 			showMouseUpState: function( stateIndex ) {
+				alert("woo mouse up");
 			},
 
 			showMouseDownState: function( stateIndex ) {
+				alert("wtf");
+
 				if(this._mouseClickAction) {
 					var newPos = this.localXPosition();
 					this._lastDragXAmount = newPos;
@@ -334,6 +378,8 @@
 			},
 
 			mouseDragged: function(e){
+				alert("wtf");
+
 				if(this._mouseClickAction) {
 
 					var xamount = this.localXPosition();  // IE fires mouse events continuously even when it doesn't move more than 1 pixel
@@ -345,6 +391,8 @@
 			},
 
 			fireAction: function( nextState, argsHash ) {
+				alert("wtf");
+
 				argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
 			},
 

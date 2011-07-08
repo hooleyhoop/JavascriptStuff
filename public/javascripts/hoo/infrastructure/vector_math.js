@@ -1,11 +1,6 @@
 ABoo.VectorMath = SC.Object.extend({
 });
 
-//SC.mixin
-//SC.Enumerable = SC.Mixin.create
-//VectorMath.mixin({
-// Sowmehow...
-
 var VectorMathClassMethods = {
 
 	trianglePtArrayFromRect: function( rectArray ) {
@@ -93,3 +88,28 @@ var VectorMathClassMethods = {
 	}
 };
 SC.mixin( ABoo.VectorMath, VectorMathClassMethods );
+
+
+ABoo.HooMath = SC.Object.extend({
+});
+
+var HooMathClassMethods = {
+
+	xAsUnitPercentOfY: function( x, y ) {
+		if(y===0)
+			y = 1.0;
+		var unitPercent = x/y;
+		return ABoo.HooMath._clipToUnitValue(unitPercent);
+	},
+
+	// more for debugging pirposes than anything
+	_clipToUnitValue: function( val ) {
+		if(val<0 || val>1.1)
+			debugger;
+		else if(val>1)
+			val = 1;
+		return val;
+	}
+}
+SC.mixin( ABoo.HooMath, HooMathClassMethods );
+

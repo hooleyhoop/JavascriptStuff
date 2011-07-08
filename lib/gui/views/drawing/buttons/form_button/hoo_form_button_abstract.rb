@@ -26,14 +26,14 @@ module Gui::Views::Drawing::Buttons::FormButton
 
         # Mock Data
 		def setupDebugFixture
-			super();
+			super()
 
-			@labelStates = ['Disabled', 'Ready', 'Pressed'];
-			@img = '../images/buttons/simple-button/3-state-combine.png';
-			@size = [105, 45];
-			@initialState=0 if @initialState==nil
-			@labelColor = '#eee';
-			@action = '/widgets/_ajaxPostTest';
+			@labelStates = ['Disabled', 'Ready', 'Pressed']
+			@img = '../images/buttons/simple-button/3-state-combine.png'
+			@size = [105, 45]
+			@initialState ||=0
+			@labelColor = '#eee'
+			@action = '/widgets/_ajaxPostTest'
 			#@javascript = "this.hookupAction( function(){
 			#	alert('Holy Cock');
 			#});";
@@ -57,8 +57,9 @@ module Gui::Views::Drawing::Buttons::FormButton
 				:size			=> @size
 				#:javascript		=> @javascript,
 			}
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
+			allItems.merge!( { :bindings => @bindings } ) unless @bindings.nil?
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions.nil?
+			return allItems
 		end
 
 	end

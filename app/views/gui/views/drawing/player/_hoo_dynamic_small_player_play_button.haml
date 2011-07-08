@@ -22,14 +22,9 @@
 					// TODO!
 				*/
 
-				// TODO: move into a constructor on canvas?
-				this._canvas$ = $("<canvas>"); //TODO: does the canvas need to be in a wrapper to stretch it to 100%?
-
-				// remove the image and insert the canvas
 				this._placeHolder$ = this.getFirstDomItemOfType("img");
-				this._placeHolder$.replaceWith( this._canvas$ );
-
-				this._hooCanvas = ABoo.HooCanvas.create( { _$canvas: this._canvas$ } );
+				this._hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas();
+				this._hooCanvas.swapInFor( this._placeHolder$ );
 
 				// TODO: not how we will size it, but just to make it visible for now
 				this._hooCanvas._setSize(350,350);

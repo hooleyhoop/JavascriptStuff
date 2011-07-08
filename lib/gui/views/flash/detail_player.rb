@@ -129,7 +129,8 @@ module Gui::Views::Flash
 			allItems = {
 			}
 
-			allItems.merge!( { :runtimeObjects => @runtimeObjects } ) unless @runtimeObjects==nil;
+			allItems.merge!( { :runtimeObjects => @runtimeObjects } ) unless @runtimeObjects.nil?
+			return allItems
 
 		end
 

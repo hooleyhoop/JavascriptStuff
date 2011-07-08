@@ -239,8 +239,8 @@ ABoo.HooStateMachine_controller = SC.Object.extend
 			console.log("Found reset event")
 			nextState = @_machine._startState
 		# ignore unknown events
-		#else
-		#	console.log("** Unknown event "+eventName+" for state: "+@_currentState._name )
+		else
+			console.log("** Unknown event "+eventName+" for state: "+@_currentState._name )
 		if nextState?
 			@_transitionTo( nextState )
 

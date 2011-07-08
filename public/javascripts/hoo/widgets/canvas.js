@@ -113,9 +113,36 @@ ABoo.HooCanvas = ABoo.HooWidget.extend({
 				this._isActive = false;
 			}
 		}
-	}
+	},
+
+	swapInFor: function( domElement$ ) {
+		domElement$.replaceWith( this._$canvas );
+	},
+
+	swapOutFor: function( domElement$ ) {
+		this._$canvas.replaceWith( domElement$ );
+	},
+
 });
 
+/* which way to do mixin yo? */
+
+//ABoo.HooCanvasClassMethods = SC.Mixin.create({
+//	doTheShit: function() {
+//		alert("Yaya!");
+//	}
+//})
+
+/* programmatically create one without any html */
+ABoo.HooCanvasClassMethods = {
+	newProgrammaticCanvas: function() {
+		var canvas$ = $("<canvas>"); //TODO: does the canvas need to be in a wrapper to stretch it to 100%?
+		var hooCanvas = ABoo.HooCanvas.create( { _$canvas:canvas$ } );
+		return hooCanvas;
+	}
+}
+
+SC.mixin( ABoo.HooCanvas, ABoo.HooCanvasClassMethods );
 
 
 ABoo.HooCanvasViewMixin = SC.Mixin.create({

@@ -17,17 +17,21 @@ module Gui::Views::Drawing::Player
 			mockPlayer = widgetClass('MockPlayer').new()
 			self.addSubView( mockPlayer );
 
-			self.addBinding( { :enabledBinding		=>{ :to_taget=>mockPlayer.varName, :to_property=>'_ready', :do_action=>'readyDidChange' } } );
+			self.addBinding( { :enabledBinding			=>{ :to_taget=>mockPlayer.varName, :to_property=>'_ready', :do_action=>'readyDidChange' } } );
 			self.addBinding( { :maxAmountValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_duration', :do_action=>'maxAmountDidChange' } } );
-			self.addBinding( { :playedValueBinding	=>{ :to_taget=>mockPlayer.varName, :to_property=>'_playedValue', :do_action=>'playedDidChange' } } );
+			self.addBinding( { :playedValueBinding		=>{ :to_taget=>mockPlayer.varName, :to_property=>'_playedValue', :do_action=>'playedDidChange' } } );
 
 		end
 
 		# stuff to write into the page
 		def jsonProperties
 			allItems = {}
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
+			#puts "woo "+@bindings
+			#puts "bindings is #{@bindings.count}"
+
+			allItems.merge!( { :bindings => @bindings } ) unless @bindings.nil?
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions.nil?
+			return allItems
 		end
 
 	end

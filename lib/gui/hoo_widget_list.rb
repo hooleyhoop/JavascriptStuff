@@ -31,7 +31,7 @@ module Gui
 		def self.layoutClass( name )
 
 			layoutName = @@layouts[name]
-			if(layoutName==nil)
+			if layoutName.nil?
 				raise "Layout "+name+" not found!"
 			end
 			layoutName.constantize
@@ -78,7 +78,7 @@ module Gui
 				@@hasScanned = true
 			end
 			foundClass = @@widgets[name]
-			if(foundClass==nil)
+			if foundClass.nil?
 				raise "Widget "+name+" not found!"
 			end
 			return foundClass
@@ -96,7 +96,7 @@ module Gui
 
 		def self.cellClass( name )
 			cellName = @@cells[name]
-			if(cellName==nil)
+			if cellName.nil?
 				raise "Cell "+name+" not found!"
 			end
 			cellName.constantize

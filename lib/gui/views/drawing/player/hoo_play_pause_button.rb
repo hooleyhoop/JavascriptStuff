@@ -42,9 +42,10 @@ module Gui::Views::Drawing::Player
 			# - conditionally merge bindings
 			# - conditionally merge actions
 			# - seperate out items that require swapping at runtime
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
-			allItems.merge!( { :runtimeObjects => @runtimeObjects } ) unless @runtimeObjects==nil;
+			allItems.merge!( { :bindings => @bindings } ) unless @bindings.nil?
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions.nil?
+			allItems.merge!( { :runtimeObjects => @runtimeObjects } ) unless @runtimeObjects.nil?
+			return allItems
 
 		end
 

@@ -25,6 +25,8 @@ module Gui::Views::Flash
 				:width		=> @width,
 				:height		=> @height
 			}
+			return allItems
+
 		end
 
 	end

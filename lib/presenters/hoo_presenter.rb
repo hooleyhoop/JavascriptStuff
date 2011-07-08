@@ -8,8 +8,8 @@ module Presenters
 		def initialize( controller )
 
 			super();
-			@controller = controller;
-	    	@window = Gui::Core::HooWindow.new();
+			@controller = controller
+	    	@window = Gui::Core::HooWindow.new()
 
 	    	#-- assert rails 2 only
 	    	if( Rails::VERSION::MAJOR == 2 )

@@ -30,7 +30,8 @@ module Gui::Views::Drawing::Other
 				:text				=> @text,
 				:postfix			=> @postfix,
 			}
-			# allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
+			# allItems.merge!( { :bindings => @bindings } ) unless @bindings.nil?
+			return allItems
 		end
 
 

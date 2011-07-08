@@ -10,17 +10,17 @@ module Gui::Views::Drawing::Buttons::FormButton
 
 		def initialize( args={} )
 			@_states = 5
-			super(args);
+			super(args)
 		end
 
         # Mock Data
 		def setupDebugFixture
-			super();
+			super()
 
-			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
-			@img = '../images/buttons/follow_button/5-state-follow-button.png';
-			@size = [105, 45];
-			@initialState=0 if @initialState==nil
+			@labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D']
+			@img = '../images/buttons/follow_button/5-state-follow-button.png'
+			@size = [105, 45]
+			@initialState ||=0
 			@labelColor = '#eee';
 			@action = '#'; # /widgets/_ajaxPostTest
 		end

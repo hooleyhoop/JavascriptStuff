@@ -85,7 +85,9 @@ ABoo.AudioPlayerStateMachine = SC.Object.extend
 			when "pause"
 				@_playingController.handle( "ev_stop" )
 
-			else throw("** Unknown Signal ** -"+signal)
+			else 
+				console.warn("** Unknown Signal ** -"+signal)
+				#debugger
 
 ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 	loadingStateMachine_config:
@@ -177,6 +179,10 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			{"state": "st_empty", "event": "ev_play", "nextState": "st_playing"}
 
 			{"state": "st_stopped", "event": "ev_play", "nextState": "st_playing"}
+
+			# html5 audio does not always send 'play' event
+			{"state": "st_stopped", "event": "ev_timeupdate", "nextState": "st_playing"}
+			
 			{"state": "st_stopped", "event": "ev_error", "nextState": "st_error"}
 			{"state": "st_stopped", "event": "ev_reset", "nextState": "st_empty"}
 

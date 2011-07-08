@@ -29,19 +29,19 @@ module Gui::Views::Drawing::Buttons::Jquery
 		def setupDebugFixture
 			super();
 
-			@labelStates = ['Disabled', 'Ready', 'Pressed'];
-			@img = '../images/buttons/simple-button/3-state-combine.png';
-			@size = [105, 45];
-			@initialState=0 if @initialState==nil
-			@labelColor = '#eee';
-			@action = '/widgets/_ajaxPostTest';
+			@labelStates = ['Disabled', 'Ready', 'Pressed']
+			@img = '../images/buttons/simple-button/3-state-combine.png'
+			@size = [105, 45]
+			@initialState ||= 0
+			@labelColor = '#eee'
+			@action = '/widgets/_ajaxPostTest'
 			@javascript = "this.hookupAction( function(){
 				alert('Holy Cock');
 			});";
 		end
 
 		def labelStates=(states)
-			@labelStates = states;
+			@labelStates = states
 			assert( states.count==3, 'you need to have 3 states for the button' );
 		end
 
@@ -53,6 +53,7 @@ module Gui::Views::Drawing::Buttons::Jquery
 				:size			=> @size,
 				:javascript		=> @javascript,
 			}
+			return allItems
 		end
 
 	end

@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 01 Jul 2011 13:11:50 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 08 Jul 2011 17:11:24 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/three_state_item.coffee
  */
 
@@ -97,7 +97,7 @@
       return e.preventDefault();
     },
     _mouseStageUp: function(e) {
-      this._listenerDebugger.removeListener($(window), 'mouseup', this, this._mouseStageUp);
+      this._listenerDebugger.removeListener($(document), 'mouseup', this, this._mouseStageUp);
       this._listenerDebugger.removeListener(this._clickableItem$, 'mouseleave', this, this._mouseRollOutHandler);
       this._listenerDebugger.removeListener(this._clickableItem$, 'mouseenter', this, this._mouseRollOverHandler);
       this.sendEvent("ev_buttonReleased");
@@ -139,6 +139,22 @@
     },
     cmd_fireButtonAction2: function() {
       return this._fire("ev_showState1");
+    }
+  });
+  /*
+  
+  */
+  ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend({
+    _mouseDown: function(e) {
+      this._listenerDebugger.addListener($(document), 'mousemove', this, this._mouseDragged);
+      return this._super(e);
+    },
+    _mouseDragged: function(e) {
+      return console.log("oh yeah, oh yeah, oh yeah " + this._target);
+    },
+    _mouseStageUp: function(e) {
+      this._listenerDebugger.removeListener($(document), 'mousemove', this, this._mouseDragged);
+      return this._super(e);
     }
   });
 }).call(this);

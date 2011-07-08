@@ -117,7 +117,7 @@ class PagesController < ApplicationController
 
 	# first attempt to directly get it's string output, if it doesn't have any try to render a partial
 	output = anInstance.stringOutput
-    if(output==nil)
+    if output.nil?
     	localVarName = classNameParam.split('::').last;
 	    propName = localVarName.underscore.to_sym
     	partialAsString = render_to_string( :partial=>anInstance.class.partial_path(), :locals=>{propName=>anInstance} );

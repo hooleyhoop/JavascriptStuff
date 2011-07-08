@@ -13,6 +13,10 @@ module Gui::Views::Drawing::Player
 		def setupDebugFixture
 			super();
 
+			# slider needs a canvas
+			@parentCanvas = widgetClass('HooCanvas').new();
+			addSubView( @parentCanvas );
+
 			#-- add a checkbox
 			mockPlayer = widgetClass('MockPlayer').new()
 			chckBox = widgetClass('HooSimpleCheckbox').new( {:label=>'show busy'} )
@@ -32,10 +36,16 @@ module Gui::Views::Drawing::Player
 
 		# stuff to write into the page
 		def jsonProperties
+
+			self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName });
+
 			allItems = {
 			}
-			allItems.merge!( { :bindings => @bindings } ) unless @bindings==nil;
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
+
+			allItems.merge!( { :bindings => @bindings } ) unless @bindings.nil?
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions.nil?
+			return allItems
+
 		end
 
 	end

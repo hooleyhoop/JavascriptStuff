@@ -101,7 +101,7 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 		e.preventDefault()
 
 	_mouseStageUp: (e) ->
-		@_listenerDebugger.removeListener( $(window), 'mouseup', @, @_mouseStageUp )
+		@_listenerDebugger.removeListener( $(document), 'mouseup', @, @_mouseStageUp )
 		@_listenerDebugger.removeListener( @_clickableItem$, 'mouseleave', @, @_mouseRollOutHandler )
 		@_listenerDebugger.removeListener( @_clickableItem$, 'mouseenter', @, @_mouseRollOverHandler )
 
@@ -147,3 +147,43 @@ ABoo.HooFiveStateItem = ABoo.HooThreeStateItem.extend
 		@_fire("ev_showState1" ) # unless !@_autoShowNextState
 
 
+###
+
+###
+ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend
+	# old ? (instead of aborting when drag outside.. )
+	# new (adds mouse events)
+	#mwahcmd_enableButton: ( state ) ->
+	#mwah	@_super()
+	#mwah	var button = @_delegate.getClickableItem()
+	#mwah	if( button )
+	#mwah		button.unbind( 'mouseleave' )
+
+	#mwah showMouseDown1State: () ->
+	#mwah	var self = this
+	#mwah	$(window).bind( 'mouseup', {target:@_fsm_controller, action:'handle', arg:"buttonReleased" }, eventTrampoline )
+	#mwah	$(window).bind( 'mousemove', function(e){
+	#mwah		self.lastWindowEvent = e
+	#mwah		self._delegate.mouseDragged(e)
+	#mwah	})
+	#mwah	@_delegate.showMouseDownState(state)
+
+	#mwah showMouseUp1State: () ->
+	#mwah	$(window).unbind( 'mouseup' )
+	#mwah	$(window).unbind( 'mousemove' )
+	#mwah	@_delegate.showMouseUpState(state)
+
+	_mouseDown: (e) ->
+		# cant get $(window).mouseup to work on IE7 so using document instead
+		@_listenerDebugger.addListener( $(document), 'mousemove', @, @_mouseDragged )
+		this._super(e);
+		
+	_mouseDragged: (e) ->
+		!! @_target is the player, we need to calc the exact coords !!
+		console.log("oh yeah, oh yeah, oh yeah " + @_target );
+				
+	_mouseStageUp: (e) ->
+		@_listenerDebugger.removeListener( $(document), 'mousemove', @, @_mouseDragged )
+		this._super(e);
+
+					

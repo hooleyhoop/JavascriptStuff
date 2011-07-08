@@ -83,7 +83,9 @@ ABoo.NewHeadlessPlayerSingleton = SC.Object.extend
 	pause: () ->
 		@_audioPlayingDomNode.cmd( 'pause' )
 
-
+	setCurrentTime: ( secs ) ->
+		@_audioPlayingDomNode.attrSetter( 'currentTime', secs )
+	
 
 
 

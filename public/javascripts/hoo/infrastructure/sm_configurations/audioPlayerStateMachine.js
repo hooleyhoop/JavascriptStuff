@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 05 Jul 2011 10:14:20 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 11:53:15 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/sm_configurations/audioPlayerStateMachine.coffee
  */
 
@@ -86,7 +86,7 @@
         case "pause":
           return this._playingController.handle("ev_stop");
         default:
-          throw "** Unknown Signal ** -" + signal;
+          return console.warn("** Unknown Signal ** -" + signal);
       }
     }
   });
@@ -183,6 +183,10 @@
         }, {
           "state": "st_stopped",
           "event": "ev_play",
+          "nextState": "st_playing"
+        }, {
+          "state": "st_stopped",
+          "event": "ev_timeupdate",
           "nextState": "st_playing"
         }, {
           "state": "st_stopped",

@@ -13,7 +13,10 @@ module Gui::Views::Debug::MovingASharedHeadlessFlash
 
 		def initialize( args={} )
 			super(args);
-			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/393446-converting-arr-to-mp3-for-an-audioboo.mp3'} );
+
+			#TODO! i reallly need a global list of boourls!
+			# fireman rich = http://audioboo.fm/boos/393446-converting-arr-to-mp3-for-an-audioboo.mp3
+			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/406609-test.mp3'} );
 		end
 
         # Mock Data

@@ -27,7 +27,7 @@ ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooC
 			"movieclip": "_pauseButtonSprite"
 			"properties": { _isDown: true }
 
-	
+
 	init: () -> # _percentOfCanvas #
 		@_super();
 		@_playButtonSprite = ABoo.PlayButtonSprite.create()
@@ -86,26 +86,26 @@ ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooC
 	getTextContent: () ->
 		debugger
 		return undefined
-		
+
 	getHref: () ->
 		debugger
 		return undefined
-		
+
 	setBackgroundAndTextState: ( state ) ->
 		debugger
 		return undefined
-		
+
 	setContentText:  ( arg ) ->
 		debugger
 		return undefined
-		
+
 	positionBackground:( state ) ->
 		debugger
 		return undefined
 )
 
 # I used to think...
-# HooFormButtonToggleAsync is just like form button toggle except it doesn't automatically go 
+# HooFormButtonToggleAsync is just like form button toggle except it doesn't automatically go
 # to the next graphic state when clicked, the player tells us when to do that
 # UPDATE: then i discorvered we already had the _isAsync to handle this - just set it with the action
 ABoo.HooPlayPauseButton = ABoo.HooFormButtonToggle.extend
@@ -114,7 +114,7 @@ ABoo.HooPlayPauseButton = ABoo.HooFormButtonToggle.extend
 	_hooCanvas: undefined
 
 	_createGraphic: () ->
-		@_buttonGraphic = ABoo.HooPlayPauseButtonGraphic.create( { _rootItemId:@id, _percentOfCanvas:@json.percentOfCanvas })
+		return ABoo.HooPlayPauseButtonGraphic.create( { _rootItemId:@id, _percentOfCanvas:@json.percentOfCanvas })
 
 	setupDidComplete: () ->
 
@@ -131,7 +131,7 @@ ABoo.HooPlayPauseButton = ABoo.HooFormButtonToggle.extend
 
 		# @_started = true;
 		# ShiteDisplayLink.sharedDisplayLink.registerListener(@);
-	
+
 
 	# TODO! ok, i dont know which way round sizing should work - resize the canvas or the player? Or both?
 	#resizeAll: () ->

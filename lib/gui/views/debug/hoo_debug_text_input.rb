@@ -21,7 +21,8 @@ module Gui::Views::Debug
 
 		def jsonProperties
 			allItems = {}
-			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions==nil;
+			allItems.merge!( { :javascriptActions => @javascriptActions } ) unless @javascriptActions.nil?
+			return allItems
 		end
 
 	end

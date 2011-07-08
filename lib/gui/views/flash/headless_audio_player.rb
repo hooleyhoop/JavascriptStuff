@@ -25,6 +25,8 @@ module Gui::Views::Flash
 			allItems = {
 				:mp3Url		=> @mp3Url,
 			}
+			return allItems
+
 		end
 
 	end

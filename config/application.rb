@@ -43,6 +43,7 @@ module JavascriptStuff
 
     'hoo/infrastructure/browser_utilities', 'hoo/infrastructure/activeListenerDebugger', "hoo/infrastructure/vector_math", 'hoo/infrastructure/swf_node_proxy', 'hoo/infrastructure/dom_node_proxy', 'hoo/infrastructure/headless-player',
 
+    'hoo/infrastructure/singleton',
     'hoo/infrastructure/simple-state-machine',
     "hoo/infrastructure/sm_configurations/abstractConfiguration",
     "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine",

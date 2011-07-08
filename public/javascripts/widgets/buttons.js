@@ -155,23 +155,21 @@ ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 	init: function( /* {id: idString, json: jsonOb} - init never has args */ ) {
 	    this._super();
 
-		if(this._buttonGraphic==undefined) {
-			this._createGraphic();
+		if(!this._buttonGraphic) {
+			this._buttonGraphic = this._createGraphic();
 		}
 
-		if(this._buttonSMControl==undefined) {
-			this._createStateController();
+		if(!this._buttonSMControl) {
+			this._buttonSMControl = this._createStateController();
 		}
 	},
 
 	_createGraphic: function() {
-
-		this._buttonGraphic = ABoo.HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
+		return ABoo.HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"button", _textHolder:"span", _labelStates: this.json.labelStates } );
 	},
 
 	_createStateController: function() {
-
-		this._buttonSMControl = ABoo.HooThreeStateItem.create( { _graphic:this._buttonGraphic } );
+		return ABoo.HooThreeStateItem.create( { _graphic:this._buttonGraphic } );
 	},
 
 	setupDidComplete: function() {
@@ -244,8 +242,7 @@ ABoo.HooFormButtonToggle = ABoo.HooFormButtonSimple.extend({
 
 	// we just use a different state machine than the three state button, everthing else is the same
 	_createStateController: function() {
-
-		this._buttonSMControl = ABoo.HooFiveStateItem.create( { _graphic:this._buttonGraphic } );
+		return ABoo.HooFiveStateItem.create( { _graphic:this._buttonGraphic } );
 	}
 });
 
@@ -254,39 +251,9 @@ ABoo.HooFormButtonToggle = ABoo.HooFormButtonSimple.extend({
 	// we just use a different state machine than the three state button, everthing else is the same
 //	_createStateController: function() {
 
-//		this._buttonSMControl = ABoo.HooFiveStateItem.create( { _graphic:this._buttonGraphic, _autoShowNextState:false } );
+//		return ABoo.HooFiveStateItem.create( { _graphic:this._buttonGraphic, _autoShowNextState:false } );
 //	}
 //});
-
-ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend({
-
-	// instead of aborting when drag outside..
-	enableButton: function( state ) {
-	    this._super();
-		var button = this._delegate.getClickableItem();
-		if( button ) {
-			button.unbind( 'mouseleave' );
-		}
-	},
-
-	showMouseDownState: function( state ) {
-		var self = this;
-		$(window).bind( 'mouseup', {target:this._fsm_controller, action:'handle', arg:"buttonReleased" }, eventTrampoline )
-		$(window).bind( 'mousemove', function(e){
-			self.lastWindowEvent = e;
-			self._delegate.mouseDragged(e);
-		})
-		this._delegate.showMouseDownState(state);
-	},
-
-	showMouseUpState: function( state ) {
-		$(window).unbind( 'mouseup' );
-		$(window).unbind( 'mousemove' );
-		this._delegate.showMouseUpState(state);
-	}
-
-});
-
 
 
 /* 'Orrible Multiple Inheritance stuff */
@@ -294,7 +261,7 @@ ABoo.DivButtonMixin = {
 	/* Mostly this differs from the form button - has a div instead of button and anchor instead of span */
 
 	_createGraphic: function() {
-		this._buttonGraphic = ABoo.HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
+		return ABoo.HooButtonGraphic.create( { _rootItemId:this.id, _itemType:"div", _textHolder:"a", _labelStates: this.json.labelStates } );
 	},
 
 	defaultAction: function() {

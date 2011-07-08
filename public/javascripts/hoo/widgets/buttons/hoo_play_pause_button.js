@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 30 Jun 2011 17:14:18 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 17:28:17 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/hoo_play_pause_button.coffee
  */
 
@@ -121,7 +121,7 @@
   ABoo.HooPlayPauseButton = ABoo.HooFormButtonToggle.extend({
     _hooCanvas: void 0,
     _createGraphic: function() {
-      return this._buttonGraphic = ABoo.HooPlayPauseButtonGraphic.create({
+      return ABoo.HooPlayPauseButtonGraphic.create({
         _rootItemId: this.id,
         _percentOfCanvas: this.json.percentOfCanvas
       });

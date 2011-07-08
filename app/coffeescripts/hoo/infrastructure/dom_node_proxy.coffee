@@ -56,7 +56,7 @@ ABoo.DomNodeProxy = SC.Object.extend
 ###
 	DomNodeProxyClassMethods
 ###
-ABoo.DomNodeProxyClassMethods = SC.Mixin.create
+ABoo.DomNodeProxyClassMethods = #SC.Mixin.create
 	newDomNodeProxyFortag: ( tag ) ->
 		return this.create( {_tag:tag} )
 
@@ -95,10 +95,8 @@ ABoo.SharedDomNodeProxy = ABoo.DomNodeProxy.extend
 		@_delegate = @_activeScriptItem 
 		@_activeScriptItem.didSwapInFlash( this )
 
-###
-	SharedDomNodeProxyClassMethods
-###						
-ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create ABoo.DomNodeProxyClassMethods,
+
+ABoo.CachedObjectClassMethods = #SC.Mixin.create
 	_cached: new Object()
 
 	sharedDivForTag: ( tag ) ->
@@ -107,7 +105,21 @@ ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create ABoo.DomNodeProxyClassMeth
 			cachedFlash = @create( {_tag:tag} )
 			@_cached[tag] = cachedFlash
 		return cachedFlash
+				
+###
+	SharedDomNodeProxyClassMethods
+###						
+ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create( ABoo.CachedObjectClassMethods, ABoo.DomNodeProxyClassMethods, 
+	#_cached: new Object()
+	#sharedDivForTag: ( tag ) ->
+	#	cachedFlash = @_cached[tag];
+	#	if !cachedFlash?
+	#		cachedFlash = @create( {_tag:tag} )
+	#		@_cached[tag] = cachedFlash
+	#	return cachedFlash
+)
 
+#SC.mixin( ABoo.SharedDomNodeProxy, ABoo.CachedObjectClassMethods )
 SC.mixin( ABoo.SharedDomNodeProxy, ABoo.SharedDomNodeProxyClassMethods )
 
 ###
@@ -134,4 +146,5 @@ ABoo.HeadlessSharedDomNodeProxy = ABoo.SharedDomNodeProxy.extend
 	insertSwfInvisibly: () ->
 		0
 
-SC.mixin( ABoo.HeadlessSharedDomNodeProxy, ABoo.SharedDomNodeProxyClassMethods )
+#SC.mixin( ABoo.HeadlessSharedDomNodeProxy, ABoo.SharedDomNodeProxyClassMethods )
+SC.mixin( ABoo.HeadlessSharedDomNodeProxy, ABoo.CachedObjectClassMethods )

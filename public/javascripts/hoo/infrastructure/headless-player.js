@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 05 Jul 2011 15:51:21 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 11:37:20 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/headless-player.coffee
  */
 
@@ -79,6 +79,9 @@
     },
     pause: function() {
       return this._audioPlayingDomNode.cmd('pause');
+    },
+    setCurrentTime: function(secs) {
+      return this._audioPlayingDomNode.attrSetter('currentTime', secs);
     }
   });
 }).call(this);

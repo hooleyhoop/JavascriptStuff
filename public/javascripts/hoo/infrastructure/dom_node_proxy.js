@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 09:25:37 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 08 Jul 2011 11:23:33 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/dom_node_proxy.coffee
  */
 
@@ -59,13 +59,13 @@
   /*
   	DomNodeProxyClassMethods
   */
-  ABoo.DomNodeProxyClassMethods = SC.Mixin.create({
+  ABoo.DomNodeProxyClassMethods = {
     newDomNodeProxyFortag: function(tag) {
       return this.create({
         _tag: tag
       });
     }
-  });
+  };
   SC.mixin(ABoo.DomNodeProxy, ABoo.DomNodeProxyClassMethods);
   /*
   	SharedDomNodeProxy
@@ -100,10 +100,7 @@
       return this._activeScriptItem.didSwapInFlash(this);
     }
   });
-  /*
-  	SharedDomNodeProxyClassMethods
-  */
-  ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create(ABoo.DomNodeProxyClassMethods, {
+  ABoo.CachedObjectClassMethods = {
     _cached: new Object(),
     sharedDivForTag: function(tag) {
       var cachedFlash;
@@ -116,7 +113,11 @@
       }
       return cachedFlash;
     }
-  });
+  };
+  /*
+  	SharedDomNodeProxyClassMethods
+  */
+  ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create(ABoo.CachedObjectClassMethods, ABoo.DomNodeProxyClassMethods);
   SC.mixin(ABoo.SharedDomNodeProxy, ABoo.SharedDomNodeProxyClassMethods);
   /*
   	HeadlessSharedDomNodeProxy
@@ -142,8 +143,5 @@
       return 0;
     }
   });
-  SC.mixin(ABoo.HeadlessSharedDomNodeProxy, ABoo.SharedDomNodeProxyClassMethods);
-  /*
-  	HeadlessSharedDomNodeProxyClassMethods
-  */
+  SC.mixin(ABoo.HeadlessSharedDomNodeProxy, ABoo.CachedObjectClassMethods);
 }).call(this);

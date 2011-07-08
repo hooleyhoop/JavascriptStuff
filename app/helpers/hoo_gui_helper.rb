@@ -3,23 +3,23 @@ module HooGuiHelper
 	# add object to the viewstack
 	def push( obj )
 
-		if( obj==nil )
+		if obj.nil?
 		  raise "cant push nil onto the view stack"
 		end
 
 		viewStack = self.instance_variable_get("@hooViews");
-		if(viewStack==nil)
-			viewStack = Array.new();
-			self.instance_variable_set( "@hooViews", viewStack );
+		if viewStack.nil?
+			viewStack = Array.new()
+			self.instance_variable_set( "@hooViews", viewStack )
 		end
-		viewStack << obj;
+		viewStack << obj
 	end
 
 	# remove object from the viewstack
 	def pop()
 
 		viewStack = self.instance_variable_get("@hooViews");
-		if( viewStack==nil || viewStack.size()==0 )
+		if viewStack.nil? or viewStack.empty?
 			raise "unpalanced view stack"
 		end
 		viewStack.pop();
@@ -65,7 +65,7 @@ module HooGuiHelper
 
 		# Try string output first
 		output = view.stringOutput
-		if(output==nil)
+		if output.nil?
 	    	output = render view;
 	    	pop()
 		end
@@ -74,13 +74,17 @@ module HooGuiHelper
 		if view.class.method_defined? :jsonProperties
 
 			jsonProps = view.jsonProperties();
-			unless jsonProps.empty?
+			unless (jsonProps.nil? or jsonProps.empty?)
 				jsonProps = jsonProps.to_json();
 				instanceName = view.varName+'_json'
 
 				#j = ActiveSupport::JSON
 				data = instanceName+' = '+jsonProps+';';
+				puts "GOT JSON! "+data
+
 				@window.pushJSONString( data );
+			else
+				puts "NOT GOT NO JSON! "+ view.varName
 			end
 		end
 		return output
