@@ -20,7 +20,7 @@ module Gui::Views::Drawing::Player
 			#-- add a checkbox
 			mockPlayer = widgetClass('MockPlayer').new()
 			chckBox = widgetClass('HooSimpleCheckbox').new( {:label=>'show busy'} )
-			chckBox.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'Holy Cock', :actionIsAsync=>false }} );
+			chckBox.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>self.varName, :action_event=>'toggleBusy', :action_arg=>'', :actionIsAsync=>false }} );
 
 			self.addSubView( mockPlayer );
 			self.addSubView( chckBox );

@@ -473,17 +473,24 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 		if(this._running==false && this._canvasElements.length>0 )
 			this.start();
 	},
+
 	unregisterCanvas: function( canvas ) {
 		console.warn("unregisterCanvas CANVAS!");
+		var wasRunning = false;
+		if( this._running ){
+			this.stop();
+			wasRunning = true;
+		}
+
 		var i = this._canvasElements.indexOf(canvas);
 		if(i>-1) {
 			this._canvasElements.splice(i,1);
 			console.warn("removed canvas from array CANVAS!");
 		}
-		if( this._running && this._canvasElements.length==0 && this._listeners.length==0 )
-			this.stop();
+		if( wasRunning && this._canvasElements.length>0 && this._listeners.length>0 )
+			this.start();
 		else
-			console.warn("Not stopping canvas because: "+this._running +" "+this._canvasElements.length+" "+this._listeners.length );
+			console.warn("Not restarting canvas because: "+wasRunning +" "+this._canvasElements.length+" "+this._listeners.length );
 	},
 
 	start: function() {
@@ -501,14 +508,20 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 	_callback: function() {
 		HOO_nameSpace.assert( this._canvasElements.length>0 || this._listeners.length>0, "why am i drawing with no listeners or canvases?");
 
+		//console.log("ENTER TIMER::"+this._timer);
 		var time = (new Date()).getTime();
 
-		$.each( this._listeners, function(indexInArray, valueOfElement){
+		var listenersCopy = this._listeners.slice(0);
+		$.each( listenersCopy, function(indexInArray, valueOfElement){
 			valueOfElement.timeUpdate( time );
 		});
-		$.each( this._canvasElements, function(indexInArray, valueOfElement){
+
+		//this could mutate the array
+		var canvasElementsCopy = this._canvasElements.slice(0);
+		$.each( canvasElementsCopy, function(indexInArray, valueOfElement){
 			valueOfElement.displayUpdate( time );
 		});
+		//console.log("EXIT TIMER::"+this._timer);
 	}
 });
 

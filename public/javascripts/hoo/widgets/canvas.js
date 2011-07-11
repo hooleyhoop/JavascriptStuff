@@ -109,6 +109,9 @@ ABoo.HooCanvas = ABoo.HooWidget.extend({
 		} else {
 			var timeSince = time - this._lastDirtyTime;
 			if( timeSince > 3000 ) {
+
+				// ARGGHH! i cannot call this from here! it will mutate the array
+				// thru which displayUpdate is iterating and calling 'displayUpdate'
 				ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterCanvas(this);
 				this._isActive = false;
 			}

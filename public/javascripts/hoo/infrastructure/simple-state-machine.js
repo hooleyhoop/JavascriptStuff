@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 11:41:21 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 11 Jul 2011 16:49:37 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/simple-state-machine.coffee
  */
 
@@ -290,8 +290,6 @@
       } else if (this._machine.isResetEvent(eventName)) {
         console.log("Found reset event");
         nextState = this._machine._startState;
-      } else {
-        console.log("** Unknown event " + eventName + " for state: " + this._currentState._name);
       }
       if (nextState != null) {
         return this._transitionTo(nextState);

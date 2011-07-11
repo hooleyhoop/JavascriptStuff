@@ -55,8 +55,9 @@ module JavascriptStuff
 	'hoo/widgets/root_object.js',
     'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'hoo/widgets/canvas.js', 'hoo/widgets/buttons/hoo_play_pause_button.js',
 
-	'hoo/widgets/flippy_toggle_thing.js',
-	'hoo/widgets/hoo_radial_progress.js',
+	'hoo/widgets/flippy_toggle_thing',
+	'hoo/widgets/hoo_radial_progress',
+	'hoo/widgets/hoo_simple slider',
 
 	# order important here
     # coffeescripts
