@@ -73,7 +73,7 @@ module Gui
 
 			#first time thru build the widget list
 			unless @@hasScanned
-				puts "scanning"
+				#puts "scanning"
 				self.scanViewDir()
 				@@hasScanned = true
 			end

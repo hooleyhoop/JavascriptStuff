@@ -2,7 +2,7 @@ module Gui::Views::Positioning
 
     # First of all lets split left right
 
-	# http://0.0.0.0:3000/widgets/verticalSplitView
+	# http://0.0.0.0:3000/widgets/HooVerticalSplitView
 	class HooVerticalSplitView < Gui::Core::HooView
 
         attr_accessor :fixedColSide;
@@ -43,10 +43,10 @@ module Gui::Views::Positioning
 			super();
             setFixedColumn('left', 60 )
 
-			placeholderView1 = widgetClass('loremIpsum').new()
+			placeholderView1 = widgetClass('HooLoremIpsumView').new()
 			self.addSubView( placeholderView1 );
 
-			placeHolderView2 = widgetClass('colorFill').new()
+			placeHolderView2 = widgetClass('HooColorFill').new()
 			self.addSubView( placeHolderView2 );
 		end
 

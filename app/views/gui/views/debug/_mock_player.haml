@@ -1,4 +1,4 @@
-- push( mock_player )
+-# push( mock_player )
 
 -# http://0.0.0.0:3000/widgets/mockPlayer
 %div[_]( data-jsclass='ABoo.Mock_Player' style="font-size: 9px; background-color: red; margin: 1em;" )
@@ -65,7 +65,12 @@
 			},
 
 			setProgressPercent: function( arg ) {
-				this.set('_playedValue', this._duration * arg );
+				//console.warn("Set progress "+arg);
+				var newVal = this._duration * arg;
+				if( newVal>this._loadedValue )
+					newVal = this._loadedValue;
+				this.set('_playedValue', newVal );
+
 			}
 		});
 

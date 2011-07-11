@@ -66,7 +66,11 @@ module HooGuiHelper
 		# Try string output first
 		output = view.stringOutput
 		if output.nil?
-	    	output = render view;
+			#push( hoo_blue_view )
+			#puts view.class.to_s.demodulize.underscore;
+			# testing if we need to do this in the haml or not!
+			push(view)
+	    	output = render view
 	    	pop()
 		end
 
@@ -80,7 +84,7 @@ module HooGuiHelper
 
 				#j = ActiveSupport::JSON
 				data = instanceName+' = '+jsonProps+';';
-				puts "GOT JSON! "+data
+				#puts "GOT JSON! "+data
 
 				@window.pushJSONString( data );
 			else

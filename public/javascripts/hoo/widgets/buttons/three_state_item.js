@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 08 Jul 2011 17:11:24 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 11 Jul 2011 11:43:23 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/three_state_item.coffee
  */
 
@@ -145,16 +145,29 @@
   
   */
   ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend({
+    _lastMouseEvent: void 0,
     _mouseDown: function(e) {
       this._listenerDebugger.addListener($(document), 'mousemove', this, this._mouseDragged);
+      this._lastMouseEvent = e;
       return this._super(e);
     },
     _mouseDragged: function(e) {
-      return console.log("oh yeah, oh yeah, oh yeah " + this._target);
+      this._lastMouseEvent = e;
+      return this._fire();
     },
     _mouseStageUp: function(e) {
       this._listenerDebugger.removeListener($(document), 'mousemove', this, this._mouseDragged);
+      this._lastMouseEvent = e;
       return this._super(e);
+    },
+    _fire: function(nextState) {
+      var percent, pos, x;
+      if (this._target) {
+        x = this._lastMouseEvent.pageX;
+        pos = this._clickableItem$.offset();
+        percent = ABoo.HooMath.xAsUnitPercentOfY(x - pos.left, this._clickableItem$.width());
+        return this._action.call(this._target, percent);
+      }
     }
   });
 }).call(this);
