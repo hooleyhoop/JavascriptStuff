@@ -11,17 +11,17 @@ module Gui::Views::Drawing::Player
 		attr_accessor :innerRad
 
 		def initialize( args={} )
-			super(args);
-			extractArgs( args, {:parentCanvas=>nil, :outerRad=>1.0, :innerRad=>0.5} );
+			super(args)
+			extractArgs( args, {:parentCanvas=>nil, :outerRad=>1.0, :innerRad=>0.5} )
 		end
 
         # Mock Data
 		def setupDebugFixture
-			super();
+			super()
 
 			# playPauseButton needs a canvas
-			@parentCanvas = widgetClass('HooCanvas').new();
-			addSubView( @parentCanvas );
+			@parentCanvas = widgetClass('HooCanvas').new()
+			addSubView( @parentCanvas )
 
 			@chckbx1 = widgetClass('HooSimpleCheckbox').new( {:label=>'show busy'} );
 			addSubView( @chckbx1 );

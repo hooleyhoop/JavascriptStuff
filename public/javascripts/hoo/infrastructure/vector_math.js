@@ -95,6 +95,12 @@ ABoo.HooMath = SC.Object.extend({
 
 var HooMathClassMethods = {
 
+	lerp: function (x0,y0,x1,y1,x) {
+		//console.log("Lerping "+x0+" "+y0+" "+x1+" "+y1+" "+x+" ");
+		y = y0*((x - x1)/(x0 - x1)) + y1*((x - x0)/(x1 - x0));
+		return y;
+	},
+
 	xAsUnitPercentOfY: function( x, y ) {
 		if(y===0)
 			y = 1.0;

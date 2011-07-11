@@ -128,7 +128,7 @@ ABoo.HooRadialProgressGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
 		this._parentCanvas.setNeedsDisplay();
 	},
 	toggleBusy: function() {
-		console.log("Togglwing busy");
+		//console.log("Togglwing busy");
 		this._isBusy = !this._isBusy;
 		if(this._isBusy) {
 			this._busyAngle = 0;

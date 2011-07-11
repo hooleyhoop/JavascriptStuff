@@ -1,0 +1,235 @@
+-# http://0.0.0.0:3000/widgets/HooBarberPole
+
+%div[_]( data-jsclass='ABoo.HooBarberPole' style="width:200px; height:200px;" )
+	=  insert( _.views, "" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		ABoo.BusyFadeHelper = SC.Object.extend({
+
+			_fadeTimeStart: undefined,
+			_fadeTimeEnd: undefined,
+			_fadeStartVal: undefined,
+			_fadeEndVal: undefined,
+			_fadeComplete: undefined,
+			_target: undefined,
+			_property: undefined,
+			_ended: undefined,
+
+			animate: function( target, property, endVal, duration, completeCallback ) {
+				this._target = target;
+				this._property = property;
+				this._fadeStartVal = target.get(property);
+				this._fadeEndVal = endVal;
+				this._fadeTimeStart = new Date().getTime();
+				this._fadeTimeEnd = this._fadeTimeStart+duration;
+				this._fadeComplete = completeCallback;
+				this._ended = false;
+			},
+
+			update: function (time) {
+
+				if(this._ended) {
+					this._didEnd();
+					return;
+				}
+
+				var updatedVal;
+				if(time>this._fadeTimeEnd) {
+					updatedVal=this._fadeEndVal;
+					this._ended = true;	// defer completion till next cycle (so we are certain to draw the end state)
+				} else {
+					updatedVal = ABoo.HooMath.lerp( this._fadeTimeStart, this._fadeStartVal, this._fadeTimeEnd, this._fadeEndVal, time );
+				}
+				//console.log("fade "+updatedVal);
+				if(isNaN(updatedVal))
+					debugger;
+				this._target.set( this._property, updatedVal );
+			},
+
+			_didEnd: function() {
+				//console.log("doing callback");
+				this._fadeComplete();
+				this._fadeComplete = null;
+			}
+		});
+
+
+		/*
+		 *
+		*/
+		ABoo.BarberPoleSprite = ABoo.HooSprite.extend({
+			spriteDraw: function( ctx, x, y, width, height, percent, busyAlpha ) {
+
+				ctx.save();
+
+				ctx.setTransform(1, 0, 0, 1, 0, 0);
+				ctx.clearRect(x,y,width,height);
+				ctx.globalAlpha = 1.0;
+				ctx.globalCompositeOperation = 'source-over';
+
+				// draw the background
+				//ctx.fillStyle = "rgba(100,100,100,1)";
+				//ctx.fillRect(0,0,width,height);
+
+				// draw the slanty rects
+				//putback if( this._busyFadeHelper._showBusy===true ) {
+
+					ctx.save();
+
+					ctx.beginPath();
+					ctx.rect(0, 0, width-4, height);
+					ctx.closePath();
+					ctx.clip();
+
+					//putback this._busyFadeHelper.step();
+					// console.log("alpha is "+busyAlpha+", percent is"+percent);
+					ctx.fillStyle = "rgba(170,160,160,"+busyAlpha+")";
+
+					var barWidth = 5;
+					var barSpace = 10;
+					var numberOfBars = width/barSpace;
+
+					var maxOffset = 10;
+					var xDisplacement = maxOffset*percent;
+
+					var x = -barWidth;
+					for( var i=0; i<numberOfBars; i++ ) {
+
+						// offset each slanty rect
+						// the transform seems to mess up the clip rect th ctx.setTransform(1, 0, 0, 1, x, 0);
+						ctx.beginPath();
+
+						// draw a slanty recty
+						ctx.moveTo( x+ xDisplacement, 0 );
+						ctx.lineTo( x+ xDisplacement+barWidth, 0 );
+						ctx.lineTo( x+ xDisplacement+barWidth-barWidth, height-4 );
+						ctx.lineTo( x+ xDisplacement-barWidth, height-4 );
+						ctx.closePath();
+						ctx.fill();
+						x = x+barSpace;
+					}
+
+					ctx.restore();
+				//putback}
+
+				// draw a grad over the top
+				//ctx.setTransform(1, 0, 0, 1, 0, 0);
+		        //ctx.beginPath();
+				//ctx.rect(0, 0, width, height);
+
+				//ctx.globalCompositeOperation = 'lighter';
+				//gradient = ctx.createLinearGradient(0, height, 0, 0);
+				//gradient.addColorStop(1.0, "rgba(235, 235, 235, 0.3)");
+				//gradient.addColorStop(0, "rgba(0, 0, 0, 0.1)");
+				//ctx.fillStyle = gradient;
+				//ctx.fill();
+
+				ctx.restore();
+			}
+		});
+
+
+		/*
+		 *
+		*/
+		ABoo.HooBarberPoleGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
+
+			_barberPoleSprite: undefined,
+			_isBusy: false,
+			_lastUpdateTime:undefined,
+			_percent:0,
+
+			// fade experiment
+			_fadeAlpha: 0,
+			_fadeHelper: undefined,
+
+			init: function( /* init never has args */ ) {
+				this._super();
+				this._barberPoleSprite = ABoo.BarberPoleSprite.create();
+
+			},
+
+			// canvas -> HooCanvasViewMixin
+			drawContents: function( ctx, width, height ) {
+				this._barberPoleSprite.spriteDraw( ctx, 0, 0, width, height, this._percent, this._fadeAlpha );
+			},
+
+			toggleBusy: function() {
+				console.log("Togglwing busy");
+				this._isBusy = !this._isBusy;
+				if(this._isBusy) {
+					//console.log("fade on");
+					if( !this._fadeHelper )
+						this._fadeHelper = ABoo.BusyFadeHelper.create();
+
+					var self = this;
+					var fadeComplete = function() {
+						//alert("dicky "+self);
+					};
+					this._fadeHelper.animate( this, '_fadeAlpha', 1, 1000/25*10, fadeComplete );
+
+					this._lastUpdateTime = -1;
+
+					ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener(this);
+
+				} else {
+					//console.log("fade off");
+					if( !this._fadeHelper )
+						this._fadeHelper = ABoo.BusyFadeHelper.create();
+
+					var self = this;
+					var fadeComplete = function() {
+						ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener(self);
+					};
+					this._fadeHelper.animate( this, '_fadeAlpha', 0, 1000/25*10, fadeComplete );
+				}
+				this._parentCanvas.setNeedsDisplay();
+			},
+
+			timeUpdate: function( time ) {
+				if(this._lastUpdateTime!=-1) {
+
+					if( this._fadeHelper ) {
+						this._fadeHelper.update(time);
+						if( this._fadeHelper._fadeComplete==null ) {
+							this._fadeHelper = null;
+							return;
+						}
+					}
+					var dist = time-this._lastUpdateTime;
+					this._percent = (this._percent + dist/1000)%1;
+					//console.log( "this._percent is "+this._percent );
+
+					this._parentCanvas.setNeedsDisplay();
+				}
+				this._lastUpdateTime = time;
+			}
+
+
+		});
+
+		/*
+		 *
+		*/
+		ABoo.HooBarberPole = ABoo.HooWidget.extend({
+
+			_hooCanvas: undefined,
+			_barberPoleGraphic:undefined,
+
+			init: function( /* init never has args */ ) {
+				this._super();
+				this._barberPoleGraphic = ABoo.HooBarberPoleGraphic.create();
+			},
+
+			setupDidComplete: function() {
+				HOO_nameSpace.assert( this._hooCanvas, "this HooBarberPole must be added to a canvas to work" );
+				this._hooCanvas.addSubview( this._barberPoleGraphic );
+			},
+
+			toggleBusy: function() {
+				console.log("Toggle Toggle");
+				this._barberPoleGraphic.toggleBusy();
+			}
+		});

@@ -28,128 +28,11 @@
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.BusyFadeHelper = SC.Object.extend({
 
-			_busyAlpha:			0,
-			_busyFadeDirection:	false,
-			_showBusy: 			false,
-			_intervalId:		undefined,
-			_animFunction:		undefined,
-
-			begin: function( fps ) {
-				this._showBusy = true;
-				this._busyFadeDirection = true;
-
-				// TODO: replace with ShiteDisplayLink
-				this._intervalId = setInterval( this._animFunction , fps );
-			},
-
-			step: function() {
-
-				if( this._busyFadeDirection===true && this._busyAlpha<10 ) {
-					this._busyAlpha = this._busyAlpha+1;
-				} else if( this._busyFadeDirection===false ) {
-					this._busyAlpha = this._busyAlpha-1;
-					if(this._busyAlpha==0) {
-						this.onFadeOutComplete();
-						this._busyAlpha = 0;
-					}
-				}
-			},
-
-			end: function() {
-				this._busyFadeDirection = false;
-			},
-
-			onFadeOutComplete: function() {
-				this._showBusy = false;
-				clearInterval(this._busyIntervalId);
-			}
-		});
-
-
-		// !! Should this have a canvas or not? i can not decide.
-		// !! it's different as it uses the divs infront of the canvas to draw the progress
 
 
 		/*
-		 * This canvas stuff was out of place in slider - temporarily moved here!
-		*/
-		ABoo.ProgressBusybacking = SC.Object.extend({
-
-			draw: function( ctx, width, height ) {
-				ctx.save();
-				ctx.setTransform(1, 0, 0, 1, 0, 0);
-				ctx.clearRect(0,0,width,height);
-				ctx.globalAlpha = 1.0;
-				ctx.globalCompositeOperation = 'source-over';
-
-				// draw the background
-				//ctx.fillStyle = "rgba(100,100,100,1)";
-				//ctx.fillRect(0,0,width,height);
-
-				// draw the slanty rects
-				if( this._busyFadeHelper._showBusy===true ) {
-
-					ctx.save();
-
-		        ctx.beginPath();
-				ctx.rect(0, 0, width-4, height);
-				ctx.closePath();
-				ctx.clip();
-
-					this._busyFadeHelper.step();
-
-					var busyAlpha = 0.4 * this._busyFadeHelper._busyAlpha/10.0;
-					ctx.fillStyle = "rgba(170,160,160,"+busyAlpha+")";
-
-					var percent = this._currentTime/1000;
-					var barWidth = 5;
-					var barSpace = 10;
-					var numberOfBars = width/barSpace;
-
-					var maxOffset = 10;
-					var xDisplacement = maxOffset*percent;
-
-					var x = -barWidth;
-					for( var i=0; i<numberOfBars; i++ ) {
-
-						// offset each slanty rect
-						// the transform seems to mess up the clip rect th ctx.setTransform(1, 0, 0, 1, x, 0);
-						ctx.beginPath();
-
-						// draw a slanty recty
-						ctx.moveTo( x+ xDisplacement, 0 );
-						ctx.lineTo( x+ xDisplacement+barWidth, 0 );
-						ctx.lineTo( x+ xDisplacement+barWidth-barWidth, height-4 );
-						ctx.lineTo( x+ xDisplacement-barWidth, height-4 );
-						ctx.closePath();
-						ctx.fill();
-						x = x+barSpace;
-					}
-
-					ctx.restore();
-				}
-
-				// draw a grad over the top
-				ctx.setTransform(1, 0, 0, 1, 0, 0);
-		        ctx.beginPath();
-				ctx.rect(0, 0, width, height);
-
-				ctx.globalCompositeOperation = 'lighter';
-				gradient = ctx.createLinearGradient(0, height, 0, 0);
-				gradient.addColorStop(1.0, "rgba(235, 235, 235, 0.3)");
-				gradient.addColorStop(0, "rgba(0, 0, 0, 0.1)");
-				ctx.fillStyle = gradient;
-				//ctx.fill();
-
-				ctx.restore();
-			},
-		});
-
-
-		/*
-		 *
+		 * yes this looks less thaN USEFUL to me too
 		*/
 		ABoo.HooSimpleSliderGraphic = ABoo.HooButtonGraphic.extend({
 
@@ -162,14 +45,12 @@
 			showMouseDown1State: function() {
 				//alert("threes");
 			}
-
 		});
 
 		/*
 		 *
 		*/
 		ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend({
-
 
 			_loadProgressDiv:	undefined,
 			_playProgressDiv:	undefined,
@@ -358,68 +239,63 @@
 
 
 			// wtf is this?
-			temporarySetEnabledState: function( stateIndex, enabled ) {
-				alert("wtf");
-			},
-			enableButton: function( stateIndex ) {
-				alert("wtf");
-			},
-			showMouseUpState: function( stateIndex ) {
-				alert("wtf");
-				alert("woo mouse up");
-			},
+			//temporarySetEnabledState: function( stateIndex, enabled ) {
+			//	alert("wtf");
+			//},
+			//enableButton: function( stateIndex ) {
+			//	alert("wtf");
+			//},
+			//showMouseUpState: function( stateIndex ) {
+			//	alert("wtf");
+			//	alert("woo mouse up");
+			//},
+			//showMouseDownState: function( stateIndex ) {
+			//	alert("wtf");
+			//	if(this._mouseClickAction) {
+			//		var newPos = this.localXPosition();
+			//		this._lastDragXAmount = newPos;
+			//		console.log("click at pos "+newPos);
+			//		this._mouseClickAction.a.call( this._mouseClickAction.t, newPos );
+			//	}
+			//},
+			//mouseDragged: function(e){
+			//	alert("wtf");
+			//	if(this._mouseClickAction) {
+			//		var xamount = this.localXPosition();  // IE fires mouse events continuously even when it doesn't move more than 1 pixel
+			//		if( xamount!=this._lastDragXAmount) {
+			//			this._mouseClickAction.a.call( this._mouseClickAction.t, xamount );
+			//			this._lastDragXAmount = xamount;
+			//		}
+			//	}
+			//},
 
-			showMouseDownState: function( stateIndex ) {
-				alert("wtf");
+			//fireAction: function( nextState, argsHash ) {
+			//	alert("wtf");
 
-				if(this._mouseClickAction) {
-					var newPos = this.localXPosition();
-					this._lastDragXAmount = newPos;
-					console.log("click at pos "+newPos);
-					this._mouseClickAction.a.call( this._mouseClickAction.t, newPos );
-				}
-			},
-
-			mouseDragged: function(e){
-				alert("wtf");
-
-				if(this._mouseClickAction) {
-
-					var xamount = this.localXPosition();  // IE fires mouse events continuously even when it doesn't move more than 1 pixel
-					if( xamount!=this._lastDragXAmount) {
-						this._mouseClickAction.a.call( this._mouseClickAction.t, xamount );
-						this._lastDragXAmount = xamount;
-					}
-				}
-			},
-
-			fireAction: function( nextState, argsHash ) {
-				alert("wtf");
-
-				argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
-			},
+			//	argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
+			//},
 
 			// convert mouse coord to slider position
-			localXPosition: function(){
-				alert("wtf");
+			//localXPosition: function(){
+			//	alert("wtf");
 
-				if(this._stateMachine.lastWindowEvent) {
-					var x = this._stateMachine.lastWindowEvent.pageX;
-					var y = this._stateMachine.lastWindowEvent.pageY;
-					var pos = this._loadProgressDiv.offset();
-					var xval;
-					// var size = [this._loadProgressDiv.width(), this._loadProgressDiv.height()];
-					if( pos.left>x )
-						xval = 0;
-					else if((pos.left + this._maxBarWidth)<x)
-						xval = 1;
-					else
-						xval = (x-pos.left)/this._maxBarWidth;
-					if(xval > this._loadedAmount)
-						xval  = this._loadedAmount
-					return xval;
-				}
-				return -1;
-			}
+			//	if(this._stateMachine.lastWindowEvent) {
+			//		var x = this._stateMachine.lastWindowEvent.pageX;
+			//		var y = this._stateMachine.lastWindowEvent.pageY;
+			//		var pos = this._loadProgressDiv.offset();
+			//		var xval;
+			//		// var size = [this._loadProgressDiv.width(), this._loadProgressDiv.height()];
+			//		if( pos.left>x )
+			//			xval = 0;
+			//		else if((pos.left + this._maxBarWidth)<x)
+			//			xval = 1;
+			//		else
+			//			xval = (x-pos.left)/this._maxBarWidth;
+			//		if(xval > this._loadedAmount)
+			//			xval  = this._loadedAmount
+			//		return xval;
+			//	}
+			//	return -1;
+			//}
 
 		});
