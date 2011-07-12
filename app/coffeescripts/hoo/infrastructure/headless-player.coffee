@@ -85,16 +85,83 @@ ABoo.NewHeadlessPlayerSingleton = SC.Object.extend
 
 	setCurrentTime: ( secs ) ->
 		@_audioPlayingDomNode.attrSetter( 'currentTime', secs )
-	
+
+SC.mixin( ABoo.NewHeadlessPlayerSingleton, ABoo.SingletonClassMethods )
 
 
-
-
-	
-
-
-
+### one of these for each instance of a player
+###
+ABoo.NewHeadlessPlayer = SC.Object.extend
+	_mp3URL: undefined
+	_controller: undefined
+	_watchableEvents: 'error emptied loadstart progress loadeddata loadedmetadata durationchange timeupdate canplay canplaythrough waiting play ended abort dataunavailable empty pause ratechange seeked seeking volumechange stalled'
+	_stateMachine: undefined
+	_state: false
+	_headLessSingleton: undefined
 		
+	_attachToPage: ( $pageItem ) ->
+		@_createSingletonPlayer()
+		@_stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: @_controller } )
+		@_headLessSingleton.playerBecameCurrent( this, $pageItem )
+		
+	# this doesn't mean that the swf is ready
+	didSwapInFlash: ( swf ) ->
+		@_state = true
+		#console.log("SWApped in")
+
+	didSwapOutFlash: ( swf ) ->
+		#console.log("swapped out")
+		@_state = false
+		@_killObservations()
+		@_controller.hidePlayerGUI()
+		#ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().setSrc( "" );
+	
+	flashDidLoad: ( swf ) ->
+		@_controller.showPlayerGUI()
+
+		@_createObservervations()
+		@_stateMachine.processInputSignal( "ready" )
+
+		# autostart options needed here
+		@_headLessSingleton.setSrc( @_mp3URL, true, true )
+
+		# TODO: hold off on this for now.
+		# @_headLessSingleton.play( @_mp3URL )
+
+	# TODO: must we tear down observations also
+	_createObservervations: () ->
+		$actualPlayer = $( @_headLessSingleton._audioPlayingDomNode._observableSwf )
+		$actualPlayer.bind( @_watchableEvents, ( e ) =>
+			@handleHeadlessFlashPlayerEvent(e.type)
+		)
+		
+	_killObservations: () ->
+		$actualPlayer = $( @_headLessSingleton._audioPlayingDomNode._observableSwf )
+		$actualPlayer.unbind( @_watchableEvents )
 			
+	handleHeadlessFlashPlayerEvent: ( eventName ) ->
+		#if(eventName!="timeupdate")
+		#	console.log("HTML5 player: got an event > " + eventName );
+		# TODO: shit shit and bugger!
+		#if(eventName!="loadeddata")
+		@_stateMachine.processInputSignal( eventName )
+
+	buffered: () ->
+		return @_headLessSingleton.buffered()
+
+	loadedDegrees: () ->
+		return @_headLessSingleton.loadedDegrees()
+
+	playedDegrees: () ->
+		return @_headLessSingleton.playedDegrees()
+
+	play: () ->
+		return @_headLessSingleton.play()
+
+	pause: () ->
+		return @_headLessSingleton.pause()
+
+	setCurrentTime: ( secs ) ->
+		@_headLessSingleton.setCurrentTime(secs)
 			
 			

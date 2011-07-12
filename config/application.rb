@@ -40,10 +40,11 @@ module JavascriptStuff
     'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore-2.0.beta.1',
 
 	'hoo/setup_app.js',
+    'hoo/infrastructure/singleton',
+	'hoo/infrastructure/property_animator',
 
     'hoo/infrastructure/browser_utilities', 'hoo/infrastructure/activeListenerDebugger', "hoo/infrastructure/vector_math", 'hoo/infrastructure/swf_node_proxy', 'hoo/infrastructure/dom_node_proxy', 'hoo/infrastructure/headless-player',
 
-    'hoo/infrastructure/singleton',
     'hoo/infrastructure/simple-state-machine',
     "hoo/infrastructure/sm_configurations/abstractConfiguration",
     "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine",

@@ -1,6 +1,7 @@
 module Gui::Views::Players
 
 	# http://0.0.0.0:3000/widgets/HooHtml5DetailPlayer
+	# http://shooley.audioboo.fm:3000/widgets/HooHtml5DetailPlayer
 
 	class HooHtml5DetailPlayer < Gui::Core::HooView
 
@@ -21,12 +22,14 @@ module Gui::Views::Players
             # playPauseButton needs a canvas
             @playButtonCanvas = widgetClass('HooCanvas').new()
 
-
 			@playButton = widgetClass('HooPlayPauseButton').new( {:parentCanvas=>@playButtonCanvas, :percentOfCanvas=>0.9 } )
 			@slider = widgetClass('HooSimpleSlider').new()
 			@timeDisplay = widgetClass('HooSimpleTimeDisplay').new()
 
-			@layoutView.addSubviews( @playButtonCanvas, @timeDisplay, @slider )
+			timeDisplaySpacer = widgetClass('HooSpacerView').new( {top:15} )
+			timeDisplaySpacer.addSubView( @timeDisplay )
+
+			@layoutView.addSubviews( @playButtonCanvas, timeDisplaySpacer, @slider )
 
 			# These dont occuoy space but must be in the view hierachy
 			@playButtonCanvas.addSubView( @playButton )

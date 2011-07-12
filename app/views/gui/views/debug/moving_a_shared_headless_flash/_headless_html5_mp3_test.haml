@@ -12,6 +12,30 @@
 - if( _.includeOnce? )
 	:javascript
 
+		ABoo.AnimMixin = {
+
+			_animations: undefined,
+
+			animateProperty: function( propertyName, to, duration ) {
+
+				if(!this._animations)
+					this._animations = new Object();
+
+				var animator = this._animations[propertyName];
+				if(!animator) {
+					animator = ABoo.BusyFadeHelper.create();
+					ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener( animator );
+					this._animations[propertyName] = animator;
+				}
+				var self = this;
+				var animComplete = function() {
+					ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener( animator );
+					self._animations[propertyName] = null;
+				};
+				animator.animate( this, propertyName, to, duration, animComplete );
+			}
+		};
+
 		/*
 		 * Only one of these per page
 		*/
@@ -31,105 +55,18 @@
 			}
 		});
 
-		ABoo.NewHeadlessHTML5PlayerSingletonClassMethods = SC.Mixin.create( ABoo.SingletonClassMethods, {
-		});
-		SC.mixin( ABoo.NewHeadlessHTML5PlayerSingleton, ABoo.NewHeadlessHTML5PlayerSingletonClassMethods );
+		//ABoo.NewHeadlessHTML5PlayerSingletonClassMethods = SC.Mixin.create( ABoo.SingletonClassMethods, {
+		//});
+		//SC.mixin( ABoo.NewHeadlessHTML5PlayerSingleton, ABoo.NewHeadlessHTML5PlayerSingletonClassMethods );
+		SC.mixin( ABoo.NewHeadlessHTML5PlayerSingleton, ABoo.SingletonClassMethods );
 
 
 		/*
 		 * One of these for each instance on the page
 		*/
-		ABoo.NewHeadlessHtml5PlayerBackend = SC.Object.extend({
-
-			_mp3URL: undefined,
-			_controller: undefined,
-			_watchableEvents: 'error emptied loadstart progress loadeddata loadedmetadata durationchange timeupdate canplay canplaythrough waiting play ended abort dataunavailable empty pause ratechange seeked seeking volumechange stalled',
-
-			// TODO: remove this in favor of state machine
-			_state: false,
-
-			_stateMachine: undefined,
-
-			_attachToPage: function( $pageItem ) {
-
-				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this._controller } );
-
-				ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().playerBecameCurrent( this, $pageItem );
-			},
-
-			// this doesn't mean that the swf is ready
-			didSwapInFlash: function( swf ) {
-				this._state = true;
-				console.log("SWApped in");
-			},
-
-			didSwapOutFlash: function( swf ) {
-				console.log("swapped out");
-				this._state = false;
-				this._killObservations();
-				this._controller.hidePlayerGUI();
-				//ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().setSrc( "" );
-			},
-
-			flashDidLoad: function( swf ) {
-				this._controller.showPlayerGUI();
-
-				this._createObservervations();
-				this._stateMachine.processInputSignal( "ready" );
-
-				// autostart options needed here
-				ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().setSrc( this._mp3URL, true, true );
-
-				// TODO: hold off on this for now.
-				// ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().play( this._mp3URL );
-			},
-
-			//TODO: must we tear down observations also
-			_createObservervations: function(){
-			  	var self = this;
-				var $actualPlayer = $( ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance()._headlessAudioOb._observableSwf );
-				$actualPlayer.bind( this._watchableEvents, function( e ) {
-					self.handleHeadlessFlashPlayerEvent(e.type);
-				});
-			},
-
-			_killObservations: function() {
-				var $actualPlayer = $( ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance()._headlessAudioOb._observableSwf );
-				$actualPlayer.unbind( this._watchableEvents );
-			},
-
-			handleHeadlessFlashPlayerEvent: function( eventName ) {
-
-				if(eventName!="timeupdate")
-					console.log("HTML5 player: got an event > " + eventName );
-
-				// TODO: shit shit and bugger!
-				//if(eventName!="loadeddata")
-				this._stateMachine.processInputSignal( eventName );
-			},
-
-			buffered: function() {
-				return ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().buffered();
-			},
-
-			loadedDegrees: function() {
-				return ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().loadedDegrees();
-			},
-
-			playedDegrees: function() {
-				return ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().playedDegrees();
-			},
-
-			play: function() {
-				return ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().play();
-			},
-
-			pause: function() {
-				return ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().pause();
-			},
-
-			setCurrentTime: function( secs ) {
-				ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance().setCurrentTime(secs);
+		ABoo.NewHeadlessHtml5PlayerBackend = ABoo.NewHeadlessPlayer.extend({
+			_createSingletonPlayer: function() {
+				this._headLessSingleton = ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance();
 			}
 		});
 
@@ -137,7 +74,7 @@
 		/*
 		 * Small Player with canvas front-end (html5 backend)
 		*/
-		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
+		#{_.qualifiedJsClassName} = ABoo.SCView.extend( ABoo.AnimMixin, {
 
 			_html5PlayerBackend: undefined,
 			//_canvas$: undefined,
@@ -150,6 +87,9 @@
 			_loadProgress: 0,
 			_playProgress: 0,
 			_busyFlag: false,
+
+			_loadAnimator: undefined,
+			_playAnimator: undefined,
 
 			didInsertElement: function() {
 				this._super();
@@ -249,44 +189,7 @@
 				var loadedDegrees = this._loadProgress;
 				var reportedLoadedDegress = this._html5PlayerBackend.loadedDegrees();
 				if( loadedDegrees!=reportedLoadedDegress )
-					this.animateLoadProgress( loadedDegrees, reportedLoadedDegress );
-			},
-
-			// TODO: boiler plate - move
-			animateLoadProgress: function( from, to ) {
-				//console.warn("Animate from "+from+" to "+to);
-				//if(from==0 && to==360)
-				//	debugger;
-				//var fromProgressVal = { progress: from };
-				this.fakeLoadProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
-				var toLoadProgressVal = { fakeLoadProgress: to };
-				var self = this;
-				jQuery(this).animate( toLoadProgressVal, {
-					duration: 1000,
-					step: function(now, fx) {
-						//console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
-						self.set('_loadProgress', now );
-					},
-					queue: false
-				});
-			},
-
-			// TODO: boiler plate - move
-			animatePlayProgress: function( from, to ) {
-				//console.log("ANIMATE PLAYPROGRESS "+from+" "+to);
-				//var fromProgressVal = { progress: from };
-				this.fakePlayProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
-				var toPlayProgressVal = { fakePlayProgress: to };
-				var self = this;
-				jQuery(this).animate( toPlayProgressVal, {
-					duration: 1000,
-					step: function(now, fx) {
-						//console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
-						//console.warn(now);
-						self.set('_playProgress', now );
-					},
-					queue: false
-				});
+					this.animateProperty( '_loadProgress', reportedLoadedDegress, 1000/25*10 );
 			},
 
 			// Beacuse the button action is specified as 'async' it will not automatically show the next state
@@ -308,11 +211,11 @@
 				if( loadedDegrees>0 ){
 					this.set('_busyFlag', false);
 				}
-				this.animateLoadProgress( loadedDegrees, this._html5PlayerBackend.loadedDegrees() );
+				this.animateProperty( '_loadProgress', this._html5PlayerBackend.loadedDegrees(), 1000/25*10 );
 			},
 
 			timeupdate: function() {
-				this.animatePlayProgress( this._playProgress, this._html5PlayerBackend.playedDegrees() );
+				this.animateProperty( '_playProgress', this._html5PlayerBackend.playedDegrees(), 1000/25*10 );
 
 				// TODO: This is horrible
 				//this._fakeLoadProgressEvent();

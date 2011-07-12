@@ -1,10 +1,11 @@
-/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 11:37:20 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 12 Jul 2011 13:59:44 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/headless-player.coffee
  */
 
 (function() {
   /* abstract superclass for flash and html5
-  */  ABoo.NewHeadlessPlayerSingleton = SC.Object.extend({
+  */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  ABoo.NewHeadlessPlayerSingleton = SC.Object.extend({
     _audioPlayingDomNode: void 0,
     _mp3url: void 0,
     setSrc: function(mp3Url2, autoload, autoplay) {
@@ -82,6 +83,71 @@
     },
     setCurrentTime: function(secs) {
       return this._audioPlayingDomNode.attrSetter('currentTime', secs);
+    }
+  });
+  SC.mixin(ABoo.NewHeadlessPlayerSingleton, ABoo.SingletonClassMethods);
+  /* one of these for each instance of a player
+  */
+  ABoo.NewHeadlessPlayer = SC.Object.extend({
+    _mp3URL: void 0,
+    _controller: void 0,
+    _watchableEvents: 'error emptied loadstart progress loadeddata loadedmetadata durationchange timeupdate canplay canplaythrough waiting play ended abort dataunavailable empty pause ratechange seeked seeking volumechange stalled',
+    _stateMachine: void 0,
+    _state: false,
+    _headLessSingleton: void 0,
+    _attachToPage: function($pageItem) {
+      this._createSingletonPlayer();
+      this._stateMachine = ABoo.AudioPlayerStateMachine.create({
+        _controller: this._controller
+      });
+      return this._headLessSingleton.playerBecameCurrent(this, $pageItem);
+    },
+    didSwapInFlash: function(swf) {
+      return this._state = true;
+    },
+    didSwapOutFlash: function(swf) {
+      this._state = false;
+      this._killObservations();
+      return this._controller.hidePlayerGUI();
+    },
+    flashDidLoad: function(swf) {
+      this._controller.showPlayerGUI();
+      this._createObservervations();
+      this._stateMachine.processInputSignal("ready");
+      return this._headLessSingleton.setSrc(this._mp3URL, true, true);
+    },
+    _createObservervations: function() {
+      var $actualPlayer;
+      $actualPlayer = $(this._headLessSingleton._audioPlayingDomNode._observableSwf);
+      return $actualPlayer.bind(this._watchableEvents, __bind(function(e) {
+        return this.handleHeadlessFlashPlayerEvent(e.type);
+      }, this));
+    },
+    _killObservations: function() {
+      var $actualPlayer;
+      $actualPlayer = $(this._headLessSingleton._audioPlayingDomNode._observableSwf);
+      return $actualPlayer.unbind(this._watchableEvents);
+    },
+    handleHeadlessFlashPlayerEvent: function(eventName) {
+      return this._stateMachine.processInputSignal(eventName);
+    },
+    buffered: function() {
+      return this._headLessSingleton.buffered();
+    },
+    loadedDegrees: function() {
+      return this._headLessSingleton.loadedDegrees();
+    },
+    playedDegrees: function() {
+      return this._headLessSingleton.playedDegrees();
+    },
+    play: function() {
+      return this._headLessSingleton.play();
+    },
+    pause: function() {
+      return this._headLessSingleton.pause();
+    },
+    setCurrentTime: function(secs) {
+      return this._headLessSingleton.setCurrentTime(secs);
     }
   });
 }).call(this);

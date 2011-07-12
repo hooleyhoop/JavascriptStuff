@@ -1,23 +1,20 @@
 module Gui::Views::Positioning
 
-	# http://0.0.0.0:3000/widgets/spacerView
+	# http://0.0.0.0:3000/widgets/HooSpacerView
 	class HooSpacerView < Gui::Core::HooView
 
 		attr_accessor :top, :right, :bottom, :left
 
-		def initialize( top=0, right=0, bottom=0, left=0 )
-			super();
-			@top = top
-			@right = right
-			@bottom = bottom
-			@left = left
+		def initialize( args={} )
+			super
+			extractArgs( args, {:top=>0, :right=>0, :bottom=>0, :left=>0} );
 		end
 
 		# Mock Data
 		def setupDebugFixture
 			super();
 
-			placeHolderView = widgetClass('colorFill').new()
+			placeHolderView = widgetClass('HooColorFill').new()
 			self.addSubView( placeHolderView );
 
 			@top = @right = @bottom = @left = 15

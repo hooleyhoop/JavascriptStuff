@@ -32,99 +32,20 @@
 			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
 				return timeRanges[timeRangeIndex][1];
 			}
-
 		});
 
-		ABoo.NewHeadlessFlashPlayerSingletonClassMethods = SC.Mixin.create( ABoo.SingletonClassMethods, {
-		});
-		SC.mixin( ABoo.NewHeadlessFlashPlayerSingleton, ABoo.NewHeadlessFlashPlayerSingletonClassMethods );
+		//ABoo.NewHeadlessFlashPlayerSingletonClassMethods = SC.Mixin.create( ABoo.SingletonClassMethods, {
+		//});
+		//SC.mixin( ABoo.NewHeadlessFlashPlayerSingleton, ABoo.NewHeadlessFlashPlayerSingletonClassMethods );
+		SC.mixin( ABoo.NewHeadlessFlashPlayerSingleton, ABoo.SingletonClassMethods );
 
 
 		/*
 		 * One of these for each instance on the page
 		*/
-		ABoo.NewHeadlessFlashPlayerBackend = SC.Object.extend({
-
-			_mp3URL: undefined,
-			_controller: undefined,
-			_watchableEvents: 'error emptied loadstart progress loadeddata loadedmetadata durationchange timeupdate canplay canplaythrough waiting play ended abort dataunavailable empty pause ratechange seeked seeking volumechange stalled',
-
-			// TODO: remove this in favor of state machine
-			_state: false,
-
-			_stateMachine: undefined,
-
-			_attachToPage: function( $pageItem ) {
-
-				this._stateMachine = ABoo.AudioPlayerStateMachine.create( {_controller: this._controller } );
-
-				ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().playerBecameCurrent( this, $pageItem );
-			},
-
-			// this doesn't mean that the swf is ready
-			didSwapInFlash: function( swf ) {
-				this._state = true;
-			},
-
-			didSwapOutFlash: function( swf ) {
-				this._state = false;
-				this._killObservations();
-				this._controller.hidePlayerGUI();
-			},
-
-			flashDidLoad: function( swf ) {
-				this._controller.showPlayerGUI();
-
-				this._createObservervations();
-				this._stateMachine.processInputSignal( "ready" );
-
-				ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().setSrc( this._mp3URL, true, true );
-
-				// TODO: hold off on this for now.
-				// ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().play( this._mp3URL );
-			},
-
-			//TODO: must we tear down observations also
-			_createObservervations: function(){
-			  	var self = this;
-				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance()._headlessFlashOb._observableSwf );
-				$actualPlayer.bind( this._watchableEvents, function( e ) {
-					self.handleHeadlessFlashPlayerEvent(e.type);
-				});
-			},
-
-			_killObservations: function() {
-				var $actualPlayer = $( ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance()._headlessFlashOb._observableSwf );
-				$actualPlayer.unbind( this._watchableEvents );
-			},
-
-			handleHeadlessFlashPlayerEvent: function( eventName ) {
-				//console.log("Mofo! got an event " + eventName );
-				this._stateMachine.processInputSignal( eventName );
-			},
-
-			buffered: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().buffered();
-			},
-
-			loadedDegrees: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().loadedDegrees();
-			},
-
-			playedDegrees: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().playedDegrees();
-			},
-
-			play: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().play();
-			},
-
-			pause: function() {
-				return ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().pause();
-			},
-
-			setCurrentTime: function( secs ) {
-				ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance().setCurrentTime(secs);
+		ABoo.NewHeadlessFlashPlayerBackend = ABoo.NewHeadlessPlayer.extend({
+			_createSingletonPlayer: function() {
+				this._headLessSingleton = ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance();
 			}
 		});
 
