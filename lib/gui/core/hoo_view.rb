@@ -38,7 +38,9 @@ module Gui::Core
 		  		else
 					#-- what is type of defaulty value
 					#-- cooerce to that type
-					if value.kind_of? Integer
+					if value =~ /^[-+]?[0-9]+$/
+					#if value.kind_of? Integer
+						puts "Converting #{passedArg} to #{passedArg.to_i}"
 						passedArg = passedArg.to_i
 					end
 		  		end

@@ -5,7 +5,7 @@ module Gui::Views::Positioning
 	# http://0.0.0.0:3000/widgets/HooVerticalSplitView
 	class HooVerticalSplitView < Gui::Core::HooView
 
-        attr_accessor :fixedColSide;
+        attr_accessor :fixedColSide
 
         # specify one or the other
         attr_accessor :fixedColWidth;
@@ -13,21 +13,20 @@ module Gui::Views::Positioning
 
 		def initialize( args={} )
 			super(args)
-			@fixedColSide = ''
-			@fixedColPercent=0;
+			extractArgs( args, {:fixedColSide=>'left', :fixedColWidth=>100, :fixedColPercent=>0 } )
 		end
 
 # --------------------------- use one or the other ---------------------------------
         # left / right
-        def setFixedColumn( fixedColName, fixedColWidth );
-            @fixedColWidth = fixedColWidth;
-            @fixedColSide = fixedColName;
+        def setFixedColumn( fixedColName, fixedColWidth )
+            @fixedColWidth = fixedColWidth
+            @fixedColSide = fixedColName
         end
 
         # left / right, 33
         def setPercentage( col, percent )
-            @fixedColSide = col;
-            @fixedColPercent = percent;
+            @fixedColSide = col
+            @fixedColPercent = percent
         end
 # ---------------------------------------------------------------------------------
 
@@ -44,10 +43,10 @@ module Gui::Views::Positioning
             setFixedColumn('left', 60 )
 
 			placeholderView1 = widgetClass('HooLoremIpsumView').new()
-			self.addSubView( placeholderView1 );
+			self.addSubView( placeholderView1 )
 
 			placeHolderView2 = widgetClass('HooColorFill').new()
-			self.addSubView( placeHolderView2 );
+			self.addSubView( placeHolderView2 )
 		end
 
 	end
