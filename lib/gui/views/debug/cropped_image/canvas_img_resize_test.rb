@@ -10,7 +10,7 @@ module Gui::Views::Debug::CroppedImage
 		attr_accessor :imgUrl;
 
 		def initialize( args={} )
-			super(args);
+			super(args)
 			extractArgs( args, {:parentCanvas=>nil, :imgUrl=>'http://farm2.static.flickr.com/1013/887300612_044d2e38ed.jpg'} );
 		end
 

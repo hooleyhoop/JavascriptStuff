@@ -4,6 +4,6 @@
 -# push( hoo_play_pause_button )
 
 -# If no javascript, what would you expect? A link that says play
-%div[_]{ :data=> {'jsclass'=>'ABoo.HooPlayPauseButton'}, :style=> "width:200px; height:200px;"}
+%div[_]{ :data=> {'jsclass'=>'ABoo.HooPlayPauseButton'}, :style=> "overflow:visible;"}
 	= link_to "play mp3", "#{_.action}", {'data-jshide'=>'true'}
 	= insert( _.views, "" )

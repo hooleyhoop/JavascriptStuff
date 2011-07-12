@@ -13,7 +13,7 @@ module Gui::Core
 		#end
 
 		def initialize( args={} )
-			super(args);
+			super(args)
 			@currentIndex = 0;
 		end
 

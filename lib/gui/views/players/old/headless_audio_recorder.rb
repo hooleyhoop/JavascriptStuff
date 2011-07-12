@@ -1,4 +1,4 @@
-module Gui::Views::Flash
+module Gui::Views::Players::Old
 
 	# http://0.0.0.0:3000/widgets/headlessRecorder
 	class HeadlessAudioRecorder < Gui::Core::HooView

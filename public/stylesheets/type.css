@@ -35,6 +35,7 @@ body input[type='text'] {
 /* VERY SMALL */
 /* line 34, sass/type.scss */
 .serifVSmall {
+  font: normal normal 11px/15px Georgia;
   text-decoration: none;
   padding-top: 4px;
   padding-bottom: 11px;
@@ -43,6 +44,7 @@ body input[type='text'] {
 
 /* line 42, sass/type.scss */
 .sansVSmallBold {
+  font: normal bold 9px/15px Helvetica;
   text-decoration: none;
   padding-top: 4px;
   padding-bottom: 11px;
@@ -52,6 +54,7 @@ body input[type='text'] {
 /* SET SOLID */
 /* line 52, sass/type.scss */
 .serifSolid {
+  font: normal normal 13px/15px Georgia;
   text-decoration: none;
   padding-top: 2px;
   padding-bottom: 13px;
@@ -60,6 +63,7 @@ body input[type='text'] {
 
 /* line 60, sass/type.scss */
 .sansSolid {
+  font: normal normal 13px/15px Helvetica;
   text-decoration: none;
   padding-top: 2px;
   padding-bottom: 13px;
@@ -68,6 +72,7 @@ body input[type='text'] {
 
 /* line 68, sass/type.scss */
 .sansSolidBold {
+  font: normal bold 13px/15px Helvetica;
   text-decoration: none;
   padding-top: 2px;
   padding-bottom: 13px;
@@ -77,6 +82,7 @@ body input[type='text'] {
 /* BIG */
 /* line 77, sass/type.scss */
 .serifBig {
+  font: normal normal 21px/30px Georgia;
   text-decoration: none;
   padding-top: 8px;
   padding-bottom: 7px;
@@ -86,6 +92,7 @@ body input[type='text'] {
 
 /* line 86, sass/type.scss */
 .sansBigBold {
+  font: normal bold 21px/30px Helvetica;
   text-decoration: none;
   padding-top: 8px;
   padding-bottom: 7px;
@@ -96,6 +103,7 @@ body input[type='text'] {
 /* VERY BIG */
 /* line 98, sass/type.scss */
 .serifVBig {
+  font: normal normal 28px/30px Georgia;
   text-decoration: none;
   padding-top: 4px;
   padding-bottom: 26px;

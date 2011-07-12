@@ -8,14 +8,21 @@ module Gui::Views::Drawing::Player
 
 		attr_accessor :bindings;
 		attr_accessor :javascriptActions;
+		attr_accessor :parentCanvas
+
+		def initialize( args={} )
+			super(args)
+			extractArgs( args, {:parentCanvas=>nil} );
+		end
 
         # Mock Data
 		def setupDebugFixture
 			super();
 
 			# slider needs a canvas
-			@parentCanvas = widgetClass('HooCanvas').new();
-			addSubView( @parentCanvas );
+			# @parentCanvas = widgetClass('HooCanvas').new();
+			# addSubView( @parentCanvas );
+			# slider creates it's own canvas!
 
 			#-- add a checkbox
 			mockPlayer = widgetClass('MockPlayer').new()
@@ -37,7 +44,7 @@ module Gui::Views::Drawing::Player
 		# stuff to write into the page
 		def jsonProperties
 
-			self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName });
+			#self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName });
 
 			allItems = {
 			}

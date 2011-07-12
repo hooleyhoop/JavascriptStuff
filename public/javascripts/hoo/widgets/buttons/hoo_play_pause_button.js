@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 17:28:17 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 12 Jul 2011 11:59:39 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/hoo_play_pause_button.coffee
  */
 
@@ -61,7 +61,7 @@
       if (!this._currentSprite) {
         return;
       }
-      insetWidth = width * this._percentOfCanvas;
+      insetWidth = width * this._percentOfCanvas * 0.85;
       insetHeight = height * this._percentOfCanvas;
       x = (width - insetWidth) / 2.0;
       y = (height - insetHeight) / 2.0;

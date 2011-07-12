@@ -1,4 +1,4 @@
-module Gui::Views::Flash
+module Gui::Views::Players::Old
 
 	# http://0.0.0.0:3000/widgets/flashDetailPlayer?swf=http://0.0.0.0:3000/flash/DefaultPlayerV10/lib/Debug/default_player_10.swf&width=500&height=100
 	class FlashDetailAudioPlayer < Gui::Core::HooView

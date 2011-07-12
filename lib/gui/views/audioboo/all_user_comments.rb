@@ -4,8 +4,7 @@ module Gui::Views::Audioboo
 	class AllUserComments < Gui::Core::HooView
 
 		def initialize( args={} )
-
-			super(args);
+			super(args)
 			spaced_cell_listClass = widgetClass('spacedCellList');
             @commentList = spaced_cell_listClass.new();
             @commentList.dataSrc = self;

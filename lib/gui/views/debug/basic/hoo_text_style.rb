@@ -4,7 +4,7 @@ module Gui::Views::Debug::Basic
 	class HooTextStyle < Gui::Core::HooView
 
 		def initialize( args={} )
-			super(args);
+			super(args)
 		end
 
 	end

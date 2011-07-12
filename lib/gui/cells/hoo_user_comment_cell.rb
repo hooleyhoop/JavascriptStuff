@@ -7,7 +7,7 @@ module Gui::Cells
         attr_accessor :userBubble
 
 		def initialize( args={} )
-			super(args);
+			super(args)
 
             # each time the cell is rendered it will render this shared view
 			@speechBubbleClass = widgetClass('speechBubblePane');

@@ -6,7 +6,7 @@ module Gui::Views::Debug::Basic
 		attr_accessor :width, :height;
 
 		def initialize( args={} )
-			super(args={});
+			super(args)
 			@width = 75;
 			@height = 75;
 		end

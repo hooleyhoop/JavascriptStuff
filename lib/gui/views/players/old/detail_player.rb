@@ -1,4 +1,4 @@
-module Gui::Views::Flash
+module Gui::Views::Players::Old
 
 	# http://0.0.0.0:3000/widgets/detailPlayer?url=http://boos.audioboo.fm/attachments/733544/Recording.mp3?audio_clip_id=213134
 	class DetailPlayer < Gui::Core::HooView

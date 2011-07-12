@@ -44,7 +44,7 @@ ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooC
 	drawContents: ( ctx, width, height ) ->
 		if(!@_currentSprite)
 			return
-		insetWidth = width*@_percentOfCanvas
+		insetWidth = width*@_percentOfCanvas*0.85
 		insetHeight = height*@_percentOfCanvas
 		x = (width-insetWidth)/2.0
 		y = (height-insetHeight)/2.0

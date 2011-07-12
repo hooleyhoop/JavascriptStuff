@@ -32,7 +32,7 @@ body {
 /* VERY SMALL */
 
 .serifVSmall {
-	//putback-- font: normal normal 11px/15px Georgia;
+	font: normal normal 11px/15px Georgia;
 	text-decoration: none;
 	padding-top: 4px;
 	padding-bottom: 11px;
@@ -40,7 +40,7 @@ body {
 }
 
 .sansVSmallBold {
-	//putback-- font: normal bold 9px/15px Helvetica;
+	font: normal bold 9px/15px Helvetica;
 	text-decoration: none;
 	padding-top: 4px;
 	padding-bottom: 11px;
@@ -50,7 +50,7 @@ body {
 /* SET SOLID */
 
 .serifSolid {
-	//putback-- font: normal normal 13px/15px Georgia;
+	font: normal normal 13px/15px Georgia;
 	text-decoration: none;
 	padding-top: 2px;
 	padding-bottom: 13px;
@@ -58,7 +58,7 @@ body {
 }
 
 .sansSolid {
-	//putback-- font: normal normal 13px/15px Helvetica;
+	font: normal normal 13px/15px Helvetica;
 	text-decoration: none;
 	padding-top: 2px;
 	padding-bottom: 13px;
@@ -66,7 +66,7 @@ body {
 }
 
 .sansSolidBold {
-	//putback-- font: normal bold 13px/15px Helvetica;
+	font: normal bold 13px/15px Helvetica;
 	text-decoration: none;
 	padding-top: 2px;
 	padding-bottom: 13px;
@@ -75,7 +75,7 @@ body {
 
 /* BIG */
 .serifBig {
-	//putback-- font: normal normal 21px/30px Georgia;
+	font: normal normal 21px/30px Georgia;
 	text-decoration: none;
 	padding-top: 8px;
 	padding-bottom: 7px;
@@ -84,7 +84,7 @@ body {
 }
 
 .sansBigBold {
-	//putback-- font: normal bold 21px/30px Helvetica;
+	font: normal bold 21px/30px Helvetica;
 	text-decoration: none;
 	padding-top: 8px;
 	padding-bottom: 7px;
@@ -96,7 +96,7 @@ body {
 /* VERY BIG */
 
 .serifVBig {
-	//putback-- font: normal normal 28px/30px Georgia;
+	font: normal normal 28px/30px Georgia;
 	text-decoration: none;
 	padding-top: 4px;
 	padding-bottom: 26px;
