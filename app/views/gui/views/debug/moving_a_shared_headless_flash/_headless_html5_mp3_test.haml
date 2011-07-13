@@ -6,40 +6,16 @@
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
 	-# TODO: really we want a link here, right? Then in js we remove the link and show the image,
 	-# or we could put the image in as well as the link. Ok, so the link is optional
-	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
+	= image_tag("rails.png", :style=>"width:75px; height:75px; padding-right: 10px; padding-top: 5px;" )
 	= link_to "click to play mp3", _.mp3Url
 
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.AnimMixin = {
-
-			_animations: undefined,
-
-			animateProperty: function( propertyName, to, duration ) {
-
-				if(!this._animations)
-					this._animations = new Object();
-
-				var animator = this._animations[propertyName];
-				if(!animator) {
-					animator = ABoo.BusyFadeHelper.create();
-					ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener( animator );
-					this._animations[propertyName] = animator;
-				}
-				var self = this;
-				var animComplete = function() {
-					ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener( animator );
-					self._animations[propertyName] = null;
-				};
-				animator.animate( this, propertyName, to, duration, animComplete );
-			}
-		};
-
 		/*
 		 * Only one of these per page
 		*/
-		ABoo.NewHeadlessHTML5PlayerSingleton = ABoo.NewHeadlessPlayerSingleton.extend({
+		ABoo.NewHTML5HeadlessPlayerSingleton = ABoo.NewAbstractHeadlessPlayerSingleton.extend({
 			_headlessAudioOb: undefined,
 
 			// create the backing html5
@@ -47,26 +23,21 @@
 				this._super();
 				this._headlessAudioOb = ABoo.HeadlessSharedDomNodeProxy.sharedDivForTag( "audio" );
 				this._audioPlayingDomNode = this._headlessAudioOb;
-
 			},
 
 			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
 				return timeRanges.end(timeRangeIndex);
 			}
 		});
-
-		//ABoo.NewHeadlessHTML5PlayerSingletonClassMethods = SC.Mixin.create( ABoo.SingletonClassMethods, {
-		//});
-		//SC.mixin( ABoo.NewHeadlessHTML5PlayerSingleton, ABoo.NewHeadlessHTML5PlayerSingletonClassMethods );
-		SC.mixin( ABoo.NewHeadlessHTML5PlayerSingleton, ABoo.SingletonClassMethods );
+		SC.mixin( ABoo.NewHTML5HeadlessPlayerSingleton, ABoo.SingletonClassMethods );
 
 
 		/*
 		 * One of these for each instance on the page
 		*/
-		ABoo.NewHeadlessHtml5PlayerBackend = ABoo.NewHeadlessPlayer.extend({
+		ABoo.NewHtml5HeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.extend({
 			_createSingletonPlayer: function() {
-				this._headLessSingleton = ABoo.NewHeadlessHTML5PlayerSingleton.sharedInstance();
+				this._headLessSingleton = ABoo.NewHTML5HeadlessPlayerSingleton.sharedInstance();
 			}
 		});
 
@@ -74,22 +45,7 @@
 		/*
 		 * Small Player with canvas front-end (html5 backend)
 		*/
-		#{_.qualifiedJsClassName} = ABoo.SCView.extend( ABoo.AnimMixin, {
-
-			_html5PlayerBackend: undefined,
-			//_canvas$: undefined,
-			_hooCanvas: undefined,
-			_placeHolder$: undefined,
-			_smallPlayerFrontEnd: undefined,
-
-			/* properties to bind to. neccesary? */
-			_ready: false,
-			_loadProgress: 0,
-			_playProgress: 0,
-			_busyFlag: false,
-
-			_loadAnimator: undefined,
-			_playAnimator: undefined,
+		#{_.qualifiedJsClassName} = ABoo.NewAbstractSmallPlayer.extend( ABoo.PropertyAnimMixin, {
 
 			didInsertElement: function() {
 				this._super();
@@ -98,198 +54,7 @@
 				noJsAnchor$.remove();
 
 				this._placeHolder$ = this.getFirstDomItemOfType("img");
-				this._html5PlayerBackend = ABoo.NewHeadlessHtml5PlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
-			},
-
-			mouseUp: function(ev$) {
-
-				// TODO: this is the pits..
-				if( this._html5PlayerBackend._state == false ) {
-					if( this._placeHolder$ ) {
-						this._html5PlayerBackend._attachToPage( this._placeHolder$ );
-					}
-				}
-			},
-
-
-			// can we draw the playbutton?
-			showPlayerGUI: function() {
-
-				SC.RunLoop.begin();
-
-				this._hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas();
-
-				// remove the image and insert the canvas
-				this._hooCanvas.swapInFor( this._placeHolder$ );
-
-				// TODO: not how we will size it, but just to make it visible for now
-				this._hooCanvas._setSize(200,200);
-
-				// At last! we have found the bit where the whole scheme fails!
-				var thePlayButtonJson = { "percentOfCanvas":0.7,
-											"javascriptActions":{"mouseClickAction":{"action_taget":this, "action_event":["playClickAction", "pauseClickAction"], "action_arg":null, "actionIsAsync":true}}
-										};
-				var theRadialProgressJson = { "outerRad":0.95, "innerRad":0.85 };
-
-				var radialProgress = ABoo.HooRadialProgress.create( {json:theRadialProgressJson, _hooCanvas: this._hooCanvas } );
-				var playPause = ABoo.HooPlayPauseButton.create( {json:thePlayButtonJson, _hooCanvas: this._hooCanvas } );
-				console.warn("created radial "+radialProgress+" and play "+playPause);
-				this._smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create( {_radialProgress:radialProgress , _playPauseButton:playPause });
-
-				// TODO: dont forget to clean these up
-				this.addObserver('_loadProgress', radialProgress, radialProgress.loadDidChange );
-				this.addObserver('_playProgress', radialProgress, radialProgress.playDidChange );
-				this.addObserver('_busyFlag', radialProgress, radialProgress.busyDidChange );
-				this.addObserver('_ready', playPause, 'enabledDidChange' )
-
-				radialProgress.setupDidComplete();
-				playPause.setupDidComplete();
-				this._smallPlayerFrontEnd.setupDidComplete();
-
-				SC.RunLoop.end();
-			},
-
-			hidePlayerGUI: function() {
-				if( this._hooCanvas ) {
-					$(this).stop();
-
-					var radialProgress = this._smallPlayerFrontEnd._radialProgress;
-					var playPause = this._smallPlayerFrontEnd._playPauseButton;
-
-					this.removeObserver('_loadProgress', radialProgress, radialProgress.loadDidChange );
-					this.removeObserver('_playProgress', radialProgress, radialProgress.playDidChange );
-					this.removeObserver('_busyFlag', radialProgress, radialProgress.busyDidChange );
-					this.removeObserver('_ready', playPause, 'enabledDidChange' )
-
-					// TODO: not sure we will create and destroy the canvas each time
-					this._hooCanvas.removeAllSubviews();
-
-					//TODO: put back the image
-					this._hooCanvas.swapOutFor( this._placeHolder$ );
-					this._hooCanvas = null;
-				}
-			},
-
-			/* state machine events */
-			ready: function() {
-				//not needed? this.set('_ready', true );
-				//_guiSprite.setPlayButtonActions(/* fill in args */);
-
-				// it shows ready too soon!!!!
-			},
-			durationchange: function() {
-				console.log("durationchange" );
-
-				// so, load progress events are sketchy to say the least, attach loadProgress checks everywhere we can..
-				this._fakeLoadProgressEvent();
-			},
-
-			// seems like we dont always get progress events.. manually check
-			_fakeLoadProgressEvent: function() {
-				var loadedDegrees = this._loadProgress;
-				var reportedLoadedDegress = this._html5PlayerBackend.loadedDegrees();
-				if( loadedDegrees!=reportedLoadedDegress )
-					this.animateProperty( '_loadProgress', reportedLoadedDegress, 1000/25*10 );
-			},
-
-			// Beacuse the button action is specified as 'async' it will not automatically show the next state
-			// when clicked, we change it when audio player statemachine tells us too
-			_showPlay: function() {
-				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" );
-			},
-
-			_showPause: function() {
-				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState2" );
-			},
-
-			_showDisabled: function() {
-				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" );
-			},
-
-			progressupdate: function() {
-				var loadedDegrees = this._loadProgress;
-				if( loadedDegrees>0 ){
-					this.set('_busyFlag', false);
-				}
-				this.animateProperty( '_loadProgress', this._html5PlayerBackend.loadedDegrees(), 1000/25*10 );
-			},
-
-			timeupdate: function() {
-				this.animateProperty( '_playProgress', this._html5PlayerBackend.playedDegrees(), 1000/25*10 );
-
-				// TODO: This is horrible
-				//this._fakeLoadProgressEvent();
-			},
-
-			/* loading commands */
-			cmd_showEmptyLoader: function() {
-				jQuery(this).stop();
-				this.set('_loadProgress', 0);
-				this.set('_playProgress', 0);
-				this.set('_busyFlag', false);
-			},
-			cmd_showStalledLoader: function() {
-				/* sadly html5 audio will call stalled even after it has fully loaded (Typically on restart). Safari will stall every time at last few percent of very long boos */
-				if(this._loadProgress>350)
-					0
-					//debugger;
-				else
-					this.set('_busyFlag', true);
-			},
-			cmd_showLoadingLoader: function() {
-				this.set('_busyFlag', true);
-			},
-			//cmd_showFinishedLoader: function() {
-			//	this.animateLoadProgress( this._loadProgress, 360 );
-			//	this.set('_busyFlag', false);
-			//},
-			//cmd_showResettingLoader: function() {
-			//},
-			cmd_showErrorLoader: function() {
-				this._showDisabled();
-				this.set('_busyFlag', true);
-			},
-
-			/* playing commands */
-			cmd_showEmptyPlayer: function() {
-				this._showDisabled();
-			},
-			cmd_showStoppedPlayer: function() {
-				this._showPlay();
-			},
-			cmd_showWaitingPlayer: function() {
-				if(this._loadProgress>0.9)
-					debugger;
-				this.set('_busyFlag', true);
-			},
-			cmd_hideWaitingPlayer: function() {
-				this.set('_busyFlag', false);
-			},
-			cmd_showPlayingPlayer: function() {
-				this._showPause();
-			},
-			cmd_showFinishedPlayer: function() {
-				jQuery(this).stop();
-				this.set( '_playProgress', 0 );
-
-				// need this to reset
-				//this._html5PlayerBackend.handleHeadlessFlashPlayerEvent('pause');
-				this._html5PlayerBackend.pause();
-
-				this._html5PlayerBackend.setCurrentTime(0);
-
-				//this._showPlay();
-			},
-			cmd_showErrorPlayer: function() {
-				this._showDisabled();
-			},
-
-			/* Button Actions */
-			playClickAction: function() {
-				this._html5PlayerBackend.play();
-			},
-			pauseClickAction: function() {
-				this._html5PlayerBackend.pause();
+				this._playerBackend = ABoo.NewHtml5HeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
 			}
 
 		});

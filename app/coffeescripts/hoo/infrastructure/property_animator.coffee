@@ -1,4 +1,4 @@
-ABoo.BusyFadeHelper = SC.Object.extend
+ABoo.HooPropertyAnimator = SC.Object.extend
 	_fadeTimeStart: undefined
 	_fadeTimeEnd: undefined
 	_fadeStartVal: undefined
@@ -19,6 +19,7 @@ ABoo.BusyFadeHelper = SC.Object.extend
 		@_ended = false
 
 	update: (time) ->
+		HOO_nameSpace.assert( time, "time? time? time?" );
 
 		if(@_ended)
 			@_didEnd()
@@ -43,4 +44,40 @@ ABoo.BusyFadeHelper = SC.Object.extend
 		@_fadeComplete = null
 
 	timeUpdate: ( time ) ->
+		HOO_nameSpace.assert( time, "time? time? time?" );
 		@update(time)
+
+	forceSetValue: (val) ->
+		@_target.set( @_property, val )
+
+		
+ABoo.PropertyAnimMixin =
+	_propertyAnimations: undefined
+
+	# should be ok to keep piling these ontop of each other
+	animateProperty: ( propertyName, to, duration ) ->
+		if(!@_propertyAnimations)
+			@_propertyAnimations = new Object()
+
+		animator = @_propertyAnimations[propertyName]
+		if(!animator)
+			animator = ABoo.HooPropertyAnimator.create()
+			ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener( animator )
+			@_propertyAnimations[propertyName] = animator
+
+		animComplete = () =>
+			ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener( animator )
+			@_propertyAnimations[propertyName] = null
+
+		animator.animate( this, propertyName, to, duration, animComplete )
+
+	# use this to kill existing animations and cold set the value
+	coldSetProperty: ( propertyName, to ) ->
+		if @_propertyAnimations?
+			animator = @_propertyAnimations[propertyName]
+			if animator?
+				ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener( animator )
+				animator.forceSetValue(to)
+				animator._fadeComplete = null
+				@_propertyAnimations[propertyName] = null
+		

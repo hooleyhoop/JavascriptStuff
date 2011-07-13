@@ -1,9 +1,10 @@
-/* DO NOT MODIFY. This file was compiled Tue, 12 Jul 2011 15:53:20 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 13 Jul 2011 12:07:15 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/property_animator.coffee
  */
 
 (function() {
-  ABoo.BusyFadeHelper = SC.Object.extend({
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  ABoo.HooPropertyAnimator = SC.Object.extend({
     _fadeTimeStart: void 0,
     _fadeTimeEnd: void 0,
     _fadeStartVal: void 0,
@@ -24,6 +25,7 @@
     },
     update: function(time) {
       var updatedVal;
+      HOO_nameSpace.assert(time, "time? time? time?");
       if (this._ended) {
         this._didEnd();
         return;
@@ -45,7 +47,43 @@
       return this._fadeComplete = null;
     },
     timeUpdate: function(time) {
+      HOO_nameSpace.assert(time, "time? time? time?");
       return this.update(time);
+    },
+    forceSetValue: function(val) {
+      return this._target.set(this._property, val);
     }
   });
+  ABoo.PropertyAnimMixin = {
+    _propertyAnimations: void 0,
+    animateProperty: function(propertyName, to, duration) {
+      var animComplete, animator;
+      if (!this._propertyAnimations) {
+        this._propertyAnimations = new Object();
+      }
+      animator = this._propertyAnimations[propertyName];
+      if (!animator) {
+        animator = ABoo.HooPropertyAnimator.create();
+        ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener(animator);
+        this._propertyAnimations[propertyName] = animator;
+      }
+      animComplete = __bind(function() {
+        ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener(animator);
+        return this._propertyAnimations[propertyName] = null;
+      }, this);
+      return animator.animate(this, propertyName, to, duration, animComplete);
+    },
+    coldSetProperty: function(propertyName, to) {
+      var animator;
+      if (this._propertyAnimations != null) {
+        animator = this._propertyAnimations[propertyName];
+        if (animator != null) {
+          ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener(animator);
+          animator.forceSetValue(to);
+          animator._fadeComplete = null;
+          return this._propertyAnimations[propertyName] = null;
+        }
+      }
+    }
+  };
 }).call(this);

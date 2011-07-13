@@ -6,7 +6,7 @@
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
 	-# TODO: really we want a link here, right? Then in js we remove the link and show the image,
 	-# or we could put the image in as well as the link. Ok, so the link is optional
-	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
+	= image_tag("rails.png", :style=>"width:75px; height:75px; padding-right: 10px; padding-top: 5px;" )
 	= link_to "click to play mp3", _.mp3Url
 
 - if( _.includeOnce? )
@@ -15,7 +15,7 @@
 		/*
 		 * Only one of these per page
 		*/
-		ABoo.NewHeadlessFlashPlayerSingleton = ABoo.NewHeadlessPlayerSingleton.extend({
+		ABoo.NewFlashHeadlessPlayerSingleton = ABoo.NewAbstractHeadlessPlayerSingleton.extend({
 			_swfSrc: "HeadlessPlayer/lib/Debug/HeadlessPlayer",
 			_headlessFlashOb: undefined,
 
@@ -33,19 +33,15 @@
 				return timeRanges[timeRangeIndex][1];
 			}
 		});
-
-		//ABoo.NewHeadlessFlashPlayerSingletonClassMethods = SC.Mixin.create( ABoo.SingletonClassMethods, {
-		//});
-		//SC.mixin( ABoo.NewHeadlessFlashPlayerSingleton, ABoo.NewHeadlessFlashPlayerSingletonClassMethods );
-		SC.mixin( ABoo.NewHeadlessFlashPlayerSingleton, ABoo.SingletonClassMethods );
+		SC.mixin( ABoo.NewFlashHeadlessPlayerSingleton, ABoo.SingletonClassMethods );
 
 
 		/*
 		 * One of these for each instance on the page
 		*/
-		ABoo.NewHeadlessFlashPlayerBackend = ABoo.NewHeadlessPlayer.extend({
+		ABoo.NewFlashHeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.extend({
 			_createSingletonPlayer: function() {
-				this._headLessSingleton = ABoo.NewHeadlessFlashPlayerSingleton.sharedInstance();
+				this._headLessSingleton = ABoo.NewFlashHeadlessPlayerSingleton.sharedInstance();
 			}
 		});
 
@@ -53,19 +49,7 @@
 		/*
 		 * Small Player with canvas front-end (flash backend)
 		*/
-		#{_.qualifiedJsClassName} = ABoo.SCView.extend({
-
-			_flashPlayerBackend: undefined,
-			_canvas$: undefined,
-			_hooCanvas: undefined,
-			_placeHolder$: undefined,
-			_smallPlayerFrontEnd: undefined,
-
-			/* properties to bind to. neccesary? */
-			_ready: false,
-			_loadProgress: 0,
-			_playProgress: 0,
-			_busyFlag: false,
+		#{_.qualifiedJsClassName} = ABoo.NewAbstractSmallPlayer.extend( ABoo.PropertyAnimMixin, {
 
 			didInsertElement: function() {
 				this._super();
@@ -74,221 +58,43 @@
 				noJsAnchor$.remove();
 
 				this._placeHolder$ = this.getFirstDomItemOfType("img");
-				this._flashPlayerBackend = ABoo.NewHeadlessFlashPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
-			},
-
-			mouseUp: function(ev$) {
-
-				// TODO: this is the pits..
-				if( this._flashPlayerBackend._state == false ) {
-					if( this._placeHolder$ ) {
-						this._flashPlayerBackend._attachToPage( this._placeHolder$ );
-					}
-				}
-			},
-
-
-			// can we draw the playbutton?
-			showPlayerGUI: function() {
-
-				SC.RunLoop.begin();
-
-				this._hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas();
-
-				// remove the image and insert the canvas
-				this._hooCanvas.swapInFor( this._placeHolder$ );
-
-				// TODO: not how we will size it, but just to make it visible for now
-				this._hooCanvas._setSize(200,200);
-
-				// At last! we have found the bit where the whole scheme fails!
-				var thePlayButtonJson = { "percentOfCanvas":0.7,
-											"javascriptActions":{"mouseClickAction":{"action_taget":this, "action_event":["playClickAction", "pauseClickAction"], "action_arg":null, "actionIsAsync":true}}
-										};
-				var theRadialProgressJson = { "outerRad":0.95, "innerRad":0.85 };
-
-
-				var radialProgress = ABoo.HooRadialProgress.create( {json:theRadialProgressJson, _hooCanvas: this._hooCanvas } );
-				var playPause = ABoo.HooPlayPauseButton.create( {json:thePlayButtonJson, _hooCanvas: this._hooCanvas } );
-				console.warn("created radial "+radialProgress+" and play "+playPause);
-				this._smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create( {_radialProgress:radialProgress , _playPauseButton:playPause });
-
-				// TODO: dont forget to clean these up
-				this.addObserver('_loadProgress', radialProgress, radialProgress.loadDidChange );
-				this.addObserver('_playProgress', radialProgress, radialProgress.playDidChange );
-				this.addObserver('_busyFlag', radialProgress, radialProgress.busyDidChange );
-				this.addObserver('_ready', playPause, 'enabledDidChange' )
-
-				radialProgress.setupDidComplete();
-				playPause.setupDidComplete();
-				this._smallPlayerFrontEnd.setupDidComplete();
-
-				SC.RunLoop.end();
-			},
-
-			hidePlayerGUI: function() {
-
-				if(this._canvas$) {
-
-					var radialProgress = this._smallPlayerFrontEnd._radialProgress;
-					var playPause = this._smallPlayerFrontEnd._playPauseButton;
-
-					this.removeObserver('_loadProgress', radialProgress, radialProgress.loadDidChange );
-					this.removeObserver('_playProgress', radialProgress, radialProgress.playDidChange );
-					this.removeObserver('_busyFlag', radialProgress, radialProgress.busyDidChange );
-					this.removeObserver('_ready', playPause, 'enabledDidChange' )
-
-					// TODO: not sure we will create and destroy the canvas each time
-					this._hooCanvas.removeAllSubviews();
-
-					//TODO: put back the image
-					this._canvas$.replaceWith( this._placeHolder$ );
-					this._canvas$ = null;
-				}
-			},
-
-			/* state machine events */
-			ready: function() {
-				//not needed? this.set('_ready', true );
-				//_guiSprite.setPlayButtonActions(/* fill in args */);
-
-				// it shows ready too soon!!!!
-			},
-			durationchange: function() {
-				console.log("durationchange" );
-				this.set('_busyFlag', false);
-			},
-
-			// TODO: boiler plate - move
-			animateLoadProgress: function( from, to ) {
-
-				//var fromProgressVal = { progress: from };
-				this.fakeLoadProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
-				var toLoadProgressVal = { fakeLoadProgress: to };
-				var self = this;
-				jQuery(this).animate( toLoadProgressVal, {
-					duration: 1000,
-					step: function(now, fx) {
-						// console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
-						self.set('_loadProgress', now );
-					},
-					queue: false
-				});
-			},
-
-			// TODO: boiler plate - move
-			animatePlayProgress: function( from, to ) {
-				//var fromProgressVal = { progress: from };
-				this.fakePlayProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
-				var toPlayProgressVal = { fakePlayProgress: to };
-				var self = this;
-				jQuery(this).animate( toPlayProgressVal, {
-					duration: 1000,
-					step: function(now, fx) {
-						//console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
-						self.set('_playProgress', now );
-					},
-					queue: false
-				});
-			},
-
-			// Beacuse the button action is specified as 'async' it will not automatically show the next state
-			// when clicked, we change it when audio player statemachine tells us too
-			_showPlay: function() {
-				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" );
-			},
-
-			_showPause: function() {
-				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState2" );
-			},
-
-			_showDisabled: function() {
-				this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" );
-			},
-
-			progressupdate: function() {
-				var loadedDegrees = this._loadProgress;
-				var actualLoadedDegrees = this._flashPlayerBackend.loadedDegrees();
-				if( actualLoadedDegrees > 0 ) {
-					this.set('_busyFlag', false);
-					console.log("hide stalled");
-				}
-				this.animateLoadProgress( loadedDegrees, actualLoadedDegrees );
-			},
-
-			timeupdate: function() {
-				this.animatePlayProgress( this._playProgress, this._flashPlayerBackend.playedDegrees() );
-			},
-
-			/* loading commands */
-			cmd_showEmptyLoader: function() {
-				jQuery(this).stop();
-				this.set('_loadProgress', 0);
-				this.set('_playProgress', 0);
-				this.set('_busyFlag', false);
-			},
-			cmd_showStalledLoader: function() {
-				this.set('_busyFlag', true);
-				console.log("show stalled "+this._flashPlayerBackend.loadedDegrees());
-			},
-			cmd_showLoadingLoader: function() {
-				this.set('_busyFlag', true);
-			},
-
-			//cmd_showFinishedLoader: function() {
-			//	this.animateLoadProgress( this._loadProgress, 360 );
-			//	this.set('_busyFlag', false);
-			//},
-			//cmd_showResettingLoader: function() {
-			//},
-
-			cmd_showErrorLoader: function() {
-				this._showDisabled();
-				this.set('_busyFlag', true);
-			},
-
-			/* playing commands */
-			cmd_showEmptyPlayer: function() {
-				this._showDisabled();
-			},
-			cmd_showStoppedPlayer: function() {
-				this._showPlay();
-			},
-			cmd_showWaitingPlayer: function() {
-				this.set('_busyFlag', true);
-				console.log("show stalled 2");
-			},
-			cmd_hideWaitingPlayer: function() {
-				this.set('_busyFlag', false);
-				console.log("hide stalled 2");
-			},
-			cmd_showPlayingPlayer: function() {
-				this._showPause();
-			},
-			cmd_showFinishedPlayer: function() {
-				jQuery(this).stop();
-				this.set( '_playProgress', 0 );
-
-				// need this to reset
-
-				//this._flashPlayerBackend.handleHeadlessFlashPlayerEvent('pause');
-				this._flashPlayerBackend.pause();
-				this._flashPlayerBackend.setCurrentTime(0);
-				//this._showPlay();
-
-				// maybe stop goes here?
-			},
-			cmd_showErrorPlayer: function() {
-				this._showDisabled();
-			},
-
-			/* Button Actions */
-			playClickAction: function() {
-				this._flashPlayerBackend.play();
-			},
-			pauseClickAction: function() {
-				this._flashPlayerBackend.pause();
+				this._playerBackend = ABoo.NewFlashHeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
 			}
+
+
+			// TODO: boiler plate - move
+			//animateLoadProgress: function( from, to ) {
+
+				//var fromProgressVal = { progress: from };
+			//	this.fakeLoadProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
+			//	var toLoadProgressVal = { fakeLoadProgress: to };
+			//	var self = this;
+			//	jQuery(this).animate( toLoadProgressVal, {
+			//		duration: 1000,
+			//		step: function(now, fx) {
+			//			// console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
+			//			self.set('_loadProgress', now );
+			//		},
+			//		queue: false
+			//	});
+			//},
+
+			// TODO: boiler plate - move
+			//animatePlayProgress: function( from, to ) {
+				//var fromProgressVal = { progress: from };
+			//	this.fakePlayProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
+			//	var toPlayProgressVal = { fakePlayProgress: to };
+			//	var self = this;
+			//	jQuery(this).animate( toPlayProgressVal, {
+			//		duration: 1000,
+			//		step: function(now, fx) {
+			//			//console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
+			//			self.set('_playProgress', now );
+			//		},
+			//		queue: false
+			//	});
+			//}
+
 
 		});
 

@@ -78,7 +78,7 @@ ABoo.BarberPoleSprite = ABoo.HooSprite.extend({
 /*
  *
 */
-ABoo.HooBarberPoleGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
+ABoo.HooBarberPoleGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, ABoo.PropertyAnimMixin, {
 
 	_barberPoleSprite: undefined,
 	_isBusy: false,
@@ -87,12 +87,12 @@ ABoo.HooBarberPoleGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
 
 	// fade experiment
 	_fadeAlpha: 0,
-	_fadeHelper: undefined,
+	//_fadeHelper: undefined,
 
 	init: function( /* init never has args */ ) {
 		this._super();
 		this._barberPoleSprite = ABoo.BarberPoleSprite.create();
-
+		this.addObserver('_fadeAlpha', this, this.alphaDidChange );
 	},
 
 	// canvas -> HooCanvasViewMixin
@@ -104,53 +104,38 @@ ABoo.HooBarberPoleGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
 		//console.log("Togglwing busy");
 		this._isBusy = !this._isBusy;
 		if(this._isBusy) {
-			//console.log("fade on");
-			if( !this._fadeHelper )
-				this._fadeHelper = ABoo.BusyFadeHelper.create();
 
-			var self = this;
-			var fadeComplete = function() {
-				//alert("dicky "+self);
-			};
-			this._fadeHelper.animate( this, '_fadeAlpha', 1, 1000/25*10, fadeComplete );
+			this.animateProperty( '_fadeAlpha', 1, 1000/25*8 );
 
 			this._lastUpdateTime = -1;
-
 			ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener(this);
 
 		} else {
 			//console.log("fade off");
-			if( !this._fadeHelper )
-				this._fadeHelper = ABoo.BusyFadeHelper.create();
 
-			var self = this;
-			var fadeComplete = function() {
-				ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener(self);
-			};
-			this._fadeHelper.animate( this, '_fadeAlpha', 0, 1000/25*10, fadeComplete );
+			this.animateProperty( '_fadeAlpha', 0, 1000/25*3 );
+
+			ABoo.ShiteDisplayLink.sharedDisplayLink.unregisterListener(this);
 		}
+	},
+
+	// hmm, manually update busy spinner..?
+	alphaDidChange: function (sender, key) {
+		//console.log("alpha changed "+this._fadeAlpha );
 		this._parentCanvas.setNeedsDisplay();
 	},
 
+	// hmm, manually update busy spinner..?
 	timeUpdate: function( time ) {
+		//console.log("oh yeah, im getting them upates");
 		if(this._lastUpdateTime!=-1) {
-
-			if( this._fadeHelper ) {
-				this._fadeHelper.update(time);
-				if( this._fadeHelper._fadeComplete==null ) {
-					this._fadeHelper = null;
-					return;
-				}
-			}
 			var dist = time-this._lastUpdateTime;
 			this._percent = (this._percent + dist/1000)%1;
 			//console.log( "this._percent is "+this._percent );
-
 			this._parentCanvas.setNeedsDisplay();
 		}
 		this._lastUpdateTime = time;
 	}
-
 
 });
 
@@ -205,7 +190,7 @@ ABoo.HooSimpleSliderGraphic = ABoo.HooButtonGraphic.extend({
 /*
  *
 */
-ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend({
+ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin, {
 
 	_loadProgressDiv:	undefined,
 	_playProgressDiv:	undefined,
@@ -264,6 +249,12 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend({
 
 		// remember! the alert stuff doesnt work in ie
 		//mwah this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
+
+		// when the headless player changes played amount, it causes our local value to animate, which we observe, and set the bar width accordingly
+		this.addObserver('_playedAmount', this, this._playDidChange );
+		this.addObserver('_loadedAmount', this, this._loadDidChange );
+		this._playDidChange(null,null);	// make sure they draw at zero
+		this._loadDidChange(null,null);
 	},
 
 
@@ -280,6 +271,19 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend({
 		}
 	},
 
+	// our local value changed - could/should do this with SC bindings?
+	_playDidChange: function( target, property ) {
+		var playDivWidth = this._maxBarWidth*this._playedAmount;
+		this._playProgressDiv.width( playDivWidth );
+	},
+
+	// our local value changed (was animated to new value)
+	_loadDidChange: function( target, property ) {
+		var loadDivWidth = this._maxBarWidth*this._loadedAmount;
+		// console.log("LoadDivWidth = "+this._maxBarWidth);
+		this._loadProgressDiv.width(loadDivWidth);
+	},
+
 	/* we observed a change! - notification callback */
 	maxAmountDidChange:  function( target, property ) {
 		var updatedVal =  target[property];
@@ -288,44 +292,31 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend({
 	},
 
 
-	/* we observed a change! - notification callback */
+	/* we observed a change in the headless player! - notification callback */
 	loadedDidChange: function( target, property ) {
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( target[property], this._maxAmount );
-		this.setLoadAmount(percent);
+		if(percent==0)
+			this.coldSetProperty( '_loadedAmount', percent );
+		else
+			this.animateProperty( '_loadedAmount', percent, 1000/25*8 );
 	},
 
-	/* we observed a change! - notification callback */
+	/* we observed a change in the headless player! - notification callback */
 	playedDidChange: function( target, property ) {
 		var updatedAmount = target[property];
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( updatedAmount, this._maxAmount );
 		//console.log("Played "+updatedAmount+" "+percent );
-		this.setPlayAmount(percent);
+		if(percent==0)
+			this.coldSetProperty( '_playedAmount', percent );
+		else
+			this.animateProperty( '_playedAmount', percent, 1000/25*8 );
 	},
 
 
 	recalcLoadedAndPlayedAmounts: function() {
-		this.setPlayAmount(this._playedAmount);
-		this.setLoadAmount(this._loadedAmount);
+		this.coldSetProperty( '_playedAmount', this._playedAmount );
+		this.coldSetProperty( '_loadedAmount', this._loadedAmount );
 	},
-
-	// could/should do this with SC bindings?
-	setPlayAmount: function( arg ) {
-		this.set( '_playedAmount', arg );
-		var playDivWidth = this._maxBarWidth*this._playedAmount;
-		this._playProgressDiv.width( playDivWidth );
-	},
-
-	setLoadAmount: function( arg ) {
-		this.set( '_loadedAmount', arg );
-		var loadDivWidth = this._maxBarWidth*this._loadedAmount;
-		// console.log("LoadDivWidth = "+this._maxBarWidth);
-		this._loadProgressDiv.width(loadDivWidth);
-	},
-
-	//mwah  getClickableItem: function() {
-	//mwah 	alert("oh really?");
-	//mwah 	return  this.getFirstDomItemOfType(".slider");
-	//mwah },
 
 	parentDidResize: function() {
 
@@ -363,80 +354,5 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend({
 		this._barberPole.toggleBusy();
 	}
 
-	//startBusy: function() {
-
-	//	var self = this;
-		//mwah this._busyFadeHelper._animFunction = function() {
-			//mwah var ctx = self._$canvas[0].getContext('2d');
-			//mwah self.draw(ctx, self.div$.width(), self.div$.outerHeight());
-			//mwah self._currentTime = (self._currentTime + self._timeStep) % 1000;
-		//mwah }
-		//mwah this._busyFadeHelper.begin( self._timeStep );
-	//},
-
-	//stopBusy: function() {
-		//mwah this._busyFadeHelper.end();
-	//},
-
-
-	// wtf is this?
-	//temporarySetEnabledState: function( stateIndex, enabled ) {
-	//	alert("wtf");
-	//},
-	//enableButton: function( stateIndex ) {
-	//	alert("wtf");
-	//},
-	//showMouseUpState: function( stateIndex ) {
-	//	alert("wtf");
-	//	alert("woo mouse up");
-	//},
-	//showMouseDownState: function( stateIndex ) {
-	//	alert("wtf");
-	//	if(this._mouseClickAction) {
-	//		var newPos = this.localXPosition();
-	//		this._lastDragXAmount = newPos;
-	//		console.log("click at pos "+newPos);
-	//		this._mouseClickAction.a.call( this._mouseClickAction.t, newPos );
-	//	}
-	//},
-	//mouseDragged: function(e){
-	//	alert("wtf");
-	//	if(this._mouseClickAction) {
-	//		var xamount = this.localXPosition();  // IE fires mouse events continuously even when it doesn't move more than 1 pixel
-	//		if( xamount!=this._lastDragXAmount) {
-	//			this._mouseClickAction.a.call( this._mouseClickAction.t, xamount );
-	//			this._lastDragXAmount = xamount;
-	//		}
-	//	}
-	//},
-
-	//fireAction: function( nextState, argsHash ) {
-	//	alert("wtf");
-
-	//	argsHash.onCompleteAction.call( argsHash.onCompleteTarget );
-	//},
-
-	// convert mouse coord to slider position
-	//localXPosition: function(){
-	//	alert("wtf");
-
-	//	if(this._stateMachine.lastWindowEvent) {
-	//		var x = this._stateMachine.lastWindowEvent.pageX;
-	//		var y = this._stateMachine.lastWindowEvent.pageY;
-	//		var pos = this._loadProgressDiv.offset();
-	//		var xval;
-	//		// var size = [this._loadProgressDiv.width(), this._loadProgressDiv.height()];
-	//		if( pos.left>x )
-	//			xval = 0;
-	//		else if((pos.left + this._maxBarWidth)<x)
-	//			xval = 1;
-	//		else
-	//			xval = (x-pos.left)/this._maxBarWidth;
-	//		if(xval > this._loadedAmount)
-	//			xval  = this._loadedAmount
-	//		return xval;
-	//	}
-	//	return -1;
-	//}
 
 });

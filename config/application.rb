@@ -43,7 +43,7 @@ module JavascriptStuff
     'hoo/infrastructure/singleton',
 	'hoo/infrastructure/property_animator',
 
-    'hoo/infrastructure/browser_utilities', 'hoo/infrastructure/activeListenerDebugger', "hoo/infrastructure/vector_math", 'hoo/infrastructure/swf_node_proxy', 'hoo/infrastructure/dom_node_proxy', 'hoo/infrastructure/headless-player',
+    'hoo/infrastructure/browser_utilities', 'hoo/infrastructure/activeListenerDebugger', "hoo/infrastructure/vector_math", 'hoo/infrastructure/swf_node_proxy', 'hoo/infrastructure/dom_node_proxy',
 
     'hoo/infrastructure/simple-state-machine',
     "hoo/infrastructure/sm_configurations/abstractConfiguration",
@@ -56,6 +56,7 @@ module JavascriptStuff
 	'hoo/widgets/root_object.js',
     'widgets/widgets.js', 'hoo/widgets/buttons/three_state_item.js', 'widgets/buttons.js', 'hoo/widgets/canvas.js', 'hoo/widgets/buttons/hoo_play_pause_button.js',
 
+	'hoo/infrastructure/headless-player',
 	'hoo/widgets/flippy_toggle_thing',
 	'hoo/widgets/hoo_radial_progress',
 	'hoo/widgets/hoo_simple slider',

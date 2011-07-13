@@ -448,11 +448,13 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 	_canvasElements: undefined,
 	_running: false,
 	_timer: undefined,
+	_time: 0,
 
 	init: function( /* init never has args */ ) {
 	    this._super();
 		this._listeners = new Array();
 		this._canvasElements = new Array();
+		this._time = (new Date()).getTime();
 	},
 
 	registerListener: function( listener ) {
@@ -487,19 +489,22 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 			this._canvasElements.splice(i,1);
 			console.warn("removed canvas from array CANVAS!");
 		}
-		if( wasRunning && this._canvasElements.length>0 && this._listeners.length>0 )
+		if( wasRunning && (this._canvasElements.length>0 || this._listeners.length>0) ) {
+			console.warn("restarting DSIPLAY LINK because: was running? "+wasRunning +", "+this._canvasElements.length+" canvases, "+this._listeners.length+" listeners" );
 			this.start();
-		else
-			console.warn("Not restarting canvas because: "+wasRunning +" "+this._canvasElements.length+" "+this._listeners.length );
+		} else {
+			console.warn("Not restarting DSIPLAY LINK because: "+wasRunning +" "+this._canvasElements.length+" "+this._listeners.length );
+		}
 	},
 
 	start: function() {
+		console.warn("STARTING DISPLAY LINK!");
 		var self = this;
 		this._timer = setInterval(function(){self._callback.call(self);}, 33);
 		this._running = true;
 	},
 	stop: function() {
-		console.warn("STOPPING CANVAS!");
+		console.warn("STOPPING DISPLAY LINK!");
         clearInterval(this._timer);
         this._timer = null;
 		this._running = false;
@@ -509,26 +514,25 @@ ABoo.ShiteDisplayLink = SC.Object.extend({
 		HOO_nameSpace.assert( this._canvasElements.length>0 || this._listeners.length>0, "why am i drawing with no listeners or canvases?");
 
 		//console.log("ENTER TIMER::"+this._timer);
-		var time = (new Date()).getTime();
-
+		this._time = (new Date()).getTime();
+		var t = this._time;
 		var listenersCopy = this._listeners.slice(0);
 		$.each( listenersCopy, function(indexInArray, valueOfElement){
-			valueOfElement.timeUpdate( time );
+			valueOfElement.timeUpdate( t );
 		});
 
 		//this could mutate the array
 		var canvasElementsCopy = this._canvasElements.slice(0);
 		$.each( canvasElementsCopy, function(indexInArray, valueOfElement){
-			valueOfElement.displayUpdate( time );
+			valueOfElement.displayUpdate( t );
 		});
 		//console.log("EXIT TIMER::"+this._timer);
 	}
 });
 
-var ShiteDisplayLinkClassMethods = SC.Mixin.create({
-
+var ShiteDisplayLinkClassMethods = {
 	sharedDisplayLink: undefined
-});
+};
 SC.mixin( ABoo.ShiteDisplayLink, ShiteDisplayLinkClassMethods );
 
 ABoo.ShiteDisplayLink.sharedDisplayLink = ABoo.ShiteDisplayLink.create();

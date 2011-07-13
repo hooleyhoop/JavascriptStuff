@@ -1,8 +1,7 @@
 
 ### abstract superclass for flash and html5
 ###
-ABoo.NewHeadlessPlayerSingleton = SC.Object.extend
-
+ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 	_audioPlayingDomNode: undefined
 	_mp3url: undefined
 
@@ -86,12 +85,12 @@ ABoo.NewHeadlessPlayerSingleton = SC.Object.extend
 	setCurrentTime: ( secs ) ->
 		@_audioPlayingDomNode.attrSetter( 'currentTime', secs )
 
-SC.mixin( ABoo.NewHeadlessPlayerSingleton, ABoo.SingletonClassMethods )
+SC.mixin( ABoo.NewAbstractHeadlessPlayerSingleton, ABoo.SingletonClassMethods )
 
 
 ### one of these for each instance of a player
 ###
-ABoo.NewHeadlessPlayer = SC.Object.extend
+ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend
 	_mp3URL: undefined
 	_controller: undefined
 	_watchableEvents: 'error emptied loadstart progress loadeddata loadedmetadata durationchange timeupdate canplay canplaythrough waiting play ended abort dataunavailable empty pause ratechange seeked seeking volumechange stalled'
@@ -134,11 +133,11 @@ ABoo.NewHeadlessPlayer = SC.Object.extend
 		$actualPlayer.bind( @_watchableEvents, ( e ) =>
 			@handleHeadlessFlashPlayerEvent(e.type)
 		)
-		
+
 	_killObservations: () ->
 		$actualPlayer = $( @_headLessSingleton._audioPlayingDomNode._observableSwf )
 		$actualPlayer.unbind( @_watchableEvents )
-			
+
 	handleHeadlessFlashPlayerEvent: ( eventName ) ->
 		#if(eventName!="timeupdate")
 		#	console.log("HTML5 player: got an event > " + eventName );
@@ -163,5 +162,185 @@ ABoo.NewHeadlessPlayer = SC.Object.extend
 
 	setCurrentTime: ( secs ) ->
 		@_headLessSingleton.setCurrentTime(secs)
-			
-			
+
+
+### one of these for each instance of a player
+###
+ABoo.NewAbstractSmallPlayer = ABoo.SCView.extend
+	_playerBackend: undefined
+	_hooCanvas: undefined
+	_placeHolder$: undefined
+	_smallPlayerFrontEnd: undefined
+	# properties to bind to. neccesary? #
+	_ready: false
+	_loadProgress: 0
+	_playProgress: 0
+	_busyFlag: false
+
+	# TODO: this is the pits..
+	mouseUp: (ev$) ->
+		if( @_playerBackend._state==false )
+			if( @_placeHolder$ )
+				@_playerBackend._attachToPage( @_placeHolder$ )
+
+	# can we draw the playbutton?
+	showPlayerGUI: () ->
+		SC.RunLoop.begin()
+		@_hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas()
+		# remove the image and insert the canvas
+		@_hooCanvas.swapInFor( @_placeHolder$ )
+		# TODO: not how we will size it, but just to make it visible for now
+		@_hooCanvas._setSize( @_placeHolder$.width(), @_placeHolder$.height() )
+
+		# At last! we have found the bit where the whole scheme fails!
+		thePlayButtonJson =
+			"percentOfCanvas":0.7
+			"javascriptActions":
+				"mouseClickAction":
+					"action_taget":this
+					"action_event":["playClickAction", "pauseClickAction"]
+					"action_arg":null
+					"actionIsAsync":true
+
+		theRadialProgressJson = 
+			"outerRad":0.95
+			"innerRad":0.85
+		
+		radialProgress = ABoo.HooRadialProgress.create( {json:theRadialProgressJson, _hooCanvas: @_hooCanvas } )
+		playPause = ABoo.HooPlayPauseButton.create( {json:thePlayButtonJson, _hooCanvas: @_hooCanvas } )
+		console.warn("created radial "+radialProgress+" and play "+playPause)
+		@_smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create( {_radialProgress:radialProgress , _playPauseButton:playPause })
+		# TODO: dont forget to clean these up
+		@addObserver('_loadProgress', radialProgress, radialProgress.loadDidChange )
+		@addObserver('_playProgress', radialProgress, radialProgress.playDidChange )
+		@addObserver('_busyFlag', radialProgress, radialProgress.busyDidChange )
+		@addObserver('_ready', playPause, 'enabledDidChange' )
+		radialProgress.setupDidComplete()
+		playPause.setupDidComplete()
+		@_smallPlayerFrontEnd.setupDidComplete()
+		SC.RunLoop.end()
+
+
+	hidePlayerGUI: () ->
+		if @_hooCanvas?
+			radialProgress = @_smallPlayerFrontEnd._radialProgress
+			playPause = @_smallPlayerFrontEnd._playPauseButton
+
+			@removeObserver('_loadProgress', radialProgress, radialProgress.loadDidChange )
+			@removeObserver('_playProgress', radialProgress, radialProgress.playDidChange )
+			@removeObserver('_busyFlag', radialProgress, radialProgress.busyDidChange )
+			@removeObserver('_ready', playPause, 'enabledDidChange' )
+
+			# TODO: not sure we will create and destroy the canvas each time
+			@_hooCanvas.removeAllSubviews()
+
+			# TODO: put back the image
+			@_hooCanvas.swapOutFor( @_placeHolder$ )
+			@_hooCanvas = null
+
+	# state machine events #
+	ready: () ->
+		#not needed? @set('_ready', true );
+		#_guiSprite.setPlayButtonActions(/* fill in args */);
+		#it shows ready too soon!!!!
+		0
+		
+	durationchange: () ->
+		#console.log("durationchange" )
+		# so, load progress events are sketchy to say the least, attach loadProgress checks everywhere we can..
+		@_fakeLoadProgressEvent()
+	
+	# seems like we dont always get progress events (html5 audio).. manually check
+	_fakeLoadProgressEvent: () ->
+		loadedDegrees = @_loadProgress
+		reportedLoadedDegress = @_playerBackend.loadedDegrees()
+		if( loadedDegrees!=reportedLoadedDegress )
+			@animateProperty( '_loadProgress', reportedLoadedDegress, 1000/25*10 )
+		@set('_busyFlag', false)
+
+	progressupdate: () ->
+		actualLoadedDegrees = @_playerBackend.loadedDegrees()
+		if( actualLoadedDegrees>0 )
+			@set('_busyFlag', false)
+			#console.log("hide stalled")
+		@animateProperty( '_loadProgress', actualLoadedDegrees, 1000/25*10 )
+
+	# Beacuse the button action is specified as 'async' it will not automatically show the next state
+	# when clicked, we change it when audio player statemachine tells us too
+	_showPlay: () ->
+		@_smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" )
+
+	_showPause: () ->
+		@_smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState2" )
+
+	_showDisabled: () ->
+		@_smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent( "ev_showState1" )
+
+	timeupdate: () ->
+		@animateProperty( '_playProgress', @_playerBackend.playedDegrees(), 1000/25*10 );
+		# TODO: This is horrible
+		# @_fakeLoadProgressEvent();
+
+	# loading commands #
+	cmd_showEmptyLoader: () ->
+		jQuery(this).stop()
+		@coldSetProperty('_loadProgress', 0)
+		@coldSetProperty('_playProgress', 0)
+		@set('_busyFlag', false)
+
+	cmd_showStalledLoader: () ->
+		# sadly html5 audio will call stalled even after it has fully loaded (Typically on restart). Safari will stall every time at last few percent of very long boos #
+		if @_loadProgress>350
+			0
+			#debugger
+		else
+			@set('_busyFlag', true)
+
+	cmd_showLoadingLoader: () ->
+		@set('_busyFlag', true)
+
+	# Oh, finished event - you were so lovely - but i completely misunderstood you 
+	# cmd_showFinishedLoader: () ->
+	#	@animateLoadProgress( @_loadProgress, 360 )
+	#	@set('_busyFlag', false)
+	# cmd_showResettingLoader: () ->
+		#0
+		
+	cmd_showErrorLoader: () ->
+		@_showDisabled()
+		@set('_busyFlag', true)
+
+	# playing commands #
+	cmd_showEmptyPlayer: () ->
+		@_showDisabled()
+
+	cmd_showStoppedPlayer: () ->
+		@_showPlay()
+
+	cmd_showWaitingPlayer: () ->
+		@set('_busyFlag', true)
+		#console.log("show stalled 2")
+
+	cmd_hideWaitingPlayer: () ->
+		@set('_busyFlag', false)
+		#console.log("hide stalled 2")
+
+	cmd_showPlayingPlayer: () ->
+		@_showPause()
+
+	cmd_showFinishedPlayer: () ->
+		jQuery(this).stop()
+		@coldSetProperty( '_playProgress', 0 )
+		# need this to reset
+		@_playerBackend.pause()
+		@_playerBackend.setCurrentTime(0)
+	
+	cmd_showErrorPlayer: () ->
+		@_showDisabled()
+
+	### Button Actions ###
+	playClickAction: () ->
+		@_playerBackend.play()
+
+	pauseClickAction: () ->
+		@_playerBackend.pause()
