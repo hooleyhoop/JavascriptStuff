@@ -177,6 +177,19 @@ ABoo.NewAbstractSmallPlayer = ABoo.SCView.extend
 	_playProgress: 0
 	_busyFlag: false
 
+	didInsertElement: () ->
+		@_super()
+		noJsAnchor$ = @getFirstDomItemOfType("a")
+		noJsAnchor$.remove()
+		@_placeHolder$ = @getFirstDomItemOfType("img")
+		@createPlayerBackend()
+	
+	createPlayerBackend: () ->
+		###
+			This is where you customize...
+		###
+		0
+				
 	# TODO: this is the pits..
 	mouseUp: (ev$) ->
 		if( @_playerBackend._state==false )

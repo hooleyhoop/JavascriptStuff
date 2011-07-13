@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Wed, 13 Jul 2011 14:06:22 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 13 Jul 2011 14:42:29 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/headless-player.coffee
  */
 
@@ -161,6 +161,19 @@
     _loadProgress: 0,
     _playProgress: 0,
     _busyFlag: false,
+    didInsertElement: function() {
+      var noJsAnchor$;
+      this._super();
+      noJsAnchor$ = this.getFirstDomItemOfType("a");
+      noJsAnchor$.remove();
+      this._placeHolder$ = this.getFirstDomItemOfType("img");
+      return this.createPlayerBackend();
+    },
+    createPlayerBackend: function() {
+      /*
+      			This is where you customize...
+      		*/      return 0;
+    },
     mouseUp: function(ev$) {
       if (this._playerBackend._state === false) {
         if (this._placeHolder$) {

@@ -1,0 +1,7 @@
+-# http://0.0.0.0:3000/widgets/HooRecordPauseButton
+-# http://0.0.0.0:3000/widgets/HooRecordPauseButton?initialState=1&percentOfCanvas=0.5
+
+-# If no javascript, what would you expect? A link that says play
+%div[_]{ :data=> {'jsclass'=>'ABoo.HooRecordPauseButton'}, :style=> "overflow:visible;"}
+	= link_to "play mp3", "#{_.action}", {'data-jshide'=>'true'}
+	= insert( _.views, "" )

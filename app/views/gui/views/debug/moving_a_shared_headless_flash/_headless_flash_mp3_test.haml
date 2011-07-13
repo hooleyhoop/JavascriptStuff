@@ -51,51 +51,9 @@
 		*/
 		#{_.qualifiedJsClassName} = ABoo.NewAbstractSmallPlayer.extend( ABoo.PropertyAnimMixin, {
 
-			didInsertElement: function() {
-				this._super();
-
-				var noJsAnchor$ = this.getFirstDomItemOfType("a");
-				noJsAnchor$.remove();
-
-				this._placeHolder$ = this.getFirstDomItemOfType("img");
+			createPlayerBackend: function() {
 				this._playerBackend = ABoo.NewFlashHeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
 			}
-
-
-			// TODO: boiler plate - move
-			//animateLoadProgress: function( from, to ) {
-
-				//var fromProgressVal = { progress: from };
-			//	this.fakeLoadProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
-			//	var toLoadProgressVal = { fakeLoadProgress: to };
-			//	var self = this;
-			//	jQuery(this).animate( toLoadProgressVal, {
-			//		duration: 1000,
-			//		step: function(now, fx) {
-			//			// console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
-			//			self.set('_loadProgress', now );
-			//		},
-			//		queue: false
-			//	});
-			//},
-
-			// TODO: boiler plate - move
-			//animatePlayProgress: function( from, to ) {
-				//var fromProgressVal = { progress: from };
-			//	this.fakePlayProgress = from;	// we need the fake because i dont think we can stop $animate directly setting some value, and we need to make sure the setter is called for the real property that we want to set
-			//	var toPlayProgressVal = { fakePlayProgress: to };
-			//	var self = this;
-			//	jQuery(this).animate( toPlayProgressVal, {
-			//		duration: 1000,
-			//		step: function(now, fx) {
-			//			//console.log("Anim: "+fx.elem.id + ' ' + fx.prop + ': ' + now);
-			//			self.set('_playProgress', now );
-			//		},
-			//		queue: false
-			//	});
-			//}
-
-
 		});
 
 

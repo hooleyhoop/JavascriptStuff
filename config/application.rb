@@ -44,6 +44,7 @@ module JavascriptStuff
 	'hoo/infrastructure/property_animator',
 
     'hoo/infrastructure/browser_utilities', 'hoo/infrastructure/activeListenerDebugger', "hoo/infrastructure/vector_math", 'hoo/infrastructure/swf_node_proxy', 'hoo/infrastructure/dom_node_proxy',
+	'hoo/infrastructure/shite-display-link',
 
     'hoo/infrastructure/simple-state-machine',
     "hoo/infrastructure/sm_configurations/abstractConfiguration",

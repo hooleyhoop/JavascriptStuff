@@ -2,14 +2,14 @@
 
 # All elements must be constructable at run time or compile time
 # !! anytime you use a property that you assume will be there add it to the list..
+ABoo.AbstractFiveStateCanvasButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooCanvasViewMixin,
 
-ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooCanvasViewMixin,
+	# These namkes are fucked now we have co-opted this for the record button!
 	_playButtonSprite: undefined
 	_pauseButtonSprite: undefined
 	_currentSpriteState: undefined
 	_currentSprite: undefined
 	_percentOfCanvas:undefined
-
 	_threeStateButtonStateMachine_config:
 		"disabled":
 			"movieclip": "_playButtonSprite"
@@ -27,15 +27,6 @@ ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooC
 			"movieclip": "_pauseButtonSprite"
 			"properties": { _isDown: true }
 
-
-	init: () -> # _percentOfCanvas #
-		@_super();
-		@_playButtonSprite = ABoo.PlayButtonSprite.create()
-		@_pauseButtonSprite = ABoo.PauseButtonSprite.create()
-
-	description: () ->
-		return "HooPlayPauseButtonGraphic"
-
 	getClickableItem: () ->
 		HOO_nameSpace.assert( @_parentCanvas, "this button must be added to a canvas to work" )
 		return @_parentCanvas._$canvas
@@ -50,17 +41,6 @@ ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooC
 		y = (height-insetHeight)/2.0
 		@_currentSprite.spriteDraw( ctx, x, y, insetWidth, insetHeight )
 
-	showDisabledButton: () ->
-		@transitionToSpriteState("disabled")
-	showMouseUp1State: () ->
-		@transitionToSpriteState("play")
-	showMouseDown1State: () ->
-		@transitionToSpriteState("play_down")
-	showMouseUp2State: () ->
-		@transitionToSpriteState("pause")
-	showMouseDown2State: () ->
-		@transitionToSpriteState("pause_down")
-
 	transitionToSpriteState: ( state ) ->
 		if(state!=@_currentSpriteState)
 			stateDict = @_threeStateButtonStateMachine_config[state]
@@ -74,35 +54,67 @@ ABoo.HooPlayPauseButtonGraphic = ABoo.HooAbstractButtonGraphic.extend( ABoo.HooC
 			@_currentSpriteState = state
 			if(@_parentCanvas)
 				@_parentCanvas.setNeedsDisplay()
-
+	
+	showDisabledButton: () ->
+		@transitionToSpriteState("disabled")
+	showMouseUp1State: () ->
+		@transitionToSpriteState("play")
+	showMouseDown1State: () ->
+		@transitionToSpriteState("play_down")
+	showMouseUp2State: () ->
+		@transitionToSpriteState("pause")
+	showMouseDown2State: () ->
+		@transitionToSpriteState("pause_down")
 	getOuterWidth: () ->
 		debugger
 		return undefined
-
 	setOuterWidth: ( arg ) ->
 		debugger
 		return undefined
-
 	getTextContent: () ->
 		debugger
 		return undefined
-
 	getHref: () ->
 		debugger
 		return undefined
-
 	setBackgroundAndTextState: ( state ) ->
 		debugger
 		return undefined
-
 	setContentText:  ( arg ) ->
 		debugger
 		return undefined
-
 	positionBackground:( state ) ->
 		debugger
 		return undefined
 )
+
+###
+	Play Button
+###
+ABoo.HooPlayPauseButtonGraphic = ABoo.AbstractFiveStateCanvasButtonGraphic.extend
+
+	init: () -> # _percentOfCanvas #
+		@_super();
+		@_playButtonSprite = ABoo.PlayButtonSprite.create()
+		@_pauseButtonSprite = ABoo.PauseButtonSprite.create()
+
+	description: () ->
+		return "Hoo_Play_Pause_Button_Graphic"
+
+###
+	Record Button
+###
+ABoo.HooRecordPauseButtonGraphic = ABoo.AbstractFiveStateCanvasButtonGraphic.extend
+
+	init: () -> # _percentOfCanvas #
+		@_super();
+		@_playButtonSprite = ABoo.RecordButtonSprite.create()
+		@_pauseButtonSprite = ABoo.PauseRecordingButtonSprite.create()
+
+	description: () ->
+		return "Hoo_Record_Pause_Button_Graphic"
+
+
 
 # I used to think...
 # HooFormButtonToggleAsync is just like form button toggle except it doesn't automatically go
@@ -140,8 +152,29 @@ ABoo.HooPlayPauseButton = ABoo.HooFormButtonToggle.extend
 	#	@_buttonGraphic.setSize( newWidth, newHeight );
 	#}
 
+###
+	Carbon copy of the above, with one word changed - Great!
+###
+ABoo.HooRecordPauseButton = ABoo.HooFormButtonToggle.extend
+
+	# _started: false,
+	_hooCanvas: undefined
+
+	_createGraphic: () ->
+		return ABoo.HooRecordPauseButtonGraphic.create( { _rootItemId:@id, _percentOfCanvas:@json.percentOfCanvas })
+
+	setupDidComplete: () ->
+
+		# this is a bit fucked because canvas becomes graphics clickable item
+		HOO_nameSpace.assert( @_hooCanvas, "this button must be added to a canvas to work" )
+		@_hooCanvas.addSubview( @_buttonGraphic )
+		@_super();
 
 
+
+###
+	Simply combines the play button with a radial progress
+###
 ABoo.SmallPlayerPlayButton = ABoo.HooWidget.extend
 	_radialProgress: undefined
 	_playPauseButton: undefined

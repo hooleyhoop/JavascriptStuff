@@ -1,8 +1,7 @@
 ABoo.SpeechBubbleBottom = SC.Object.extend({
 });
 
-// SpeechBubbleBottom.mixin({
-var SpeechBubbleBottomClassMethods = {
+ABoo.SpeechBubbleBottomClassMethods = {
 
 	draw: function( ctx, x, y, width, height, cornerRad, nubbinWidth, nubbinHeight ) {
 
@@ -62,13 +61,26 @@ var SpeechBubbleBottomClassMethods = {
 	}
 };
 
-SC.mixin( ABoo.SpeechBubbleBottom, SpeechBubbleBottomClassMethods );
+SC.mixin( ABoo.SpeechBubbleBottom, ABoo.SpeechBubbleBottomClassMethods );
 
+//
+ABoo.Circle = ({});
+ABoo.CircleClassMethods = {
+	draw: function( ctx, rect ) {
+		var rad = rect[2]/2;
+		ctx.beginPath();
+		ctx.arc( rect[0]+rad, rect[1]+rad, rad, 0, Math.PI*2, true);
+		ctx.closePath();
+	}
+}
+SC.mixin( ABoo.Circle, ABoo.CircleClassMethods );
+
+//
 ABoo.RoundedRectangle = SC.Object.extend({
 });
 
 // RoundedRectangle.mixin({
-var RoundedRectangleClassMethods = {
+ABoo.RoundedRectangleClassMethods = {
 
 	draw: function( ctx, x, y, width, height, r ) {
 
@@ -132,13 +144,12 @@ var RoundedRectangleClassMethods = {
 		ctx.closePath();
 	}
 };
-SC.mixin( ABoo.RoundedRectangle, RoundedRectangleClassMethods );
+SC.mixin( ABoo.RoundedRectangle, ABoo.RoundedRectangleClassMethods );
 
-
+//
 ABoo.RoundedTriangle = SC.Object.extend({
 });
-
-var RoundedTriangleClassMethods = {
+ABoo.RoundedTriangleClassMethods = {
 
 	draw: function( ctx, x, y, width, height, r ) {
 
@@ -244,22 +255,23 @@ var RoundedTriangleClassMethods = {
 		ctx.closePath();
 	}
 };
-SC.mixin( ABoo.RoundedTriangle, RoundedTriangleClassMethods );
+SC.mixin( ABoo.RoundedTriangle, ABoo.RoundedTriangleClassMethods );
 
-
+//
 ABoo.Graphics = SC.Object.extend({
 });
 
 // Graphics.mixin({
-var GraphicsClassMethods = {
+ABoo.GraphicsClassMethods = {
 
 	roundedTriangle: ABoo.RoundedTriangle,
 	roundedRect: ABoo.RoundedRectangle,
-	speechBubble_bottom: ABoo.SpeechBubbleBottom
+	speechBubble_bottom: ABoo.SpeechBubbleBottom,
+	circle: ABoo.Circle
 };
-SC.mixin( ABoo.Graphics, GraphicsClassMethods );
+SC.mixin( ABoo.Graphics, ABoo.GraphicsClassMethods );
 
-
+//
 ABoo.HooSprite = SC.Object.extend({
 
 	setPropertiesOfSprite: function( propertyDict ) {
@@ -441,99 +453,341 @@ ABoo.PauseButtonSprite = ABoo.HooSprite.extend({
 	}
 });
 
+ABoo.RecordButtonSprite = ABoo.HooSprite.extend({
+	_isDisabled: true,
+	_isDown: false,
 
-ABoo.ShiteDisplayLink = SC.Object.extend({
+	spriteDraw: function( ctx, x, y, width, height ) {
 
-	_listeners: undefined,
-	_canvasElements: undefined,
-	_running: false,
-	_timer: undefined,
-	_time: 0,
+		var graphicToDraw = "circle";
 
-	init: function( /* init never has args */ ) {
-	    this._super();
-		this._listeners = new Array();
-		this._canvasElements = new Array();
-		this._time = (new Date()).getTime();
-	},
+		ctx.save();
 
-	registerListener: function( listener ) {
-		this._listeners.push( listener );
-		if(this._running==false && this._listeners.length>0 )
-			this.start();
-	},
-	unregisterListener: function( listener ) {
-		var i = this._listeners.indexOf(listener);
-		if(i>-1)
-			this._listeners.splice(i,1);
-		if(this._running && this._canvasElements.length==0 && this._listeners.length==0 )
-			this.stop();
-	},
+			var innerCol, innerinnerCol, shadowCol, my_gradient;
 
-	registerCanvas: function( canvas ) {
-		this._canvasElements.push( canvas );
-		if(this._running==false && this._canvasElements.length>0 )
-			this.start();
-	},
+			if( this._isDisabled ) {
+				innerCol = "#88a380";
+				innerinnerCol = "#7d9876";
+				shadowCol = null;
+				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+				my_gradient.addColorStop(0, "rgba(230,230,230,1)");
+				my_gradient.addColorStop(1, "rgba(230,230,230,0.5)");
+			} else if( this._isDown ) {
+				innerCol = "#4a6150";
+				innerinnerCol = "#248541";
+				shadowCol = null;
+				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+				my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
+				my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
+				my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
+			} else {
+				innerCol = "#5EBB47";
+				innerinnerCol = "#39B54A";
+				shadowCol = "rgba(0,0,0,0.3)";
+				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+				my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
+				my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
+				my_gradient.addColorStop(1, "rgba(0,0,0,0)");
+			}
 
-	unregisterCanvas: function( canvas ) {
-		console.warn("unregisterCanvas CANVAS!");
-		var wasRunning = false;
-		if( this._running ){
-			this.stop();
-			wasRunning = true;
-		}
+			var tenPercentOfWidth = width / 10.0;
+			var tri3Rect = [x,y,width,height];
+			tri3Rect = ABoo.VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
+			var tri2Rect = ABoo.VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
+			var tri1Rect = ABoo.VectorMath.inflateRect( tri2Rect, -tenPercentOfWidth, -tenPercentOfWidth );
 
-		var i = this._canvasElements.indexOf(canvas);
-		if(i>-1) {
-			this._canvasElements.splice(i,1);
-			console.warn("removed canvas from array CANVAS!");
-		}
-		if( wasRunning && (this._canvasElements.length>0 || this._listeners.length>0) ) {
-			console.warn("restarting DSIPLAY LINK because: was running? "+wasRunning +", "+this._canvasElements.length+" canvases, "+this._listeners.length+" listeners" );
-			this.start();
-		} else {
-			console.warn("Not restarting DSIPLAY LINK because: "+wasRunning +" "+this._canvasElements.length+" "+this._listeners.length );
-		}
-	},
+			ctx.fillStyle = my_gradient;
+				ABoo.Graphics[graphicToDraw].draw( ctx, tri3Rect );
+			ctx.fill();
 
-	start: function() {
-		console.warn("STARTING DISPLAY LINK!");
-		var self = this;
-		this._timer = setInterval(function(){self._callback.call(self);}, 33);
-		this._running = true;
-	},
-	stop: function() {
-		console.warn("STOPPING DISPLAY LINK!");
-        clearInterval(this._timer);
-        this._timer = null;
-		this._running = false;
-	},
+			ctx.shadowColor = shadowCol;
+			ctx.shadowBlur = 4;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = tenPercentOfWidth/10;
 
-	_callback: function() {
-		HOO_nameSpace.assert( this._canvasElements.length>0 || this._listeners.length>0, "why am i drawing with no listeners or canvases?");
+			ctx.fillStyle = innerCol;
+				ABoo.Graphics[graphicToDraw].draw( ctx, tri2Rect );
+			ctx.fill();
 
-		//console.log("ENTER TIMER::"+this._timer);
-		this._time = (new Date()).getTime();
-		var t = this._time;
-		var listenersCopy = this._listeners.slice(0);
-		$.each( listenersCopy, function(indexInArray, valueOfElement){
-			valueOfElement.timeUpdate( t );
-		});
+			ctx.shadowColor= undefined;
+			ctx.shadowBlur = undefined;
 
-		//this could mutate the array
-		var canvasElementsCopy = this._canvasElements.slice(0);
-		$.each( canvasElementsCopy, function(indexInArray, valueOfElement){
-			valueOfElement.displayUpdate( t );
-		});
-		//console.log("EXIT TIMER::"+this._timer);
+			ctx.fillStyle = innerinnerCol;
+				ABoo.Graphics[graphicToDraw].draw( ctx, tri1Rect );
+			ctx.fill();
+
+		ctx.restore();
 	}
 });
 
-var ShiteDisplayLinkClassMethods = {
-	sharedDisplayLink: undefined
-};
-SC.mixin( ABoo.ShiteDisplayLink, ShiteDisplayLinkClassMethods );
+// TODO! Put the pause button in the record circle
+ABoo.PauseRecordingButtonSprite = ABoo.HooSprite.extend({
+	_isDown: false,
 
-ABoo.ShiteDisplayLink.sharedDisplayLink = ABoo.ShiteDisplayLink.create();
+	spriteDraw: function( ctx, x, y, width, height ) {
 
+		var graphicToDraw = "roundedRect";
+		var innerCol, innerinnerCol, shadowCol, my_gradient;
+
+		if( this._isDown ) {
+			innerCol = "#0f6391";
+			innerinnerCol = "#005FAE";
+			shadowCol = null;
+			my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
+			my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
+			my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
+		} else {
+			innerCol = "#0080C7";
+			innerinnerCol = "#005FAE";
+			shadowCol = "rgba(0,0,0,0.3)";
+			my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
+			my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
+			my_gradient.addColorStop(1, "rgba(0,0,0,0)");
+		}
+
+
+		var tenPercentOfWidth = width / 10.0;
+		var scale = width/75.0; // design size was 75px
+		var insetRect3 = [x,y,width,height];
+		insetRect3 = ABoo.VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
+
+		// construct 3 inset rectangles
+		var rect3PtArray = [[insetRect3[0],insetRect3[1]],[insetRect3[0]+insetRect3[2],insetRect3[1]],[insetRect3[0]+insetRect3[2], insetRect3[1]+insetRect3[3]], [insetRect3[0], insetRect3[1]+insetRect3[3]]];
+		var rect2PtArray = ABoo.VectorMath.offsetPolygon( rect3PtArray, 5.0*scale );
+		var rect1PtArray = ABoo.VectorMath.offsetPolygon( rect2PtArray, 5.0*scale );
+
+		var insetRect2 = [ rect2PtArray[0][0], rect2PtArray[0][1], rect2PtArray[1][0]-rect2PtArray[0][0], rect2PtArray[2][1]-rect2PtArray[0][1] ];
+		var insetRect1 = [ rect1PtArray[0][0], rect1PtArray[0][1], rect1PtArray[1][0]-rect1PtArray[0][0], rect1PtArray[2][1]-rect1PtArray[0][1] ];
+
+		ctx.save();
+
+			// outer
+			var rects = ABoo.VectorMath.splitRectInTwo( insetRect3, 2.0*scale );
+			ctx.fillStyle = my_gradient;
+			ctx.save();
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+			ctx.save();
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+			// inner
+			ctx.shadowColor = shadowCol;
+			ctx.shadowBlur = 4;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = tenPercentOfWidth/10;
+
+			rects = ABoo.VectorMath.splitRectInTwo( insetRect2, 9.0*scale );
+			ctx.fillStyle = innerCol;
+			ctx.save();
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+			ctx.save();
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+			ctx.shadowColor= undefined;
+			ctx.shadowBlur = undefined;
+
+			// inner inner
+			rects = ABoo.VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
+			ctx.fillStyle = innerinnerCol;
+			ctx.save();
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+			ctx.save();
+				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+				ctx.fill();
+			ctx.restore();
+
+		ctx.restore();
+	}
+});
+
+// TODO! What is the difference between a sprote and a graphic?
+ABoo.DonutTestSprite = ABoo.HooSprite.extend({
+
+	_loadColor:"rgba(170,170,170,0.8)",
+	_playColor:"rgba(247,163,0,1.0)",
+	_busyColor:"#22b248",
+
+	spriteDraw: function( ctx, x, y, width, height, busyAngle, outerRad, innerRad, loadAmt, playAmt ) {
+
+		outerRad = typeof(outerRad)!='undefined' ? outerRad : 1.0;
+		innerRad = typeof(innerRad)!='undefined' ? innerRad : 0.5;
+		loadAmt = typeof(loadAmt)!='undefined' ? loadAmt : 0;
+		playAmt = typeof(playAmt)!='undefined' ? playAmt : 0;
+
+		ctx.save();
+
+			// var newCanvas = $("<canvas></canvas>")[0];
+			// var newContext = newCanvas.getContext('2d');
+			// newCanvas.width = width;
+			// newCanvas.height = height;
+
+			var loadingRotAmount = loadAmt/360.0 * Math.PI*2.0;
+			var playingRotAmount = playAmt/360.0 * Math.PI*2.0;
+
+			var busySpinnerAngle = busyAngle % 360 * Math.PI/180.0;
+
+			// THis actually happens quite often > basically happerns when you have started playing but...
+			//HOO_nameSpace.assert( loadingRotAmount>=playingRotAmount, "Go on, explain to me how this happened.");
+
+			var outerRadius = width/2.0 * outerRad;
+			var innerRadius = width/2.0 * innerRad;
+
+			var centrePt = [width/2.0, height/2.0];
+			var startAngle = -Math.PI/2.0;
+			var busySpinnerWidth = Math.PI/6.0;
+			var playingEndAngle = startAngle+playingRotAmount;
+			var busyStartAngle = busySpinnerAngle-busySpinnerWidth/2.0;
+			var busyEndAngle = busySpinnerAngle+busySpinnerWidth/2.0;
+
+			ctx.globalCompositeOperation = 'source-over';
+
+			// Man, i am a fool for not working out the winding rule stuff!!!
+			// Man, i am a fool for not working out the winding rule stuff!!!
+			// Man, i am a fool for not working out the winding rule stuff!!!
+			// Man, i am a fool for not working out the winding rule stuff!!!
+			// Man, i am a fool for not working out the winding rule stuff!!!
+
+			// loading amount
+			ctx.fillStyle = this._loadColor;
+			ctx.beginPath();
+			ctx.moveTo(centrePt[0], centrePt[1]);
+			var loadingEndAngle = startAngle+loadingRotAmount;
+			ctx.arc(centrePt[0], centrePt[1], outerRadius, startAngle, loadingEndAngle, false);
+			ctx.closePath();
+			ctx.fill();
+
+			// playing amount
+			ctx.fillStyle = this._playColor;
+			ctx.beginPath();
+			ctx.moveTo(centrePt[0], centrePt[1]);
+			var playingEndAngle = startAngle+playingRotAmount;
+			ctx.arc(centrePt[0], centrePt[1], outerRadius, startAngle, playingEndAngle, false);
+			ctx.closePath();
+			ctx.fill();
+
+			// busy spinner
+			if(busyAngle!=-1)
+			{
+				var dist = (outerRadius-innerRadius);
+				var pt1 = [centrePt[0]+dist,centrePt[1]];
+				//var pt2 = [centrePt[0]+innerRadius,centrePt[1]];
+
+				var px1 = Math.cos(busyEndAngle)*(pt1[0]-centrePt[0]) - Math.sin(busyEndAngle) * (pt1[1]-centrePt[1]) + centrePt[0];
+				var py1 = Math.sin(busyEndAngle)*(pt1[0]-centrePt[0]) + Math.cos(busyEndAngle) * (pt1[1]-centrePt[1]) + centrePt[1];
+				var px2 = Math.cos(busyStartAngle)*(pt1[0]-centrePt[0]) - Math.sin(busyStartAngle) * (pt1[1]-centrePt[1]) + centrePt[0];
+				var py2 = Math.sin(busyStartAngle)*(pt1[0]-centrePt[0]) + Math.cos(busyStartAngle) * (pt1[1]-centrePt[1]) + centrePt[1];
+
+				var bufferingGradient = ctx.createLinearGradient( px1, py1, px2, py2 );
+				bufferingGradient.addColorStop(0, this._busyColor);
+				bufferingGradient.addColorStop(1, "rgba(255,255,0,0)");
+
+				ctx.fillStyle = bufferingGradient;
+				ctx.beginPath();
+				ctx.moveTo(centrePt[0], centrePt[1]);
+				ctx.arc(centrePt[0], centrePt[1], outerRadius, busyStartAngle, busyEndAngle, false);
+				ctx.closePath();
+				ctx.fill();
+			}
+
+			// punch out the center hole
+			ctx.globalCompositeOperation = 'destination-out';
+
+			ctx.fillStyle = "#000";
+			ctx.beginPath();
+			ctx.moveTo(centrePt[0], centrePt[1]);
+			ctx.arc(centrePt[0], centrePt[1], innerRadius, 0, Math.PI*2, false);
+			ctx.closePath();
+			ctx.fill();
+
+			// ctx.drawImage(newCanvas, 0, 0);
+
+		ctx.restore();
+	}
+});
+
+
+/*
+ *
+*/
+ABoo.BarberPoleSprite = ABoo.HooSprite.extend({
+	spriteDraw: function( ctx, x, y, width, height, percent, busyAlpha ) {
+
+		ctx.save();
+
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.clearRect(x,y,width,height);
+		ctx.globalAlpha = 1.0;
+		ctx.globalCompositeOperation = 'source-over';
+
+		// draw the background
+		//ctx.fillStyle = "rgba(100,100,100,1)";
+		//ctx.fillRect(0,0,width,height);
+
+		// draw the slanty rects
+		//putback if( this._busyFadeHelper._showBusy===true ) {
+
+			ctx.save();
+
+			ctx.beginPath();
+			ctx.rect(0, 0, width-4, height);
+			ctx.closePath();
+			ctx.clip();
+
+			//putback this._busyFadeHelper.step();
+			// console.log("alpha is "+busyAlpha+", percent is"+percent);
+			ctx.fillStyle = "rgba(170,160,160,"+busyAlpha+")";
+
+			var barWidth = 5;
+			var barSpace = 10;
+			var numberOfBars = width/barSpace;
+
+			var maxOffset = 10;
+			var xDisplacement = maxOffset*percent;
+
+			var x = -barWidth;
+			for( var i=0; i<numberOfBars; i++ ) {
+
+				// offset each slanty rect
+				// the transform seems to mess up the clip rect th ctx.setTransform(1, 0, 0, 1, x, 0);
+				ctx.beginPath();
+
+				// draw a slanty recty
+				ctx.moveTo( x+ xDisplacement, 0 );
+				ctx.lineTo( x+ xDisplacement+barWidth, 0 );
+				ctx.lineTo( x+ xDisplacement+barWidth-barWidth, height-4 );
+				ctx.lineTo( x+ xDisplacement-barWidth, height-4 );
+				ctx.closePath();
+				ctx.fill();
+				x = x+barSpace;
+			}
+
+			ctx.restore();
+		//putback}
+
+		// draw a grad over the top
+		//ctx.setTransform(1, 0, 0, 1, 0, 0);
+		//ctx.beginPath();
+		//ctx.rect(0, 0, width, height);
+
+		//ctx.globalCompositeOperation = 'lighter';
+		//gradient = ctx.createLinearGradient(0, height, 0, 0);
+		//gradient.addColorStop(1.0, "rgba(235, 235, 235, 0.3)");
+		//gradient.addColorStop(0, "rgba(0, 0, 0, 0.1)");
+		//ctx.fillStyle = gradient;
+		//ctx.fill();
+
+		ctx.restore();
+	}
+});

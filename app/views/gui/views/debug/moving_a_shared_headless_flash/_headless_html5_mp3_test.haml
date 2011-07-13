@@ -1,13 +1,13 @@
 -# http://0.0.0.0:3000/widgets/HeadlessHtml5Mp3Test
 -# http://shooley.audioboo.fm:3000/widgets/HeadlessHtml5Mp3Test
 
--# push( headless_html5_mp3_test)
-
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
 	-# TODO: really we want a link here, right? Then in js we remove the link and show the image,
 	-# or we could put the image in as well as the link. Ok, so the link is optional
 	= image_tag("rails.png", :style=>"width:75px; height:75px; padding-right: 10px; padding-top: 5px;" )
 	= link_to "click to play mp3", _.mp3Url
+
+	-# != "$('.grid').replaceWith('#{escape_javascript(render :partial => 'list')}')"
 
 - if( _.includeOnce? )
 	:javascript
@@ -47,13 +47,7 @@
 		*/
 		#{_.qualifiedJsClassName} = ABoo.NewAbstractSmallPlayer.extend( ABoo.PropertyAnimMixin, {
 
-			didInsertElement: function() {
-				this._super();
-
-				var noJsAnchor$ = this.getFirstDomItemOfType("a");
-				noJsAnchor$.remove();
-
-				this._placeHolder$ = this.getFirstDomItemOfType("img");
+			createPlayerBackend: function() {
 				this._playerBackend = ABoo.NewHtml5HeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
 			}
 
