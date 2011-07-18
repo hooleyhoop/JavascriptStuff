@@ -32,6 +32,7 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 
 	# State machine callbacks
 	cmd_enableButton: () ->
+		HOO_nameSpace.assert( @_clickableItem$, "did we set this up properly?" )
 		@_listenerDebugger.addListener( @_clickableItem$, 'mousedown', @, @_mouseDown )
 
 	cmd_disableButton: () ->
@@ -78,8 +79,12 @@ ABoo.HooThreeStateItem = ABoo.HooWidget.extend
 				else
 					actionToCall = actionToCall[0]
 
+			if typeof actionToCall is 'string'
+				actionToCall =  @_target[actionToCall]
 			actionToCall.call( @_target, @_actionArg, onCompleteStuffHash )
 
+			#SC.invoke( @_target, @_actionArg, onCompleteStuffHash )
+			
 		if @_isAsync==false
 			completionCallback()
 

@@ -73,6 +73,7 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 
 // forward events to 'this'
 function eventTrampoline(e,a) {
+	//alert("oops, thbis zis still being used eh?");
 	var target = e.data.target;
 	var action = e.data.action;
 	var arg = e.data.arg;
@@ -107,7 +108,7 @@ ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 
 	// extract bindings from json
 	setup_hoo_binding_from_json: function( bindingName ) {
-		if( this.json.bindings && this.json.bindings[bindingName] ){
+		if( this.json && this.json.bindings && this.json.bindings[bindingName] ){
 			var bindingConfig = this.json.bindings[bindingName];
 			this.bindToKeypath( bindingConfig['to_taget'], bindingConfig['to_property'], bindingConfig['do_action'] );
 			return true;
@@ -138,7 +139,7 @@ ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 	*/
 	setup_hoo_action_from_json: function( action ) {
 
-		if( this.json.javascriptActions && this.json.javascriptActions[action] )
+		if( this.json && this.json.javascriptActions && this.json.javascriptActions[action] )
 		{
 			// helper function to unpack json
 			var extractActionFromjson  = function( a ) {
@@ -177,9 +178,11 @@ ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 			}
 		}
 		return null;
+	},
+
+	description: function() {
+		return this;
 	}
-
-
 
 });
 
@@ -261,6 +264,9 @@ ABoo.SCView = SC.View.extend( ABoo.RootObject, {
 		this.set( 'element', this.div$.html() );
 		this._notifyWillInsertElement();
 		this._notifyDidInsertElement();
+		return this;
+	},
+	description: function() {
 		return this;
 	}
 });

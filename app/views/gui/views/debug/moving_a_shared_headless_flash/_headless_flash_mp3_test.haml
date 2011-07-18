@@ -13,46 +13,13 @@
 	:javascript
 
 		/*
-		 * Only one of these per page
-		*/
-		ABoo.NewFlashHeadlessPlayerSingleton = ABoo.NewAbstractHeadlessPlayerSingleton.extend({
-			_swfSrc: "HeadlessPlayer/lib/Debug/HeadlessPlayer",
-			_headlessFlashOb: undefined,
-
-			// create the backing swf
-			init: function( /* init never has args */ ) {
-				this._super();
-				var flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf( this._swfSrc );
-
-				// varoius autostart options here - load, play, etc. - cant really use 'em to stay consistent with html5 audio
-				this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL( flashURL, '100%', '100%', {autostart:'load'} );
-				this._audioPlayingDomNode = this._headlessFlashOb;
-			},
-
-			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
-				return timeRanges[timeRangeIndex][1];
-			}
-		});
-		SC.mixin( ABoo.NewFlashHeadlessPlayerSingleton, ABoo.SingletonClassMethods );
-
-
-		/*
-		 * One of these for each instance on the page
-		*/
-		ABoo.NewFlashHeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.extend({
-			_createSingletonPlayer: function() {
-				this._headLessSingleton = ABoo.NewFlashHeadlessPlayerSingleton.sharedInstance();
-			}
-		});
-
-
-		/*
 		 * Small Player with canvas front-end (flash backend)
 		*/
 		#{_.qualifiedJsClassName} = ABoo.NewAbstractSmallPlayer.extend( ABoo.PropertyAnimMixin, {
 
 			createPlayerBackend: function() {
 				this._playerBackend = ABoo.NewFlashHeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
+				this._playerBackend._autoplay = true;
 			}
 		});
 

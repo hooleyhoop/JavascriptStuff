@@ -178,14 +178,13 @@ ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 		// if there is no binding and the initial state isn't disabled, we need to call 'enable', right?
 
 		var clickable = this._buttonGraphic.getClickableItem();
-		if(!clickable)
-			debugger;
+		HOO_nameSpace.assert( clickable, "did we set this up properly?" )
 
 		this._buttonSMControl._clickableItem$ = clickable;
 
 		/* at the moment this only handles initial turn-on! you cannot observe a turn off */
 		var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
-		if( hasBinding==false && this.json.initialState>0 ) {
+		if( hasBinding==false && this.json && this.json.initialState>0 ) {
 			if(this.json.initialState==1)
 				this._buttonSMControl.sendEvent( "ev_showState1" );
 			else if(this.json.initialState==3)
@@ -197,9 +196,10 @@ ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 		this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
 		if( this._mouseClickAction==null ) {
 			console.info("No JSON Action - using form");
-			this._mouseClickAction = this.defaultAction();
+			this._mouseClickAction = this.defaultAction(); // not all buttons have a 'default' - so this can fail
 		}
-		this._buttonSMControl.setButtonTarget( this._mouseClickAction.t, this._mouseClickAction.a, this._mouseClickAction.w, this._mouseClickAction.actionIsAsync );
+		if(this._mouseClickAction)
+			this._buttonSMControl.setButtonTarget( this._mouseClickAction.t, this._mouseClickAction.a, this._mouseClickAction.w, this._mouseClickAction.actionIsAsync );
 	},
 
 	// Maaan, this shouldn't really be here, but when i get the other buttons working again sort out the heirarchy

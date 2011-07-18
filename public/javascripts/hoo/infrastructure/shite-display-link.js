@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Wed, 13 Jul 2011 17:09:53 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 15:40:10 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/shite-display-link.coffee
  */
 
@@ -52,13 +52,18 @@
       if (wasRunning && (this._canvasElements.length > 0 || this._listeners.length > 0)) {
         return this.start();
       } else {
-        return console.warn("Not restarting DSIPLAY LINK because: " + wasRunning(+" " + this._canvasElements.length + " " + this._listeners.length));
+        return console.warn("Not restarting DSIPLAY LINK because: " + wasRunning + " " + this._canvasElements.length + " " + this._listeners.length);
       }
     },
     start: function() {
       this._timer = setInterval(__bind(function() {
-        return this._callback.call(this);
-      }, this), 33);
+        try {
+          return SC.run(this, this._callback);
+        } catch (e) {
+          alert(e);
+          debugger;
+        }
+      }, this), 1000 / 50.0);
       return this._running = true;
     },
     stop: function() {

@@ -24,9 +24,7 @@ module Gui::Views::Drawing::Player
 		end
 
 		def jsonProperties
-
-			self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName });
-
+			self.addRuntimeObject({:_hooCanvas => @parentCanvas.varName })
 			allItems = {
 			}
 

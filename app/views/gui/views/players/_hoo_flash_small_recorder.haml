@@ -1,0 +1,91 @@
+-# http://0.0.0.0:3000/widgets/HooFlashSmallRecorder
+-# http://shooley.audioboo.fm:3000/widgets/HooFlashSmallRecorder
+
+%div[_]( data-jsclass='ABoo.FlashSmallRecorder' style="" )
+	= insert( _.views, nil )
+	waaaaaa!
+	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px; width:215px; height:138px;" )
+	-# Is this all wrong? It depends what we want to happen when Javascript is disabled?
+	-# If we want to show something nice we should put that in haml and the player in javascript only
+
+	-# Another option is just to set the visibilty of stuff with javascript
+	-# The play pause button is already invisible if you dont have js enabled
+
+- if( _.includeOnce? )
+	:javascript
+
+		// Grrrr!
+		// it is important i think that we can create these things dynamically
+		ABoo.FlashSmallRecorder = ABoo.SCView.extend({
+
+			_smallPlayerFrontEnd: undefined,
+			_recorderSwf: undefined,
+			_stateMachine: undefined,
+
+			didInsertElement: function() {
+				this._super();
+
+				this._stateMachine = ABoo.AudioRecorderStateMachine.create({_controller: this});
+
+				this._placeHolder$ = this.getFirstDomItemOfType("img");
+
+				var flashURL = ABoo.SharedFlashObject.uRLForSwf( "SharedComponents/RecorderV1/lib/Debug/RecorderV1" );
+				this._recorderSwf = ABoo.SharedFlashObject.sharedSwfForURL( flashURL, this._placeHolder$.width(), this._placeHolder$.height(), {} );
+				// NB, it only swaps in when fails to load due to flash blocker
+				this._recorderSwf.swapInForItem( this, this._placeHolder$ );
+
+
+				// NB Your application window size must be at least 215 x 138 pixels, the minimum size required to display the dialog box, or access is denied automatically.
+
+				//this._hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas();
+				//this._hooCanvas.swapInFor( this._placeHolder$ );
+
+				// TODO: not how we will size it, but just to make it visible for now
+				//this._hooCanvas._setSize(350,350);
+
+				// At last! we have found the bit where the whole scheme fails!
+				//var thePlayButtonJson = { "percentOfCanvas":0.9, "javascriptActions":{"mouseClickAction":{"action_taget":"HooWindow","action_event":"hooLog","action_arg":"Holy Cock","actionIsAsync":false}} };
+				//var theRadialProgressJson = { "_outerRad":0.99, "_innerRad":0.5 };
+
+				//var radialProgress = ABoo.HooRadialProgress.create( {json:theRadialProgressJson, _hooCanvas: this._hooCanvas } );
+				//var playPause = ABoo.HooPlayPauseButton.create( {json:thePlayButtonJson, _hooCanvas: this._hooCanvas } );
+
+				//_smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create( {_radialProgress:radialProgress , _playPauseButton:playPause });
+
+				//radialProgress.setupDidComplete();
+				//playPause.setupDidComplete();
+				//_smallPlayerFrontEnd.setupDidComplete();
+
+				//radialProgress.setLoadProgress(200);
+			},
+
+			// this doesn't mean that the swf is ready
+			didSwapInFlash: function( swf ) {
+				//this._state = true;
+			},
+
+			didSwapOutFlash: function( swf ) {
+				//this._state = false;
+			},
+
+			// THIS means the flash is ready
+			flashDidLoad: function( swf ) {
+				/* wait for flash to pop up window */
+				var actualRecorder$ = this._recorderSwf._observableSwf;
+				var watchableEvents = 'error showMonitoring';
+				var self = this;
+				actualRecorder$.bind( watchableEvents, function( e ){
+					self.handleFlashRecorderEvent(e.type);
+				})
+			},
+
+			handleFlashRecorderEvent: function( eventName ) {
+				console.log("Flash Recorder: got an event > " + eventName );
+				this._stateMachine.processInputSignal( eventName );
+			},
+
+			cmd_showMonitoring: function() {
+				this._recorderSwf.setSwfSize(1,1);
+			}
+
+		});

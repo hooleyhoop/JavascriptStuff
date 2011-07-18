@@ -23,7 +23,7 @@ ABoo.FlashObject = SC.Object.extend
 		@_flashVarDict or= new Object()
 		@_swfID = ABoo.FlashObject.newID()
 		@_objectTagString = ABoo.FlashObject.embedString( @_url, @_swfID, @_width, @_height, @_flashVarDict )
-		$wrapper = $("<div class='swfHolder'/>")
+		$wrapper = $("<div class='swfHolder' style='overflow:hidden''/>")
 
 		if($.browser.msie)
 			$wrapper[0].innerHTML = @_objectTagString;

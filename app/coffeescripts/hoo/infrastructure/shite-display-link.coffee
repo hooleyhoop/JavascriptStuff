@@ -44,13 +44,19 @@ ABoo.ShiteDisplayLink = SC.Object.extend
 			#console.warn("restarting DSIPLAY LINK because: was running? "+wasRunning +", "+@_canvasElements.length+" canvases, "+@_listeners.length+" listeners" )
 			@start()
 		else
-			console.warn("Not restarting DSIPLAY LINK because: "+wasRunning +" "+@_canvasElements.length+" "+@_listeners.length )
+			console.warn("Not restarting DSIPLAY LINK because: "+wasRunning+" "+@_canvasElements.length+" "+@_listeners.length )
 
 	start: () ->
 		#console.warn("STARTING DISPLAY LINK!")
 		@_timer = setInterval( () =>
-			@_callback.call(this)
-		, 33)
+			# woo! run the callback inside an sc runloop
+			try
+				SC.run( this, @_callback ) #@_callback.call(this)
+			catch e
+				alert(e)
+				debugger
+		, 1000/50.0)
+		# TODO: we should monitor the actual rate that we achieve and adjust accordingly
 		@_running = true
 
 	stop: () ->
@@ -61,7 +67,7 @@ ABoo.ShiteDisplayLink = SC.Object.extend
 
 	_callback: () ->
 		HOO_nameSpace.assert( @_canvasElements.length>0 or @_listeners.length>0, "why am i drawing with no listeners or canvases?")
-
+	
 		#console.log("ENTER TIMER::"+@_timer)
 		@_time = (new Date()).getTime()
 		t = @_time

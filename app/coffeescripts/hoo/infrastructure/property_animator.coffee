@@ -8,6 +8,9 @@ ABoo.HooPropertyAnimator = SC.Object.extend
 	_property: undefined
 	_ended: undefined
 
+	init: () ->
+		@_super
+		
 	animate: ( target, property, endVal, duration, completeCallback ) ->
 		@_target = target
 		@_property = property
@@ -19,22 +22,28 @@ ABoo.HooPropertyAnimator = SC.Object.extend
 		@_ended = false
 
 	update: (time) ->
-		HOO_nameSpace.assert( time, "time? time? time?" );
 
 		if(@_ended)
 			@_didEnd()
 			return
 
-		updatedVal
-		if time > @_fadeTimeEnd
+		skippedLerp = false
+		
+		if time <= @_fadeTimeStart
+			updatedVal = @_fadeStartVal # i really dont know how this is happening
+			
+		else if time >= @_fadeTimeEnd
 			updatedVal = @_fadeEndVal
 			@_ended = true		#defer completion till next cycle (so we are certain to draw the end state)
+			skippedLerp = true
 		else
 			updatedVal = ABoo.HooMath.lerp( @_fadeTimeStart, @_fadeStartVal, @_fadeTimeEnd, @_fadeEndVal, time )
 
-		#console.log("fade "+updatedVal)
-		if(isNaN(updatedVal))
-			debugger
+			if(isNaN(updatedVal))
+				debugger
+		
+		#¢console.log("fade "+@_property+" "+updatedVal)
+
 		@_target.set( @_property, updatedVal )
 	
 
@@ -61,6 +70,7 @@ ABoo.PropertyAnimMixin =
 
 		animator = @_propertyAnimations[propertyName]
 		if(!animator)
+			console.log("animating "+propertyName)			
 			animator = ABoo.HooPropertyAnimator.create()
 			ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener( animator )
 			@_propertyAnimations[propertyName] = animator
@@ -80,4 +90,5 @@ ABoo.PropertyAnimMixin =
 				animator.forceSetValue(to)
 				animator._fadeComplete = null
 				@_propertyAnimations[propertyName] = null
-		
+		else
+			@set(propertyName,to)

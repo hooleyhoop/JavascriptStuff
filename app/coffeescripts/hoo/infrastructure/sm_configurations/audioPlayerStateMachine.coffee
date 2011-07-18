@@ -24,7 +24,7 @@ ABoo.AudioPlayerStateMachine = SC.Object.extend
 		if func
 			func.call(@_controller)
 		else
-			console.log("Didnt find function "+command._name)
+			console.log("Didnt find function "+command._name+" on "+@_controller.description() )
 
 		# Here is one 'special' case, this has to manually trigger complete
 		if command._name is "cmd_showResettingLoader"
@@ -65,9 +65,11 @@ ABoo.AudioPlayerStateMachine = SC.Object.extend
 				@_loadingController.handle( "ev_load" )
 				@_playingController.handle( "ev_canPlay" )
 
-			#when "loadeddata"
-			#	@_loadingController.handle( "ev_loadComplete" )
-
+			# Oops, loadeddata doesn't mean ev_loadComplete as i thought. Shame, it would have been much more useful
+			when "loadeddata"
+				#@_loadingController.handle( "ev_loadComplete" )
+				0
+	
 			when "emptied"
 				@_loadingController.handle( "ev_reset" )
 				@_playingController.handle( "ev_reset" )
@@ -181,6 +183,7 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			{"state": "st_stopped", "event": "ev_play", "nextState": "st_playing"}
 
 			# html5 audio does not always send 'play' event
+			# html5 audio sends ev_timeupdate when it is not playing, ie, when time is 0
 			{"state": "st_stopped", "event": "ev_timeupdate", "nextState": "st_playing"}
 			
 			{"state": "st_stopped", "event": "ev_error", "nextState": "st_error"}

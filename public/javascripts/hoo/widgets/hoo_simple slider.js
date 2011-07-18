@@ -199,6 +199,9 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	// our local value changed - could/should do this with SC bindings?
 	_playDidChange: function( target, property ) {
 		var playDivWidth = this._maxBarWidth*this._playedAmount;
+		// console.log("playDivWidth                     "+playDivWidth+" "+this._playedAmount);
+		if(playDivWidth<0)
+			debugger;
 		this._playProgressDiv.width( playDivWidth );
 	},
 
@@ -220,6 +223,8 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	/* we observed a change in the headless player! - notification callback */
 	loadedDidChange: function( target, property ) {
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( target[property], this._maxAmount );
+		if(percent<0)
+			debugger
 		if(percent==0)
 			this.coldSetProperty( '_loadedAmount', percent );
 		else
@@ -230,7 +235,7 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	playedDidChange: function( target, property ) {
 		var updatedAmount = target[property];
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( updatedAmount, this._maxAmount );
-		//console.log("Played "+updatedAmount+" "+percent );
+
 		if(percent==0)
 			this.coldSetProperty( '_playedAmount', percent );
 		else

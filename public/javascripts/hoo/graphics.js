@@ -282,26 +282,22 @@ ABoo.HooSprite = SC.Object.extend({
 	}
 });
 
-ABoo.PlayButtonSprite = ABoo.HooSprite.extend({
-	_isDisabled: true,
-	_isDown: false,
-
-	spriteDraw: function( ctx, x, y, width, height ) {
-
-		var graphicToDraw = "roundedTriangle";
+//
+ABoo.PlayButtonGraphic = SC.Object.extend({});
+ABoo.PlayButtonGraphicClassMethods = {
+	draw: function( ctx, x, y, width, height, isDsabled, isDown ) {
 
 		ctx.save();
-
 			var innerCol, innerinnerCol, shadowCol, my_gradient;
 
-			if( this._isDisabled ) {
+			if( isDsabled ) {
 				innerCol = "#88a380";
 				innerinnerCol = "#7d9876";
 				shadowCol = null;
 				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
 				my_gradient.addColorStop(0, "rgba(230,230,230,1)");
 				my_gradient.addColorStop(1, "rgba(230,230,230,0.5)");
-			} else if( this._isDown ) {
+			} else if( isDown ) {
 				innerCol = "#4a6150";
 				innerinnerCol = "#248541";
 				shadowCol = null;
@@ -332,10 +328,10 @@ ABoo.PlayButtonSprite = ABoo.HooSprite.extend({
 			var tri1Rect = [ triangle1PtArray[0][0], triangle1PtArray[0][1], triangle1PtArray[1][0]-triangle1PtArray[0][0], triangle1PtArray[2][1]-triangle1PtArray[0][1] ];
 
 			ctx.fillStyle = my_gradient;
-				ABoo.Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], tenPercentOfWidth );
+				ABoo.Graphics["roundedTriangle"].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], tenPercentOfWidth );
 			ctx.fill();
 			//ctx.strokeStyle = "#000";
-			//	ABoo.Graphics[graphicToDraw].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], 0 );
+			//	ABoo.Graphics["roundedTriangle"].draw( ctx, tri3Rect[0], tri3Rect[1], tri3Rect[2], tri3Rect[3], 0 );
 			//ctx.stroke();
 
 			ctx.shadowColor = shadowCol;
@@ -344,20 +340,29 @@ ABoo.PlayButtonSprite = ABoo.HooSprite.extend({
 			ctx.shadowOffsetY = tenPercentOfWidth/10;
 
 			ctx.fillStyle = innerCol;
-				ABoo.Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], tenPercentOfWidth/2.0 );
+				ABoo.Graphics["roundedTriangle"].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], tenPercentOfWidth/2.0 );
 			ctx.fill();
 			//ctx.strokeStyle = "#000";
-			//	ABoo.Graphics[graphicToDraw].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], 0 );
+			//	ABoo.Graphics["roundedTriangle"].draw( ctx, tri2Rect[0], tri2Rect[1], tri2Rect[2], tri2Rect[3], 0 );
 			//ctx.stroke();
 
 			ctx.shadowColor= undefined;
 			ctx.shadowBlur = undefined;
 
 			ctx.fillStyle = innerinnerCol;
-				ABoo.Graphics[graphicToDraw].draw( ctx, tri1Rect[0], tri1Rect[1], tri1Rect[2], tri1Rect[3], 0 );
+				ABoo.Graphics["roundedTriangle"].draw( ctx, tri1Rect[0], tri1Rect[1], tri1Rect[2], tri1Rect[3], 0 );
 			ctx.fill();
 
 		ctx.restore();
+	}
+}
+SC.mixin( ABoo.PlayButtonGraphic, ABoo.PlayButtonGraphicClassMethods );
+
+ABoo.PlayButtonSprite = ABoo.HooSprite.extend({
+	_isDisabled: true,
+	_isDown: false,
+	spriteDraw: function( ctx, x, y, width, height ) {
+		ABoo.PlayButtonGraphic.draw( ctx, x, y, width, height, this._isDisabled, this._isDown );
 	}
 });
 
@@ -453,36 +458,32 @@ ABoo.PauseButtonSprite = ABoo.HooSprite.extend({
 	}
 });
 
-ABoo.RecordButtonSprite = ABoo.HooSprite.extend({
-	_isDisabled: true,
-	_isDown: false,
-
-	spriteDraw: function( ctx, x, y, width, height ) {
-
+//
+ABoo.RecordButtonGraphic = SC.Object.extend({});
+ABoo.RecordButtonGraphicClassMethods = {
+	draw: function( ctx, x, y, width, height, isDsabled, isDown ) {
 		var graphicToDraw = "circle";
-
 		ctx.save();
-
 			var innerCol, innerinnerCol, shadowCol, my_gradient;
 
-			if( this._isDisabled ) {
-				innerCol = "#88a380";
-				innerinnerCol = "#7d9876";
+			if( isDsabled ) {
+				innerCol = "#B55E70";
+				innerinnerCol = "#BC494D";
 				shadowCol = null;
 				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
 				my_gradient.addColorStop(0, "rgba(230,230,230,1)");
 				my_gradient.addColorStop(1, "rgba(230,230,230,0.5)");
-			} else if( this._isDown ) {
-				innerCol = "#4a6150";
-				innerinnerCol = "#248541";
+			} else if( isDsabled ) {
+				innerCol = "#942E3E";
+				innerinnerCol = "#BC242A";
 				shadowCol = null;
 				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
 				my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
 				my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
 				my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
 			} else {
-				innerCol = "#5EBB47";
-				innerinnerCol = "#39B54A";
+				innerCol = "#F04F27";
+				innerinnerCol = "#D3213C";
 				shadowCol = "rgba(0,0,0,0.3)";
 				my_gradient = ctx.createLinearGradient(0, 0, 0, height);
 				my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
@@ -518,6 +519,52 @@ ABoo.RecordButtonSprite = ABoo.HooSprite.extend({
 
 		ctx.restore();
 	}
+}
+SC.mixin( ABoo.RecordButtonGraphic, ABoo.RecordButtonGraphicClassMethods );
+
+ABoo.RecordButtonSprite = ABoo.HooSprite.extend({
+	_isDisabled: true,
+	_isDown: false,
+
+	spriteDraw: function( ctx, x, y, width, height ) {
+		ABoo.RecordButtonGraphic.draw( ctx, x, y, width, height, this._isDisabled, this._isDown );
+
+		var insetRect3 = [x,y,width,width];
+		var scale = width/75.0; // design size was 75px
+		insetRect3 = ABoo.VectorMath.inflateRect( insetRect3, -44.0*scale, -44.0*scale );
+		var insetRect2 = ABoo.VectorMath.inflateRect( insetRect3, -12*scale, -12.0*scale );
+
+		if( this._isDown ) {
+			innerCol = "rgba(120,120,120,0.3)";
+			innerinnerCol = "rgba(180,100,100,0.6)";
+			shadowCol = null;
+			//my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			//my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
+			//my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
+			//my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
+		} else {
+			innerCol = "rgba(255,255,255,0.5)";
+			innerinnerCol = "rgba(255,235,235,0.9)";
+			shadowCol = "rgba(0,0,0,0.1)";
+			//my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			//my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
+			//my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
+			//my_gradient.addColorStop(1, "rgba(0,0,0,0)");
+		}
+
+
+		ctx.fillStyle = innerCol;
+		ctx.save();
+			ABoo.Graphics["circle"].draw( ctx, insetRect3 );
+			ctx.fill();
+		ctx.restore();
+
+		ctx.fillStyle = innerinnerCol;
+		ctx.save();
+			ABoo.Graphics["circle"].draw( ctx, insetRect2 );
+			ctx.fill();
+		ctx.restore();
+	}
 });
 
 // TODO! Put the pause button in the record circle
@@ -526,32 +573,41 @@ ABoo.PauseRecordingButtonSprite = ABoo.HooSprite.extend({
 
 	spriteDraw: function( ctx, x, y, width, height ) {
 
+		// NB!
+		ABoo.RecordButtonGraphic.draw( ctx, x, y, width, height, this._isDisabled, this._isDown );
+
 		var graphicToDraw = "roundedRect";
 		var innerCol, innerinnerCol, shadowCol, my_gradient;
 
 		if( this._isDown ) {
-			innerCol = "#0f6391";
-			innerinnerCol = "#005FAE";
+			innerCol = "rgba(120,120,120,0.3)";
+			innerinnerCol = "rgba(180,100,100,0.6)";
 			shadowCol = null;
-			my_gradient = ctx.createLinearGradient(0, 0, 0, height);
-			my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
-			my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
-			my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
+			//my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			//my_gradient.addColorStop(1, "rgba(150,150,150,0.8)");
+			//my_gradient.addColorStop(0.5, "rgba(100,100,100,0.3)");
+			//my_gradient.addColorStop(0, "rgba(0,0,0,0.1)");
 		} else {
-			innerCol = "#0080C7";
-			innerinnerCol = "#005FAE";
-			shadowCol = "rgba(0,0,0,0.3)";
-			my_gradient = ctx.createLinearGradient(0, 0, 0, height);
-			my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
-			my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
-			my_gradient.addColorStop(1, "rgba(0,0,0,0)");
+			innerCol = "rgba(255,255,255,0.5)";
+			innerinnerCol = "rgba(255,235,235,0.9)";
+			shadowCol = "rgba(0,0,0,0.1)";
+			//my_gradient = ctx.createLinearGradient(0, 0, 0, height);
+			//my_gradient.addColorStop(0, "rgba(170,170,170,0.9)");
+			//my_gradient.addColorStop(0.5, "rgba(170,170,170,0.3)");
+			//my_gradient.addColorStop(1, "rgba(0,0,0,0)");
 		}
 
 
 		var tenPercentOfWidth = width / 10.0;
+		var insetRect3 = [x,y,width,width];
 		var scale = width/75.0; // design size was 75px
-		var insetRect3 = [x,y,width,height];
-		insetRect3 = ABoo.VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
+		insetRect3 = ABoo.VectorMath.inflateRect( insetRect3, -44.0*scale, -44.0*scale );
+		var tri2Rect = ABoo.VectorMath.inflateRect( insetRect3, -12.0*scale, -12.0*scale );
+		var tri1Rect = ABoo.VectorMath.inflateRect( tri2Rect, -12.0*scale, -12.0*scale );
+
+		//tri3Rect = ABoo.VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
+		//var tri2Rect = ABoo.VectorMath.inflateRect( tri3Rect, -tenPercentOfWidth, -tenPercentOfWidth );
+		//var tri1Rect = ABoo.VectorMath.inflateRect( tri2Rect, -tenPercentOfWidth, -tenPercentOfWidth );
 
 		// construct 3 inset rectangles
 		var rect3PtArray = [[insetRect3[0],insetRect3[1]],[insetRect3[0]+insetRect3[2],insetRect3[1]],[insetRect3[0]+insetRect3[2], insetRect3[1]+insetRect3[3]], [insetRect3[0], insetRect3[1]+insetRect3[3]]];
@@ -565,11 +621,14 @@ ABoo.PauseRecordingButtonSprite = ABoo.HooSprite.extend({
 
 			// outer
 			var rects = ABoo.VectorMath.splitRectInTwo( insetRect3, 2.0*scale );
-			ctx.fillStyle = my_gradient;
+			ctx.fillStyle = innerCol;
 			ctx.save();
+				//	ctx.rect( insetRect1[0], insetRect1[1], insetRect1[2], insetRect1[3]);
+				//ABoo.Graphics["circle"].draw( ctx, insetRect3 );
 				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
+
 			ctx.save();
 				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
 				ctx.fill();
@@ -577,18 +636,21 @@ ABoo.PauseRecordingButtonSprite = ABoo.HooSprite.extend({
 
 			// inner
 			ctx.shadowColor = shadowCol;
-			ctx.shadowBlur = 4;
+			ctx.shadowBlur = 2;
 			ctx.shadowOffsetX = 0;
 			ctx.shadowOffsetY = tenPercentOfWidth/10;
 
 			rects = ABoo.VectorMath.splitRectInTwo( insetRect2, 9.0*scale );
-			ctx.fillStyle = innerCol;
+			ctx.fillStyle = innerinnerCol;
 			ctx.save();
+				//ABoo.Graphics["circle"].draw( ctx, tri2Rect );
 				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
 
 			ctx.save();
+			//	ABoo.Graphics["circle"].draw( ctx, tri1Rect );
+
 				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
 				ctx.fill();
 			ctx.restore();
@@ -597,16 +659,16 @@ ABoo.PauseRecordingButtonSprite = ABoo.HooSprite.extend({
 			ctx.shadowBlur = undefined;
 
 			// inner inner
-			rects = ABoo.VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
-			ctx.fillStyle = innerinnerCol;
-			ctx.save();
-				ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
-				ctx.fill();
-			ctx.restore();
-			ctx.save();
-				ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
-				ctx.fill();
-			ctx.restore();
+			//rects = ABoo.VectorMath.splitRectInTwo( insetRect1, 17.0*scale );
+			//ctx.fillStyle = innerinnerCol;
+			//ctx.save();
+			//	ABoo.Graphics[graphicToDraw].draw( ctx, rects[0][0], rects[0][1], rects[0][2], rects[0][3], rects[0][2]/2.0 );
+			//	ctx.fill();
+			//ctx.restore();
+			//ctx.save();
+			//	ABoo.Graphics[graphicToDraw].draw( ctx, rects[1][0], rects[1][1], rects[1][2], rects[1][3], rects[1][2]/2.0 );
+			//	ctx.fill();
+			//ctx.restore();
 
 		ctx.restore();
 	}

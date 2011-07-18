@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 11:53:15 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 09:52:34 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/sm_configurations/audioPlayerStateMachine.coffee
  */
 
@@ -39,7 +39,7 @@
       if (func) {
         func.call(this._controller);
       } else {
-        console.log("Didnt find function " + command._name);
+        console.log("Didnt find function " + command._name + " on " + this._controller.description());
       }
       if (command._name === "cmd_showResettingLoader") {
         return this._loadingController.handle("ev_resetComplete");
@@ -73,6 +73,8 @@
         case "canplaythrough":
           this._loadingController.handle("ev_load");
           return this._playingController.handle("ev_canPlay");
+        case "loadeddata":
+          return 0;
         case "emptied":
           this._loadingController.handle("ev_reset");
           return this._playingController.handle("ev_reset");

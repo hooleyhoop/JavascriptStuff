@@ -1,11 +1,134 @@
 -# http://0.0.0.0:3000/widgets/HooHtml5DetailPlayer
 -# http://shooley.audioboo.fm:3000/widgets/HooHtml5DetailPlayer
 
-%div[_]
+%div[_]( data-jsclass='ABoo.HooHtml5DetailPlayer' style="" )
 	= insert( _.views, nil )
+
+	-# If we had a form here the 'default' play button action could be to play the mp3
 
 	-# Is this all wrong? It depends what we want to happen when Javascript is disabled?
 	-# If we want to show something nice we should put that in haml and the player in javascript only
 
 	-# Another option is just to set the visibilty of stuff with javascript
 	-# The play pause button is already invisible if you dont have js enabled
+
+
+- if( _.includeOnce? )
+	:javascript
+
+		// Grrrr!
+		// it is important i think that we can create these things dynamically
+		ABoo.HooHtml5DetailPlayer = ABoo.NewAbstractPlayer.extend( ABoo.PropertyAnimMixin, {
+			//_playerBackend: undefined,
+			//_loadProgress: 0,
+			//_playProgress: 0,
+			//_busyFlag:false,
+			//_ready: false,
+
+			_playButtonCanvas: undefined,
+			_playButton: undefined,
+			_slider: undefined,
+			_timeDisplay: undefined,
+			_duration:0,
+
+
+			// #@playButton.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock', :actionIsAsync=>false  }} );
+			// #@slider.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>mockPlayer.varName, :action_event=>'setProgressPercent', :action_arg=>'', :actionIsAsync=>false }} );
+
+			didInsertElement: function() {
+
+				this._super();
+				// woah, mutha fucking a1 problem.
+				// we can only have 1 of the detail players active at a time if we want the play butten enabled property to be bound to a headless player singleton
+				// That is, we dont want to (can't) have more than 1 player on a page loading (so we made the player a singleton), but if you also
+				// don't want the play button to become active until mp3 has suficiently loaded
+
+				// Also, the player loads when you set the src, we need to change this if we need multiple player on the screen that don't auto load
+
+				this.createPlayerBackend();
+
+				this.addObserver('_ready', this._timeDisplay, 'readyDidChange' );
+				this.addObserver('_ready', this._slider, 'readyDidChange' );
+				this.addObserver('_duration', this._timeDisplay, 'maxAmountDidChange' );
+				this.addObserver('_duration', this._slider, 'maxAmountDidChange' );
+				this.addObserver('_loadProgress', this._slider, 'loadedDidChange' );
+
+				this.addObserver('_playProgress', this._timeDisplay, 'playedDidChange' );
+				this.addObserver('_playProgress', this._slider, 'playedDidChange' );
+
+				this._playButton._buttonSMControl.setButtonTarget( this, ["playClickAction", "pauseClickAction"], null, true );
+
+				// The cause of manty woes - we have to do stuff 'after' everything has setup. Therefor the point where everything is set up gets pushed back
+				//this._playerBackend._attachToPage( this.div$ )
+				SC.run.next( this._playerBackend, "_attachToPage",  this.div$ );
+			},
+
+			createPlayerBackend: function() {
+				// The player may transparently use the flash backend so you have to give the div it will use to swap in for
+				this._playerBackend = ABoo.NewHtml5HeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
+				// dont set autoload, instead just don't set src until you want it to load
+				this._playerBackend._autoplay = false; // overide default
+			},
+
+			showPlayerGUI: function() {
+				//this._showPlay();
+			},
+			hidePlayerGUI: function() {
+			},
+
+			_showPlay: function() {
+				this._playButton._buttonSMControl.sendEvent( "ev_showState1" );
+			},
+
+			_showPause: function() {
+				this._playButton._buttonSMControl.sendEvent( "ev_showState2" );
+			},
+
+			_showDisabled: function() {
+				this._playButton._buttonSMControl.sendEvent( "ev_showState1" );
+			},
+
+			ready: function() {
+				this.set('_ready', true);
+			},
+
+			durationchange: function() {
+				//console.log("DURATION: "+this._playerBackend.duration())
+				this.set('_duration', this._playerBackend.duration());
+				this._fakeLoadProgressEvent();
+			},
+
+			// seems like we dont always get progress events (html5 audio).. manually check
+			_fakeLoadProgressEvent: function() {
+				var reportedLoadedDegress = this._playerBackend.buffered()
+				if( this._loadProgress != reportedLoadedDegress ) {
+					// @animateProperty( '_loadProgress', reportedLoadedDegress, 1000/25*10 )
+					this.set( '_loadProgress', reportedLoadedDegress );
+				}
+				this.set('_busyFlag', false);
+			},
+
+			progressupdate: function() {
+				var actualLoaded = this._playerBackend.buffered();
+				if( actualLoaded>0 )
+					this.set('_busyFlag', false);
+					//#console.log("hide stalled")
+				// this.animateProperty( '_loadProgress', actualLoaded, 1000/25*10 );
+				// console.log("LOAD PROGRESS "+actualLoaded );
+				this.set( '_loadProgress', actualLoaded );
+			},
+
+			timeupdate: function() {
+				var t = this._playerBackend.currentTime();
+				// this.animateProperty( '_playProgress', t, 1000 );
+				this.set( '_playProgress', t );
+			},
+			//cmd_showFinishedPlayer: function() {
+			//	this._super();
+			//	this.set( '_playProgress', 0 );
+			//},
+
+			description: function() {
+				return "Detail_Player "+this._super();
+			}
+		})

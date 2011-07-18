@@ -45,10 +45,10 @@ ABoo.Gui_Views_Debug_FlippyToggleThing = ABoo.SCView.extend
 
 
 	flippyFlip:() ->
-		SC.RunLoop.begin()
+		#SC.RunLoop.begin()
 		@set( '_flippyState', !@_flippyState )
 		@updateGraphics()
-		SC.RunLoop.end()
+		#SC.RunLoop.end()
 
 	updateGraphics:() ->
 		if( @_flippyState )

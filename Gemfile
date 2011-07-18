@@ -1,17 +1,17 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.8'
+gem "rails", "~> 3.0.9"
 gem 'mongrel', '1.2.0.pre2'
-gem 'jquery-rails', '1.0.10'
+gem "jquery-rails", "~> 1.0.12"
 gem 'haml', '3.1.2'
 # rails 3.1 only gem 'sass-rails'
-gem 'sass'
-gem 'compass', '>= 0.11.3'
+gem 'sass', '3.1.4'
+gem 'compass', '>= 0.11.5'
 #gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'mysql'
 
 # Test for Adam
-gem 'multipass'
+# gem 'multipass'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

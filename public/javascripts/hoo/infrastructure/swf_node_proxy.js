@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Thu, 07 Jul 2011 09:43:41 GMT from
+/* DO NOT MODIFY. This file was compiled Fri, 15 Jul 2011 10:58:00 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/swf_node_proxy.coffee
  */
 
@@ -28,7 +28,7 @@
       this._flashVarDict || (this._flashVarDict = new Object());
       this._swfID = ABoo.FlashObject.newID();
       this._objectTagString = ABoo.FlashObject.embedString(this._url, this._swfID, this._width, this._height, this._flashVarDict);
-      $wrapper = $("<div class='swfHolder'/>");
+      $wrapper = $("<div class='swfHolder' style='overflow:hidden''/>");
       if ($.browser.msie) {
         $wrapper[0].innerHTML = this._objectTagString;
       } else {

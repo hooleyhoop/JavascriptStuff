@@ -13,42 +13,15 @@
 	:javascript
 
 		/*
-		 * Only one of these per page
-		*/
-		ABoo.NewHTML5HeadlessPlayerSingleton = ABoo.NewAbstractHeadlessPlayerSingleton.extend({
-			_headlessAudioOb: undefined,
-
-			// create the backing html5
-			init: function( /* init never has args */ ) {
-				this._super();
-				this._headlessAudioOb = ABoo.HeadlessSharedDomNodeProxy.sharedDivForTag( "audio" );
-				this._audioPlayingDomNode = this._headlessAudioOb;
-			},
-
-			_getTimeRangeEnd: function( timeRanges, timeRangeIndex ) {
-				return timeRanges.end(timeRangeIndex);
-			}
-		});
-		SC.mixin( ABoo.NewHTML5HeadlessPlayerSingleton, ABoo.SingletonClassMethods );
-
-
-		/*
-		 * One of these for each instance on the page
-		*/
-		ABoo.NewHtml5HeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.extend({
-			_createSingletonPlayer: function() {
-				this._headLessSingleton = ABoo.NewHTML5HeadlessPlayerSingleton.sharedInstance();
-			}
-		});
-
-
-		/*
 		 * Small Player with canvas front-end (html5 backend)
 		*/
 		#{_.qualifiedJsClassName} = ABoo.NewAbstractSmallPlayer.extend( ABoo.PropertyAnimMixin, {
 
 			createPlayerBackend: function() {
 				this._playerBackend = ABoo.NewHtml5HeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
+
+				// surely we just make this the default and.. set it in the constructor if you want different
+				this._playerBackend._autoplay = true;
 			}
 
 		});

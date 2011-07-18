@@ -98,6 +98,15 @@ var HooMathClassMethods = {
 	lerp: function (x0,y0,x1,y1,x) {
 		//console.log("Lerping "+x0+" "+y0+" "+x1+" "+y1+" "+x+" ");
 		y = y0*((x - x1)/(x0 - x1)) + y1*((x - x0)/(x1 - x0));
+
+		// check that the lerp value is actually in the required range
+		//dist = y0-y1;
+		//if(dist>1)
+		//	if(y<y0 || y>y1)
+		//		debugger;
+		//else
+		//	if(y>y0 || y<y1)
+		//		debugger;
 		return y;
 	},
 

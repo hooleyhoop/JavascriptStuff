@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 11 Jul 2011 11:43:23 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 11:39:21 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/three_state_item.coffee
  */
 
@@ -33,6 +33,7 @@
       return this._buttonSM.processInputSignal(ev);
     },
     cmd_enableButton: function() {
+      HOO_nameSpace.assert(this._clickableItem$, "did we set this up properly?");
       return this._listenerDebugger.addListener(this._clickableItem$, 'mousedown', this, this._mouseDown);
     },
     cmd_disableButton: function() {
@@ -75,6 +76,9 @@
           } else {
             actionToCall = actionToCall[0];
           }
+        }
+        if (typeof actionToCall === 'string') {
+          actionToCall = this._target[actionToCall];
         }
         actionToCall.call(this._target, this._actionArg, onCompleteStuffHash);
       }

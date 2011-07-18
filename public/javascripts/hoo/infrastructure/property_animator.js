@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Wed, 13 Jul 2011 12:07:15 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 15:54:18 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/property_animator.coffee
  */
 
@@ -13,6 +13,9 @@
     _target: void 0,
     _property: void 0,
     _ended: void 0,
+    init: function() {
+      return this._super;
+    },
     animate: function(target, property, endVal, duration, completeCallback) {
       this._target = target;
       this._property = property;
@@ -24,21 +27,23 @@
       return this._ended = false;
     },
     update: function(time) {
-      var updatedVal;
-      HOO_nameSpace.assert(time, "time? time? time?");
+      var skippedLerp, updatedVal;
       if (this._ended) {
         this._didEnd();
         return;
       }
-      updatedVal;
-      if (time > this._fadeTimeEnd) {
+      skippedLerp = false;
+      if (time <= this._fadeTimeStart) {
+        updatedVal = this._fadeStartVal;
+      } else if (time >= this._fadeTimeEnd) {
         updatedVal = this._fadeEndVal;
         this._ended = true;
+        skippedLerp = true;
       } else {
         updatedVal = ABoo.HooMath.lerp(this._fadeTimeStart, this._fadeStartVal, this._fadeTimeEnd, this._fadeEndVal, time);
-      }
-      if (isNaN(updatedVal)) {
-        debugger;
+        if (isNaN(updatedVal)) {
+          debugger;
+        }
       }
       return this._target.set(this._property, updatedVal);
     },
@@ -63,6 +68,7 @@
       }
       animator = this._propertyAnimations[propertyName];
       if (!animator) {
+        console.log("animating " + propertyName);
         animator = ABoo.HooPropertyAnimator.create();
         ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener(animator);
         this._propertyAnimations[propertyName] = animator;
@@ -83,6 +89,8 @@
           animator._fadeComplete = null;
           return this._propertyAnimations[propertyName] = null;
         }
+      } else {
+        return this.set(propertyName, to);
       }
     }
   };

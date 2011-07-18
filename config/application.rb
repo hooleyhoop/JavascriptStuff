@@ -37,7 +37,7 @@ module JavascriptStuff
     'third_party/jquery/jquery-ujs/src/rails.js', 'third_party/jquery/jquery-ui-1.8.11.custom.min',
 	# 'third_party/jquery/jquery-tmpl/jquery.tmpl.js', 'third_party/jquery/jquery-tmpl/jquery.tmplPlus.js'
 
-    'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore-2.0.beta.1',
+    'third_party/flash_detection.js', 'third_party/yepnope.js', 'third_party/sproutcore',
 
 	'hoo/setup_app.js',
     'hoo/infrastructure/singleton',
@@ -51,6 +51,7 @@ module JavascriptStuff
     "hoo/infrastructure/sm_configurations/threeStateButtonStateMachine",
     "hoo/infrastructure/sm_configurations/fiveStateButtonStateMachine",
 	"hoo/infrastructure/sm_configurations/audioPlayerStateMachine",
+	"hoo/infrastructure/sm_configurations/AudioRecorderStateMachine",
 
     'hoo/graphics',
 

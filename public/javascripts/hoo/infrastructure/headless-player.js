@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Wed, 13 Jul 2011 14:42:29 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 15:52:32 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/headless-player.coffee
  */
 
@@ -9,18 +9,23 @@
     _audioPlayingDomNode: void 0,
     _mp3url: void 0,
     setSrc: function(mp3Url2, autoload, autoplay) {
-      if (!(mp3Url2 != null)) {
-        debugger;
-      }
+      var autoloadsetting;
+      HOO_nameSpace.assert(mp3Url2, "you need the mp3 url");
+      HOO_nameSpace.assert(autoload, "html5 autoload stinks concerning the events it sends - just setSrc when you want to load");
       if (this._mp3url !== mp3Url2) {
         this._mp3url = mp3Url2;
         console.log("SRC: " + mp3Url2);
-        if (autoplay === true) {
+        if (autoplay) {
           this._audioPlayingDomNode.attrSetter('autoplay', 'autoplay');
           autoload = true;
         }
+        autoloadsetting = "none";
+        if (autoload) {
+          autoloadsetting = "auto";
+        }
+        this._audioPlayingDomNode.attrSetter('preload', autoloadsetting);
         this._audioPlayingDomNode.attrSetter('src', mp3Url2);
-        if (autoload === true) {
+        if (autoload) {
           this._audioPlayingDomNode.cmd('load');
         }
       }
@@ -72,7 +77,6 @@
       ct = this._audioPlayingDomNode.attrGetter('currentTime');
       duration = this.duration();
       playedDegrees = duration === 0 ? 0 : ct / duration * 360;
-      console.log("<<<<< playedDegrees: " + ct + " " + duration + " >>>>>> " + playedDegrees);
       return playedDegrees;
     },
     play: function() {
@@ -81,11 +85,49 @@
     pause: function() {
       return this._audioPlayingDomNode.cmd('pause');
     },
+    currentTime: function() {
+      return this._audioPlayingDomNode.attrGetter('currentTime');
+    },
     setCurrentTime: function(secs) {
       return this._audioPlayingDomNode.attrSetter('currentTime', secs);
     }
   });
   SC.mixin(ABoo.NewAbstractHeadlessPlayerSingleton, ABoo.SingletonClassMethods);
+  /*
+   * Only one of these per page
+  */
+  ABoo.NewHTML5HeadlessPlayerSingleton = ABoo.NewAbstractHeadlessPlayerSingleton.extend({
+    _headlessAudioOb: void 0,
+    init: function() {
+      this._super();
+      this._headlessAudioOb = ABoo.HeadlessSharedDomNodeProxy.sharedDivForTag("audio");
+      return this._audioPlayingDomNode = this._headlessAudioOb;
+    },
+    _getTimeRangeEnd: function(timeRanges, timeRangeIndex) {
+      return timeRanges.end(timeRangeIndex);
+    }
+  });
+  SC.mixin(ABoo.NewHTML5HeadlessPlayerSingleton, ABoo.SingletonClassMethods);
+  /*
+   * Only one of these per page
+  */
+  ABoo.NewFlashHeadlessPlayerSingleton = ABoo.NewAbstractHeadlessPlayerSingleton.extend({
+    _swfSrc: "HeadlessPlayer/lib/Debug/HeadlessPlayer",
+    _headlessFlashOb: void 0,
+    init: function() {
+      var flashURL;
+      this._super();
+      flashURL = ABoo.HeadlessSharedFlashObject.uRLForSwf(this._swfSrc);
+      this._headlessFlashOb = ABoo.HeadlessSharedFlashObject.sharedSwfForURL(flashURL, '100%', '100%', {
+        autostart: 'load'
+      });
+      return this._audioPlayingDomNode = this._headlessFlashOb;
+    },
+    _getTimeRangeEnd: function(timeRanges, timeRangeIndex) {
+      return timeRanges[timeRangeIndex][1];
+    }
+  });
+  SC.mixin(ABoo.NewFlashHeadlessPlayerSingleton, ABoo.SingletonClassMethods);
   /* one of these for each instance of a player
   */
   ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend({
@@ -95,6 +137,8 @@
     _stateMachine: void 0,
     _state: false,
     _headLessSingleton: void 0,
+    _autoload: true,
+    _autoplay: false,
     _attachToPage: function($pageItem) {
       this._createSingletonPlayer();
       this._stateMachine = ABoo.AudioPlayerStateMachine.create({
@@ -114,13 +158,21 @@
       this._controller.showPlayerGUI();
       this._createObservervations();
       this._stateMachine.processInputSignal("ready");
-      return this._headLessSingleton.setSrc(this._mp3URL, true, true);
+      return this._headLessSingleton.setSrc(this._mp3URL, this._autoload, this._autoplay);
     },
     _createObservervations: function() {
       var $actualPlayer;
       $actualPlayer = $(this._headLessSingleton._audioPlayingDomNode._observableSwf);
       return $actualPlayer.bind(this._watchableEvents, __bind(function(e) {
-        return this.handleHeadlessFlashPlayerEvent(e.type);
+        var run;
+        console.log("Player Event: " + e.type);
+        if (e.type === "timeupdate" && this.playedDegrees() === 0) {
+          return console.log("Timeupdate at zero - do we need this to reset clock? like when played thru?");
+        } else {
+          run = SC.run.begin();
+          this.handleHeadlessFlashPlayerEvent(e.type);
+          return SC.run.end();
+        }
       }, this));
     },
     _killObservations: function() {
@@ -134,6 +186,9 @@
     buffered: function() {
       return this._headLessSingleton.buffered();
     },
+    duration: function() {
+      return this._headLessSingleton.duration();
+    },
     loadedDegrees: function() {
       return this._headLessSingleton.loadedDegrees();
     },
@@ -146,132 +201,39 @@
     pause: function() {
       return this._headLessSingleton.pause();
     },
+    currentTime: function() {
+      return this._headLessSingleton.currentTime();
+    },
     setCurrentTime: function(secs) {
       return this._headLessSingleton.setCurrentTime(secs);
     }
   });
+  /*
+   * One of these for each instance on the page
+  */
+  ABoo.NewFlashHeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.extend({
+    _createSingletonPlayer: function() {
+      return this._headLessSingleton = ABoo.NewFlashHeadlessPlayerSingleton.sharedInstance();
+    }
+  });
+  /*
+   * One of these for each instance on the page
+  */
+  ABoo.NewHtml5HeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.extend({
+    _createSingletonPlayer: function() {
+      return this._headLessSingleton = ABoo.NewHTML5HeadlessPlayerSingleton.sharedInstance();
+    }
+  });
   /* one of these for each instance of a player
   */
-  ABoo.NewAbstractSmallPlayer = ABoo.SCView.extend({
+  ABoo.NewAbstractPlayer = ABoo.SCView.extend({
     _playerBackend: void 0,
-    _hooCanvas: void 0,
-    _placeHolder$: void 0,
-    _smallPlayerFrontEnd: void 0,
     _ready: false,
     _loadProgress: 0,
     _playProgress: 0,
     _busyFlag: false,
-    didInsertElement: function() {
-      var noJsAnchor$;
-      this._super();
-      noJsAnchor$ = this.getFirstDomItemOfType("a");
-      noJsAnchor$.remove();
-      this._placeHolder$ = this.getFirstDomItemOfType("img");
-      return this.createPlayerBackend();
-    },
-    createPlayerBackend: function() {
-      /*
-      			This is where you customize...
-      		*/      return 0;
-    },
-    mouseUp: function(ev$) {
-      if (this._playerBackend._state === false) {
-        if (this._placeHolder$) {
-          return this._playerBackend._attachToPage(this._placeHolder$);
-        }
-      }
-    },
-    showPlayerGUI: function() {
-      var playPause, radialProgress, thePlayButtonJson, theRadialProgressJson;
-      SC.RunLoop.begin();
-      this._hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas();
-      this._hooCanvas.swapInFor(this._placeHolder$);
-      this._hooCanvas._setSize(this._placeHolder$.width(), this._placeHolder$.height());
-      thePlayButtonJson = {
-        "percentOfCanvas": 0.7,
-        "javascriptActions": {
-          "mouseClickAction": {
-            "action_taget": this,
-            "action_event": ["playClickAction", "pauseClickAction"],
-            "action_arg": null,
-            "actionIsAsync": true
-          }
-        }
-      };
-      theRadialProgressJson = {
-        "outerRad": 0.95,
-        "innerRad": 0.85
-      };
-      radialProgress = ABoo.HooRadialProgress.create({
-        json: theRadialProgressJson,
-        _hooCanvas: this._hooCanvas
-      });
-      playPause = ABoo.HooPlayPauseButton.create({
-        json: thePlayButtonJson,
-        _hooCanvas: this._hooCanvas
-      });
-      console.warn("created radial " + radialProgress + " and play " + playPause);
-      this._smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create({
-        _radialProgress: radialProgress,
-        _playPauseButton: playPause
-      });
-      this.addObserver('_loadProgress', radialProgress, radialProgress.loadDidChange);
-      this.addObserver('_playProgress', radialProgress, radialProgress.playDidChange);
-      this.addObserver('_busyFlag', radialProgress, radialProgress.busyDidChange);
-      this.addObserver('_ready', playPause, 'enabledDidChange');
-      radialProgress.setupDidComplete();
-      playPause.setupDidComplete();
-      this._smallPlayerFrontEnd.setupDidComplete();
-      return SC.RunLoop.end();
-    },
-    hidePlayerGUI: function() {
-      var playPause, radialProgress;
-      if (this._hooCanvas != null) {
-        radialProgress = this._smallPlayerFrontEnd._radialProgress;
-        playPause = this._smallPlayerFrontEnd._playPauseButton;
-        this.removeObserver('_loadProgress', radialProgress, radialProgress.loadDidChange);
-        this.removeObserver('_playProgress', radialProgress, radialProgress.playDidChange);
-        this.removeObserver('_busyFlag', radialProgress, radialProgress.busyDidChange);
-        this.removeObserver('_ready', playPause, 'enabledDidChange');
-        this._hooCanvas.removeAllSubviews();
-        this._hooCanvas.swapOutFor(this._placeHolder$);
-        return this._hooCanvas = null;
-      }
-    },
     ready: function() {
-      return 0;
-    },
-    durationchange: function() {
-      return this._fakeLoadProgressEvent();
-    },
-    _fakeLoadProgressEvent: function() {
-      var loadedDegrees, reportedLoadedDegress;
-      loadedDegrees = this._loadProgress;
-      reportedLoadedDegress = this._playerBackend.loadedDegrees();
-      if (loadedDegrees !== reportedLoadedDegress) {
-        this.animateProperty('_loadProgress', reportedLoadedDegress, 1000 / 25 * 10);
-      }
-      return this.set('_busyFlag', false);
-    },
-    progressupdate: function() {
-      var actualLoadedDegrees;
-      actualLoadedDegrees = this._playerBackend.loadedDegrees();
-      if (actualLoadedDegrees > 0) {
-        this.set('_busyFlag', false);
-      }
-      return this.animateProperty('_loadProgress', actualLoadedDegrees, 1000 / 25 * 10);
-    },
-    _showPlay: function() {
-      return this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent("ev_showState1");
-    },
-    _showPause: function() {
-      return this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent("ev_showState2");
-    },
-    _showDisabled: function() {
-      return this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent("ev_showState1");
-    },
-    timeupdate: function() {
-      return this.animateProperty('_playProgress', this._playerBackend.playedDegrees(), 1000 / 25 * 10);
+      return this.set('_ready', true);
     },
     cmd_showEmptyLoader: function() {
       jQuery(this).stop();
@@ -280,7 +242,9 @@
       return this.set('_busyFlag', false);
     },
     cmd_showStalledLoader: function() {
-      if (this._loadProgress > 350) {
+      var reportedLoadedDegress;
+      reportedLoadedDegress = this._playerBackend.loadedDegrees();
+      if (this.reportedLoadedDegress > 350) {
         return 0;
       } else {
         return this.set('_busyFlag', true);
@@ -288,6 +252,9 @@
     },
     cmd_showLoadingLoader: function() {
       return this.set('_busyFlag', true);
+    },
+    cmd_showResettingLoader: function() {
+      return console.log("hello");
     },
     cmd_showErrorLoader: function() {
       this._showDisabled();
@@ -325,6 +292,121 @@
     },
     pauseClickAction: function() {
       return this._playerBackend.pause();
+    }
+  });
+  ABoo.NewAbstractSmallPlayer = ABoo.NewAbstractPlayer.extend({
+    _hooCanvas: void 0,
+    _placeHolder$: void 0,
+    _smallPlayerFrontEnd: void 0,
+    didInsertElement: function() {
+      var noJsAnchor$;
+      this._super();
+      noJsAnchor$ = this.getFirstDomItemOfType("a");
+      noJsAnchor$.remove();
+      this._placeHolder$ = this.getFirstDomItemOfType("img");
+      return this.createPlayerBackend();
+    },
+    createPlayerBackend: function() {
+      /*
+      			This is where you customize...
+      		*/      return 0;
+    },
+    mouseUp: function(ev$) {
+      if (this._playerBackend._state === false) {
+        if (this._placeHolder$) {
+          return this._playerBackend._attachToPage(this._placeHolder$);
+        }
+      }
+    },
+    showPlayerGUI: function() {
+      var playPause, radialProgress, thePlayButtonJson, theRadialProgressJson;
+      this._hooCanvas = ABoo.HooCanvas.newProgrammaticCanvas();
+      this._hooCanvas.swapInFor(this._placeHolder$);
+      this._hooCanvas._setSize(this._placeHolder$.width(), this._placeHolder$.height());
+      thePlayButtonJson = {
+        "percentOfCanvas": 0.7,
+        "javascriptActions": {
+          "mouseClickAction": {
+            "action_taget": this,
+            "action_event": ["playClickAction", "pauseClickAction"],
+            "action_arg": null,
+            "actionIsAsync": true
+          }
+        }
+      };
+      theRadialProgressJson = {
+        "outerRad": 0.95,
+        "innerRad": 0.85
+      };
+      radialProgress = ABoo.HooRadialProgress.create({
+        json: theRadialProgressJson,
+        _hooCanvas: this._hooCanvas
+      });
+      playPause = ABoo.HooPlayPauseButton.create({
+        json: thePlayButtonJson,
+        _hooCanvas: this._hooCanvas
+      });
+      console.warn("created radial " + radialProgress + " and play " + playPause);
+      this._smallPlayerFrontEnd = ABoo.SmallPlayerPlayButton.create({
+        _radialProgress: radialProgress,
+        _playPauseButton: playPause
+      });
+      this.addObserver('_loadProgress', radialProgress, radialProgress.loadDidChange);
+      this.addObserver('_playProgress', radialProgress, radialProgress.playDidChange);
+      this.addObserver('_busyFlag', radialProgress, radialProgress.busyDidChange);
+      this.addObserver('_ready', playPause, 'enabledDidChange');
+      radialProgress.setupDidComplete();
+      playPause.setupDidComplete();
+      return this._smallPlayerFrontEnd.setupDidComplete();
+    },
+    hidePlayerGUI: function() {
+      var playPause, radialProgress;
+      if (this._hooCanvas != null) {
+        radialProgress = this._smallPlayerFrontEnd._radialProgress;
+        playPause = this._smallPlayerFrontEnd._playPauseButton;
+        this.removeObserver('_loadProgress', radialProgress, radialProgress.loadDidChange);
+        this.removeObserver('_playProgress', radialProgress, radialProgress.playDidChange);
+        this.removeObserver('_busyFlag', radialProgress, radialProgress.busyDidChange);
+        this.removeObserver('_ready', playPause, 'enabledDidChange');
+        this._hooCanvas.removeAllSubviews();
+        this._hooCanvas.swapOutFor(this._placeHolder$);
+        return this._hooCanvas = null;
+      }
+    },
+    _showPlay: function() {
+      return this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent("ev_showState1");
+    },
+    _showPause: function() {
+      return this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent("ev_showState2");
+    },
+    _showDisabled: function() {
+      return this._smallPlayerFrontEnd._playPauseButton._buttonSMControl.sendEvent("ev_showState1");
+    },
+    durationchange: function() {
+      return this._fakeLoadProgressEvent();
+    },
+    _fakeLoadProgressEvent: function() {
+      var loadedDegrees, reportedLoadedDegress;
+      loadedDegrees = this._loadProgress;
+      reportedLoadedDegress = this._playerBackend.loadedDegrees();
+      if (loadedDegrees !== reportedLoadedDegress) {
+        this.animateProperty('_loadProgress', reportedLoadedDegress, 1000 / 25 * 10);
+      }
+      return this.set('_busyFlag', false);
+    },
+    progressupdate: function() {
+      var actualLoadedDegrees;
+      actualLoadedDegrees = this._playerBackend.loadedDegrees();
+      if (actualLoadedDegrees > 0) {
+        this.set('_busyFlag', false);
+      }
+      return this.animateProperty('_loadProgress', actualLoadedDegrees, 1000 / 25 * 10);
+    },
+    timeupdate: function() {
+      return this.animateProperty('_playProgress', this._playerBackend.playedDegrees(), 1000 / 25 * 10);
+    },
+    description: function() {
+      return "small player " + this._super();
     }
   });
 }).call(this);
