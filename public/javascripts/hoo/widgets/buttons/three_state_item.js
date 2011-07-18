@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 11:39:21 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 16:32:34 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/three_state_item.coffee
  */
 
@@ -170,6 +170,9 @@
         x = this._lastMouseEvent.pageX;
         pos = this._clickableItem$.offset();
         percent = ABoo.HooMath.xAsUnitPercentOfY(x - pos.left, this._clickableItem$.width());
+        if (typeof this._action === 'string') {
+          this._action = this._target[this._action];
+        }
         return this._action.call(this._target, percent);
       }
     }

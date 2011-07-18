@@ -196,12 +196,14 @@ ABoo.HooWindow = ABoo.HooWidget.extend({
 	},
 
 	windowDidResize: function() {
+		var run = SC.run.begin();
 		$(this._allViews).each( function(i,ob){
 			if(ob.parentDidResize) {
 				ob.parentDidResize();
 			} else
 				debugger;
 		});
+		SC.run.end();
 	},
 
 	addSubView: function( childView ) {

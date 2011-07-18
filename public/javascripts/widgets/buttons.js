@@ -193,13 +193,19 @@ ABoo.HooFormButtonSimple = ABoo.HooWidget.extend({
 				debugger;
 		}
 		// set up actions as configured in the json - mixin?
-		this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
-		if( this._mouseClickAction==null ) {
+		if( !this._mouseClickAction )
+			this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
+		if( !this._mouseClickAction ) {
 			console.info("No JSON Action - using form");
 			this._mouseClickAction = this.defaultAction(); // not all buttons have a 'default' - so this can fail
 		}
 		if(this._mouseClickAction)
 			this._buttonSMControl.setButtonTarget( this._mouseClickAction.t, this._mouseClickAction.a, this._mouseClickAction.w, this._mouseClickAction.actionIsAsync );
+	},
+
+	setMouseClickAction: function(a) {
+		this._mouseClickAction = a;
+		this._buttonSMControl.setButtonTarget( this._mouseClickAction.t, this._mouseClickAction.a, this._mouseClickAction.w, this._mouseClickAction.actionIsAsync );
 	},
 
 	// Maaan, this shouldn't really be here, but when i get the other buttons working again sort out the heirarchy

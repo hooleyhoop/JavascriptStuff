@@ -90,7 +90,8 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 		@_audioPlayingDomNode.attrGetter( 'currentTime' )
 
 	setCurrentTime: ( secs ) ->
-		@_audioPlayingDomNode.attrSetter( 'currentTime', secs )
+		if secs != @currentTime()
+			@_audioPlayingDomNode.setNodeProperty( 'currentTime', secs )
 
 SC.mixin( ABoo.NewAbstractHeadlessPlayerSingleton, ABoo.SingletonClassMethods )
 
@@ -176,7 +177,7 @@ ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend
 
 		$actualPlayer = $( @_headLessSingleton._audioPlayingDomNode._observableSwf )
 		$actualPlayer.bind( @_watchableEvents, ( e ) =>
-			console.log("Player Event: "+e.type);
+			#console.log("Player Event: "+e.type);
 			if( e.type=="timeupdate" and @playedDegrees()==0 )
 				console.log("Timeupdate at zero - do we need this to reset clock? like when played thru?")
 			else
@@ -220,6 +221,12 @@ ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend
 	setCurrentTime: ( secs ) ->
 		@_headLessSingleton.setCurrentTime(secs)
 
+	setProgressPercent: ( arg ) ->
+		newVal = @duration() * arg
+		if  newVal >= @buffered()
+			newVal = @buffered()-0.5
+		#console.log("Set progress "+newVal)
+		@setCurrentTime(newVal)
 
 ###
  * One of these for each instance on the page
@@ -273,8 +280,8 @@ ABoo.NewAbstractPlayer = ABoo.SCView.extend
 	#	@animateLoadProgress( @_loadProgress, 360 )
 	#	@set('_busyFlag', false)
 	cmd_showResettingLoader: () ->
-		console.log("hello")
-
+		#console.log("hello")
+		0
 	cmd_showErrorLoader: () ->
 		@_showDisabled()
 		@set('_busyFlag', true)

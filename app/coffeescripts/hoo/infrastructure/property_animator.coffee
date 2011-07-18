@@ -70,7 +70,7 @@ ABoo.PropertyAnimMixin =
 
 		animator = @_propertyAnimations[propertyName]
 		if(!animator)
-			console.log("animating "+propertyName)			
+			#console.log("animating "+propertyName)			
 			animator = ABoo.HooPropertyAnimator.create()
 			ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener( animator )
 			@_propertyAnimations[propertyName] = animator

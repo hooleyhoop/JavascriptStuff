@@ -32,8 +32,6 @@
 			_duration:0,
 
 
-			// #@playButton.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>'HooWindow', :action_event=>'hooLog', :action_arg=>'Holy Cock', :actionIsAsync=>false  }} );
-			// #@slider.addJavascriptAction( { :mouseClickAction=>{ :action_taget=>mockPlayer.varName, :action_event=>'setProgressPercent', :action_arg=>'', :actionIsAsync=>false }} );
 
 			didInsertElement: function() {
 
@@ -52,11 +50,10 @@
 				this.addObserver('_duration', this._timeDisplay, 'maxAmountDidChange' );
 				this.addObserver('_duration', this._slider, 'maxAmountDidChange' );
 				this.addObserver('_loadProgress', this._slider, 'loadedDidChange' );
+				this.addObserver('_busyFlag', this._slider, 'busyDidChange' );
 
 				this.addObserver('_playProgress', this._timeDisplay, 'playedDidChange' );
 				this.addObserver('_playProgress', this._slider, 'playedDidChange' );
-
-				this._playButton._buttonSMControl.setButtonTarget( this, ["playClickAction", "pauseClickAction"], null, true );
 
 				// The cause of manty woes - we have to do stuff 'after' everything has setup. Therefor the point where everything is set up gets pushed back
 				//this._playerBackend._attachToPage( this.div$ )
@@ -90,6 +87,9 @@
 
 			ready: function() {
 				this.set('_ready', true);
+
+				this._playButton.setMouseClickAction( { t:this, a:["playClickAction", "pauseClickAction"], w:null, actionIsAsync:true } );
+				this._slider.setMouseClickAction( { t:this._playerBackend, a:this._playerBackend.setProgressPercent, w:null, actionIsAsync:false } );
 			},
 
 			durationchange: function() {

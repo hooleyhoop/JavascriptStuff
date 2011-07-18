@@ -87,6 +87,11 @@ ABoo.HooBarberPole = ABoo.HooWidget.extend({
 		this._barberPoleGraphic.toggleBusy();
 	},
 
+	showBusy: function( flag ) {
+		if(this._barberPoleGraphic._isBusy!=flag)
+			this.toggleBusy();
+	},
+
 	setSize: function ( width, height ) {
 				// resize canvas
 			//mwah this._$canvas.attr({ width:newWidth, height:newHeight }); // setting the size resets the canvas
@@ -225,6 +230,7 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( target[property], this._maxAmount );
 		if(percent<0)
 			debugger
+		// only animate up
 		if(percent==0)
 			this.coldSetProperty( '_loadedAmount', percent );
 		else
@@ -235,13 +241,19 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	playedDidChange: function( target, property ) {
 		var updatedAmount = target[property];
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( updatedAmount, this._maxAmount );
-
-		if(percent==0)
+		// only animate up
+		if( percent==0 ) {
 			this.coldSetProperty( '_playedAmount', percent );
-		else
-			this.animateProperty( '_playedAmount', percent, 1000/25*8 );
+		} else if( percent < this._playedAmount ) {
+			this.animateProperty( '_playedAmount', percent, 1000/25*3 );
+		} else
+			this.animateProperty( '_playedAmount', percent, 1000/25*3 );
 	},
 
+	busyDidChange: function( target, property ) {
+		var updatedFlag = target[property];
+		this.showBusy(updatedFlag);
+	},
 
 	recalcLoadedAndPlayedAmounts: function() {
 		this.coldSetProperty( '_playedAmount', this._playedAmount );
@@ -282,7 +294,9 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 
 	toggleBusy: function() {
 		this._barberPole.toggleBusy();
+	},
+
+	showBusy: function( flag ) {
+		this._barberPole.showBusy(flag);
 	}
-
-
 });

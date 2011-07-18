@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 09:52:34 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 17:48:04 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/sm_configurations/audioPlayerStateMachine.coffee
  */
 
@@ -87,6 +87,10 @@
           return this._playingController.handle("ev_ended");
         case "pause":
           return this._playingController.handle("ev_stop");
+        case "seeked":
+          return this._playingController.handle("ev_seeked");
+        case "seeking":
+          return this._playingController.handle("ev_seeking");
         default:
           return console.warn("** Unknown Signal ** -" + signal);
       }
@@ -166,8 +170,8 @@
       "resetEvents": []
     },
     playingStateMachine_config: {
-      "states": ["st_empty", "st_stopped", "st_waiting", "st_playing", "st_finished", "st_error"],
-      "events": ["ev_canPlay", "ev_play", "ev_timeupdate", "ev_wait", "ev_stop", "ev_ended", "ev_error", "ev_reset"],
+      "states": ["st_empty", "st_stopped", "st_waiting", "st_playing", "st_finished", "st_error", "st_seeking_while_stopped", "st_seeking_while_playing"],
+      "events": ["ev_canPlay", "ev_play", "ev_timeupdate", "ev_wait", "ev_stop", "ev_ended", "ev_error", "ev_reset", "ev_seeked", "ev_seeking"],
       "commands": ["cmd_showEmptyPlayer", "cmd_showStoppedPlayer", "cmd_showWaitingPlayer", "cmd_hideWaitingPlayer", "cmd_showPlayingPlayer", "cmd_showFinishedPlayer", "cmd_showErrorPlayer"],
       "transitions": [
         {
@@ -188,16 +192,20 @@
           "nextState": "st_playing"
         }, {
           "state": "st_stopped",
-          "event": "ev_timeupdate",
-          "nextState": "st_playing"
-        }, {
-          "state": "st_stopped",
           "event": "ev_error",
           "nextState": "st_error"
         }, {
           "state": "st_stopped",
           "event": "ev_reset",
           "nextState": "st_empty"
+        }, {
+          "state": "st_stopped",
+          "event": "ev_seeking",
+          "nextState": "st_seeking_while_stopped"
+        }, {
+          "state": "st_seeking_while_stopped",
+          "event": "ev_seeked",
+          "nextState": "st_stopped"
         }, {
           "state": "st_playing",
           "event": "ev_error",
@@ -218,6 +226,14 @@
           "state": "st_playing",
           "event": "ev_ended",
           "nextState": "st_finished"
+        }, {
+          "state": "st_playing",
+          "event": "ev_seeking",
+          "nextState": "st_seeking_while_playing"
+        }, {
+          "state": "st_seeking_while_playing",
+          "event": "ev_seeked",
+          "nextState": "st_playing"
         }, {
           "state": "st_waiting",
           "event": "ev_error",

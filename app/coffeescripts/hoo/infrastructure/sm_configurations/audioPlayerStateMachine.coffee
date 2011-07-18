@@ -31,7 +31,7 @@ ABoo.AudioPlayerStateMachine = SC.Object.extend
 			@_loadingController.handle( "ev_resetComplete" )
 
 	processInputSignal: ( signal ) ->
-		# console.log("Incoming >> "+signal );
+		#console.log("Incoming >> "+signal );
 		switch signal
 			when "ready"
 				@_controller.ready()
@@ -69,7 +69,7 @@ ABoo.AudioPlayerStateMachine = SC.Object.extend
 			when "loadeddata"
 				#@_loadingController.handle( "ev_loadComplete" )
 				0
-	
+
 			when "emptied"
 				@_loadingController.handle( "ev_reset" )
 				@_playingController.handle( "ev_reset" )
@@ -87,7 +87,13 @@ ABoo.AudioPlayerStateMachine = SC.Object.extend
 			when "pause"
 				@_playingController.handle( "ev_stop" )
 
-			else 
+			when "seeked"
+				@_playingController.handle( "ev_seeked" )
+
+			when "seeking"
+				@_playingController.handle( "ev_seeking" )
+				
+			else
 				console.warn("** Unknown Signal ** -"+signal)
 				#debugger
 
@@ -152,6 +158,8 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			"st_playing"
 			"st_finished"
 			"st_error"
+			"st_seeking_while_stopped"
+			"st_seeking_while_playing"
 		]
 
 		"events": [
@@ -163,6 +171,8 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			"ev_ended"
 			"ev_error"
 			"ev_reset"
+			"ev_seeked"
+			"ev_seeking"
 		]
 
 		"commands": [
@@ -184,10 +194,13 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 
 			# html5 audio does not always send 'play' event
 			# html5 audio sends ev_timeupdate when it is not playing, ie, when time is 0
-			{"state": "st_stopped", "event": "ev_timeupdate", "nextState": "st_playing"}
-			
+			#{"state": "st_stopped", "event": "ev_timeupdate", "nextState": "st_playing"}
+
 			{"state": "st_stopped", "event": "ev_error", "nextState": "st_error"}
 			{"state": "st_stopped", "event": "ev_reset", "nextState": "st_empty"}
+
+			{"state": "st_stopped", "event": "ev_seeking", "nextState": "st_seeking_while_stopped"}
+			{"state": "st_seeking_while_stopped", "event": "ev_seeked", "nextState": "st_stopped"}
 
 			{"state": "st_playing", "event": "ev_error", "nextState": "st_error"}
 			{"state": "st_playing", "event": "ev_stop", "nextState": "st_stopped"}
@@ -195,6 +208,9 @@ ABoo.AudioPlayerStateMachineClassMethods = SC.Mixin.create
 			{"state": "st_playing", "event": "ev_wait", "nextState": "st_waiting"}
 			{"state": "st_playing", "event": "ev_ended", "nextState": "st_finished"}
 
+			{"state": "st_playing", "event": "ev_seeking", "nextState": "st_seeking_while_playing"}
+			{"state": "st_seeking_while_playing", "event": "ev_seeked", "nextState": "st_playing"}
+			
 			{"state": "st_waiting", "event": "ev_error", "nextState": "st_error"}
 			{"state": "st_waiting", "event": "ev_stop", "nextState": "st_stopped"}
 			{"state": "st_waiting", "event": "ev_timeupdate", "nextState": "st_playing"}

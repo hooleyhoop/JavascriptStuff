@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 15:52:32 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 17:44:27 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/headless-player.coffee
  */
 
@@ -89,7 +89,9 @@
       return this._audioPlayingDomNode.attrGetter('currentTime');
     },
     setCurrentTime: function(secs) {
-      return this._audioPlayingDomNode.attrSetter('currentTime', secs);
+      if (secs !== this.currentTime()) {
+        return this._audioPlayingDomNode.setNodeProperty('currentTime', secs);
+      }
     }
   });
   SC.mixin(ABoo.NewAbstractHeadlessPlayerSingleton, ABoo.SingletonClassMethods);
@@ -165,7 +167,6 @@
       $actualPlayer = $(this._headLessSingleton._audioPlayingDomNode._observableSwf);
       return $actualPlayer.bind(this._watchableEvents, __bind(function(e) {
         var run;
-        console.log("Player Event: " + e.type);
         if (e.type === "timeupdate" && this.playedDegrees() === 0) {
           return console.log("Timeupdate at zero - do we need this to reset clock? like when played thru?");
         } else {
@@ -206,6 +207,14 @@
     },
     setCurrentTime: function(secs) {
       return this._headLessSingleton.setCurrentTime(secs);
+    },
+    setProgressPercent: function(arg) {
+      var newVal;
+      newVal = this.duration() * arg;
+      if (newVal >= this.buffered()) {
+        newVal = this.buffered() - 0.5;
+      }
+      return this.setCurrentTime(newVal);
     }
   });
   /*
@@ -254,7 +263,7 @@
       return this.set('_busyFlag', true);
     },
     cmd_showResettingLoader: function() {
-      return console.log("hello");
+      return 0;
     },
     cmd_showErrorLoader: function() {
       this._showDisabled();

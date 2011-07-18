@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 15:54:18 GMT from
+/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 17:01:46 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/property_animator.coffee
  */
 
@@ -68,7 +68,6 @@
       }
       animator = this._propertyAnimations[propertyName];
       if (!animator) {
-        console.log("animating " + propertyName);
         animator = ABoo.HooPropertyAnimator.create();
         ABoo.ShiteDisplayLink.sharedDisplayLink.registerListener(animator);
         this._propertyAnimations[propertyName] = animator;

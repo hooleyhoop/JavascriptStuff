@@ -177,6 +177,8 @@ ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend
 			x = @_lastMouseEvent.pageX
 			pos = @_clickableItem$.offset()
 			percent = ABoo.HooMath.xAsUnitPercentOfY( x-pos.left, @_clickableItem$.width() )
+			if typeof @_action is 'string'
+				@_action =  @_target[@_action]			
 			@_action.call( @_target, percent )
 			
 				
