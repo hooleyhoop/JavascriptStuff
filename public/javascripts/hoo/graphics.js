@@ -678,7 +678,7 @@ ABoo.PauseRecordingButtonSprite = ABoo.HooSprite.extend({
 ABoo.DonutTestSprite = ABoo.HooSprite.extend({
 
 	_loadColor:"rgba(170,170,170,0.8)",
-	_playColor:"rgba(247,163,0,1.0)",
+	_playColor:"#0080C7",
 	_busyColor:"#22b248",
 
 	spriteDraw: function( ctx, x, y, width, height, busyAngle, outerRad, innerRad, loadAmt, playAmt ) {

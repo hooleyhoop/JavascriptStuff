@@ -8,12 +8,12 @@ module Gui::Views::Drawing::Player
 		#attr_accessor :parentCanvas
 
 		def initialize( args={} )
-			super(args);
+			super(args)
 		end
 
         # Mock Data
 		def setupDebugFixture
-			super();
+			super()
 
             # playPauseButton needs a canvas
             @parentCanvas = widgetClass('HooCanvas').new();

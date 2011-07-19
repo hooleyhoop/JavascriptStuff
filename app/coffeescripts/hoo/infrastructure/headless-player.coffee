@@ -40,7 +40,7 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 		debugger
 		0
 
-	# hm
+	# hm, if you skip backwards html5 player can start unloading audio! - you will see load progress goes backwards
 	buffered: () ->
 		endTime = 0
 		timeRanges = @_audioPlayingDomNode.getNodeProperty('buffered')
@@ -48,6 +48,7 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 			console.log("Buffered attribute NOT found")
 			return 0
 		if timeRanges.length > 0
+			HOO_nameSpace.assert( timeRanges.length==1, "you need the mp3 url" )
 			try
 				# Discount the possibility of multiple buffers for now (theoretically possible with range requests if the user skips forward, but Safari doesn't seem to support it)
 				# and just return the proportion of buffered time
@@ -56,6 +57,7 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 			catch error
 				alert error
 				return 0
+		#console.log("Buffered > "+endTime);
 		return endTime
 
 	#
@@ -192,7 +194,7 @@ ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend
 
 	handleHeadlessFlashPlayerEvent: ( eventName ) ->
 		#if(eventName!="timeupdate")
-		#console.log("HTML5 player: got an event > " + eventName );
+		#console.log("Player: got an event > " + eventName );
 		# TODO: shit shit and bugger!
 		#if(eventName!="loadeddata")
 		@_stateMachine.processInputSignal( eventName )
@@ -222,12 +224,22 @@ ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend
 		@_headLessSingleton.setCurrentTime(secs)
 
 	setProgressPercent: ( arg ) ->
-		newVal = @duration() * arg
-		if  newVal >= @buffered()
-			newVal = @buffered()-0.5
+		d = @duration()
+		newVal = d * arg
+
+		# only seek within buffered content
+		#if  newVal >= @buffered()
+		#	newVal = @buffered()-0.5
+
+		# enable seeking to a future event
+		if  newVal >= d
+			newVal = d-0.5
+		if  newVal < 0
+			newVal = 0.01
 		#console.log("Set progress "+newVal)
 		@setCurrentTime(newVal)
-
+		#$(@_headLessSingleton._audioPlayingDomNode._observableSwf).trigger('timeupdate', newVal)
+		
 ###
  * One of these for each instance on the page
 ###
@@ -241,6 +253,7 @@ ABoo.NewFlashHeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.exten
 ABoo.NewHtml5HeadlessPlayerBackend = ABoo.NewAbstractHeadlessPlayerBackend.extend
 	_createSingletonPlayer: () ->
 		@_headLessSingleton = ABoo.NewHTML5HeadlessPlayerSingleton.sharedInstance()
+
 
 ### one of these for each instance of a player
 ###

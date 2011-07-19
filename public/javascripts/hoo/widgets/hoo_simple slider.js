@@ -155,6 +155,9 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 		this._super();
 		//mwah HOO_nameSpace.assert( this._hooCanvas, "this button must be added to a canvas to work" );
 
+		// off by default so not visible when js is disabled
+		this.div$.show();
+
 		var canvas$ = this.getFirstDomItemOfType("canvas");
 		var hooCanvas = ABoo.HooCanvas.create( { _$canvas:canvas$ } );
 		//hooCanvas.swapInFor( this._placeHolder$ );
@@ -228,13 +231,21 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	/* we observed a change in the headless player! - notification callback */
 	loadedDidChange: function( target, property ) {
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( target[property], this._maxAmount );
+		if( percent<this._loadedAmount ) {
+			console.log("percent "+percent);
+			//debugger;
+		}
 		if(percent<0)
 			debugger
 		// only animate up
 		if(percent==0)
-			this.coldSetProperty( '_loadedAmount', percent );
-		else
-			this.animateProperty( '_loadedAmount', percent, 1000/25*8 );
+			//this.coldSetProperty( '_loadedAmount', percent );
+			this.set( '_loadedAmount', percent );
+		else {
+			//this.coldSetProperty( '_loadedAmount', percent );
+			//this.animateProperty( '_loadedAmount', percent, 1000/25*8 );
+			this.set( '_loadedAmount', percent );
+		}
 	},
 
 	/* we observed a change in the headless player! - notification callback */
@@ -243,11 +254,16 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( updatedAmount, this._maxAmount );
 		// only animate up
 		if( percent==0 ) {
-			this.coldSetProperty( '_playedAmount', percent );
+			//this.coldSetProperty( '_playedAmount', percent );
+			this.set( '_playedAmount', percent );
 		} else if( percent < this._playedAmount ) {
-			this.animateProperty( '_playedAmount', percent, 1000/25*3 );
+			//this.coldSetProperty( '_playedAmount', percent );
+			//this.animateProperty( '_playedAmount', percent, 1000/25*3 );
+			this.set( '_playedAmount', percent );
 		} else
-			this.animateProperty( '_playedAmount', percent, 1000/25*3 );
+			//this.coldSetProperty( '_playedAmount', percent );
+			//this.animateProperty( '_playedAmount', percent, 1000/25*3 );
+			this.set( '_playedAmount', percent );
 	},
 
 	busyDidChange: function( target, property ) {
@@ -256,8 +272,10 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	},
 
 	recalcLoadedAndPlayedAmounts: function() {
-		this.coldSetProperty( '_playedAmount', this._playedAmount );
-		this.coldSetProperty( '_loadedAmount', this._loadedAmount );
+		//this.coldSetProperty( '_playedAmount', this._playedAmount );
+		//this.coldSetProperty( '_loadedAmount', this._loadedAmount );
+		this.set( '_playedAmount', this._playedAmount );
+		this.set( '_loadedAmount', this._loadedAmount );
 	},
 
 	parentDidResize: function() {

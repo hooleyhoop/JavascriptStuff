@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 16:32:34 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 19 Jul 2011 14:08:35 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/widgets/buttons/three_state_item.coffee
  */
 
@@ -153,7 +153,8 @@
     _mouseDown: function(e) {
       this._listenerDebugger.addListener($(document), 'mousemove', this, this._mouseDragged);
       this._lastMouseEvent = e;
-      return this._super(e);
+      this._super(e);
+      return this._fire();
     },
     _mouseDragged: function(e) {
       this._lastMouseEvent = e;

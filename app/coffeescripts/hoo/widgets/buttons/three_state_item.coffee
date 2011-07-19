@@ -162,7 +162,8 @@ ABoo.HooSliderItem = ABoo.HooThreeStateItem.extend
 		@_listenerDebugger.addListener( $(document), 'mousemove', @, @_mouseDragged )
 		@_lastMouseEvent = e		
 		this._super(e);
-		
+		@_fire()
+
 	_mouseDragged: (e) ->
 		@_lastMouseEvent = e
 		@_fire()

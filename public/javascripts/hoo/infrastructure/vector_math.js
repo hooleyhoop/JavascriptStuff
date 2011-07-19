@@ -119,10 +119,10 @@ var HooMathClassMethods = {
 
 	// more for debugging pirposes than anything
 	_clipToUnitValue: function( val ) {
-		if(val<-1 || val>1.1)
+		if(val<-1 || val>1.1) {
 			//debugger;
-			consol.warn("seems like a fishy value to clip.."+val);
-		else if (val<0)
+			console.warn("seems like a fishy value to clip.."+val);
+		} else if (val<0)
 			val = 0;
 		else if(val>1)
 			val = 1;

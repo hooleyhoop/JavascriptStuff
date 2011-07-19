@@ -1,7 +1,7 @@
--# http://0.0.0.0:3000/widgets/HooHtml5DetailPlayer
--# http://shooley.audioboo.fm:3000/widgets/HooHtml5DetailPlayer
+-# http://0.0.0.0:3000/widgets/HooFlashDetailPlayer
+-# http://shooley.audioboo.fm:3000/widgets/HooFlashDetailPlayer
 
-%div[_]( data-jsclass='ABoo.HooHtml5DetailPlayer' style="" )
+%div[_]( data-jsclass='ABoo.HooFlashDetailPlayer' style="width:100%; height:100%" )
 	= insert( _.views, nil )
 
 	-# If we had a form here the 'default' play button action could be to play the mp3
@@ -18,7 +18,7 @@
 
 		// Grrrr!
 		// it is important i think that we can create these things dynamically
-		ABoo.HooHtml5DetailPlayer = ABoo.NewAbstractPlayer.extend( ABoo.PropertyAnimMixin, {
+		ABoo.HooFlashDetailPlayer = ABoo.NewAbstractPlayer.extend( ABoo.PropertyAnimMixin, {
 			//_playerBackend: undefined,
 			//_loadProgress: 0,
 			//_playProgress: 0,
@@ -33,7 +33,6 @@
 			_active: false,
 
 			_debug_progress_update_count: 0,
-			_debug_progress_rate_: 0,
 
 			didInsertElement: function() {
 
@@ -64,7 +63,7 @@
 
 			createPlayerBackend: function() {
 				// The player may transparently use the flash backend so you have to give the div it will use to swap in for
-				this._playerBackend = ABoo.NewHtml5HeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
+				this._playerBackend = ABoo.NewFlashHeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
 				// dont set autoload, instead just don't set src until you want it to load
 				this._playerBackend._autoplay = false; // overide default
 			},
@@ -114,40 +113,29 @@
 				this.set('_busyFlag', false);
 			},
 
-			// Called every 350 msec
 			progressupdate: function() {
 				var actualLoaded = this._playerBackend.buffered();
 				if( actualLoaded>0 )
 					this.set('_busyFlag', false);
 					//#console.log("hide stalled")
 				// this.animateProperty( '_loadProgress', actualLoaded, 1000/25*10 );
-				if( actualLoaded < this._loadProgress ) {
-					console.log("LOAD PROGRESS "+actualLoaded );
-				}
+				// console.log("LOAD PROGRESS "+actualLoaded );
 				this.set( '_loadProgress', actualLoaded );
 				//this._debug_progress_update_count++;
-				//var debug_progress_rate_ = new Date().getTime();
-				//console.log("this._debug_progress_update_count "+this._debug_progress_update_count+ "     RATE: "+(debug_progress_rate_-this._debug_progress_rate_));
-				//this._debug_progress_rate_ = debug_progress_rate_;
+				//console.log("_debug_progress_update_count "+this._debug_progress_update_count);
 			},
 
-			// Called every 250 msec
 			timeupdate: function() {
 				var t = this._playerBackend.currentTime();
 				// this.animateProperty( '_playProgress', t, 1000 );
 				this.set( '_playProgress', t );
-				//this._debug_progress_update_count++;
-				//var debug_progress_rate_ = new Date().getTime();
-				//console.log("this._debug_progress_update_count "+this._debug_progress_update_count+ "     RATE: "+(debug_progress_rate_-this._debug_progress_rate_));
-				//this._debug_progress_rate_ = debug_progress_rate_;
 			},
-
 			//cmd_showFinishedPlayer: function() {
 			//	this._super();
 			//	this.set( '_playProgress', 0 );
 			//},
 
 			description: function() {
-				return "HTML5_Detail_Player "+this._super();
+				return "Flash_Detail_Player "+this._super();
 			}
 		})

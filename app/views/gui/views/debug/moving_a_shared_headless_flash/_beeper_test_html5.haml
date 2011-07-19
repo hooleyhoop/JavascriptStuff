@@ -1,14 +1,13 @@
 -# http://0.0.0.0:3000/widgets/BeeperTestHtml5
 
--# push( beeper_test_html5 )
-
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white;' ) do
-	= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
+	%a( href="http://apple.com" )
+		= image_tag("rails.png", :style=>"padding-right: 10px; padding-top: 5px;" )
 
 - if( _.includeOnce? )
 	:javascript
 
-		ABoo.HTML5AudioBackend = SC.Object.extend({
+		ABoo.HTML5BeeperAudioBackend = SC.Object.extend({
 			_mp3url:undefined,
 			_audioElem:undefined,
 			init: function( /* init never has args */ ) {
@@ -37,19 +36,19 @@
 			}
 		});
 
-		ABoo.HTML5AudioBackendClassMethods = SC.Mixin.create({
+		ABoo.HTML5BeeperAudioBackendClassMethods = SC.Mixin.create({
 
-			_sharedHTML5AudioBackend: undefined,
+			_sharedHTML5BeeperAudioBackend: undefined,
 
 			sharedAudioPlayerForURL: function( mp3URL ) {
-				if(!this._sharedHTML5AudioBackend) {
-					this._sharedHTML5AudioBackend = ABoo.HTML5AudioBackend.create();
+				if(!this._sharedHTML5BeeperAudioBackend) {
+					this._sharedHTML5BeeperAudioBackend = ABoo.HTML5BeeperAudioBackend.create();
 				}
-				this._sharedHTML5AudioBackend.setSrc(mp3URL);
+				this._sharedHTML5BeeperAudioBackend.setSrc(mp3URL);
 			}
 		});
 
-		SC.mixin( ABoo.HTML5AudioBackend, ABoo.HTML5AudioBackendClassMethods );
+		SC.mixin( ABoo.HTML5BeeperAudioBackend, ABoo.HTML5BeeperAudioBackendClassMethods );
 
 		/*
 		 *
@@ -70,8 +69,12 @@
 					if(img$) {
 						console.log("loading...");
 
+						// disable the deaflat action
+						var link$ = this.getFirstDomItemOfType("a");
+						link$.removeAttr('href'); // don't know why prevent default doesn't work
+
 						var url = this.json.mp3Url;
-						var playerbackend = ABoo.HTML5AudioBackend.sharedAudioPlayerForURL( url );
+						var playerbackend = ABoo.HTML5BeeperAudioBackend.sharedAudioPlayerForURL( url );
 
 					}
 				}

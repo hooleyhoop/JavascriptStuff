@@ -12,13 +12,13 @@ module Gui::Views::Debug::MovingASharedHeadlessFlash
 		attr_accessor :mp3Url;
 
 		def initialize( args={} )
-			super(args);
-			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/305019-taking-frank-to-the-vet.mp3'} );
+			super(args)
+			extractArgs( args, {:mp3Url=>'http://audioboo.fm/boos/305019-taking-frank-to-the-vet.mp3'} )
 		end
 
         # Mock Data
 		def setupDebugFixture
-			super();
+			super()
 		end
 
 		def jsonProperties

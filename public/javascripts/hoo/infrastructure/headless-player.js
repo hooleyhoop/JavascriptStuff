@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Mon, 18 Jul 2011 17:44:27 GMT from
+/* DO NOT MODIFY. This file was compiled Tue, 19 Jul 2011 15:42:58 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/headless-player.coffee
  */
 
@@ -47,6 +47,7 @@
         return 0;
       }
       if (timeRanges.length > 0) {
+        HOO_nameSpace.assert(timeRanges.length === 1, "you need the mp3 url");
         try {
           timeRangeIndex = timeRanges.length - 1;
           endTime = this._getTimeRangeEnd(timeRanges, timeRangeIndex);
@@ -211,8 +212,11 @@
     setProgressPercent: function(arg) {
       var newVal;
       newVal = this.duration() * arg;
-      if (newVal >= this.buffered()) {
-        newVal = this.buffered() - 0.5;
+      if (newVal >= this.duration()) {
+        newVal = this.duration() - 0.5;
+      }
+      if (newVal < 0) {
+        newVal = 0.01;
       }
       return this.setCurrentTime(newVal);
     }

@@ -2,8 +2,11 @@
 
 -# push( hoo_simple_time_display )
 
-%div[_]( class="" data-jsclass='ABoo.HooSimpleTimeDisplay' style="" )
-	%span.sansSolid( class="" ) 00:00 / 00:00
+%div[_]( data-jsclass='ABoo.HooSimpleTimeDisplay')
+	%script( type="text/html" )
+		{{#view timeBinding="ABoo.#{_.varName}.timeString"}}
+		<span class='sansSolid' style=''>{{time}}<span>
+		{{/view}}
 
 	=  insert( _.views, "" )
 
@@ -17,18 +20,19 @@
 
 			_maxAmount: 	0,
 			_time:			0,
-			_textSting:		"00:00 / 00:00",
-			_$span:			undefined,
+			//_textSting:		"00:00 / 00:00",
+			//_$span:			undefined,
+			//counter: 0,
 
 			setupDidComplete: function() {
 
-				this._$span = $( "#"+this.id+" span:first" ); // TODO: swap this.div$.find()
+				//this._$span = $( "#"+this.id+" span:first" ); // TODO: swap this.div$.find()
 
 				var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
 				hasBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
 				hasBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
 
-				this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
+				// this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
 			},
 
 			readyDidChange: function( target, property ) {
@@ -37,30 +41,36 @@
 
 			maxAmountDidChange:  function( target, property ) {
 				var newVal = target[property];
-				if(newVal!=this._maxAmount){
+				//if(newVal!=this._maxAmount){
 					this.set( '_maxAmount', newVal );
-					this.constructTextString();
-				}
+				//	this.constructTextString();
+				//}
 			},
 
 			playedDidChange: function( target, property ) {
 				var newVal = target[property];
-				if(newVal!=this._time){
+				//if(newVal!=this._time){
 					this.set( '_time', newVal);
-					this.constructTextString();
-				}
+				//	this.constructTextString();
+				//}
 			},
 
-			constructTextString: function() {
-				var newString = formatTime(this._time) + " / "+ formatTime(this._maxAmount);
-				if(newString != this._textSting ) {
-					this._textSting = newString;
-					this.setTextContent(this._textSting);
-				}
-			},
+			//constructTextString: function() {
+			//	var newString = formatTime(this._time) + " / "+ formatTime(this._maxAmount);
+			//	if(newString != this._textSting ) {
+			//		this._textSting = newString;
+			//		this.setTextContent(this._textSting);
+			//	}
+			//},
 
 			// we could do this with sproutcore?
-			setTextContent: function(txt) {
-				this._$span.text( txt );
-			}
+			//setTextContent: function(txt) {
+			//	this._$span.text( txt );
+			//},
+
+			timeString: function() {
+				return newString = formatTime(this._time) + " / "+ formatTime(this._maxAmount);
+			}.property('_time', '_maxAmount').cacheable(),
+
+
 		});

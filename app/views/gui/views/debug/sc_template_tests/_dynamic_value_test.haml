@@ -1,10 +1,12 @@
 -# http://0.0.0.0:3000/widgets/DynamicValueTest
+
 -# if it can go in haml, it should, right?
 -# if it can go in haml, it should, right?
 -# if it can go in haml, it should, right?
 -# if it can go in haml, it should, right?
 
--# push( dynamic_value_test )
+-# A major benfir of sproutcore is the collection views for dynamic lists of objects - we can't use em as you would see nothing without javascript
+
 - wrapLiveObject( _, :style=>'border:1px solid black; margin:3px; background-color: white; font-size:23px;' ) do
 
 	/
@@ -52,7 +54,7 @@
 		 *	Subview with bindings to parent widget
 		*/
 		ABoo.MockViewTest = ABoo.SCView.extend({
-			// we didnt really need the subclass. Could setup the binding here if we wanted.
+			// we didnt really need the subclass, But we could setup the binding here if we wanted.
 		});
 
 

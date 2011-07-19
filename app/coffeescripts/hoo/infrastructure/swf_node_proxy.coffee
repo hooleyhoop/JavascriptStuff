@@ -38,7 +38,8 @@ ABoo.FlashObject = SC.Object.extend
 		return @_commandableSwf[propertyName]()
 
 	setNodeProperty: (propertyName,value) ->
-		@_commandableSwf['set'+propertyName](value)
+		#@_commandableSwf['set'+propertyName](value) -- doesn't work for currentTime
+		@attrSetter(propertyName,value)
 
 	attrGetter: (propertyName) ->
 		@_commandableSwf.getSwfAttribute(propertyName)
