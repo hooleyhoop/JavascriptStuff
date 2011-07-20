@@ -239,12 +239,12 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 			debugger
 		// only animate up
 		if(percent==0)
-			//this.coldSetProperty( '_loadedAmount', percent );
-			this.set( '_loadedAmount', percent );
+			this.coldSetProperty( '_loadedAmount', percent );
+			//this.set( '_loadedAmount', percent );
 		else {
 			//this.coldSetProperty( '_loadedAmount', percent );
-			//this.animateProperty( '_loadedAmount', percent, 1000/25*8 );
-			this.set( '_loadedAmount', percent );
+			this.animateProperty( '_loadedAmount', percent, 1000/25*8 );
+			//this.set( '_loadedAmount', percent );
 		}
 	},
 
@@ -254,16 +254,16 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( updatedAmount, this._maxAmount );
 		// only animate up
 		if( percent==0 ) {
-			//this.coldSetProperty( '_playedAmount', percent );
-			this.set( '_playedAmount', percent );
+			this.coldSetProperty( '_playedAmount', percent );
+			//this.set( '_playedAmount', percent );
 		} else if( percent < this._playedAmount ) {
 			//this.coldSetProperty( '_playedAmount', percent );
-			//this.animateProperty( '_playedAmount', percent, 1000/25*3 );
-			this.set( '_playedAmount', percent );
+			this.animateProperty( '_playedAmount', percent, 1000/25*3 );
+			//this.set( '_playedAmount', percent );
 		} else
 			//this.coldSetProperty( '_playedAmount', percent );
-			//this.animateProperty( '_playedAmount', percent, 1000/25*3 );
-			this.set( '_playedAmount', percent );
+			this.animateProperty( '_playedAmount', percent, 1000/25*3 );
+			//this.set( '_playedAmount', percent );
 	},
 
 	busyDidChange: function( target, property ) {
@@ -272,10 +272,10 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	},
 
 	recalcLoadedAndPlayedAmounts: function() {
-		//this.coldSetProperty( '_playedAmount', this._playedAmount );
-		//this.coldSetProperty( '_loadedAmount', this._loadedAmount );
-		this.set( '_playedAmount', this._playedAmount );
-		this.set( '_loadedAmount', this._loadedAmount );
+		this.coldSetProperty( '_playedAmount', this._playedAmount );
+		this.coldSetProperty( '_loadedAmount', this._loadedAmount );
+		//this.set( '_playedAmount', this._playedAmount );
+		//this.set( '_loadedAmount', this._loadedAmount );
 	},
 
 	parentDidResize: function() {

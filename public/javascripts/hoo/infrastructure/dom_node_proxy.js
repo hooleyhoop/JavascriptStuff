@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Fri, 08 Jul 2011 11:23:33 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 20 Jul 2011 11:56:27 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/dom_node_proxy.coffee
  */
 

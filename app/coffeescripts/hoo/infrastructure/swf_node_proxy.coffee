@@ -34,8 +34,8 @@ ABoo.FlashObject = SC.Object.extend
 		@_ready = false
 
 	# Hack in some utility functions to make sure audio element has the same interface as the swf
-	getNodeProperty: (propertyName) ->
-		return @_commandableSwf[propertyName]()
+	#getNodeProperty: (propertyName) ->
+	#	return @_commandableSwf[propertyName]()
 
 	setNodeProperty: (propertyName,value) ->
 		#@_commandableSwf['set'+propertyName](value) -- doesn't work for currentTime
@@ -43,13 +43,13 @@ ABoo.FlashObject = SC.Object.extend
 
 	attrGetter: (propertyName) ->
 		@_commandableSwf.getSwfAttribute(propertyName)
-			
+
 	attrSetter: (propertyName,value) ->
 		@_commandableSwf.setSwfAttribute(propertyName,value)
-		
+
 	cmd: (functionName, argArray ) ->
 		@_commandableSwf[functionName].apply(@_commandableSwf,argArray)
-		
+
 	###
 		!important: everytime you move the swf it creates a new instance
 	###
@@ -175,7 +175,7 @@ SC.mixin( ABoo.SharedFlashObject, ABoo.SharedFlashObjectClassMethods )
 ###
 	HeadlessSharedFlashObject
 ###
-ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend ( 
+ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend (
 
 	swapInForItem: ( scriptItem, domItem$ ) ->
 		if @_currentPlaceHolder?
@@ -221,5 +221,5 @@ ABoo.HeadlessSharedFlashObject = ABoo.SharedFlashObject.extend (
 
 ABoo.HeadlessSharedFlashObjectClassMethods = SC.Mixin.create ABoo.SharedFlashObjectClassMethods,
 	0
-	
+
 SC.mixin( ABoo.HeadlessSharedFlashObject, ABoo.HeadlessSharedFlashObjectClassMethods )

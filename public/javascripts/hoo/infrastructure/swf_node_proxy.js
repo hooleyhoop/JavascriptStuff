@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 19 Jul 2011 14:14:42 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 20 Jul 2011 11:57:34 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/swf_node_proxy.coffee
  */
 
@@ -37,9 +37,6 @@
       this._observableSwf = $wrapper;
       this._commandableSwf = $wrapper.find('object')[0];
       return this._ready = false;
-    },
-    getNodeProperty: function(propertyName) {
-      return this._commandableSwf[propertyName]();
     },
     setNodeProperty: function(propertyName, value) {
       return this.attrSetter(propertyName, value);

@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 19 Jul 2011 15:42:58 GMT from
+/* DO NOT MODIFY. This file was compiled Wed, 20 Jul 2011 11:57:35 GMT from
  * /Users/shooley/Desktop/Organ/Programming/Ruby/javascriptstuff/app/coffeescripts/hoo/infrastructure/headless-player.coffee
  */
 
@@ -41,7 +41,7 @@
     buffered: function() {
       var endTime, timeRangeIndex, timeRanges;
       endTime = 0;
-      timeRanges = this._audioPlayingDomNode.getNodeProperty('buffered');
+      timeRanges = this._audioPlayingDomNode.attrGetter('buffered');
       if (!(timeRanges != null)) {
         console.log("Buffered attribute NOT found");
         return 0;
@@ -60,7 +60,7 @@
     },
     duration: function() {
       var dur;
-      dur = this._audioPlayingDomNode.getNodeProperty('duration');
+      dur = this._audioPlayingDomNode.attrGetter('duration');
       if (isNaN(dur)) {
         dur = 0;
       }
@@ -90,6 +90,7 @@
       return this._audioPlayingDomNode.attrGetter('currentTime');
     },
     setCurrentTime: function(secs) {
+      console.log("mp");
       if (secs !== this.currentTime()) {
         return this._audioPlayingDomNode.setNodeProperty('currentTime', secs);
       }
@@ -210,10 +211,11 @@
       return this._headLessSingleton.setCurrentTime(secs);
     },
     setProgressPercent: function(arg) {
-      var newVal;
-      newVal = this.duration() * arg;
-      if (newVal >= this.duration()) {
-        newVal = this.duration() - 0.5;
+      var d, newVal;
+      d = this.duration();
+      newVal = d * arg;
+      if (newVal >= d) {
+        newVal = d - 0.5;
       }
       if (newVal < 0) {
         newVal = 0.01;

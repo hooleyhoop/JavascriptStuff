@@ -13,14 +13,14 @@ ABoo.DomNodeProxy = SC.Object.extend
 		@_super()
 		@_swfID = ABoo.FlashObject.newID()
 		@_observableSwf = document.createElement(@_tag)
-		@_commandableSwf = @_observableSwf		
+		@_commandableSwf = @_observableSwf
 		@_ready = false
 
 	# Hack in some utility functions to make sure audio element has the same interface as the swf
 	getNodeProperty: (propertyName) ->
 		return @_commandableSwf[propertyName]
 
-	setNodeProperty: (propertyName,value) -> 
+	setNodeProperty: (propertyName,value) ->
 		@_commandableSwf[propertyName]=value
 
 	attrGetter: (propertyName) ->
@@ -51,7 +51,7 @@ ABoo.DomNodeProxy = SC.Object.extend
 		@_observableSwf.height( height )
 
 	matchSwfSizeToItem: () ->
-		@setSwfSize( @_currentPlaceHolder.width(), @_currentPlaceHolder.height() )		
+		@setSwfSize( @_currentPlaceHolder.width(), @_currentPlaceHolder.height() )
 
 ###
 	DomNodeProxyClassMethods
@@ -61,7 +61,7 @@ ABoo.DomNodeProxyClassMethods = #SC.Mixin.create
 		return this.create( {_tag:tag} )
 
 SC.mixin( ABoo.DomNodeProxy, ABoo.DomNodeProxyClassMethods )
-						
+
 
 
 ###
@@ -70,29 +70,29 @@ SC.mixin( ABoo.DomNodeProxy, ABoo.DomNodeProxyClassMethods )
 ABoo.SharedDomNodeProxy = ABoo.DomNodeProxy.extend
 	_currentPlaceHolder: undefined
 	_activeScriptItem: undefined
-	
+
 	swapInForItem: ( scriptItem, domItem$ ) ->
 		if @_currentPlaceHolder?
 			@_observableSwf.after( @_currentPlaceHolder ) 	# put back previous swapped out item
 			@remove()										# remove the swf from page
 
 		@_currentPlaceHolder = domItem$
-		@setActiveScriptItem( scriptItem )		
+		@setActiveScriptItem( scriptItem )
 		@insertSwfVisibly()
 		@flashDidLoad();
-		
+
 	replacePlaceHolderWithSwf: () ->
 		@_currentPlaceHolder.after( @_observableSwf )
 		@_currentPlaceHolder.remove()
-			
+
 	insertSwfVisibly: () ->
 		@matchSwfSizeToItem()
 		@replacePlaceHolderWithSwf()
-			
+
 	setActiveScriptItem: ( item ) ->
 		if @_activeScriptItem? then @_activeScriptItem.didSwapOutFlash( this )
 		@_activeScriptItem = item
-		@_delegate = @_activeScriptItem 
+		@_delegate = @_activeScriptItem
 		@_activeScriptItem.didSwapInFlash( this )
 
 
@@ -105,11 +105,11 @@ ABoo.CachedObjectClassMethods = #SC.Mixin.create
 			cachedFlash = @create( {_tag:tag} )
 			@_cached[tag] = cachedFlash
 		return cachedFlash
-				
+
 ###
 	SharedDomNodeProxyClassMethods
-###						
-ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create( ABoo.CachedObjectClassMethods, ABoo.DomNodeProxyClassMethods, 
+###
+ABoo.SharedDomNodeProxyClassMethods = SC.Mixin.create( ABoo.CachedObjectClassMethods, ABoo.DomNodeProxyClassMethods,
 	#_cached: new Object()
 	#sharedDivForTag: ( tag ) ->
 	#	cachedFlash = @_cached[tag];
@@ -134,7 +134,7 @@ ABoo.HeadlessSharedDomNodeProxy = ABoo.SharedDomNodeProxy.extend
 	swapInForItem: ( scriptItem, domItem$ ) ->
 		if @_currentPlaceHolder?
 			@remove()
-		
+
 		@_currentPlaceHolder = domItem$
 		@setActiveScriptItem( scriptItem )
 		@insertSwfInvisibly()
@@ -142,7 +142,7 @@ ABoo.HeadlessSharedDomNodeProxy = ABoo.SharedDomNodeProxy.extend
 
 	remove: () ->
 		@_ready = false
-			
+
 	insertSwfInvisibly: () ->
 		0
 

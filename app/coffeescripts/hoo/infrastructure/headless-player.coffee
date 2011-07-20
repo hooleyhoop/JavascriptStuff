@@ -24,10 +24,16 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 			@_audioPlayingDomNode.attrSetter( 'preload', autoloadsetting )
 			@_audioPlayingDomNode.attrSetter( 'src', mp3Url2 )
 
+			#SC.run.next( this, "debugHTMLPlayer" );
+
 			# is autoload property imlemented in all flash players?
 			if autoload
 				@_audioPlayingDomNode.cmd( 'load' ) 					# force the audio to reset & start loading the new url
 		0
+
+	#debugHTMLPlayer: () ->
+	# attributes: src currentTime duration preload buffered autoplay
+	# functions: load() play() pause()
 
 	# hm
 	playerBecameCurrent: ( playerInstance, $pageItem ) ->
@@ -43,7 +49,7 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 	# hm, if you skip backwards html5 player can start unloading audio! - you will see load progress goes backwards
 	buffered: () ->
 		endTime = 0
-		timeRanges = @_audioPlayingDomNode.getNodeProperty('buffered')
+		timeRanges = @_audioPlayingDomNode.attrGetter('buffered')
 		if !timeRanges?
 			console.log("Buffered attribute NOT found")
 			return 0
@@ -62,7 +68,7 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 
 	#
 	duration: () ->
-		dur = @_audioPlayingDomNode.getNodeProperty('duration')
+		dur = @_audioPlayingDomNode.attrGetter('duration')
 		if isNaN(dur) then dur = 0
 		#console.log("DUR: "+dur)
 		return dur
@@ -78,7 +84,7 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 		ct = @_audioPlayingDomNode.attrGetter('currentTime')
 		duration =  @duration()
 		playedDegrees = if duration is 0 then 0 else (ct / duration * 360)
-		#console.log("<<<<< playedDegrees: "+ct+" "+duration+" >>>>>> "+playedDegrees )
+		#console.log("<<<<< currentTime: "+ct+" >>> duration: "+duration+" >>>>>> playedDegrees: "+playedDegrees )
 		return playedDegrees
 
 	# TODO: when you play we have to manually update playcount (first time thru only) - sort out what happens when autoplay
@@ -92,8 +98,9 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 		@_audioPlayingDomNode.attrGetter( 'currentTime' )
 
 	setCurrentTime: ( secs ) ->
+		console.log("mp");
 		if secs != @currentTime()
-			@_audioPlayingDomNode.setNodeProperty( 'currentTime', secs )
+			@_audioPlayingDomNode.setNodeProperty( 'currentTime', secs ) # for some reason setAttribute('currentTime') doesn't work for audio element
 
 SC.mixin( ABoo.NewAbstractHeadlessPlayerSingleton, ABoo.SingletonClassMethods )
 
@@ -194,7 +201,7 @@ ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend
 
 	handleHeadlessFlashPlayerEvent: ( eventName ) ->
 		#if(eventName!="timeupdate")
-		#console.log("Player: got an event > " + eventName );
+		#console.log("Player: handled an event > " + eventName );
 		# TODO: shit shit and bugger!
 		#if(eventName!="loadeddata")
 		@_stateMachine.processInputSignal( eventName )
@@ -239,7 +246,7 @@ ABoo.NewAbstractHeadlessPlayerBackend = SC.Object.extend
 		#console.log("Set progress "+newVal)
 		@setCurrentTime(newVal)
 		#$(@_headLessSingleton._audioPlayingDomNode._observableSwf).trigger('timeupdate', newVal)
-		
+
 ###
  * One of these for each instance on the page
 ###
