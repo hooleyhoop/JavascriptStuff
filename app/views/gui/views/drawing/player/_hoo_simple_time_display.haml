@@ -28,9 +28,10 @@
 
 				//this._$span = $( "#"+this.id+" span:first" ); // TODO: swap this.div$.find()
 
-				var hasBinding = this.setup_hoo_binding_from_json( 'enabledBinding' );
-				hasBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
-				hasBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
+				var declaredBindings = ['enabledBinding', 'maxAmountValueBinding', 'playedValueBinding'];
+				this.setup_hoo_bindings_from_json( declaredBindings );
+
+
 
 				// this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
 			},

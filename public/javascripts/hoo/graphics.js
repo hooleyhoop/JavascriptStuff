@@ -674,6 +674,7 @@ ABoo.PauseRecordingButtonSprite = ABoo.HooSprite.extend({
 	}
 });
 
+
 // TODO! What is the difference between a sprote and a graphic?
 ABoo.DonutTestSprite = ABoo.HooSprite.extend({
 

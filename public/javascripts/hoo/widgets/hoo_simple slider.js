@@ -133,7 +133,6 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	_maxBarWidth:		0,
 	_currentWidth:		0,
 	_currentWHeight:	0,
-
 	_barberPole:		undefined,
 
 	init: function( /* init never has args */ ) {
@@ -176,9 +175,12 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 		//mwah 	this._stateMachine.processInputSignal( "enable" );
 		//mwah }
 
-		var hasMaxValBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
-		var hasLoadedValBinding = this.setup_hoo_binding_from_json( 'loadedValueBinding' );
-		var hasPlayedValBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
+        var declaredBindings = ['maxAmountValueBinding', 'loadedValueBinding', 'playedValueBinding'];
+        this.setup_hoo_bindings_from_json( declaredBindings );
+
+		//var hasMaxValBinding = this.setup_hoo_binding_from_json( 'maxAmountValueBinding' );
+		//var hasLoadedValBinding = this.setup_hoo_binding_from_json( 'loadedValueBinding' );
+		//var hasPlayedValBinding = this.setup_hoo_binding_from_json( 'playedValueBinding' );
 
 		// remember! the alert stuff doesnt work in ie
 		//mwah this._mouseClickAction = this.setup_hoo_action_from_json( 'mouseClickAction' );
@@ -215,6 +217,8 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 
 	// our local value changed (was animated to new value)
 	_loadDidChange: function( target, property ) {
+		//console.log("Re-SET Loaded amount "+  this._loadedAmount );
+
 		var loadDivWidth = this._maxBarWidth*this._loadedAmount;
 		// console.log("LoadDivWidth = "+this._maxBarWidth);
 		this._loadProgressDiv.width(loadDivWidth);
@@ -230,6 +234,7 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 
 	/* we observed a change in the headless player! - notification callback */
 	loadedDidChange: function( target, property ) {
+
 		var percent = ABoo.HooMath.xAsUnitPercentOfY( target[property], this._maxAmount );
 		if( percent<this._loadedAmount ) {
 			console.log("percent "+percent);
@@ -272,10 +277,8 @@ ABoo.HooSimpleSlider = ABoo.HooFormButtonSimple.extend(  ABoo.PropertyAnimMixin,
 	},
 
 	recalcLoadedAndPlayedAmounts: function() {
-		this.coldSetProperty( '_playedAmount', this._playedAmount );
-		this.coldSetProperty( '_loadedAmount', this._loadedAmount );
-		//this.set( '_playedAmount', this._playedAmount );
-		//this.set( '_loadedAmount', this._loadedAmount );
+		this._loadDidChange( this, '_loadedAmount' );
+		this._playDidChange( this, '_playedAmount' );
 	},
 
 	parentDidResize: function() {

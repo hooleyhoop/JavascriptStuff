@@ -98,7 +98,6 @@ ABoo.NewAbstractHeadlessPlayerSingleton = SC.Object.extend
 		@_audioPlayingDomNode.attrGetter( 'currentTime' )
 
 	setCurrentTime: ( secs ) ->
-		console.log("mp");
 		if secs != @currentTime()
 			@_audioPlayingDomNode.setNodeProperty( 'currentTime', secs ) # for some reason setAttribute('currentTime') doesn't work for audio element
 

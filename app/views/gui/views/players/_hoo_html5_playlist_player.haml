@@ -1,0 +1,153 @@
+-# http://0.0.0.0:3000/widgets/HooHtml5PlaylistPlayer
+-# http://shooley.audioboo.fm:3000/widgets/HooHtml5PlaylistPlayer
+
+%div[_]( data-jsclass='ABoo.HooHtml5PlaylistPlayer' style="" )
+	= insert( _.views, nil )
+
+	-# If we had a form here the 'default' play button action could be to play the mp3
+
+	-# Is this all wrong? It depends what we want to happen when Javascript is disabled?
+	-# If we want to show something nice we should put that in haml and the player in javascript only
+
+	-# Another option is just to set the visibilty of stuff with javascript
+	-# The play pause button is already invisible if you dont have js enabled
+
+
+- if( _.includeOnce? )
+	:javascript
+
+		// Grrrr!
+		// it is important i think that we can create these things dynamically
+		ABoo.HooHtml5PlaylistPlayer = ABoo.NewAbstractPlayer.extend( ABoo.PropertyAnimMixin, {
+			//_playerBackend: undefined,
+			//_loadProgress: 0,
+			//_playProgress: 0,
+			//_busyFlag:false,
+			//_ready: false,
+
+			_playButtonCanvas: undefined,
+			_playButton: undefined,
+			_slider: undefined,
+			_timeDisplay: undefined,
+			_duration:0,
+			_active: false,
+
+			_debug_progress_update_count: 0,
+			_debug_progress_rate_: 0,
+
+			didInsertElement: function() {
+
+				this._super();
+				// woah, mutha fucking a1 problem.
+				// we can only have 1 of the detail players active at a time if we want the play butten enabled property to be bound to a headless player singleton
+				// That is, we dont want to (can't) have more than 1 player on a page loading (so we made the player a singleton), but if you also
+				// don't want the play button to become active until mp3 has suficiently loaded
+
+				// Also, the player loads when you set the src, we need to change this if we need multiple player on the screen that don't auto load
+
+				this.createPlayerBackend();
+
+				this.addObserver('_ready', this._timeDisplay, 'readyDidChange' );
+				this.addObserver('_ready', this._slider, 'readyDidChange' );
+				this.addObserver('_duration', this._timeDisplay, 'maxAmountDidChange' );
+				this.addObserver('_duration', this._slider, 'maxAmountDidChange' );
+				this.addObserver('_loadProgress', this._slider, 'loadedDidChange' );
+				this.addObserver('_busyFlag', this._slider, 'busyDidChange' );
+
+				this.addObserver('_playProgress', this._timeDisplay, 'playedDidChange' );
+				this.addObserver('_playProgress', this._slider, 'playedDidChange' );
+
+				// The cause of manty woes - we have to do stuff 'after' everything has setup. Therefor the point where everything is set up gets pushed back
+				//this._playerBackend._attachToPage( this.div$ )
+				SC.run.next( this._playerBackend, "_attachToPage",  this.div$ );
+			},
+
+			createPlayerBackend: function() {
+				// The player may transparently use the flash backend so you have to give the div it will use to swap in for
+				this._playerBackend = ABoo.NewHtml5HeadlessPlayerBackend.create( {_controller:this, _mp3URL:this.json.mp3Url} );
+				// dont set autoload, instead just don't set src until you want it to load
+				this._playerBackend._autoplay = false; // overide default
+			},
+
+			showPlayerGUI: function() {
+				//this._showPlay();
+			},
+			hidePlayerGUI: function() {
+			},
+
+			_showPlay: function() {
+				this._playButton._buttonSMControl.sendEvent( "ev_showState1" );
+			},
+
+			_showPause: function() {
+				this._playButton._buttonSMControl.sendEvent( "ev_showState2" );
+			},
+
+			_showDisabled: function() {
+				this._playButton._buttonSMControl.sendEvent( "ev_showState1" );
+			},
+
+			// hmm, why is ready called?
+			ready: function() {
+				this.set('_ready', true);
+			},
+
+			durationchange: function() {
+				//console.log("DURATION: "+this._playerBackend.duration())
+				this.set('_duration', this._playerBackend.duration());
+				this._fakeLoadProgressEvent();
+
+				if( !this._active ) {
+					this._playButton.setMouseClickAction( { t:this, a:["playClickAction", "pauseClickAction"], w:null, actionIsAsync:true } );
+					this._slider.setMouseClickAction( { t:this._playerBackend, a:this._playerBackend.setProgressPercent, w:null, actionIsAsync:false } );
+					this._active = true;
+				}
+			},
+
+			// seems like we dont always get progress events (html5 audio).. manually check
+			_fakeLoadProgressEvent: function() {
+				var reportedLoadedDegress = this._playerBackend.buffered()
+				if( this._loadProgress != reportedLoadedDegress ) {
+					// @animateProperty( '_loadProgress', reportedLoadedDegress, 1000/25*10 )
+					this.set( '_loadProgress', reportedLoadedDegress );
+				}
+				this.set('_busyFlag', false);
+			},
+
+			// Called every 350 msec
+			progressupdate: function() {
+				var actualLoaded = this._playerBackend.buffered();
+				if( actualLoaded>0 )
+					this.set('_busyFlag', false);
+					//#console.log("hide stalled")
+				// this.animateProperty( '_loadProgress', actualLoaded, 1000/25*10 );
+				if( actualLoaded < this._loadProgress ) {
+					console.log("LOAD PROGRESS "+actualLoaded );
+				}
+				this.set( '_loadProgress', actualLoaded );
+				//this._debug_progress_update_count++;
+				//var debug_progress_rate_ = new Date().getTime();
+				//console.log("this._debug_progress_update_count "+this._debug_progress_update_count+ "     RATE: "+(debug_progress_rate_-this._debug_progress_rate_));
+				//this._debug_progress_rate_ = debug_progress_rate_;
+			},
+
+			// Called every 250 msec
+			timeupdate: function() {
+				var t = this._playerBackend.currentTime();
+				// this.animateProperty( '_playProgress', t, 1000 );
+				this.set( '_playProgress', t );
+				//this._debug_progress_update_count++;
+				//var debug_progress_rate_ = new Date().getTime();
+				//console.log("this._debug_progress_update_count "+this._debug_progress_update_count+ "     RATE: "+(debug_progress_rate_-this._debug_progress_rate_));
+				//this._debug_progress_rate_ = debug_progress_rate_;
+			},
+
+			//cmd_showFinishedPlayer: function() {
+			//	this._super();
+			//	this.set( '_playProgress', 0 );
+			//},
+
+			description: function() {
+				return "HTML5_Detail_Player "+this._super();
+			}
+		})

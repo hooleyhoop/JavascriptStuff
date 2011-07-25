@@ -1,0 +1,136 @@
+-# http://0.0.0.0:3000/widgets/HooInputVolumeDisplay
+
+%div[_]( data-jsclass='ABoo.HooInputVolumeDisplay' style="overflow:visible;" )
+	=  insert( _.views, "" )
+
+- if( _.includeOnce? )
+	:javascript
+
+		ABoo.LedLevelsSprite = ABoo.HooSprite.extend({
+
+			spriteDraw: function( ctx, x, y, width, height, level ) {
+				// draw 8 columns - what sizes?
+				var columns = 8;
+				var spacer = 1;
+				var ledWidth = 6;
+				var col = "#00ff00";
+
+				var colWidth = Math.floor( width / columns ); // This is the actual column width, we will vary the proportion of led to space to fill this span
+
+				var widthMultiplier = Math.floor(colWidth / (ledWidth+spacer));
+				var scaledSpace = spacer*widthMultiplier;
+				if(scaledSpace<1)
+					scaledSpace = 1;
+
+				// console.log("mult = "+widthMultiplier);
+				var scaledLedWidth = colWidth-scaledSpace;
+				var scaledLedHeight = scaledLedWidth/3 *5;
+				if(scaledLedHeight>height)
+					scaledLedHeight = height;
+
+				var brightColours = ['#00ff00', '#00ff00', '#00ff00', '#00ff00', '#00ff00', '#00ff00', '#ff7700', '#ff0000'];
+				var dullColours = ['#00aa00', '#00aa00', '#00aa00', '#00aa00', '#00aa00', '#00aa00', '#cc6600', '#aa0000'];
+				// ctx.fillStyle = col;
+
+				for (i=0; i<level; i++) {
+					var x = i*colWidth;
+
+					var startX = x+scaledLedWidth/2;
+					var startY = scaledLedHeight/2;
+					var startRadius = scaledLedWidth/10;
+					var endX = startX;
+					var endY = startY;
+					var endRadius = scaledLedWidth;
+					var radgrad = ctx.createRadialGradient(startX, startY, startRadius, endX, endY, endRadius);
+					radgrad.addColorStop(0, brightColours[i]);
+					radgrad.addColorStop(1, dullColours[i]);
+					ctx.fillStyle = radgrad;
+
+					ABoo.Graphics['roundedRect'].draw( ctx, x, 0, scaledLedWidth, scaledLedHeight, scaledLedWidth/2.5 );
+					ctx.fill();
+					// ctx.fillRect( x,0,scaledLedWidth,scaledLedHeight );
+				}
+
+
+				// lazy gradient drawing
+				for (i=level; i<columns; i++) {
+					var x = i*colWidth;
+					var startX = x+scaledLedWidth/2;
+					var startY = scaledLedHeight/2;
+					var startRadius = scaledLedWidth/10;
+					var endX = startX;
+					var endY = startY;
+					var endRadius = scaledLedWidth;
+					var radgrad = ctx.createRadialGradient(startX, startY, startRadius, endX, endY, endRadius);
+					radgrad.addColorStop(0, '#777');
+					radgrad.addColorStop(1, '#555');
+					ctx.fillStyle = radgrad;
+					ABoo.Graphics['roundedRect'].draw( ctx, x, 0, scaledLedWidth, scaledLedHeight, scaledLedWidth/2.5 );
+					ctx.fill();
+					// ctx.fillRect( x,0,scaledLedWidth,scaledLedHeight );
+				}
+			}
+		});
+
+		ABoo.HooInputVolumeDisplayGraphic = SC.Object.extend( ABoo.HooCanvasViewMixin, {
+
+			_ledLevelsSprite: undefined,
+			_level: 0,
+			_ledCount: 8,
+
+			init: function( /* init never has args */ ) {
+				this._super();
+				this._ledLevelsSprite = ABoo.LedLevelsSprite.create();
+			},
+
+			drawContents: function( ctx, width, height ) {
+				// ctx.fillStyle = "rgba(100,100,100,1)";
+				// ctx.fillRect(0,0,width,height);
+				this._ledLevelsSprite.spriteDraw( ctx, 0, 0, width, height, this._level );
+			},
+
+			// should be logarithmic? maybe flash already is
+			setLevel: function(val) {
+				var numberOfBins = this._ledCount + 1;
+				var binWidth = 1/numberOfBins;
+				var litLeds = Math.floor(val / binWidth);
+
+				if( litLeds != this._level ) {
+					this._level = litLeds;
+					// console.log("Level "+litLeds);
+					this._parentCanvas.setNeedsDisplay();
+				}
+			}
+		});
+
+		ABoo.HooInputVolumeDisplay = ABoo.HooWidget.extend({
+
+			_hooCanvas: undefined,
+			_inputLevelsGraphic:undefined,
+
+			init: function( /* init never has args */ ) {
+				this._super();
+				this._inputLevelsGraphic = ABoo.HooInputVolumeDisplayGraphic.create();
+			},
+
+			setupDidComplete: function() {
+
+				HOO_nameSpace.assert( this._hooCanvas, "this InputLevelsDisplay must be added to a canvas to work" );
+				this._hooCanvas.addSubview( this._inputLevelsGraphic );
+
+				// we could do this automatically, but it doesn't harm to declare valid bindings (altho that could just be a comment)
+				var declaredBindings = ['enabledBinding', 'loadedValueBinding'];
+				this.setup_hoo_bindings_from_json( declaredBindings );
+			},
+
+			readyDidChange: function(target,property) {
+				var value = target.get(property);
+				// console.log("hello"+target+" "+property+" "+value );
+			},
+
+			sndLevelDidChange: function(target,property) {
+				var value = target.get(property);
+				this._inputLevelsGraphic.setLevel(value);
+			}
+
+		});

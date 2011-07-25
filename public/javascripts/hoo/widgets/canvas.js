@@ -124,7 +124,7 @@ ABoo.HooCanvas = ABoo.HooWidget.extend({
 
 	swapOutFor: function( domElement$ ) {
 		this._$canvas.replaceWith( domElement$ );
-	},
+	}
 
 });
 

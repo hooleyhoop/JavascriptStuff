@@ -117,6 +117,6 @@ ABoo.HooRadialProgress = ABoo.HooWidget.extend({
 	// for binding - kinda boilerplate - TODO! get rid
 	playDidChange: function (sender, key) {
 		this.setPlayProgress(sender.get(key));
-	},
+	}
 
 });

@@ -55,6 +55,7 @@ function createJSObjectsFromRubyObjects( rootElement ) {
 				console.error("That instance already exists! Cannot create instance of "+className );
 			}
 			HOO_nameSpace[newInstanceName] = newInstance;
+			HOO_nameSpace.assert( HOO_nameSpace[newInstanceName], "I think we can do this in ie" )
 
 			// maybe should add to content view
 			_hooWindow.addSubView( newInstance );
@@ -107,6 +108,13 @@ ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 	//},
 
 	// extract bindings from json
+	setup_hoo_bindings_from_json: function( bindingNamesArray ) {
+		var self = this;
+		$(bindingNamesArray).each( function(i,ob){
+			self.setup_hoo_binding_from_json(ob);
+		});
+	},
+
 	setup_hoo_binding_from_json: function( bindingName ) {
 		if( this.json && this.json.bindings && this.json.bindings[bindingName] ){
 			var bindingConfig = this.json.bindings[bindingName];
@@ -115,6 +123,7 @@ ABoo.HooWidget = SC.Object.extend( ABoo.RootObject, ABoo.Bindings, {
 		}
 		return false;
 	},
+
 
 	teardown_hoo_binding_from_json: function( bindingName ) {
 		if( this.json.bindings && this.json.bindings[bindingName] ){

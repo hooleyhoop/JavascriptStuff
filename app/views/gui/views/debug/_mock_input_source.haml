@@ -1,0 +1,40 @@
+-# http://0.0.0.0:3000/widgets/MockInputSource
+
+%div[_]( data-jsclass='ABoo.MockInputSource' style="background-color: red; display: inline-block; width:100%; height:15px; margin-bottom:15px;" )
+	%span(style="margin-left: 1em;") Not ready
+
+-# Obviously we cannot leave this here as it is crazy to include it more than once
+- if( _.includeOnce? )
+	:javascript
+
+		// Obviously, we only do this if there is a bloomin canvas in the first place. Oh, hello ie
+		ABoo.MockInputSource = ABoo.HooWidget.extend({
+
+			_ready:		false,
+			_soundlevel: 0,
+			textHolder: "span",
+
+			init: function( /* init never has args */ ) {
+				this._super();
+					var self = this;
+					setTimeout( function(){
+						self.set('_ready', true );
+						self.setContentText("I am now officially ready!");
+						self.startProducingSound();
+					}, 1000);
+				//}
+			},
+
+			startProducingSound: function() {
+				var self = this;
+				var xx = setInterval( function() {
+					self.set('_soundlevel', Math.random() );
+				},1000.0/25.0);
+			},
+
+			setContentText:  function( arg ) {
+				var $span = this.getFirstDomItemOfType("span");
+				$span.text( arg );
+			}
+		});
+

@@ -8,14 +8,18 @@ module Presenters
 
 			super( controller );
 
-			colorFillClass				= widgetClass('colorFill')
-			simpleButton				= widgetClass('formButtonSimple')
-			toggleButton				= widgetClass('formButtonToggle')
+			colorFillClass				= widgetClass('HooColorFill')
+			li 						= widgetClass("HooLoremIpsumView")
+			simpleButton				= widgetClass('HooFormButtonSimple')
+			toggleButton				= widgetClass('HooFormButtonSimple')
 
 			@window.showGrid;
 
-			colorFillView = colorFillClass.new();
-			@window.contentView.addSubView( colorFillView );
+			colorFillView = colorFillClass.new()
+			@window.contentView.addSubView( colorFillView )
+
+			liInstance = li.new()
+			colorFillView.addSubView( liInstance )
 
 			lambda {
 				@simpleButton1 = simpleButton.new( :initialState=>1 );
@@ -30,53 +34,6 @@ module Presenters
 				#});";
 				@window.contentView.addSubView( @simpleButton1 );
 			}.call
-
-			lambda {
-				@simpleButton2 = simpleButton.new( :initialState=>1 );
-				@simpleButton2.img = '../images/buttons/simple-button/3-state-combine.png';
-				@simpleButton2.size = [105,45];
-				@simpleButton2.labelStates = ['-- --', 'Submit', 'Pressed'];
-				#@simpleButton2.initialState = 1;
-				@simpleButton2.labelColor = '#fff'
-				@simpleButton2.action = '/widgets/_ajaxPostTest'
-				@window.contentView.addSubView( @simpleButton2 );
-			}.call
-
-			lambda {
-				@largeButton2 = toggleButton.new( :initialState=>1 );
-				@largeButton2.img = '../images/buttons/follow_button/5-state-follow-button.png';
-				@largeButton2.size = [105,45];
-				@largeButton2.labelStates = ['-Off-', 'Do It', 'Do It-D', 'UnDoIt', 'UnDoIt-D'];
-				#@largeButton2.initialState = 1;
-				@largeButton2.labelColor = '#fff'
-				@largeButton2.action = '/widgets/_ajaxPostTest'
-				@window.contentView.addSubView( @largeButton2 );
-			}.call
-
-			# PRoblem here with start state!
-			lambda {
-				@largeButton3 = toggleButton.new( :initialState=>3 );
-				@largeButton3.labelStates = ['-Off-', 'Go', 'Go-D', 'StartHere', 'un go-D'];
-				@largeButton3.size = [105,45];
-				@largeButton3.img = '../images/buttons/follow_button/5-state-follow-button.png';
-				@largeButton3.initialState = 3;
-				@largeButton3.labelColor = '#fff'
-				@largeButton3.action = '/widgets/_ajaxPostTest'
-				@window.contentView.addSubView( @largeButton3 );
-			}.call
-
-
-			lambda {
-				@largeButton1 = toggleButton.new( :initialState=>0 );
-				@largeButton1.img = '../images/buttons/follow_button/5-state-follow-button.png';
-				@largeButton1.size = [105,45];
-				@largeButton1.labelStates = ['-Follow-', 'Follow', 'Follow-D', 'Unfollow', 'Unfollow-D'];
-				#@largeButton1.initialState = 0;
-				@largeButton1.labelColor = '#fff'
-				@largeButton1.action = '/widgets/_ajaxPostTest'
-				@window.contentView.addSubView( @largeButton1 );
-			}.call
-
 
 		end
 	end

@@ -159,6 +159,7 @@
 					var idString = $(value).attr('id');
 					var instanceName = '_'+idString;
 					// console.log("about to resize "+ HOO_nameSpace[instanceName]);
+					var debugNamespace = HOO_nameSpace;
 					var ob = HOO_nameSpace[instanceName];
 					/* It is sometimes valid (when debugging) that there is no instance */
 					if(ob && ob.parentDidResize)
@@ -178,10 +179,14 @@
 
 				this._boundToObject = resizeableDiv;
 				var self = this;
-				this.div$.mousedown( function($event){ return self.horizontalDrag( $event, self._boundToObject.html(), side ); } );
+				this.div$.mousedown(
+					function($event){ return self.horizontalDrag( $event, self._boundToObject.html(), side ); }
+				);
 			},
 
 			horizontalDrag: function( $event, $puppet, cssProp ) {
+
+				run = SC.run.begin()
 
 				var $jqueryClickedObject = $($event.target); // notice how we wrap HTMLDivElement
 				var $clickedObjectPos = this.div$.offset();
@@ -194,14 +199,19 @@
 
 				var mouseMoveData = { offset:offsetFromCentrePt, tcssProp:cssProp, target:this, action:'mousemove' };
 				$('body').bind( 'mousemove', mouseMoveData, eventTrampoline );
+
+				SC.run.end()
 			},
 
 			mouseup: function( $event ) {
+				run = SC.run.begin()
 				$('body').unbind('mousemove', eventTrampoline); // is this right?
 				$('body').unbind('mouseup', eventTrampoline);
+				SC.run.end()
 			},
 
 			mousemove: function( $event ) {
+				run = SC.run.begin()
 
 				var clickedPos = { x:$event.pageX, y:$event.pageY };
 				var newPos = { x:(clickedPos.x-this.div$.width()/2), y:(clickedPos.y-this.div$.height()/2) };
@@ -233,6 +243,7 @@
 				} else {
 					alert("countdown to detenation - 10 "+cssProp);
 				}
+				SC.run.end()
 			}
 
 
@@ -349,3 +360,4 @@
 			if(color && color.match && color.match(/^rgb\(([0-9]|[1-9][0-9]|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5]),[ ]{0,1}([0-9]|[1-9][0-9]|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5]),[ ]{0,1}([0-9]|[1-9][0-9]|[1][0-9]{2}|[2][0-4][0-9]|[2][5][0-5])\)$/) ) return true;
 			else return false;
 		}
+
